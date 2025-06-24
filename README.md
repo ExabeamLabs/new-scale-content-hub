@@ -4,7 +4,7 @@
 	  Automation   
 	  Correlation-Rules 
 	  Dashboards 
-	  Enrichers 
+	  Enrichments
 	  New-Scale-Analytics-Rules  	
 	  Parsers
 	  Scripts   
