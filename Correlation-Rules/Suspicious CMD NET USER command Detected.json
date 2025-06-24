@@ -1,0 +1,38 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious : CMD NET USER command Detected",
+      "description": "",
+      "useCase": "privilege_escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "parent_process_name: \"cmd.exe\" AND process_name: \"net.exe\" AND process_command_line: \"net user\"",
+            "condition": {
+              "groupByOption": true,
+              "groupBy": [
+                "user"
+              ],
+              "functionType": "count",
+              "subject": "event",
+              "field": "",
+              "operator": "more_than",
+              "value": "0",
+              "time": 10,
+              "unit": "m",
+              "triggerOnAnyMatch": false
+            },
+            "id": "c8a4377a-41f2-4b1c-9b5f-57d705b651de"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}
