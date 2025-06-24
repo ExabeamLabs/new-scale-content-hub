@@ -1,0 +1,36 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "C_kalambur",
+      "name": "Kalambur Backdoor Curl TOR SOCKS Proxy Execution",
+      "description": "Detects the execution of the 'curl.exe' command, referencing 'SOCKS' and '.onion' domains, which could be indicative of Kalambur backdoor activity.  Reference: https://github.com/SigmaHQ/sigma/blob/master/rules-emerging-threats/2025/Malware/proc_creation_win_malware_kalambur_curl_socks_tor.yml https://blog.eclecticiq.com/sandworm-apt-targets-ukrainian-users-with-trojanized-microsoft-kms-activation-tools-in-cyber-espionage-campaigns",
+      "applicableEvents": [
+        {
+          "activity_type": "process-create"
+        }
+      ],
+      "detectionReason": "Kalambur Backdoor Curl TOR SOCKS Proxy Execution",
+      "type": "factFeature",
+      "mitre": [
+        {
+         "techniqueKey": "T1090",
+         "technique": "Proxy",
+         "tactic": "Command and Control",
+         "tacticKey": "TA0011"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "value": "true",
+      "actOnCondition": "toLower(process_name) = 'curl && containsAny(toLower(process_command_line), 'socks5:', 'socks5h:','socks4a:') && contains(toLower(process_command_line), 'onion') ",
+      "suppressThreshold": "10 minutes",
+      "trainOnCondition": "true",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "familyId": "network-activity",
+      "ruleGroupId": "ntw-critical-session-group"
+
+    }
+  ]
+}
