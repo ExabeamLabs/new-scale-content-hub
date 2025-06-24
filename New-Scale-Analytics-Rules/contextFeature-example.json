@@ -1,0 +1,39 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "DM-Cntx-PC-Critical-Sniffer",
+      "name": "Process is a sniffing tool: True\\False",
+      "description": "Process is a sniffing tool: True\\False",
+      "applicableEvents": [
+        {
+          "activity_type": "process-create"
+        }
+      ],
+      "detectionReason": "Process is a sniffing tool: ${trigger.value}",
+      "type": "contextFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1040",
+          "technique": "Network Sniffing",
+          "tactic": "Credential Access",
+          "tacticKey": "TA0006"
+        },
+        {
+          "techniqueKey": "T1040",
+          "technique": "Network Sniffing",
+          "tactic": "Discovery",
+          "tacticKey": "TA0007"
+        }
+      ],
+      "useCase": [
+        "Compromised Credentials"
+      ],
+      "trainOnCondition": "true",
+      "actOnCondition": "true",
+      "value": "ContextListContains('Net Sniffer Processes', toLower(process_name))",
+      "familyId": "process-creation-activity",
+      "ruleGroupId": "pc-critical-process-context-group"
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "DM-NumCP-DSOW-EC-UD",
+      "name": "Abnormal number of directory service write events for users in this department",
+      "description": "An abnormal number of directory service write events have been observed for users in this department. Directory services typically manage various types of objects to organize and administer resources within a network environment.",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "ds_object-create",
+            "ds_object-modify"
+          ]
+        },
+        {
+          "landscape": "directory service",
+          "activity": [
+            "create",
+            "modify"
+          ]
+        }
+      ],
+      "detectionReason": "Abnormal number (${trigger.numeric_value}) of directory service write events for users in department ${trigger.scope_value}",
+      "type": "numericCountProfiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1484",
+          "technique": "Domain Policy Modification",
+          "tactic": "Privilege Escalation",
+          "tacticKey": "TA0004"
+        },
+        {
+          "techniqueKey": "T1484",
+          "technique": "Domain Policy Modification",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Account Manipulation"
+      ],
+      "scopeValue": "EntityAttribute('type: User && direction: Source', 'department')",
+      "trainOnCondition": "true",
+      "actOnCondition": "true",
+      "scoreUnless": [
+        "NumCP-DSOW-EC-O"
+      ],
+      "anomalyThreshold": "120 days",
+      "checkScopeMaturity": "true",
+      "maturityThreshold": "14 days",
+      "countPer": "EntityId('type: User && direction: Source')",
+      "windowDuration": "1 day",
+      "windowPeriod": "12 hours",
+      "logBase": 2,
+      "minOrderOfMagnitude": 2,
+      "query": "(activity_type = (\"ds_object-create\",\"ds_object-modify\") AND landscape = \"directory service\" AND activity = (\"create\",\"modify\")) AND (source_user_entity_id = \"${event.source_user_entity_id}\")",
+      "familyId": "directory-service-object-write-activity",
+      "ruleGroupId": "dsw-event-count-magnitude-group"
+    }
+  ]
+}

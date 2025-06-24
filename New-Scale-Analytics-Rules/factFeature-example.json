@@ -1,0 +1,36 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "DM-Fact-BPM-Public-AccessBlock",
+      "name": "Public access block was removed from an AWS bucket",
+      "description": "The public access block of a bucket or an account in AWS was modified to remove public access prevention. This activity  enables the bucket or the entire account to become public to all users.",
+      "applicableEvents": [
+        {
+          "activity_type": "bucket-accessblock-modify",
+          "platform": "AWS"
+        }
+      ],
+      "detectionReason": "The public access block of bucket ${event.bucket_name} was removed",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1530",
+          "technique": "Data from Cloud Storage",
+          "tactic": "Collection",
+          "tacticKey": "TA0009"
+        }
+      ],
+      "useCases": [
+        "Cloud Data Protection"
+      ],
+      "actOnCondition": "containsAny(toLower(operation), 'putbucketpublicaccessblock', 'putaccountpublicaccessblock') && (toLower(restrict_public_buckets)='false' || toLower(block_public_policy)='false' || toLower(block_public_acls)='false' || toLower(ignore_public_acls)='false')",
+      "trainOnCondition": "true",
+      "value": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "org",
+      "familyId": "bucket-permission-modification-activity",
+      "ruleGroupId": "bpm-public-group"
+    }
+  ]
+}
