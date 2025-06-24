@@ -1,0 +1,43 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "DM-NumSP-EMR-Bytes-DU-Bytes",
+      "name": "Abnormal amount of bytes received in incoming emails for this user",
+      "description": "An abnormal amount of bytes have been received in incoming emails for this user.",
+      "applicableEvents": [
+        {
+          "activity_type": "email-receive",
+          "outcome": "success"
+        }
+      ],
+      "detectionReason": "Abnormal amount (${trigger.numeric_value}) of bytes received in incoming emails for ${entity.user.dest}",
+      "type": "numericSumProfiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1566",
+          "technique": "Phishing",
+          "tactic": "Initial Access",
+          "tacticKey": "TA0001"
+        }
+      ],
+      "useCases": [
+        "Phishing"
+      ],
+      "scopeValue": "EntityId('type: User && direction: Dest')",
+      "featureValue": "bytes",
+      "trainOnCondition": "exists(bytes, vendor)",
+      "actOnCondition": "true",
+      "anomalyThreshold": "90 days",
+      "checkScopeMaturity": "true",
+      "maturityThreshold": "14 days",
+      "windowDuration": "1 day",
+      "windowPeriod": "12 hours",
+      "logBase": 2,
+      "minOrderOfMagnitude": 17,
+      "query": "(activity_type = \"email-receive\" AND outcome = \"success\") AND (dest_user_entity_id = \"${trigger.scope_value}\") AND (NOT bytes = null)",
+      "familyId": "email-receive-activity",
+      "ruleGroupId": "emailr-bytes-sum-magnitude-group"
+    }
+  ]
+}

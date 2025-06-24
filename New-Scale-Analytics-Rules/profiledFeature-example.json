@@ -1,0 +1,42 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "DM-Prof-WinSC-E-DE-DZ-test",
+      "name": "First service creation on this endpoint for this destination zone",
+      "description": "This is the first time a service creation has been observed on this endpoint for this destination network zone.",
+      "applicableEvents": [
+        {
+          "activity_type": "service-create",
+          "platform": "Windows"
+        }
+      ],
+      "detectionReason": "First service creation on ${entity.device.dest} for network zone ${trigger.feature_value}",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1543",
+          "technique": "Create or Modify System Process: Windows Service",
+          "tactic": "Privilege Escalation",
+          "tacticKey": "TA0004"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "scopeValue": "EntityId('type: Device && direction: Dest')",
+      "featureValue": "dest_zone",
+      "trainOnCondition": "true",
+      "actOnCondition": "true",
+      "scoreUnless": [
+        "Prof-WinSC-E-O-DE"
+      ],
+      "anomalyThreshold": "90 days",
+      "checkScopeMaturity": true,
+      "checkFeatureMaturity": true,
+      "maturityThreshold": "14 days",
+      "familyId": "windows-service-creation-activity",
+      "ruleGroupId": "wsc-dest-endpoint-access-group"
+    }
+  ]
+}

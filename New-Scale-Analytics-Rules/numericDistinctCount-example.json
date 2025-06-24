@@ -1,0 +1,44 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "DM-NumDCP-EL-DEC-SE-DE",
+      "name": "Abnormal number of unique destination endpoints observed in successful endpoint login events from this endpoint",
+      "description": "An abnormal number of unique destination endpoints have been observed in successful endpoint login events from this endpoint. These events may include interactive Window logins and other (interactive or not) OS logins.",
+      "applicableEvents": [
+        {
+          "activity_type": "endpoint-login",
+          "outcome": "success"
+        }
+      ],
+      "detectionReason": "Abnormal number (${trigger.numeric_value}) of unique destination endpoints observed in successful endpoint login events from ${entity.device.source}",
+      "type": "numericDistinctCountProfiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1078",
+          "technique": "Valid Accounts",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Abnormal Authentication & Access",
+        "Lateral Movement"
+      ],
+      "scopeValue": "EntityId('type: Device && direction: Source')",
+      "featureValue": "EntityId('type: Device && direction: Dest')",
+      "trainOnCondition": "((platform = 'Windows' && inList(login_type, '2', '10', '11', '12')) || !platform = 'Windows')",
+      "actOnCondition": "true",
+      "anomalyThreshold": "90 days",
+      "checkScopeMaturity": "true",
+      "maturityThreshold": "14 days",
+      "windowDuration": "1 day",
+      "windowPeriod": "12 hours",
+      "logBase": 2,
+      "minOrderOfMagnitude": 2,
+      "query": "(activity_type = \"endpoint-login\" AND outcome = \"success\") AND (source_device_entity_id = \"${trigger.scope_value}\") AND ( dest_device_entity_id = \"${trigger.feature_value}\") AND ((platform = \"Windows\" AND login_type = (2, 10, 11, 12)) OR NOT (platform = \"Windows\"))",
+      "familyId": "endpoint-login-activity",
+      "ruleGroupId": "el-dest-host-count-magnitude-group"
+    }
+  ]
+}
