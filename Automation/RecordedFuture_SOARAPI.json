@@ -1,0 +1,617 @@
+{
+  "paths": {
+    "/enrichment": {
+      "post": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EnrichRequest"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/MetadataQueryParameter"
+          }
+        ],
+        "summary": "Fetch risk information for a set of indicators",
+        "responses": {
+          "200": {
+            "description": "output",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EnrichResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "Returns risk score and risk rules for the submitted indicators. Handles both individual and batch lookups up to 1000 IOCs per request.\n",
+        "tags": [
+          "Soar"
+        ]
+      }
+    },
+    "/triage/contexts": {
+      "get": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Lookup all available risk contexts",
+        "responses": {
+          "200": {
+            "description": "output",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContextResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "Lookup all available risk contexts",
+        "tags": [
+          "Soar"
+        ]
+      }
+    },
+    "/triage/contexts/{context_name}": {
+      "post": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EnrichRequest"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ContextNameParameter"
+          },
+          {
+            "$ref": "#/components/parameters/FormatQueryParameter"
+          },
+          {
+            "$ref": "#/components/parameters/MetadataQueryParameter"
+          },
+          {
+            "$ref": "#/components/parameters/ThresholdQueryParameter"
+          },
+          {
+            "$ref": "#/components/parameters/ThresholdTypeQueryParameter"
+          }
+        ],
+        "summary": "Triage multiple IOC entities",
+        "responses": {
+          "200": {
+            "description": "output",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TriageResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "Triage multiple IOC entities for a specific context with up to 1000 IOCs per request.",
+        "tags": [
+          "Soar"
+        ]
+      }
+    }
+  },
+  "openapi": "3.1.1",
+  "info": {
+    "title": "Soar API",
+    "version": "3.0.0",
+    "description": "The SOAR API is designed for high throughput risk checks using Recorded Future's threat intelligence in bulk.\n\nIt supports five IOC types, IP Address, Domain, Hash, URL and Vulnerability.\n\nPlease read the [documentation](https://docs.recordedfuture.com/docs/soar-api-introduction) before using this API.\n",
+    "x-rf-service-id": "service:soar-api"
+  },
+  "components": {
+    "parameters": {
+      "ThresholdQueryParameter": {
+        "description": "Determines which risk score should be used to deem an entity risky. Each context has its own default value and depends on the context.",
+        "schema": {
+          "type": "integer"
+        },
+        "required": false,
+        "name": "threshold",
+        "in": "query"
+      },
+      "MetadataQueryParameter": {
+        "description": "Include metadata in response. Annotates the response with additional metadata explaining the response data elements.",
+        "schema": {
+          "type": "boolean",
+          "default": false
+        },
+        "required": false,
+        "name": "metadata",
+        "in": "query"
+      },
+      "FormatQueryParameter": {
+        "description": "Allows for an output format suitable for Splunk SOAR (previously \"Phantom\"). If no value is given, the default format (used in the Enrichment endpoint) will be used.",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "phantom"
+          ]
+        },
+        "required": false,
+        "name": "format",
+        "in": "query"
+      },
+      "ContextNameParameter": {
+        "description": "The context in which to evaluate the given entities. Available contexts can be fetched using the separate endpoint.",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "name": "context_name",
+        "in": "path"
+      },
+      "ThresholdTypeQueryParameter": {
+        "description": "Determines if the set of entities are deemed risky if a single entity is above the threshold (max) or if all entities have to be above the threshold (min). The default is specified by the context but is max for all contexts currently defined.",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "min",
+            "max"
+          ],
+          "default": "max"
+        },
+        "required": false,
+        "name": "threshold_type",
+        "in": "query"
+      }
+    },
+    "schemas": {
+      "Metadata": {
+        "type": "object",
+        "properties": {
+          "entries": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "EnrichRequest": {
+        "type": "object",
+        "description": "Entities to be enriched, grouped by type up to a total of 1000 IOCs.",
+        "properties": {
+          "url": {
+            "type": "array",
+            "description": "URLs to enrich",
+            "items": {
+              "type": "string",
+              "example": "https://phishing-example.net"
+            }
+          },
+          "domain": {
+            "type": "array",
+            "description": "Domains to enrich",
+            "items": {
+              "type": "string",
+              "example": "google.com"
+            }
+          },
+          "ip": {
+            "type": "array",
+            "description": "IPs to enrich",
+            "items": {
+              "type": "string",
+              "example": "8.8.8.8"
+            }
+          },
+          "companybydomain": {
+            "type": "array",
+            "description": "Companies to enrich, identified by their domain name. This will operation can be slow.",
+            "items": {
+              "type": "string",
+              "example": "recordedfuture.com"
+            }
+          },
+          "vulnerability": {
+            "type": "array",
+            "description": "Vulnerabilities to enrich",
+            "items": {
+              "type": "string",
+              "example": "CVE-2021-44228"
+            }
+          },
+          "hash": {
+            "type": "array",
+            "description": "Hashes to enrich",
+            "items": {
+              "type": "string",
+              "example": "458d1f83e087d0f613c505086538436d"
+            }
+          }
+        }
+      },
+      "EnrichResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/EnrichResponseData"
+          },
+          "counts": {
+            "$ref": "#/components/schemas/Counts"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/Metadata"
+          }
+        },
+        "required": [
+          "data",
+          "counts"
+        ]
+      },
+      "Counts": {
+        "type": "object",
+        "properties": {
+          "returned": {
+            "type": "number",
+            "example": 1
+          },
+          "total": {
+            "type": "number",
+            "example": 1000
+          }
+        },
+        "required": [
+          "returned",
+          "total"
+        ]
+      },
+      "TriageResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/TriageResponseData"
+          },
+          "counts": {
+            "$ref": "#/components/schemas/Counts"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/Metadata"
+          }
+        },
+        "required": [
+          "data",
+          "counts"
+        ]
+      },
+      "EnrichResponseData": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "$ref": "#/components/schemas/ResultData"
+          }
+        },
+        "required": [
+          "results"
+        ]
+      },
+      "TriageData": {
+        "type": "object",
+        "properties": {
+          "threshold_type": {
+            "type": "string",
+            "enum": [
+              "min",
+              "max"
+            ],
+            "example": "max"
+          },
+          "context": {
+            "type": "string",
+            "example": "c2"
+          },
+          "verdict": {
+            "type": "boolean"
+          },
+          "threshold": {
+            "description": "Default value depends on the context",
+            "maximum": 100,
+            "example": 80,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "scores": {
+            "type": "object",
+            "properties": {
+              "min": {
+                "type": "integer",
+                "example": 0
+              },
+              "max": {
+                "type": "integer",
+                "example": 20
+              }
+            }
+          }
+        }
+      },
+      "ResultData": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "risk": {
+              "type": "object",
+              "properties": {
+                "score": {
+                  "type": "integer",
+                  "example": 0
+                },
+                "level": {
+                  "type": "integer",
+                  "example": 0
+                },
+                "context": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "object",
+                      "properties": {
+                        "score": {
+                          "type": "integer",
+                          "example": 0
+                        },
+                        "summary": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        },
+                        "rule": {
+                          "type": "object",
+                          "properties": {
+                            "count": {
+                              "type": "integer",
+                              "example": 0
+                            },
+                            "maxCount": {
+                              "type": "integer",
+                              "example": 5
+                            }
+                          }
+                        },
+                        "mostCriticalRule": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "score",
+                        "rule"
+                      ]
+                    }
+                  }
+                },
+                "rule": {
+                  "type": "object",
+                  "properties": {
+                    "count": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "mostCritical": {
+                      "type": "string"
+                    },
+                    "maxCount": {
+                      "type": "integer",
+                      "example": 30
+                    },
+                    "evidence": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "count": {
+                            "type": "integer",
+                            "example": 0
+                          },
+                          "timestamp": {
+                            "type": "string",
+                            "format": "date-string",
+                            "example": "2025-01-01T13:30:00.000Z"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "rule": {
+                            "type": "string",
+                            "description": "Rule name",
+                            "example": "Linked to Malware"
+                          },
+                          "sightings": {
+                            "type": "integer",
+                            "example": 100
+                          },
+                          "mitigation": {
+                            "type": "string"
+                          },
+                          "level": {
+                            "type": "integer",
+                            "example": 0
+                          }
+                        },
+                        "required": [
+                          "count",
+                          "level",
+                          "timestamp",
+                          "rule"
+                        ]
+                      }
+                    },
+                    "summary": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "level": {
+                            "type": "integer",
+                            "example": 0
+                          },
+                          "count": {
+                            "type": "integer",
+                            "example": 0
+                          }
+                        },
+                        "required": [
+                          "level",
+                          "count"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "count",
+                    "maxCount"
+                  ]
+                }
+              },
+              "required": [
+                "score",
+                "level",
+                "context",
+                "rule"
+              ]
+            },
+            "entity": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "idn:google.com"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "google.com"
+                },
+                "type": {
+                  "type": "string",
+                  "example": "InternetDomainName"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "type"
+              ]
+            }
+          },
+          "required": [
+            "risk",
+            "entity"
+          ]
+        }
+      },
+      "TriageResponseData": {
+        "type": "object",
+        "properties": {
+          "triage": {
+            "$ref": "#/components/schemas/TriageData"
+          },
+          "results": {
+            "$ref": "#/components/schemas/ResultData"
+          }
+        }
+      },
+      "ContextResponse": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/Context"
+        }
+      },
+      "Context": {
+        "type": "object",
+        "properties": {
+          "default_threshold": {
+            "description": "Default threshold to determinate verdict",
+            "maximum": 100,
+            "example": 65,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "description": {
+            "type": "string",
+            "example": "The Recorded Future Phishing Risk Context use case is designed to identify potential phishing event. Recorded Future risk data is used to evaluate IOCs submitted by the end user and produce a suggested verdict for phishing events."
+          },
+          "datagroup": {
+            "type": "object",
+            "description": "Includes information on all data groups available for this context",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "rule": {
+                  "type": "object",
+                  "properties": {
+                    "maxCount": {
+                      "type": "integer",
+                      "example": 2
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "default_threshold_type": {
+          "description": "Default algorithm to use the threshold in",
+          "enum": [
+            "min",
+            "max"
+          ],
+          "default": "max",
+          "type": "string",
+          "example": "max"
+        },
+        "name": {
+          "type": "string",
+          "example": "SOAR API Phishing Risk Context"
+        }
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "description": "API Credential",
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-RFToken"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "/soar/v3"
+    }
+  ]
+}
