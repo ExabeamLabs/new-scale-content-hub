@@ -1,0 +1,980 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Threat API",
+    "description": "External API to retrieve threat data such as threat maps, threat actors and their categories.\n\nPlease read the [detailed support article](https://support.recordedfuture.com/hc/en-us/articles/14443927306259-Threat-API) before using this API.\n",
+    "version": "1.0.0",
+    "x-rf-service-id": "service:threat"
+  },
+  "servers": [
+    {
+      "url": "/threat"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Common"
+    },
+    {
+      "name": "Actors Threat Map"
+    },
+    {
+      "name": "Malware Threat Map"
+    },
+    {
+      "name": "Metadata"
+    }
+  ],
+  "security": [
+    {
+      "ApiKeyAuth": []
+    },
+    {
+      "idp": []
+    }
+  ],
+  "paths": {
+    "/maps": {
+      "get": {
+        "tags": [
+          "Common"
+        ],
+        "summary": "Fetch information about the maps available for the user.",
+        "description": "**Below is the list of HTTP Status code this API may return**\n* 200 - OK\n* 400 - Bad Request - if the request or its parameters are invalid\n* 401 - Unauthorized - if the provided authentication is invalid\n* 403 - Forbidden - if the user doesn't have access to this resource\n* 500 - Internal Server Error - Unexpected errors\n\nall these errors return the same body as specified in the default response.\n",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MapInfo"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/map/actors": {
+      "post": {
+        "summary": "Fetch threat map data for the enterprise's primary organization with filters.",
+        "description": "**Below is the list of HTTP Status code this API may return**\n* 200 - OK\n* 400 - Bad Request - if the request or its parameters are invalid\n* 401 - Unauthorized - if the provided authentication is invalid\n* 403 - Forbidden - if the user doesn't have access to this resource\n* 500 - Internal Server Error - Unexpected errors\n\nall these errors return the same body as specified in the default response.\n",
+        "tags": [
+          "Actors Threat Map"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ThreatMapRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThreatMapResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/map/{orgId}/actors": {
+      "post": {
+        "summary": "Fetch threat map data for a specific organization with filters.",
+        "description": "\n**Below is the list of HTTP Status code this API may return**\n* 200 - OK\n* 400 - Bad Request - if the request or its parameters are invalid\n* 401 - Unauthorized - if the provided authentication is invalid\n* 403 - Forbidden - if the user doesn't have access to this resource\n* 500 - Internal Server Error - Unexpected errors\n\nall these errors return the same body as specified in the default response.\n",
+        "tags": [
+          "Actors Threat Map"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "orgId",
+            "description": "Organization ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ThreatMapRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThreatMapResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/map/malware": {
+      "post": {
+        "summary": "Fetch malware threat map data for the enterprise's primary organization with filters.",
+        "description": "**Below is the list of HTTP Status code this API may return**\n* 200 - OK\n* 400 - Bad Request - if the request or its parameters are invalid\n* 401 - Unauthorized - if the provided authentication is invalid\n* 403 - Forbidden - if the user doesn't have access to this resource\n* 500 - Internal Server Error - Unexpected errors\n\nall these errors return the same body as specified in the default response.\n",
+        "tags": [
+          "Malware Threat Map"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MalwareThreatMapRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MalwareThreatMapResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/map/{orgId}/malware": {
+      "post": {
+        "summary": "Fetch malware threat map data for a specific organization with filters.",
+        "description": "**Below is the list of HTTP Status code this API may return**\n* 200 - OK\n* 400 - Bad Request - if the request or its parameters are invalid\n* 401 - Unauthorized - if the provided authentication is invalid\n* 403 - Forbidden - if the user doesn't have access to this resource\n* 500 - Internal Server Error - Unexpected errors\n\nall these errors return the same body as specified in the default response.\n",
+        "tags": [
+          "Malware Threat Map"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "Organization ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MalwareThreatMapRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MalwareThreatMapResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actor/search": {
+      "post": {
+        "summary": "Retrieve a list of threat actors.",
+        "description": "\n**Below is the list of HTTP Status code this API may return**\n* 200 - OK\n* 400 - Bad Request - if the request or its parameters are invalid\n* 401 - Unauthorized - if the provided authentication is invalid\n* 403 - Forbidden - if the user doesn't have access to this resource\n* 500 - Internal Server Error - Unexpected errors\n\nall these errors return the same body as specified in the default response.\n",
+        "tags": [
+          "Metadata"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ThreatActorsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThreatActorsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actor/categories": {
+      "get": {
+        "summary": "Fetches threat actors categories, which can be used to filter threat map data.",
+        "description": "**Below is the list of HTTP Status code this API may return**\n* 200 - OK\n* 400 - Bad Request - if the request or its parameters are invalid\n* 401 - Unauthorized - if the provided authentication is invalid\n* 403 - Forbidden - if the user doesn't have access to this resource\n* 500 - Internal Server Error - Unexpected errors\n\nall these errors return the same body as specified in the default response.\n",
+        "tags": [
+          "Metadata"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoriesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/malware/categories": {
+      "get": {
+        "summary": "Fetches malware categories, which can be used to filter malware threat map data.",
+        "description": "**Below is the list of HTTP Status code this API may return**\n* 200 - OK\n* 400 - Bad Request - if the request or its parameters are invalid\n* 401 - Unauthorized - if the provided authentication is invalid\n* 403 - Forbidden - if the user doesn't have access to this resource\n* 500 - Internal Server Error - Unexpected errors\n\nall these errors return the same body as specified in the default response.\n",
+        "tags": [
+          "Metadata"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MalwareCategoriesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "MapInfo": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Threat Actors Map for Organization XPTO"
+          },
+          "type": {
+            "type": "string",
+            "example": "actors"
+          },
+          "organization": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "uhash:DncskA"
+              },
+              "name": {
+                "type": "string",
+                "example": "XPTO"
+              }
+            }
+          },
+          "url": {
+            "type": "string",
+            "example": "/threat/map/uhash:DncskA/actors"
+          }
+        }
+      },
+      "ThreatMapResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "threat_map": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ThreatActorMapItem"
+                }
+              },
+              "date": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2023-01-10T14:51:38.462Z"
+              }
+            }
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "MalwareThreatMapResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "threat_map": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MalwareThreatMapItem"
+                }
+              },
+              "date": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2023-01-10T14:51:38.462Z"
+              }
+            }
+          }
+        }
+      },
+      "ThreatActorMapItem": {
+        "description": "Threat map data points",
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseEntityOutput"
+          },
+          {
+            "$ref": "#/components/schemas/Alias"
+          },
+          {
+            "$ref": "#/components/schemas/ThreatActorCategory"
+          },
+          {
+            "$ref": "#/components/schemas/ThreatActor"
+          }
+        ]
+      },
+      "MalwareThreatMapItem": {
+        "description": "Threat map data points",
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseMalwareEntityOutput"
+          },
+          {
+            "$ref": "#/components/schemas/MalwareAlias"
+          },
+          {
+            "$ref": "#/components/schemas/MalwareCategory"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "prevalence": {
+                "type": "integer",
+                "example": 5
+              },
+              "opportunity": {
+                "type": "integer",
+                "example": 25
+              },
+              "log_entries": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MalwareLogEntry"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "LogEntry": {
+        "type": "object",
+        "properties": {
+          "watchlist": {
+            "$ref": "#/components/schemas/BaseEntityOutput"
+          },
+          "entity": {
+            "$ref": "#/components/schemas/BaseEntityOutput"
+          },
+          "severity": {
+            "type": "string",
+            "example": "limited"
+          },
+          "axis": {
+            "type": "string",
+            "enum": [
+              "opportunity",
+              "intent"
+            ],
+            "example": "opportunity"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-01-10T14:51:38.462Z"
+          }
+        }
+      },
+      "MalwareLogEntry": {
+        "type": "object",
+        "properties": {
+          "watchlist": {
+            "$ref": "#/components/schemas/BaseMalwareWatchlistOutput"
+          },
+          "entity": {
+            "$ref": "#/components/schemas/BaseMalwareEntityOutput"
+          },
+          "severity": {
+            "type": "string",
+            "example": "limited"
+          },
+          "axis": {
+            "type": "string",
+            "enum": [
+              "opportunity",
+              "intent"
+            ],
+            "example": "opportunity"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-01-10T14:51:38.462Z"
+          }
+        }
+      },
+      "CategoriesResponse": {
+        "description": "Successful threat actor categories response",
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "List of threat actor categories",
+            "type": "array",
+            "items": {
+              "properties": {
+                "id": {
+                  "description": "Entity ID",
+                  "type": "string",
+                  "example": "PD_NyL"
+                },
+                "type": {
+                  "description": "Entity type",
+                  "type": "string",
+                  "enum": [
+                    "CyberThreatActorCategory"
+                  ],
+                  "example": "CyberThreatActorCategory"
+                },
+                "attributes": {
+                  "$ref": "#/components/schemas/ActorCategoryAttributes"
+                }
+              }
+            }
+          },
+          "counts": {
+            "type": "object",
+            "properties": {
+              "returned": {
+                "description": "Number of items returned in this response",
+                "type": "integer"
+              },
+              "total": {
+                "description": "Total number of items that can be retrieved",
+                "type": "integer"
+              }
+            },
+            "example": {
+              "returned": 25,
+              "total": 25
+            }
+          }
+        }
+      },
+      "MalwareCategoriesResponse": {
+        "description": "Successful malware categories response",
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "List of malware categories",
+            "type": "array",
+            "items": {
+              "properties": {
+                "id": {
+                  "description": "Entity ID",
+                  "type": "string",
+                  "example": "J0Nl-p"
+                },
+                "type": {
+                  "description": "Entity type",
+                  "type": "string",
+                  "enum": [
+                    "MalwareCategory"
+                  ],
+                  "example": "MalwareCategory"
+                },
+                "attributes": {
+                  "$ref": "#/components/schemas/MalwareCategoryAttributes"
+                }
+              }
+            }
+          },
+          "counts": {
+            "type": "object",
+            "properties": {
+              "returned": {
+                "description": "Number of items returned in this response",
+                "type": "integer"
+              },
+              "total": {
+                "description": "Total number of items that can be retrieved",
+                "type": "integer"
+              }
+            },
+            "example": {
+              "returned": 25,
+              "total": 25
+            }
+          }
+        }
+      },
+      "ThreatActorsRequest": {
+        "description": "JSON object specifying pagination of the threat actor list",
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Search string to match against threat actor names, common names and aliases",
+            "type": "string",
+            "example": "Fancy Bear"
+          },
+          "limit": {
+            "description": "Requested number of threat actors",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10000,
+            "default": 10000,
+            "example": 1000
+          },
+          "offset": {
+            "description": "Allows pagination by using `next_offset` from previous responses",
+            "type": "string",
+            "example": "eyJvZmZzZXQiOlswLCJzaDAwNSJdfQ=="
+          }
+        }
+      },
+      "ThreatActorsResponse": {
+        "description": "Successful threat actors response",
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "List of threat actor summaries",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ThreatActorSummary"
+            }
+          },
+          "counts": {
+            "type": "object",
+            "properties": {
+              "returned": {
+                "description": "Number of items returned in this response",
+                "type": "integer"
+              },
+              "total": {
+                "description": "Total number of items that can be retrieved",
+                "type": "integer"
+              }
+            },
+            "example": {
+              "returned": 10000,
+              "total": 1017258
+            }
+          },
+          "next_offset": {
+            "description": "Pagination parameter to retrieve the next items",
+            "type": "string",
+            "example": "eyJvZmZzZXQiOlswLCJzaDAwNSJdfQ=="
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ThreatActorSummary": {
+        "description": "Threat actor summary",
+        "properties": {
+          "id": {
+            "description": "Entity ID",
+            "type": "string",
+            "example": "ltKj5s"
+          },
+          "type": {
+            "description": "Entity type (Company, Organization or Person)",
+            "type": "string",
+            "enum": [
+              "Company",
+              "Organization",
+              "Person"
+            ],
+            "example": "Organization"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/ThreatAttributes"
+          }
+        }
+      },
+      "ThreatAttributes": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "Lorec53"
+              }
+            },
+            "required": [
+              "name"
+            ]
+          },
+          {
+            "$ref": "#/components/schemas/CommonNames"
+          },
+          {
+            "$ref": "#/components/schemas/Alias"
+          },
+          {
+            "$ref": "#/components/schemas/Categories"
+          }
+        ]
+      },
+      "ActorCategoryAttributes": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "North Korea Nation State Sponsored"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/CategoryAlias"
+          }
+        ]
+      },
+      "MalwareCategoryAttributes": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "Ransomware"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/MalwareCategoryAlias"
+          }
+        ]
+      },
+      "Categories": {
+        "type": "object",
+        "properties": {
+          "categories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BaseEntityOutput"
+            }
+          }
+        }
+      },
+      "CommonNames": {
+        "type": "object",
+        "properties": {
+          "common_names": {
+            "description": "Alternative names of the threat actor",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": [
+                "UAC-0056",
+                "Lori Bear"
+              ]
+            }
+          }
+        }
+      },
+      "Alias": {
+        "type": "object",
+        "properties": {
+          "alias": {
+            "description": "Known aliases of the threat actor, including in other languages",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": [
+                "Lorec53 APT Group",
+                "UAC-0056",
+                "Bleeding Bear",
+                "Lori Bear",
+                "EMBER BEAR"
+              ]
+            }
+          }
+        }
+      },
+      "CategoryAlias": {
+        "type": "object",
+        "properties": {
+          "alias": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": [
+                "North Korean Nation State"
+              ]
+            }
+          }
+        }
+      },
+      "MalwareCategoryAlias": {
+        "type": "object",
+        "properties": {
+          "alias": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": [
+                "Cryptotrojans",
+                "Cryptoviruses",
+                "cryptomalware"
+              ]
+            }
+          }
+        }
+      },
+      "BaseEntityOutput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Entity ID",
+            "type": "string",
+            "example": "PD_NyL"
+          },
+          "name": {
+            "description": "Entity name",
+            "type": "string",
+            "example": "Nation State Sponsored"
+          }
+        }
+      },
+      "BaseMalwareEntityOutput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Entity ID",
+            "type": "string",
+            "example": "MZycd3"
+          },
+          "name": {
+            "description": "Entity name",
+            "type": "string",
+            "example": "VirRansom"
+          }
+        }
+      },
+      "BaseMalwareWatchlistOutput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Watchlist ID",
+            "type": "string",
+            "example": "lT36d1"
+          },
+          "name": {
+            "description": "Watchlist name",
+            "type": "string",
+            "example": "Tech Stack Watch List"
+          }
+        }
+      },
+      "MalwareAlias": {
+        "type": "object",
+        "properties": {
+          "alias": {
+            "description": "Known aliases of the malware, including in other languages",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": [
+                "Operation Global III ransomware",
+                "VirLocker virus",
+                "VirLock",
+                "VirLocker malware",
+                "Virlock"
+              ]
+            }
+          }
+        }
+      },
+      "ThreatMapRequest": {
+        "description": "Threat map filters",
+        "type": "object",
+        "properties": {
+          "actors": {
+            "description": "List of threat actor IDs.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "l3moPJ"
+            }
+          },
+          "categories": {
+            "description": "List of threat actor category IDs.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "GK7qU"
+            }
+          },
+          "watchlists": {
+            "description": "List of watch list IDs to be included in the response.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "report:Hsxme2"
+            }
+          }
+        }
+      },
+      "MalwareThreatMapRequest": {
+        "description": "Malware threat map filters",
+        "type": "object",
+        "properties": {
+          "malware": {
+            "description": "List of malware IDs.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "l3moPJ"
+            }
+          },
+          "categories": {
+            "description": "List of malware category IDs.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "GK7qU"
+            }
+          },
+          "watchlists": {
+            "description": "List of watch list IDs to be included in the response.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "report:Hsxme2"
+            }
+          }
+        }
+      },
+      "ThreatActorCategory": {
+        "type": "object",
+        "properties": {
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "GK7qU"
+            }
+          }
+        }
+      },
+      "ThreatActor": {
+        "type": "object",
+        "properties": {
+          "intent": {
+            "type": "integer",
+            "example": 5
+          },
+          "opportunity": {
+            "type": "integer",
+            "example": 25
+          },
+          "log_entries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LogEntry"
+            }
+          }
+        }
+      },
+      "MalwareCategory": {
+        "type": "object",
+        "properties": {
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "GK7qU"
+            }
+          }
+        }
+      },
+      "ServiceError": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "Validation Error"
+          },
+          "body": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "description": "API Credential",
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-RFToken"
+      },
+      "idp": {
+        "description": "Click on \"Authorize\" to be redirected to the login page.",
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://id.recordedfuture.com/authorize",
+            "tokenUrl": "https://id.recordedfuture.com/token",
+            "refreshUrl": "https://id.recordedfuture.com/token",
+            "scopes": {}
+          }
+        }
+      }
+    }
+  }
+}
