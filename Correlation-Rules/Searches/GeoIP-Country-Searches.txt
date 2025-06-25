@@ -1,0 +1,11 @@
+#Search Name: IRAN related Source IP logs
+geo_src_ip.country:"ir"	
+
+#Search Name: IRAN related Destination IP logs
+geo_dest_ip.country:"ir"
+
+#Search Name: Non-US related Source IP logs
+(NOT geo_src_ip.country: NULL AND NOT geo_src_ip.country:"us")
+
+#Search Name: Non-US related Destination IP logs
+(NOT geo_dest_ip.country: NULL AND NOT geo_dest_ip.country:"us")
