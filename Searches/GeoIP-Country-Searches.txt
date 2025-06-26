@@ -22,7 +22,7 @@ Search Name: Non-US related Destination IP logs
 Search Description: Non-US related Destination IP logs
 
 
-Search: geo_src_ip.country: ("af","cu","ir","lb","kp","ps","sy","ly","so","iq","ng") AND activity_type: ("app-login","app-activity","authentication-successful","vpn-login","vpn-relogin", "remote-logon", "email-receive")
+Search: geo_src_ip.country: ("af","by","cd","cf","cu","iq","ir","kp","lb","ly","mm","ni","ru","sd","so","ss","sy","ve","ye","zw") AND activity_type: ("app-login","app-activity","authentication-successful","vpn-login","vpn-relogin", "remote-logon", "email-receive")
 Timeframe: 24 hours
 Search Name: Activity from suspicious country
 Search Description: User activity from a country known to be on various undesirable watch lists
