@@ -1,0 +1,17 @@
+#-------------------------------------------------------------
+#  Cybersecurity and Infrastructure Security Agency (CISA)
+#  https://www.cisa.gov/about
+#-------------------------------------------------------------
+
+Search: (hash_md5: "A30FFEBF2C87A6DFD4946213263F2760" OR hash_sha1: "3D3CDF7CFC881678FEBCAFB26AE423FE5AA4EFEC" OR hash_sha256: "B729962DD554DC2CBA31AC9F7B9046EB119E7B4AE299D674F65EE9EBA5679D62")
+Timeframe: 30 days
+Search Name: Malicious Files Associated with Iranian Cyber Actors
+Search Description: Malicious Files Associated with Iranian Cyber Actors
+Reference: https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-290a
+
+
+Search: file_path: "JWrapper-Remote Access"
+Timeframe: 7 days
+Search Name: Identify remote access (RAS) service
+Search Description: Determine if an endpoint is running the remote access (RAS) service
+Reference: https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-163a
