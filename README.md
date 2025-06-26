@@ -1,8 +1,8 @@
 ![Exabeam](resources/Exabeam-2024-Logo.png)
 
 # Exabeam Content Hub - New-Scale
-The New-Scale Content Hub is a centralized online repository offering a wide range of reusable content for the Exabeam New-Scale platform. This collection includes importable and exportable assets designed to help users accelerate deployment, streamline workflows, and enhance platform capabilities.
-
+The New-Scale Content Hub is a centralized online repository offering a wide range of reusable content for the Exabeam New-Scale platform. This collection includes importable and exportable assets and scripts intended to help users accelerate deployment, streamline workflows, and enhance platform capabilities.  This content comes without maintenance or support from Exabeam.  Questions or discussions on content in this repository can be address in our community forum at https://mycommunity.exabeam.com/category/ForumNew-ScalePlatform.      
+ 
  ## How do I use it? 
 The New-Scale Content Hub contains files that can be used with your New-Scale instance.  
 
