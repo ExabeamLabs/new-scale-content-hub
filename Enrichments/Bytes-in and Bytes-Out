@@ -1,0 +1,26 @@
+"""EventEnrichers""" = [
+    {
+        """Name""" = """bw_bytes_enricher"""
+        """DisplayName""" = """BW Bytes-in and Bytes-Out"""
+        """Description""" = """Convert bytes_in to KB, MB, GB, TB"""
+        """Condition""" = """bytes_in > 0"""
+        """Map""" = [
+            {
+                """Field""" = """bytes_in_KB"""
+                """Value""" = """bytes_in / 1024"""
+            },
+            {
+                """Field""" = """bytes_in_MB"""
+                """Value""" = """bytes_in / 1000000"""
+            },
+            {
+                """Field""" = """bytes_in_GB"""
+                """Value""" = """bytes_in / 1073741824"""
+            },
+            {
+                """Field""" = """bytes_in_TB"""
+                """Value""" = """bytes_in / 1099511627776"""
+            }
+        ]
+    }
+]

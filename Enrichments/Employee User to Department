@@ -1,0 +1,14 @@
+"""EventEnrichers""" = [
+    {
+        """Name""" = """user-department-enrichment"""
+        """DisplayName""" = """Employee User to Department Lookup"""
+        """Description""" = """Enrich user department from context"""
+        """Condition""" = """exists(user) && HasContextKey('Department',user)"""
+        """Map""" = [
+            {
+                """Field""" = """department"""
+                """Value""" = """toLower(GetContextAttribute('Department',user,'u_department'))"""
+            }
+        ]
+    }
+]
