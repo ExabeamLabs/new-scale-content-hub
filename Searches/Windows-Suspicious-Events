@@ -1,0 +1,4 @@
+Search: event_code: "4688" AND process_name: "mshta.exe" AND process_command_line: RGXi("(https?|ftp:?):\/\/[^\/]*\/\S+\.hta")
+Timeframe: 24 hours
+Search Name: MSHTA Execution with Suspicious URL in Command
+Search Description: Detects execution of mshta.exe where the command line contains a URL (http, https, or ftp). This may indicate suspicious use of mshta to download or execute remote content.
