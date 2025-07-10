@@ -22,7 +22,18 @@ Search Name: Non-US related Destination IP logs
 Search Description: Non-US related Destination IP logs
 
 
-Search: geo_src_ip.country: ("af","by","cd","cf","cu","iq","ir","kp","lb","ly","mm","ni","ru","sd","so","ss","sy","ve","ye","zw") AND activity_type: ("app-login","app-activity","authentication-successful","vpn-login","vpn-relogin", "remote-logon", "email-receive")
+Search: geo_src_ip.country: ("af","by","cd","cf","cu","et","iq","ir","kp","lb","ly","mm","ni","ru","sd","ss","sy","ve","xk","ye","zw") AND activity_type: ("app-login","app-activity","authentication-successful","vpn-login","vpn-relogin", "remote-logon", "email-receive")
 Timeframe: 24 hours
 Search Name: Activity from suspicious country
 Search Description: User activity from a country known to be on various undesirable watch lists
+
+
+Search: geo_src_ip.country: ("af","by","cd","cf","cu","et","iq","ir","kp","lb","ly","mm","ni","ru","sd","ss","sy","ve","xk","ye","zw")
+Timeframe: 24 hours
+Search Name: Activity from OFAC, EAR or ITAR Embargoed Countries 2025
+Search Description: User activity from a country known to be on various embargoed lists.  Ref: https://worldpopulationreview.com/country-rankings/embargoed-countries
+
+Search: geo_dest_ip.country: ("af","by","cd","cf","cu","et","iq","ir","kp","lb","ly","mm","ni","ru","sd","ss","sy","ve","xk","ye","zw")
+Timeframe: 24 hours
+Search Name: Activity to OFAC, EAR or ITAR Embargoed Countries 2025
+Search Description: User activity to a country known to be on various embargoed lists. Ref: https://worldpopulationreview.com/country-rankings/embargoed-countries
