@@ -1,0 +1,34 @@
+{
+	"version": "1",
+	"ruleDefinitions": [
+		{
+			"name": "Regsvr32 Execution with Suspicious URL in Command",
+			"description": "Detects execution of regsvr32.exe where the command line contains a URL (http, https). This may indicate suspicious use of Regsvr32 to download or execute remote content.",
+			"useCase": "",
+			"mitre": [
+				{
+					"tacticKey": "TA0005",
+					"tactic": "Defense Evasion",
+					"techniqueKey": "T1218",
+					"technique": "System Binary Proxy Execution"
+				}
+			],
+			"sequencesExecution": "CREATION_ORDER",
+			"severity": "high",
+			"sequencesConfig": {
+				"sequences": [
+					{
+						"name": "Windows event",
+						"query": "event_code: \"4688\" AND process_name: \"regsvr32.exe\" AND process_command_line: RGXi(\"/i\") AND process_command_line: RGXi(\"https?\") AND process_command_line: RGXi(\"\\.sct|\\.ocx\")",
+						"condition": {
+							"triggerOnAnyMatch": true
+						},
+						"id": "711a5eaf-d04f-4694-a6d0-d0d855b8f54b"
+					}
+				],
+				"commonProperties": null,
+				"outcomes": null
+			}
+		}
+	]
+}
