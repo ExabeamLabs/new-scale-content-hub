@@ -1,0 +1,9 @@
+Search: (event_code: "4688" AND process_name: "regsvr32.exe" AND process_command_line: RGXi("/i") AND process_command_line: RGXi("https?") AND process_command_line: RGXi("\.sct|\.ocx")) 
+    OR hash_sha256: ("00dda3183f4cf850a07f31c776d306438b7ea408e7fb0fc2f3bdd6866e362ac5", "f4625b34ba131cafe5ac4081d3f1477838afc16fedc384aea4b785832bcdbfdd") 
+    OR parent_hash_sha256: ("00dda3183f4cf850a07f31c776d306438b7ea408e7fb0fc2f3bdd6866e362ac5", "f4625b34ba131cafe5ac4081d3f1477838afc16fedc384aea4b785832bcdbfdd") 
+    OR target_hash_sha256: ("00dda3183f4cf850a07f31c776d306438b7ea408e7fb0fc2f3bdd6866e362ac5", "f4625b34ba131cafe5ac4081d3f1477838afc16fedc384aea4b785832bcdbfdd") 
+    OR selected_hash_sha256:("00dda3183f4cf850a07f31c776d306438b7ea408e7fb0fc2f3bdd6866e362ac5", "f4625b34ba131cafe5ac4081d3f1477838afc16fedc384aea4b785832bcdbfdd")
+Timeframe: 30 days
+Search Name: APT28 - Regsvr32 LOLBin Execution with Remote Payload
+Search Description: APT28 (also known as Fancy Bear, Sofacy), linked to Russia's GRU Unit 26165, exploits the Windows utility regsvr32.exe to load remote COM scriptlets (.sct) or ActiveX controls (.ocx) from malicious URLs, thereby enabling code execution without requiring disk writes. 
+Reference: https://mycommunity.exabeam.com/kb/use-cases/use-case---t1218-010-apt28---regsvr32-lolbin-execution-with-remote-payload/681421
