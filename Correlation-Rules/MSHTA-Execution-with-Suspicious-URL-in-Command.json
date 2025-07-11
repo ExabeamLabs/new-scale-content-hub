@@ -1,1 +1,34 @@
-{"version":"1","ruleDefinitions":[{"name":"MSHTA Execution with Suspicious URL in Command","description":"Detects execution of mshta.exe where the command line contains a URL (http, https, or ftp). This may indicate suspicious use of mshta to download or execute remote content.","useCase":"","mitre":[{"tacticKey":"TA0005","tactic":"Defense Evasion","techniqueKey":"T1218","technique":"System Binary Proxy Execution"}],"sequencesExecution":"CREATION_ORDER","severity":"high","sequencesConfig":{"sequences":[{"name":"Windows event","query":"event_code: \"4688\" AND process_name: \"mshta.exe\" AND process_command_line: RGXi(\"(https?|ftp:?):\\/\\/[^\\/]*\\/\\S+\\.hta\") ","condition":{"triggerOnAnyMatch":true},"id":"1beeb9f2-851c-4515-9f26-9387b70254cd"}],"commonProperties":null,"outcomes":null}}]}
+{
+	"version": "1",
+	"ruleDefinitions": [
+		{
+			"name": "MSHTA Execution with Suspicious URL in Command",
+			"description": "Detects execution of mshta.exe where the command line contains a URL (http, https, or ftp). This may indicate suspicious use of mshta to download or execute remote content.",
+			"useCase": "",
+			"mitre": [
+				{
+					"tacticKey": "TA0005",
+					"tactic": "Defense Evasion",
+					"techniqueKey": "T1218",
+					"technique": "System Binary Proxy Execution"
+				}
+			],
+			"sequencesExecution": "CREATION_ORDER",
+			"severity": "high",
+			"sequencesConfig": {
+				"sequences": [
+					{
+						"name": "Windows event",
+						"query": "event_code: \"4688\" AND process_name: \"mshta.exe\" AND process_command_line: RGXi(\"(https?|ftp:?):\\/\\/[^\\/]*\\/\\S+\\.hta\") ",
+						"condition": {
+							"triggerOnAnyMatch": true
+						},
+						"id": "1beeb9f2-851c-4515-9f26-9387b70254cd"
+					}
+				],
+				"commonProperties": null,
+				"outcomes": null
+			}
+		}
+	]
+}
