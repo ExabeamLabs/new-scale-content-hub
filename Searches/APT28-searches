@@ -10,6 +10,6 @@ Search: hash_sha256: ("00dda3183f4cf850a07f31c776d306438b7ea408e7fb0fc2f3bdd6866
     OR target_hash_sha256: ("00dda3183f4cf850a07f31c776d306438b7ea408e7fb0fc2f3bdd6866e362ac5", "f4625b34ba131cafe5ac4081d3f1477838afc16fedc384aea4b785832bcdbfdd") 
     OR selected_hash_sha256:("00dda3183f4cf850a07f31c776d306438b7ea408e7fb0fc2f3bdd6866e362ac5", "f4625b34ba131cafe5ac4081d3f1477838afc16fedc384aea4b785832bcdbfdd")
 Timeframe: 30 days
-Search Name: APT28 realted hashes for 7z Archive and JSE Downloader
-Search Description: APT28 realted hashes for 7z Archive and JSE Downloader
+Search Name: APT28 related hashes for 7z Archive and JSE Downloader
+Search Description: APT28 related hashes for 7z Archive and JSE Downloader
 Reference: https://mycommunity.exabeam.com/kb/use-cases/use-case---t1218-010-apt28---regsvr32-lolbin-execution-with-remote-payload/681421
