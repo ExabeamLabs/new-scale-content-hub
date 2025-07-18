@@ -1,10 +1,12 @@
 ![Exabeam](resources/Exabeam-2024-Logo.png)
 
 # Exabeam Content Hub - New-Scale
-The New-Scale Content Hub is a centralized online repository offering a wide range of reusable content for the Exabeam New-Scale platform. This collection includes importable and exportable assets and scripts intended to help users accelerate deployment, streamline workflows, and enhance platform capabilities.  This content comes without maintenance or support from Exabeam.  Questions or discussions on content in this repository can be address in our community forum at https://mycommunity.exabeam.com/category/ForumNew-ScalePlatform.      
+The New-Scale Content Hub is a centralized online repository offering a wide range of reusable content for the Exabeam New-Scale Security Operations Platform. This collection includes importable and exportable assets and scripts intended to help users accelerate deployment, streamline workflows, and enhance platform capabilities. Questions or discussions on content in this repository can be addressed in our community forum at https://mycommunity.exabeam.com/category/ForumNew-ScalePlatform.
+
+<b>NOTE: This content is provided as-is without maintenance or support from Exabeam.<b>
  
- ## How do I use it? 
-The New-Scale Content Hub contains files that can be used with your New-Scale instance.  
+ ## Wat kinds of content are available?
+The New-Scale Content Hub contains files that can be used with your New-Scale instance:  
 
 - <b>Automation</b> – OpenAPI is importable.  https://docs.exabeam.com/en/automation-management/all/automation-management-guide/automation-management-services/create-an-automation-management-service.html
 - <b>Correlation Rules</b> – File import and export are available.  https://docs.exabeam.com/en/correlation-rules/all/correlation-rules-guide/share-correlation-rules.html
