@@ -1,0 +1,36 @@
+{
+	"version": "1",
+	"ruleDefinitions": [
+		{
+			"name": "Exabeam: Flatline rule to monitor Microsoft 365 data source.",
+			"description": "",
+			"useCase": "",
+			"mitre": [],
+			"sequencesExecution": "CREATION_ORDER",
+			"severity": "low",
+			"sequencesConfig": {
+				"sequences": [
+					{
+						"name": "Log Source",
+						"query": "product: \"Microsoft 365\"",
+						"condition": {
+							"groupByOption": false,
+							"groupBy": [],
+							"functionType": "count",
+							"subject": "field",
+							"field": "activity_type",
+							"operator": "less_than",
+							"value": "10",
+							"time": 4,
+							"unit": "h",
+							"triggerOnAnyMatch": false
+						},
+						"id": "f5ed6c34-f778-4070-a4df-9516187794f3"
+					}
+				],
+				"commonProperties": null,
+				"outcomes": null
+			}
+		}
+	]
+}
