@@ -5,7 +5,7 @@ The New-Scale Content Hub is a centralized online repository offering a wide ran
 
 <b>NOTE: This content is provided as-is without maintenance or support from Exabeam.<b>
  
- ## Wat kinds of content are available?
+ ## What kinds of content are available?
 The New-Scale Content Hub contains files that can be used with your New-Scale instance:  
 
 - <b>Automation</b> – OpenAPI is importable.  https://docs.exabeam.com/en/automation-management/all/automation-management-guide/automation-management-services/create-an-automation-management-service.html
