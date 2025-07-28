@@ -1,0 +1,26 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "C_Context-Is-Departing Employee",
+      "name": "User is a Departing Employee: True\\False",
+      "description": "User in tagged with Departing Employee: True\\False",
+      "applicableEvents": [
+        {
+          "subject": "http",
+          "outcome": "success"
+        }
+      ],
+      "detectionReason": "User is tagged a Departing Employee: ${trigger.value}",
+      "type": "contextFeature",
+      "mitre": [],
+      "useCases": [],
+      "value": "EntityHasAttributeValue('type: User && direction: Source', 'tags', 'Departing Employee', 'CASE_INSENSITIVE') && EntityHasAttributeValue('type: User && direction: Source', 'context_source', 'AD', 'CASE_INSENSITIVE') && user!=account",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "trainOnCondition": "true",
+      "familyId": "web-activity",
+      "ruleGroupId": "web-bytes-sum-magnitude-group"
+    }
+  ]
+}
