@@ -3,7 +3,7 @@
 	"ruleDefinitions": [
 		{
 			"name": "Exabeam: Flatline rule to monitor Microsoft Windows data source",
-			"description": "Exabeam: Flatline rule to monitor Microsoft Windows data source",
+			"description": "Alerts if less than 10 events from vendor in 4 hours",
 			"useCase": "",
 			"mitre": [],
 			"sequencesExecution": "CREATION_ORDER",
