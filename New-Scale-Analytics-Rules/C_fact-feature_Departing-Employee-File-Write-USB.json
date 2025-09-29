@@ -1,0 +1,49 @@
+{
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "templateId": "C_fact-feature_Departing-Employee-File-Write-USB",
+            "name": "Departing Employee file write to USB",
+            "description": "A Departing Employee performed file write to a USB device",
+            "applicableEvents": [
+                {
+                    "activity_type": "file-write"
+                }
+            ],
+            "detectionReason": "",
+            "type": "factFeature",
+            "mitre": [
+                {
+                    "techniqueKey": "T1052",
+                    "technique": "Exfiltration Over Physical Medium",
+                    "tactic": "Exfiltration",
+                    "tacticKey": "TA0010"
+                },
+                {
+                    "techniqueKey": "T1091",
+                    "technique": "Replication Through Removable Media",
+                    "tactic": "Initial Access",
+                    "tacticKey": "TA0001"
+                },
+                {
+                    "techniqueKey": "T1091",
+                    "technique": "Replication Through Removable Media",
+                    "tactic": "Lateral Movement",
+                    "tacticKey": "TA0008"
+                }
+            ],
+            "useCases": [
+                "Workforce Protection",
+                "Data Leak"
+            ],
+            "value": "true",
+            "actOnCondition": "if(containsAny(toLower(device_id), 'usb'), 'true', 'false') && EntityHasAttributeValue('type: User && direction: Source', 'tags', 'Departing Employee', 'CASE_INSENSITIVE')",
+            "suppressThreshold": "10 minutes",
+            "trainOnCondition": "true",
+            "suppressScope": "",
+            "familyId": "usb-activity",
+            "ruleGroupId": "usb-device-id-group",
+            "severity": "Medium"
+        }
+    ]
+}
