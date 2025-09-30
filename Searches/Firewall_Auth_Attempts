@@ -1,0 +1,11 @@
+Search: vendor: "Fortinet" AND product_category: "firewall" AND "Admin login" AND NOT src_ip: [10.0.0.0/8] AND NOT src_ip: [172.16.0.0/12] AND NOT src_ip: [192.168.0.0/16] AND NOT src_ip: (0.0.0.0, 127.0.0.1, null)
+Timeframe: 24 hours
+Search Name: Fortigate Firewall Admin Login attempts from external IP
+Search Description: Fortigate Firewall Admin Login attempts from external IP
+
+
+Search:  vendor: "Palo Alto Networks" AND activity_type: "endpoint-authentication" AND product_category: "firewall" AND NOT src_ip: [10.0.0.0/8] AND NOT src_ip: [172.16.0.0/12] AND NOT src_ip: [192.168.0.0/16] AND NOT src_ip: (0.0.0.0, 127.0.0.1, null)
+Timeframe: 24 hours
+Search Name: Palo Alto Firewall Login attempts from external IP
+Search Description: Palo Alto Firewall Login attempts from external IP
+
