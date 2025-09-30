@@ -1,0 +1,45 @@
+{
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "name": "Firewall Admin Login attempts from external IP",
+            "description": "Firewall Admin Login attempts from external IP. More than 5 unique accounts attempted in 10 minutes.",
+            "useCase": "abnormal_authentication_access",
+            "mitre": [
+                {
+                    "tacticKey": "TA0001",
+                    "tactic": "Initial Access",
+                    "techniqueKey": "T1078",
+                    "technique": "Valid Accounts"
+                }
+            ],
+            "sequencesExecution": "CREATION_ORDER",
+            "severity": "medium",
+            "sequencesConfig": {
+                "sequences": [
+                    {
+                        "name": "Firewall Admin Login",
+                        "query": "activity_type: \"app-activity\" AND alert_name: \"Admin login\" AND product_category: \"firewall\" AND NOT src_ip: [10.0.0.0/8] AND NOT src_ip: [172.16.0.0/12] AND NOT src_ip: [192.168.0.0/16] AND NOT src_ip: (0.0.0.0, 127.0.0.1, null)",
+                        "condition": {
+                            "groupByOption": true,
+                            "groupBy": [
+                                "src_ip"
+                            ],
+                            "functionType": "unique_count",
+                            "subject": "field",
+                            "field": "user",
+                            "operator": "more_than",
+                            "value": "5",
+                            "time": 10,
+                            "unit": "m",
+                            "triggerOnAnyMatch": false
+                        },
+                        "id": "4942a0d6-a611-4373-ad71-6710483e3394"
+                    }
+                ],
+                "commonProperties": null,
+                "outcomes": null
+            }
+        }
+    ]
+}
