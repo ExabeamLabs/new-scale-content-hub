@@ -1,0 +1,41 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-GA-NonBusHrLogon",
+      "name": "Non-business hours login was observed",
+      "description": "Non-business login has been observed.",
+      "applicableEvents": [
+        {
+          "outcome": "success"
+        }
+      ],
+      "detectionReason": "Nonbusiness Login was observed for  ${entity.user.source}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1078",
+          "technique": "Valid Accounts",
+          "tactic": "Initial Access",
+          "tacticKey": "TA0001"
+        },
+        {
+          "techniqueKey": "T1078",
+          "technique": "Valid Accounts",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Evasion"
+      ],
+      "value": "true",
+      "actOnCondition": "((startsWith(TimeOfWeek(),'5.') && startsWithAny(TimeOfDay(),'18.','19.','20.','21.','22.','23.')) || startsWith(TimeOfWeek(),'6.') || startsWith(TimeOfWeek(),'0.') || (startsWith(TimeOfWeek(),'1.') && startsWithAny(TimeOfDay(),'0.','1.','2.','3.','4.','5.','6.','7.','8.')))",
+      "suppressThreshold": "5 minutes",
+      "trainOnCondition": "true",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "familyId": "vpn-login-activity",
+      "ruleGroupId": "vpn-source-country-group"
+    }
+  ]
+}
