@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Response File Execution Via Odbcconf.EXE",
+      "description": "Detects execution of \"odbcconf\" with the \"-f\" flag in order to load a response file which might contain a malicious action.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\odbcconf\\\\\\.exe$\") OR process_original_file_name = \"odbcconf\\.exe\") AND process_command_line = RGX(\".*\\\\ \\\\-f\\\\ .*\") AND process_command_line = RGX(\".*\\\\\\.rsp.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "593766f4-52f6-474b-bd6d-2aa5be79e89f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

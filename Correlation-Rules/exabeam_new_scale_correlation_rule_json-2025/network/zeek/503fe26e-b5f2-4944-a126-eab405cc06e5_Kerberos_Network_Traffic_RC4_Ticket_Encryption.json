@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Kerberos Network Traffic RC4 Ticket Encryption",
+      "description": "Detects kerberos TGS request using RC4 encryption which may be indicative of kerberoasting Note: Unmapped fields: request_type, cipher, service",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(request_type = \"TGS\" AND cipher = \"rc4\\-hmac\") AND  NOT (service = RGX(\"^\\\\$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "bdc29efb-6aea-4818-8fdc-1ddc8f8f54b6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Enumerate All Information With Whoami.EXE",
+      "description": "Detects the execution of \"whoami.exe\" with the \"/all\" flag",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\whoami\\\\\\.exe$\") OR process_original_file_name = \"whoami\\.exe\") AND process_command_line = RGX(\".*\\\\ \\\\-all.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b0abc77b-7699-44e8-b5cf-78e2aefd91bb"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Primary Refresh Token Access Attempt",
+      "description": "Indicates access attempt to the PRT resource which can be used to move laterally into an organization or perform credential theft Note: Unmapped fields: riskEventType",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "riskEventType = \"attemptedPrtAccess\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c9095c91-91e5-4d69-8d37-6fd36616618b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

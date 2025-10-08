@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "RemCom Service Installation",
+      "description": "Detects RemCom service installation and execution events Note: Unmapped fields: Provider_Name, ServiceName, ImagePath",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((Provider_Name = \"Service\\ Control\\ Manager\" AND event_id = 7045) AND (ServiceName = \"RemComSvc\" OR ImagePath = RGX(\"\\\\\\\\RemComSvc\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4f8c9725-281c-4646-82bd-dabe6d7b9ba4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

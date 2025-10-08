@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - NimScan Execution",
+      "description": "Detects usage of NimScan, a portscanner utility.\nIn early 2025, adversaries were observed using this utility to scan for open ports on remote hosts in a compromised environment.\nThis rule identifies the execution of NimScan based on the process image name and specific hash values associated with different versions of the tool.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\NimScan\\\\\\.exe$\") OR (process_hash = RGX(\".*IMPHASH\\\\=41BB1C7571B3A724EB83A1D2B96DBB8C.*\") OR process_hash = RGX(\".*IMPHASH\\\\=B1B6ADACB172795480179EFD18A29549.*\") OR process_hash = RGX(\".*IMPHASH\\\\=0D1F896DC7642AD8384F9042F30279C2.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "84db3cca-6b84-4639-acd5-cb6cb6470b41"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

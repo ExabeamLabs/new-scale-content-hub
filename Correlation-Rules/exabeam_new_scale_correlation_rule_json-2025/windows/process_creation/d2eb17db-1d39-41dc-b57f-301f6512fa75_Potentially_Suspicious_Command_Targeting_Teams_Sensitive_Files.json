@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Suspicious Command Targeting Teams Sensitive Files",
+      "description": "Detects a commandline containing references to the Microsoft Teams database or cookies files from a process other than Teams.\nThe database might contain authentication tokens and other sensitive information about the logged in accounts.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Teams\\\\\\\\Cookies.*\") OR process_command_line = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Teams\\\\\\\\Local\\\\ Storage\\\\\\\\leveldb.*\")) AND  NOT (process_path = RGX(\"\\\\\\\\Microsoft\\\\\\\\Teams\\\\\\\\current\\\\\\\\Teams\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "529f5e02-74ea-4da2-9e14-ef0bf52a5edd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

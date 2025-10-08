@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remote Access Tool - Renamed MeshAgent Execution - MacOS",
+      "description": "Detects the execution of a renamed instance of the Remote Monitoring and Management (RMM) tool, MeshAgent.\nRMM tools such as MeshAgent are commonly utilized by IT administrators for legitimate remote support and system management.\nHowever, malicious actors may exploit these tools by renaming them to bypass detection mechanisms, enabling unauthorized access and control over compromised systems.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\-\\\\-meshServiceName.*\") OR process_original_file_name = RGX(\".*meshagent.*\")) AND  NOT ((process_path = RGX(\"\\\\/meshagent$\") OR process_path = RGX(\"\\\\/meshagent\\\\_osx64$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d9070f75-12bf-47be-a1d6-946fde14cec7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

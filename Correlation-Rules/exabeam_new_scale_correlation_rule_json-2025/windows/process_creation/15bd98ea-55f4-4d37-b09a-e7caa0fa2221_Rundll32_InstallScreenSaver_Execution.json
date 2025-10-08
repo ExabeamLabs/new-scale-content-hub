@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Rundll32 InstallScreenSaver Execution",
+      "description": "An attacker may execute an application as a SCR File using rundll32.exe desk.cpl,InstallScreenSaver",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_original_file_name = \"RUNDLL32\\.EXE\") AND process_command_line = RGX(\".*InstallScreenSaver.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3b8c842f-fb1d-42d3-b58e-2264a7960613"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

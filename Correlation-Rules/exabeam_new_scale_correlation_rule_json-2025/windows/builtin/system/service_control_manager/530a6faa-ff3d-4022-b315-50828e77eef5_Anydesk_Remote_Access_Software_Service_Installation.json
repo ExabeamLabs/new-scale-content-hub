@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Anydesk Remote Access Software Service Installation",
+      "description": "Detects the installation of the anydesk software service. Which could be an indication of anydesk abuse if you the software isn't already used. Note: Unmapped fields: Provider_Name, ServiceName, ImagePath",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((Provider_Name = \"Service\\ Control\\ Manager\" AND event_id = 7045) AND ((ServiceName = RGX(\".*AnyDesk.*\") AND ServiceName = RGX(\".*Service.*\")) OR ImagePath = RGX(\".*AnyDesk.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ffea9aa4-40d3-4b99-86be-40d66c3ffc22"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

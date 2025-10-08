@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Winlogon Helper DLL",
+      "description": "Winlogon.exe is a Windows component responsible for actions at logon/logoff as well as the secure attention sequence (SAS) triggered by Ctrl-Alt-Delete.\nRegistry entries in HKLM\\Software[Wow6432Node]Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\ and HKCU\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\ are\nused to manage additional helper programs and functionalities that support Winlogon. Malicious modifications to these Registry keys may cause Winlogon to\nload and execute malicious DLLs and/or executables.\n Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*CurrentVersion\\\\\\\\Winlogon.*\") AND (ScriptBlockText = RGX(\".*Set\\\\-ItemProperty.*\") OR ScriptBlockText = RGX(\".*New\\\\-Item.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ed3605ae-6fb6-49ed-bb25-40e1198bcba4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "COM Hijacking via TreatAs",
+      "description": "Detect modification of TreatAs key to enable \"rundll32.exe -sta\" command",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\"TreatAs\\\\\\\\\\\\(Default\\\\)$\") AND  NOT ((process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Common\\\\ Files\\\\\\\\Microsoft\\\\ Shared\\\\\\\\ClickToRun\\\\\\\\\") AND process_path = RGX(\"\\\\\\\\OfficeClickToRun\\\\\\.exe$\")) OR (process_path = \"C\\:\\\\Program\\ Files\\\\Microsoft\\ Office\\\\root\\\\integration\\\\integrator\\.exe\" OR process_path = \"C\\:\\\\Program\\ Files\\ \\(x86\\)\\\\Microsoft\\ Office\\\\root\\\\integration\\\\integrator\\.exe\") OR process_path = \"C\\:\\\\Windows\\\\system32\\\\svchost\\.exe\" OR (process_path = \"C\\:\\\\Windows\\\\system32\\\\msiexec\\.exe\" OR process_path = \"C\\:\\\\Windows\\\\SysWOW64\\\\msiexec\\.exe\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a692bad5-bf06-4688-8c88-f772bc609e2a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

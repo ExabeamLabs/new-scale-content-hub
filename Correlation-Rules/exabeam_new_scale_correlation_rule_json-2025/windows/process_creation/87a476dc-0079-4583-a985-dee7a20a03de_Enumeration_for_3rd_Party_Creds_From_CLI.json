@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Enumeration for 3rd Party Creds From CLI",
+      "description": "Detects processes that query known 3rd party registry keys that holds credentials via commandline",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\\\\\Software\\\\\\\\Aerofox\\\\\\\\Foxmail\\\\\\\\V3\\\\\\.1.*\") OR process_command_line = RGX(\".*\\\\\\\\Software\\\\\\\\Aerofox\\\\\\\\FoxmailPreview.*\") OR process_command_line = RGX(\".*\\\\\\\\Software\\\\\\\\DownloadManager\\\\\\\\Passwords.*\") OR process_command_line = RGX(\".*\\\\\\\\Software\\\\\\\\FTPWare\\\\\\\\COREFTP\\\\\\\\Sites.*\") OR process_command_line = RGX(\".*\\\\\\\\Software\\\\\\\\IncrediMail\\\\\\\\Identities.*\") OR process_command_line = RGX(\".*\\\\\\\\Software\\\\\\\\Martin\\\\ Prikryl\\\\\\\\WinSCP\\\\ 2\\\\\\\\Sessions.*\") OR process_command_line = RGX(\".*\\\\\\\\Software\\\\\\\\Mobatek\\\\\\\\MobaXterm\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Software\\\\\\\\OpenSSH\\\\\\\\Agent\\\\\\\\Keys.*\") OR process_command_line = RGX(\".*\\\\\\\\Software\\\\\\\\OpenVPN\\\\-GUI\\\\\\\\configs.*\") OR process_command_line = RGX(\".*\\\\\\\\Software\\\\\\\\ORL\\\\\\\\WinVNC3\\\\\\\\Password.*\") OR process_command_line = RGX(\".*\\\\\\\\Software\\\\\\\\Qualcomm\\\\\\\\Eudora\\\\\\\\CommandLine.*\") OR process_command_line = RGX(\".*\\\\\\\\Software\\\\\\\\RealVNC\\\\\\\\WinVNC4.*\") OR process_command_line = RGX(\".*\\\\\\\\Software\\\\\\\\RimArts\\\\\\\\B2\\\\\\\\Settings.*\") OR process_command_line = RGX(\".*\\\\\\\\Software\\\\\\\\SimonTatham\\\\\\\\PuTTY\\\\\\\\Sessions.*\") OR process_command_line = RGX(\".*\\\\\\\\Software\\\\\\\\SimonTatham\\\\\\\\PuTTY\\\\\\\\SshHostKeys\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Software\\\\\\\\Sota\\\\\\\\FFFTP.*\") OR process_command_line = RGX(\".*\\\\\\\\Software\\\\\\\\TightVNC\\\\\\\\Server.*\") OR process_command_line = RGX(\".*\\\\\\\\Software\\\\\\\\WOW6432Node\\\\\\\\Radmin\\\\\\\\v3\\\\\\.0\\\\\\\\Server\\\\\\\\Parameters\\\\\\\\Radmin.*\")) AND  NOT ((process_path = RGX(\"reg\\\\\\.exe$\") AND (process_command_line = RGX(\".*export.*\") OR process_command_line = RGX(\".*save.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "26ac39c1-86c3-4caf-b64c-dd1a80bee9c4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

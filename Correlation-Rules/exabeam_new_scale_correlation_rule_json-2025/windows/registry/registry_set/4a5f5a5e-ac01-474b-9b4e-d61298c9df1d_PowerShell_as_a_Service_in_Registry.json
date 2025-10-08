@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PowerShell as a Service in Registry",
+      "description": "Detects that a powershell code is written to the registry as a service. Note: Unmapped fields: Details",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\Services\\\\\\\\.*\") AND registry_path = RGX(\"\\\\\\\\ImagePath$\") AND (Details = RGX(\".*powershell.*\") OR Details = RGX(\".*pwsh.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "29f8ce86-88bd-4fb9-a259-55a925b9be2a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

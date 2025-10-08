@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Data Exfiltration Activity Via CommandLine Tools",
+      "description": "Detects the use of various CLI utilities exfiltrating data via web requests",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\powershell\\\\_ise\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\")) AND (process_command_line = RGX(\".*curl\\\\ .*\") OR process_command_line = RGX(\".*Invoke\\\\-RestMethod.*\") OR process_command_line = RGX(\".*Invoke\\\\-WebRequest.*\") OR process_command_line = RGX(\".*irm\\\\ .*\") OR process_command_line = RGX(\".*iwr\\\\ .*\") OR process_command_line = RGX(\".*wget\\\\ .*\")) AND (process_command_line = RGX(\".*\\\\ \\\\-ur.*\") AND process_command_line = RGX(\".*\\\\ \\\\-me.*\") AND process_command_line = RGX(\".*\\\\ \\\\-b.*\") AND process_command_line = RGX(\".*\\\\ POST\\\\ .*\"))) OR ((process_path = RGX(\"\\\\\\\\curl\\\\\\.exe$\") AND process_command_line = RGX(\".*\\\\-\\\\-ur.*\")) AND (process_command_line = RGX(\".*\\\\ \\\\-d\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-\\\\-data\\\\ .*\"))) OR (process_path = RGX(\"\\\\\\\\wget\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\-\\\\-post\\\\-data.*\") OR process_command_line = RGX(\".*\\\\-\\\\-post\\\\-file.*\")))) AND ((process_command_line = RGX(\".*Get\\\\-Content.*\") OR process_command_line = RGX(\".*GetBytes.*\") OR process_command_line = RGX(\".*hostname.*\") OR process_command_line = RGX(\".*ifconfig.*\") OR process_command_line = RGX(\".*ipconfig.*\") OR process_command_line = RGX(\".*net\\\\ view.*\") OR process_command_line = RGX(\".*netstat.*\") OR process_command_line = RGX(\".*nltest.*\") OR process_command_line = RGX(\".*qprocess.*\") OR process_command_line = RGX(\".*sc\\\\ query.*\") OR process_command_line = RGX(\".*systeminfo.*\") OR process_command_line = RGX(\".*tasklist.*\") OR process_command_line = RGX(\".*ToBase64String.*\") OR process_command_line = RGX(\".*whoami.*\")) OR (process_command_line = RGX(\".*type\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\>\\\\ .*\") AND process_command_line = RGX(\".*\\\\ C\\\\:\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "bc18d994-3cd3-45a4-ae1e-571577b49a19"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

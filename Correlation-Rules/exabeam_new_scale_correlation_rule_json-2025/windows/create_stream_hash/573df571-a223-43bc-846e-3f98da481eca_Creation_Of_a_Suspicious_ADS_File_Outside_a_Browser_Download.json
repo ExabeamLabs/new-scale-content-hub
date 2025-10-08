@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Creation Of a Suspicious ADS File Outside a Browser Download",
+      "description": "Detects the creation of a suspicious ADS (Alternate Data Stream) file by software other than browsers Note: Unmapped fields: Contents",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Contents = RGX(\"^\\\\[ZoneTransfer\\\\]\\\\ \\\\ ZoneId\\\\=3\") AND file_path = RGX(\"\\\\:Zone\\\\\\.Identifier$\") AND (file_path = RGX(\".*\\\\\\.exe.*\") OR file_path = RGX(\".*\\\\\\.scr.*\") OR file_path = RGX(\".*\\\\\\.bat.*\") OR file_path = RGX(\".*\\\\\\.cmd.*\") OR file_path = RGX(\".*\\\\\\.docx.*\") OR file_path = RGX(\".*\\\\\\.hta.*\") OR file_path = RGX(\".*\\\\\\.jse.*\") OR file_path = RGX(\".*\\\\\\.lnk.*\") OR file_path = RGX(\".*\\\\\\.pptx.*\") OR file_path = RGX(\".*\\\\\\.ps.*\") OR file_path = RGX(\".*\\\\\\.reg.*\") OR file_path = RGX(\".*\\\\\\.sct.*\") OR file_path = RGX(\".*\\\\\\.vb.*\") OR file_path = RGX(\".*\\\\\\.wsc.*\") OR file_path = RGX(\".*\\\\\\.wsf.*\") OR file_path = RGX(\".*\\\\\\.xlsx.*\"))) AND  NOT (process_path = RGX(\"\\\\\\\\brave\\\\\\.exe$\") OR (process_path = \"C\\:\\\\Program\\ Files\\\\Google\\\\Chrome\\\\Application\\\\chrome\\.exe\" OR process_path = \"C\\:\\\\Program\\ Files\\ \\(x86\\)\\\\Google\\\\Chrome\\\\Application\\\\chrome\\.exe\") OR (process_path = \"C\\:\\\\Program\\ Files\\\\Mozilla\\ Firefox\\\\firefox\\.exe\" OR process_path = \"C\\:\\\\Program\\ Files\\ \\(x86\\)\\\\Mozilla\\ Firefox\\\\firefox\\.exe\") OR (process_path = \"C\\:\\\\Program\\ Files\\ \\(x86\\)\\\\Internet\\ Explorer\\\\iexplore\\.exe\" OR process_path = \"C\\:\\\\Program\\ Files\\\\Internet\\ Explorer\\\\iexplore\\.exe\") OR process_path = RGX(\"\\\\\\\\maxthon\\\\\\.exe$\") OR (process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Microsoft\\\\\\\\EdgeWebView\\\\\\\\Application\\\\\\\\\") OR process_path = RGX(\"\\\\\\\\WindowsApps\\\\\\\\MicrosoftEdge\\\\\\.exe$\") OR (process_path = \"C\\:\\\\Program\\ Files\\ \\(x86\\)\\\\Microsoft\\\\Edge\\\\Application\\\\msedge\\.exe\" OR process_path = \"C\\:\\\\Program\\ Files\\\\Microsoft\\\\Edge\\\\Application\\\\msedge\\.exe\")) OR ((process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Microsoft\\\\\\\\EdgeCore\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Microsoft\\\\\\\\EdgeCore\\\\\\\\\")) AND (process_path = RGX(\"\\\\\\\\msedge\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msedgewebview2\\\\\\.exe$\"))) OR process_path = RGX(\"\\\\\\\\opera\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\safari\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\seamonkey\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\vivaldi\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\whale\\\\\\.exe$\") OR (process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\WindowsApps\\\\\\\\Microsoft\\\\\\.ScreenSketch\\\\_\") AND process_path = RGX(\"\\\\\\\\SnippingTool\\\\\\\\SnippingTool\\\\\\.exe$\") AND file_path = RGX(\"^C\\\\:\\\\\\\\Users\\\\\\\\\") AND (file_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Packages\\\\\\\\Microsoft\\\\\\.ScreenSketch\\\\_.*\") AND file_path = RGX(\".*\\\\\\\\TempState\\\\\\\\Screenshot\\\\ .*\")) AND file_path = RGX(\"\\\\\\.png\\\\:Zone\\\\\\.Identifier$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "09719d3f-c86a-432f-9cab-93934464b93e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

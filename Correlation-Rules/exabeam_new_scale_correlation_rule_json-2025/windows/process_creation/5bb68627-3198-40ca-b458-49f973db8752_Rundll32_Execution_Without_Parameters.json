@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Rundll32 Execution Without Parameters",
+      "description": "Detects rundll32 execution without parameters as observed when running Metasploit windows/smb/psexec exploit module",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = \"rundll32\\.exe\" OR process_command_line = \"rundll32\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a1eb7d3f-0722-49f4-8025-99c999a7292a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Import PowerShell Modules From Suspicious Directories",
+      "description": "Detects powershell scripts that import modules from suspicious directories Note: Unmapped fields: ScriptBlockText",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Import\\\\-Module\\\\ \\\\\"\\\\$Env\\\\:Temp\\\\\\\\.*\") OR ScriptBlockText = RGX(\".*Import\\\\-Module\\\\ \\\\'\\\\$Env\\\\:Temp\\\\\\\\.*\") OR ScriptBlockText = RGX(\".*Import\\\\-Module\\\\ \\\\$Env\\\\:Temp\\\\\\\\.*\") OR ScriptBlockText = RGX(\".*Import\\\\-Module\\\\ \\\\\"\\\\$Env\\\\:Appdata\\\\\\\\.*\") OR ScriptBlockText = RGX(\".*Import\\\\-Module\\\\ \\\\'\\\\$Env\\\\:Appdata\\\\\\\\.*\") OR ScriptBlockText = RGX(\".*Import\\\\-Module\\\\ \\\\$Env\\\\:Appdata\\\\\\\\.*\") OR ScriptBlockText = RGX(\".*Import\\\\-Module\\\\ C\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR ScriptBlockText = RGX(\".*ipmo\\\\ \\\\\"\\\\$Env\\\\:Temp\\\\\\\\.*\") OR ScriptBlockText = RGX(\".*ipmo\\\\ \\\\'\\\\$Env\\\\:Temp\\\\\\\\.*\") OR ScriptBlockText = RGX(\".*ipmo\\\\ \\\\$Env\\\\:Temp\\\\\\\\.*\") OR ScriptBlockText = RGX(\".*ipmo\\\\ \\\\\"\\\\$Env\\\\:Appdata\\\\\\\\.*\") OR ScriptBlockText = RGX(\".*ipmo\\\\ \\\\'\\\\$Env\\\\:Appdata\\\\\\\\.*\") OR ScriptBlockText = RGX(\".*ipmo\\\\ \\\\$Env\\\\:Appdata\\\\\\\\.*\") OR ScriptBlockText = RGX(\".*ipmo\\\\ C\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7316e221-11c9-45d3-8db9-bb634193f87f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

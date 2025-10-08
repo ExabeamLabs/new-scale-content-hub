@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Desktopimgdownldr Target File",
+      "description": "Detects a suspicious Microsoft desktopimgdownldr file creation that stores a file to a suspicious location or contains a file with a suspicious extension",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\svchost\\\\\\.exe$\") AND file_path = RGX(\".*\\\\\\\\Personalization\\\\\\\\LockScreenImage\\\\\\\\.*\")) AND  NOT (file_path = RGX(\".*C\\\\:\\\\\\\\Windows\\\\\\\\.*\")) AND  NOT ((file_path = RGX(\".*\\\\\\.jpg.*\") OR file_path = RGX(\".*\\\\\\.jpeg.*\") OR file_path = RGX(\".*\\\\\\.png.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1d062358-6ec2-4487-8a56-c8e1096e7bc8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

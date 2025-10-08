@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - Stracciatella Execution",
+      "description": "Detects Stracciatella which executes a Powershell runspace from within C# (aka SharpPick technique) with AMSI, ETW and Script Block Logging disabled based on PE metadata characteristics.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\Stracciatella\\\\\\.exe$\") OR process_original_file_name = \"Stracciatella\\.exe\" OR process_description = \"Stracciatella\" OR (process_hash = RGX(\".*SHA256\\\\=9d25e61ec1527e2a69d7c2a4e3fe2fe15890710c198a66a9f25d99fdf6c7b956.*\") OR process_hash = RGX(\".*SHA256\\\\=fd16609bd9830c63b9413671678bb159b89c357d21942ddbb6b93add808d121a.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "944b1737-7630-4b5b-bd29-fbc7a53718da"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

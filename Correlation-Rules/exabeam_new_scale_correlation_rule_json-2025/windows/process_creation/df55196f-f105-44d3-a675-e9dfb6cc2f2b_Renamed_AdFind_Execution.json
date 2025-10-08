@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Renamed AdFind Execution",
+      "description": "Detects the use of a renamed Adfind.exe. AdFind continues to be seen across majority of breaches. It is used to domain trust discovery to plan out subsequent steps in the attack chain.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*domainlist.*\") OR process_command_line = RGX(\".*trustdmp.*\") OR process_command_line = RGX(\".*dcmodes.*\") OR process_command_line = RGX(\".*adinfo.*\") OR process_command_line = RGX(\".*\\\\ dclist\\\\ .*\") OR process_command_line = RGX(\".*computer\\\\_pwdnotreqd.*\") OR process_command_line = RGX(\".*objectcategory\\\\=.*\") OR process_command_line = RGX(\".*\\\\-subnets\\\\ \\\\-f.*\") OR process_command_line = RGX(\".*name\\\\=\\\\\"Domain\\\\ Admins\\\\.*\") OR process_command_line = RGX(\".*\\\\-sc\\\\ u\\\\:.*\") OR process_command_line = RGX(\".*domainncs.*\") OR process_command_line = RGX(\".*dompol.*\") OR process_command_line = RGX(\".*\\\\ oudmp\\\\ .*\") OR process_command_line = RGX(\".*subnetdmp.*\") OR process_command_line = RGX(\".*gpodmp.*\") OR process_command_line = RGX(\".*fspdmp.*\") OR process_command_line = RGX(\".*users\\\\_noexpire.*\") OR process_command_line = RGX(\".*computers\\\\_active.*\") OR process_command_line = RGX(\".*computers\\\\_pwdnotreqd.*\")) OR (process_hash = RGX(\".*IMPHASH\\\\=BCA5675746D13A1F246E2DA3C2217492.*\") OR process_hash = RGX(\".*IMPHASH\\\\=53E117A96057EAF19C41380D0E87F1C2.*\") OR process_hash = RGX(\".*IMPHASH\\\\=d144de8117df2beceaba2201ad304764.*\") OR process_hash = RGX(\".*IMPHASH\\\\=12ce1c0f3f5837ecc18a3782408fa975.*\") OR process_hash = RGX(\".*IMPHASH\\\\=4fbf3f084fbbb2470b80b2013134df35.*\") OR process_hash = RGX(\".*IMPHASH\\\\=49b639b4acbecc49d72a01f357aa4930.*\") OR process_hash = RGX(\".*IMPHASH\\\\=680dad9e300346e05a85023965867201.*\") OR process_hash = RGX(\".*IMPHASH\\\\=21aa085d54992511b9f115355e468782.*\")) OR process_original_file_name = \"AdFind\\.exe\") AND  NOT (process_path = RGX(\"\\\\\\\\AdFind\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d4a3a654-3219-47d4-b874-34d352c0b181"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

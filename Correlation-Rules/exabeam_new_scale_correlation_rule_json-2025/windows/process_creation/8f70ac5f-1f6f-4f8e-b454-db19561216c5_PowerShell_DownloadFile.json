@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PowerShell DownloadFile",
+      "description": "Detects the execution of powershell, a WebClient object creation and the invocation of DownloadFile in a single command line",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*powershell.*\") AND process_command_line = RGX(\".*\\\\\\.DownloadFile.*\") AND process_command_line = RGX(\".*System\\\\\\.Net\\\\\\.WebClient.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "65043ec4-80e1-402c-a89f-3d477737de3f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

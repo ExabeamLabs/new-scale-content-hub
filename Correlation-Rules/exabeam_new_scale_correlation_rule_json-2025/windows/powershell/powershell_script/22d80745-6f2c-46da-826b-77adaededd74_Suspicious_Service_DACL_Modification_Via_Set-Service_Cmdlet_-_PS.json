@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Service DACL Modification Via Set-Service Cmdlet - PS",
+      "description": "Detects usage of the \"Set-Service\" powershell cmdlet to configure a new SecurityDescriptor that allows a service to be hidden from other utilities such as \"sc.exe\", \"Get-Service\"...etc. (Works only in powershell 7) Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ScriptBlockText = RGX(\".*\\\\-SecurityDescriptorSddl\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\-sd\\\\ .*\")) AND ((ScriptBlockText = RGX(\".*Set\\\\-Service\\\\ .*\") AND ScriptBlockText = RGX(\".*D\\\\;\\\\;.*\")) AND (ScriptBlockText = RGX(\".*\\\\;\\\\;\\\\;IU.*\") OR ScriptBlockText = RGX(\".*\\\\;\\\\;\\\\;SU.*\") OR ScriptBlockText = RGX(\".*\\\\;\\\\;\\\\;BA.*\") OR ScriptBlockText = RGX(\".*\\\\;\\\\;\\\\;SY.*\") OR ScriptBlockText = RGX(\".*\\\\;\\\\;\\\\;WD.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "af5b7fcc-9266-40a9-a592-35e2bc8d0acc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "CA Policy Removed by Non Approved Actor",
+      "description": "Monitor and alert on conditional access changes where non approved actor removed CA Policy. Note: Unmapped fields: properties.message",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "properties.message = \"Delete\\ conditional\\ access\\ policy\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "af4c5805-204b-4f76-9217-4601d42d87ea"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

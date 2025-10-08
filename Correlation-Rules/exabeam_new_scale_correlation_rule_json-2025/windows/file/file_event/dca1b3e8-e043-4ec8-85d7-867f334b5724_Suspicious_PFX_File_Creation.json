@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious PFX File Creation",
+      "description": "A general detection for processes creating PFX files. This could be an indicator of an adversary exporting a local certificate to a PFX file.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "file_path = RGX(\"\\\\\\.pfx$\") AND  NOT ((file_path = RGX(\".*\\\\\\\\Templates\\\\\\\\Windows\\\\\\\\Windows\\\\_TemporaryKey\\\\\\.pfx.*\") AND file_path = RGX(\".*\\\\\\\\CMake\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b713330f-e839-4ea9-a0c1-4588381650d1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

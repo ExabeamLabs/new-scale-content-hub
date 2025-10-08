@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Renamed PsExec Service Execution",
+      "description": "Detects suspicious launch of a renamed version of the PSEXESVC service with, which is not often used by legitimate administrators",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_original_file_name = \"psexesvc\\.exe\" AND  NOT (process_path = \"C\\:\\\\Windows\\\\PSEXESVC\\.exe\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5c9f5393-0b01-498f-8876-6f9794ae3df4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

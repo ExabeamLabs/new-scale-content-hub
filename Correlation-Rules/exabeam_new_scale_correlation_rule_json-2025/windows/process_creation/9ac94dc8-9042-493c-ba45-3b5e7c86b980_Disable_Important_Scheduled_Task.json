@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Disable Important Scheduled Task",
+      "description": "Detects when adversaries stop services or processes by disabling their respective scheduled tasks in order to conduct data destructive activities",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\/Change.*\") AND process_command_line = RGX(\".*\\\\/TN.*\") AND process_command_line = RGX(\".*\\\\/disable.*\")) AND (process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\BitLocker.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\ExploitGuard.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\ExploitGuard\\\\\\\\ExploitGuard\\\\ MDM\\\\ policy\\\\ Refresh.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\SystemRestore\\\\\\\\SR.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\UpdateOrchestrator\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\Windows\\\\ Defender\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\WindowsBackup\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\WindowsUpdate\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "737eeeee-2bf0-4ad9-8567-cee9ed9434f7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

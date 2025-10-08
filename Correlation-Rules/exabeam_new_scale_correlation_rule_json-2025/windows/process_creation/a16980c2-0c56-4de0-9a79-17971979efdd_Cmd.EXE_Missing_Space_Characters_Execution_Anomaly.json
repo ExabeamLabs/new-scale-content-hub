@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Cmd.EXE Missing Space Characters Execution Anomaly",
+      "description": "Detects Windows command lines that miss a space before or after the /c flag when running a command using the cmd.exe.\nThis could be a sign of obfuscation of a fat finger problem (typo by the developer).\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*cmd\\\\\\.exe\\\\/c.*\") OR process_command_line = RGX(\".*\\\\\\\\cmd\\\\/c.*\") OR process_command_line = RGX(\".*\\\\\"cmd\\\\/c.*\") OR process_command_line = RGX(\".*cmd\\\\\\.exe\\\\/k.*\") OR process_command_line = RGX(\".*\\\\\\\\cmd\\\\/k.*\") OR process_command_line = RGX(\".*\\\\\"cmd\\\\/k.*\") OR process_command_line = RGX(\".*cmd\\\\\\.exe\\\\/r.*\") OR process_command_line = RGX(\".*\\\\\\\\cmd\\\\/r.*\") OR process_command_line = RGX(\".*\\\\\"cmd\\\\/r.*\")) OR (process_command_line = RGX(\".*\\\\/cwhoami.*\") OR process_command_line = RGX(\".*\\\\/cpowershell.*\") OR process_command_line = RGX(\".*\\\\/cschtasks.*\") OR process_command_line = RGX(\".*\\\\/cbitsadmin.*\") OR process_command_line = RGX(\".*\\\\/ccertutil.*\") OR process_command_line = RGX(\".*\\\\/kwhoami.*\") OR process_command_line = RGX(\".*\\\\/kpowershell.*\") OR process_command_line = RGX(\".*\\\\/kschtasks.*\") OR process_command_line = RGX(\".*\\\\/kbitsadmin.*\") OR process_command_line = RGX(\".*\\\\/kcertutil.*\")) OR (process_command_line = RGX(\".*cmd\\\\\\.exe\\\\ \\\\/c.*\") OR process_command_line = RGX(\".*cmd\\\\ \\\\/c.*\") OR process_command_line = RGX(\".*cmd\\\\\\.exe\\\\ \\\\/k.*\") OR process_command_line = RGX(\".*cmd\\\\ \\\\/k.*\") OR process_command_line = RGX(\".*cmd\\\\\\.exe\\\\ \\\\/r.*\") OR process_command_line = RGX(\".*cmd\\\\ \\\\/r.*\"))) AND  NOT ((process_command_line = RGX(\".*cmd\\\\\\.exe\\\\ \\\\/c\\\\ .*\") OR process_command_line = RGX(\".*cmd\\\\ \\\\/c\\\\ .*\") OR process_command_line = RGX(\".*cmd\\\\\\.exe\\\\ \\\\/k\\\\ .*\") OR process_command_line = RGX(\".*cmd\\\\ \\\\/k\\\\ .*\") OR process_command_line = RGX(\".*cmd\\\\\\.exe\\\\ \\\\/r\\\\ .*\") OR process_command_line = RGX(\".*cmd\\\\ \\\\/r\\\\ .*\")) OR (process_command_line = RGX(\".*AppData\\\\\\\\Local\\\\\\\\Programs\\\\\\\\Microsoft\\\\ VS\\\\ Code\\\\\\\\resources\\\\\\\\app\\\\\\\\node\\\\_modules.*\") OR process_command_line = RGX(\"cmd\\\\\\.exe\\\\/c\\\\ \\\\\\.$\") OR process_command_line = \"cmd\\.exe\\ \\/c\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "18997d3a-6f21-4337-9c5e-ff5e3b5d1236"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

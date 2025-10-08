@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Classes Autorun Keys Modification",
+      "description": "Detects modification of autostart extensibility point (ASEP) in registry. Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\Software\\\\\\\\Classes.*\") AND (registry_path = RGX(\".*\\\\\\\\Folder\\\\\\\\ShellEx\\\\\\\\ExtShellFolderViews.*\") OR registry_path = RGX(\".*\\\\\\\\Folder\\\\\\\\ShellEx\\\\\\\\DragDropHandlers.*\") OR registry_path = RGX(\".*\\\\\\\\Folder\\\\\\\\Shellex\\\\\\\\ColumnHandlers.*\") OR registry_path = RGX(\".*\\\\\\\\Filter.*\") OR registry_path = RGX(\".*\\\\\\\\Exefile\\\\\\\\Shell\\\\\\\\Open\\\\\\\\Command\\\\\\\\\\\\(Default\\\\).*\") OR registry_path = RGX(\".*\\\\\\\\Directory\\\\\\\\Shellex\\\\\\\\DragDropHandlers.*\") OR registry_path = RGX(\".*\\\\\\\\Directory\\\\\\\\Shellex\\\\\\\\CopyHookHandlers.*\") OR registry_path = RGX(\".*\\\\\\\\CLSID\\\\\\\\\\\\{AC757296\\\\-3522\\\\-4E11\\\\-9862\\\\-C17BE5A1767E\\\\}\\\\\\\\Instance.*\") OR registry_path = RGX(\".*\\\\\\\\CLSID\\\\\\\\\\\\{ABE3B9A4\\\\-257D\\\\-4B97\\\\-BD1A\\\\-294AF496222E\\\\}\\\\\\\\Instance.*\") OR registry_path = RGX(\".*\\\\\\\\CLSID\\\\\\\\\\\\{7ED96837\\\\-96F0\\\\-4812\\\\-B211\\\\-F13C24117ED3\\\\}\\\\\\\\Instance.*\") OR registry_path = RGX(\".*\\\\\\\\CLSID\\\\\\\\\\\\{083863F1\\\\-70DE\\\\-11d0\\\\-BD40\\\\-00A0C911CE86\\\\}\\\\\\\\Instance.*\") OR registry_path = RGX(\".*\\\\\\\\Classes\\\\\\\\AllFileSystemObjects\\\\\\\\ShellEx\\\\\\\\DragDropHandlers.*\") OR registry_path = RGX(\".*\\\\\\\\\\\\\\.exe.*\") OR registry_path = RGX(\".*\\\\\\\\\\\\\\.cmd.*\") OR registry_path = RGX(\".*\\\\\\\\ShellEx\\\\\\\\PropertySheetHandlers.*\") OR registry_path = RGX(\".*\\\\\\\\ShellEx\\\\\\\\ContextMenuHandlers.*\"))) AND  NOT (Details = \"\\(Empty\\)\" OR Details = \"\\{807583E5\\-5146\\-11D5\\-A672\\-00B0D022E945\\}\" OR process_path = \"C\\:\\\\Windows\\\\System32\\\\drvinst\\.exe\" OR (process_path = \"C\\:\\\\Windows\\\\System32\\\\svchost\\.exe\" AND registry_path = RGX(\".*\\\\\\\\lnkfile\\\\\\\\shellex\\\\\\\\ContextMenuHandlers\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ae728194-50c3-498b-b70f-695a093aaa86"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

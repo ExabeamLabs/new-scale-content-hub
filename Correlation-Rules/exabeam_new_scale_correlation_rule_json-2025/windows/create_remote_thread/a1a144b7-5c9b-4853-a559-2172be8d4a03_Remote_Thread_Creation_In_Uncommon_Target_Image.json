@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remote Thread Creation In Uncommon Target Image",
+      "description": "Detects uncommon target processes for remote thread creation Note: Unmapped fields: TargetImage, SourceImage, StartFunction",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(TargetImage = RGX(\"\\\\\\\\calc\\\\\\.exe$\") OR TargetImage = RGX(\"\\\\\\\\calculator\\\\\\.exe$\") OR TargetImage = RGX(\"\\\\\\\\mspaint\\\\\\.exe$\") OR TargetImage = RGX(\"\\\\\\\\notepad\\\\\\.exe$\") OR TargetImage = RGX(\"\\\\\\\\ping\\\\\\.exe$\") OR TargetImage = RGX(\"\\\\\\\\sethc\\\\\\.exe$\") OR TargetImage = RGX(\"\\\\\\\\spoolsv\\\\\\.exe$\") OR TargetImage = RGX(\"\\\\\\\\wordpad\\\\\\.exe$\") OR TargetImage = RGX(\"\\\\\\\\write\\\\\\.exe$\")) AND  NOT (SourceImage = \"C\\:\\\\Windows\\\\System32\\\\csrss\\.exe\" OR ((SourceImage = \"C\\:\\\\Windows\\\\System32\\\\explorer\\.exe\" OR SourceImage = \"C\\:\\\\Windows\\\\System32\\\\OpenWith\\.exe\") AND TargetImage = \"C\\:\\\\Windows\\\\System32\\\\notepad\\.exe\") OR (SourceImage = \"C\\:\\\\Windows\\\\System32\\\\AtBroker\\.exe\" AND TargetImage = \"C\\:\\\\Windows\\\\System32\\\\Sethc\\.exe\")) AND  NOT (StartFunction = \"EtwpNotificationThread\" OR SourceImage = RGX(\".*unknown\\\\ process.*\") OR (SourceImage = \"C\\:\\\\Program\\ Files\\\\VMware\\\\VMware\\ Tools\\\\vmtoolsd\\.exe\" AND StartFunction = \"GetCommandLineW\" AND (TargetImage = \"C\\:\\\\Windows\\\\System32\\\\notepad\\.exe\" OR TargetImage = \"C\\:\\\\Windows\\\\System32\\\\spoolsv\\.exe\")) OR (SourceImage = \"C\\:\\\\Program\\ Files\\\\Xerox\\\\XeroxPrintExperience\\\\CommonFiles\\\\XeroxPrintJobEventManagerService\\.exe\" AND StartFunction = \"LoadLibraryW\" AND TargetImage = \"C\\:\\\\Windows\\\\System32\\\\spoolsv\\.exe\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ca07dc0f-bc6e-45ed-acc8-4290d3862fea"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

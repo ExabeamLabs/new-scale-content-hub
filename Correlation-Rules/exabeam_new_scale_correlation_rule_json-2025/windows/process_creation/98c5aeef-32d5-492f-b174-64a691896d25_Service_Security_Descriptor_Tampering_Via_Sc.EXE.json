@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Service Security Descriptor Tampering Via Sc.EXE",
+      "description": "Detection of sc.exe utility adding a new service with special permission which hides that service.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\sc\\\\\\.exe$\") OR process_original_file_name = \"sc\\.exe\") AND process_command_line = RGX(\".*sdset.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a7ffc2b6-596a-4a0c-9b77-371e9f8838aa"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

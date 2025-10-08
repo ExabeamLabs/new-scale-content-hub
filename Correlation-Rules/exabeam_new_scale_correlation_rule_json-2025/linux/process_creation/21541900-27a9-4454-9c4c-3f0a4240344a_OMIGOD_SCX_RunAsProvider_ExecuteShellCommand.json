@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "OMIGOD SCX RunAsProvider ExecuteShellCommand",
+      "description": "Rule to detect the use of the SCX RunAsProvider Invoke_ExecuteShellCommand to execute any UNIX/Linux command using the /bin/sh shell.\nSCXcore, started as the Microsoft Operations Manager UNIX/Linux Agent, is now used in a host of products including\nMicrosoft Operations Manager, Microsoft Azure, and Microsoft Operations Management Suite.\n",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(user = \"root\" AND logon_id = 0 AND process_working_directory = \"\\/var\\/opt\\/microsoft\\/scx\\/tmp\" AND process_command_line = RGX(\".*\\\\/bin\\\\/sh.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6b6ae45d-ec57-4dba-b75a-1aead8823e82"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

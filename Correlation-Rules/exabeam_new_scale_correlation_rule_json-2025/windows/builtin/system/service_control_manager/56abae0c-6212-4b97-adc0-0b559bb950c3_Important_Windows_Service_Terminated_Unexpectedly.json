@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Important Windows Service Terminated Unexpectedly",
+      "description": "Detects important or interesting Windows services that got terminated unexpectedly. Note: Unmapped fields: Provider_Name, param1, Binary",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((Provider_Name = \"Service\\ Control\\ Manager\" AND event_id = 7034) AND (param1 = RGX(\".*Message\\\\ Queuing.*\") OR (Binary = RGX(\".*4d0053004d005100.*\") OR Binary = RGX(\".*6d0073006d007100.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5034e2a2-9dde-48d6-8795-01290c530c89"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

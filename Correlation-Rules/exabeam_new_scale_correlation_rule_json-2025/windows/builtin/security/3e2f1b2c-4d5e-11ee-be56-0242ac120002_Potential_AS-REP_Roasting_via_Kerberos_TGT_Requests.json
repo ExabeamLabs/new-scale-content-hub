@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential AS-REP Roasting via Kerberos TGT Requests",
+      "description": "Detects suspicious Kerberos TGT requests with pre-authentication disabled (Pre-Authentication Type = 0) and Ticket Encryption Type (0x17) i.e, RC4-HMAC.\nThis may indicate an AS-REP Roasting attack, where attackers request AS-REP messages for accounts without pre-authentication and attempt to crack the encrypted ticket offline to recover user passwords.\n Note: Unmapped fields: TicketEncryptionType, ServiceName, PreAuthType",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4768 AND TicketEncryptionType = \"0x17\" AND ServiceName = \"krbtgt\" AND PreAuthType = 0)",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d8e1146e-7750-4d76-955c-ca76d53ac814"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

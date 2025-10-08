@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - Ngrok Execution",
+      "description": "Detects the use of Ngrok, a utility used for port forwarding and tunneling, often used by threat actors to make local protected services publicly available.\nInvolved domains are bin.equinox.io for download and *.ngrok.io for connections.\n",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*\\\\ tcp\\\\ 139.*\") OR process_command_line = RGX(\".*\\\\ tcp\\\\ 445.*\") OR process_command_line = RGX(\".*\\\\ tcp\\\\ 3389.*\") OR process_command_line = RGX(\".*\\\\ tcp\\\\ 5985.*\") OR process_command_line = RGX(\".*\\\\ tcp\\\\ 5986.*\")) OR (process_command_line = RGX(\".*\\\\ start\\\\ .*\") AND process_command_line = RGX(\".*\\\\-\\\\-all.*\") AND process_command_line = RGX(\".*\\\\-\\\\-config.*\") AND process_command_line = RGX(\".*\\\\\\.yml.*\")) OR (process_path = RGX(\"ngrok\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\ tcp\\\\ .*\") OR process_command_line = RGX(\".*\\\\ http\\\\ .*\") OR process_command_line = RGX(\".*\\\\ authtoken\\\\ .*\"))) OR (process_command_line = RGX(\".*\\\\\\.exe\\\\ authtoken\\\\ .*\") OR process_command_line = RGX(\".*\\\\\\.exe\\\\ start\\\\ \\\\-\\\\-all.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0fe7bfdc-76db-407b-8182-cd3000ed062e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

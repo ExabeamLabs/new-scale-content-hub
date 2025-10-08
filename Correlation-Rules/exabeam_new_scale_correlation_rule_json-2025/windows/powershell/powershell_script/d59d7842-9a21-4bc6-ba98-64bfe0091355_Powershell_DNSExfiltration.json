@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Powershell DNSExfiltration",
+      "description": "DNSExfiltrator allows for transferring (exfiltrate) a file over a DNS request covert channel Note: Unmapped fields: ScriptBlockText",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Invoke\\\\-DNSExfiltrator.*\") OR (ScriptBlockText = RGX(\".*\\\\ \\\\-i\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\ \\\\-d\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\ \\\\-p\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\ \\\\-doh\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\ \\\\-t\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3be5466a-6fc0-4adf-96ca-59a760c6d5ba"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

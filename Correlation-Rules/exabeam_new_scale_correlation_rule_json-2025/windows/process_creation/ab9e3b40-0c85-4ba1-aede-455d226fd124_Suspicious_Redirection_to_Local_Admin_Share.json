@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Redirection to Local Admin Share",
+      "description": "Detects a suspicious output redirection to the local admins share, this technique is often found in malicious scripts or hacktool stagers",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\>.*\") AND (process_command_line = RGX(\".*\\\\\\\\\\\\\\\\127\\\\\\.0\\\\\\.0\\\\\\.1\\\\\\\\admin\\\\$\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\\\\\\\\\localhost\\\\\\\\admin\\\\$\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8d8886da-301c-4b4b-83e3-a3475dc84f63"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

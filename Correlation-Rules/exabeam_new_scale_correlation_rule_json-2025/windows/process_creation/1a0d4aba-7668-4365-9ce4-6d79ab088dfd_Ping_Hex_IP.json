@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Ping Hex IP",
+      "description": "Detects a ping command that uses a hex encoded IP address",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\ping\\\\\\.exe$\") AND process_command_line = RGX(\".*0x.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7540b32d-3669-4020-afed-beb7afc09e08"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

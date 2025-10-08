@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Eventlog Clearing or Configuration Change Activity",
+      "description": "Detects the clearing or configuration tampering of EventLog using utilities such as \"wevtutil\", \"powershell\" and \"wmic\".\nThis technique were seen used by threat actors and ransomware strains in order to evade defenses.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\wevtutil\\\\\\.exe$\") OR process_original_file_name = \"wevtutil\\.exe\") AND (process_command_line = RGX(\".*clear\\\\-log\\\\ .*\") OR process_command_line = RGX(\".*\\\\ cl\\\\ .*\") OR process_command_line = RGX(\".*set\\\\-log\\\\ .*\") OR process_command_line = RGX(\".*\\\\ sl\\\\ .*\") OR process_command_line = RGX(\".*lfn\\\\:.*\")))) OR (((process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\_ise\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\")) AND ((process_command_line = RGX(\".*Clear\\\\-EventLog\\\\ .*\") OR process_command_line = RGX(\".*Remove\\\\-EventLog\\\\ .*\") OR process_command_line = RGX(\".*Limit\\\\-EventLog\\\\ .*\") OR process_command_line = RGX(\".*Clear\\\\-WinEvent\\\\ .*\")) OR (process_command_line = RGX(\".*Eventing\\\\\\.Reader\\\\\\.EventLogSession.*\") AND process_command_line = RGX(\".*ClearLog.*\")) OR (process_command_line = RGX(\".*Diagnostics\\\\\\.EventLog.*\") AND process_command_line = RGX(\".*Clear.*\"))))) OR (((process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\_ise\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wmic\\\\\\.exe$\")) AND process_command_line = RGX(\".*ClearEventLog.*\"))) AND  NOT (((parent_process_path = \"C\\:\\\\Windows\\\\SysWOW64\\\\msiexec\\.exe\" OR parent_process_path = \"C\\:\\\\Windows\\\\System32\\\\msiexec\\.exe\") AND process_command_line = RGX(\".*\\\\ sl\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1d81ca25-b743-4eb5-84de-9c1182dfb6bf"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

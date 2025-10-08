@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Arbitrary File Download Via ConfigSecurityPolicy.EXE",
+      "description": "Detects the execution of \"ConfigSecurityPolicy.EXE\", a binary part of Windows Defender used to manage settings in Windows Defender.\nUsers can configure different pilot collections for each of the co-management workloads.\nIt can be abused by attackers in order to upload or download files.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*ConfigSecurityPolicy\\\\\\.exe.*\") OR process_path = RGX(\"\\\\\\\\ConfigSecurityPolicy\\\\\\.exe$\") OR process_original_file_name = \"ConfigSecurityPolicy\\.exe\") AND (process_command_line = RGX(\".*ftp\\\\:\\\\/\\\\/.*\") OR process_command_line = RGX(\".*http\\\\:\\\\/\\\\/.*\") OR process_command_line = RGX(\".*https\\\\:\\\\/\\\\/.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "525f7e92-e961-4b86-8baa-abae22ee61ad"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

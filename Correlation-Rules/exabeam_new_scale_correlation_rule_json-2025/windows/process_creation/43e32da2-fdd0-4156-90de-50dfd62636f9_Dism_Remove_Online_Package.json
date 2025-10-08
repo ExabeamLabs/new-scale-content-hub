@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Dism Remove Online Package",
+      "description": "Deployment Image Servicing and Management tool. DISM is used to enumerate, install, uninstall, configure, and update features and packages in Windows images",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\DismHost\\\\\\.exe$\") AND (parent_process_command_line = RGX(\".*\\\\/Online.*\") AND parent_process_command_line = RGX(\".*\\\\/Disable\\\\-Feature.*\"))) OR (process_path = RGX(\"\\\\\\\\Dism\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\/Online.*\") AND process_command_line = RGX(\".*\\\\/Disable\\\\-Feature.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "84c663ee-3f8b-4f3c-afb7-5e9d324ac5a8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

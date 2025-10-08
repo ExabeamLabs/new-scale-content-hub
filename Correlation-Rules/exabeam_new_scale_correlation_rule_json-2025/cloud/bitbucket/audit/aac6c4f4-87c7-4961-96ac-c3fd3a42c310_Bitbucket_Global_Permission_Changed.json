@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Bitbucket Global Permission Changed",
+      "description": "Detects global permissions change activity. Note: Unmapped fields: auditType.category, auditType.action",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(auditType.category = \"Permissions\" AND (auditType.action = \"Global\\ permission\\ remove\\ request\" OR auditType.action = \"Global\\ permission\\ removed\" OR auditType.action = \"Global\\ permission\\ granted\" OR auditType.action = \"Global\\ permission\\ requested\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "fea23274-5daa-468a-b8b5-cf768cbb1280"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

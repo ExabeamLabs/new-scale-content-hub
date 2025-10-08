@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Powershell Detect Virtualization Environment",
+      "description": "Adversaries may employ various system checks to detect and avoid virtualization and analysis environments.\nThis may include changing behaviors based on the results of checks for the presence of artifacts indicative of a virtual machine environment (VME) or sandbox\n Note: Unmapped fields: ScriptBlockText",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ScriptBlockText = RGX(\".*Get\\\\-WmiObject.*\") OR ScriptBlockText = RGX(\".*gwmi.*\")) AND (ScriptBlockText = RGX(\".*MSAcpi\\\\_ThermalZoneTemperature.*\") OR ScriptBlockText = RGX(\".*Win32\\\\_ComputerSystem.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "bb837c54-a3ff-4a07-9865-162634f13322"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

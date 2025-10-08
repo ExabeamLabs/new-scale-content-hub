@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Mstsc.EXE Execution From Uncommon Parent",
+      "description": "Detects potential RDP connection via Mstsc using a local \".rdp\" file located in suspicious locations.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((parent_process_path = RGX(\"\\\\\\\\brave\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\CCleanerBrowser\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\chrome\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\chromium\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\firefox\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\iexplore\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\microsoftedge\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\msedge\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\opera\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\vivaldi\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\whale\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\outlook\\\\\\.exe$\")) AND (process_path = RGX(\"\\\\\\\\mstsc\\\\\\.exe$\") OR process_original_file_name = \"mstsc\\.exe\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "cbbfb184-b8b0-47c0-a97c-92cf58fcd354"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "CreateDump Process Dump",
+      "description": "Detects uses of the createdump.exe LOLOBIN utility to dump process memory",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\createdump\\\\\\.exe$\") OR process_original_file_name = \"FX\\_VER\\_INTERNALNAME\\_STR\") AND (process_command_line = RGX(\".*\\\\ \\\\-u\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-\\\\-full\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-f\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-\\\\-name\\\\ .*\") OR process_command_line = RGX(\".*\\\\\\.dmp\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3ff84908-c5a9-4536-9e0f-4ecac7d8e1f5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

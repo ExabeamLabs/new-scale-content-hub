@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows Recall Feature Enabled Via Reg.EXE",
+      "description": "Detects the enabling of the Windows Recall feature via registry manipulation.\nWindows Recall can be enabled by deleting the existing \"DisableAIDataAnalysis\" value, or setting it to 0.\nAdversaries may enable Windows Recall as part of post-exploitation discovery and collection activities.\nThis rule assumes that Recall is already explicitly disabled on the host, and subsequently enabled by the adversary.\n",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\reg\\\\\\.exe$\") OR process_original_file_name = \"reg\\.exe\") AND (process_command_line = RGX(\".*Microsoft\\\\\\\\Windows\\\\\\\\WindowsAI.*\") AND process_command_line = RGX(\".*DisableAIDataAnalysis.*\")) AND ((process_command_line = RGX(\".*add.*\") OR process_command_line = RGX(\".*0.*\")) OR process_command_line = RGX(\".*delete.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "23562b44-5245-48b3-9164-7021bdf6dde5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

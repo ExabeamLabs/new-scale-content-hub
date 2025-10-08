@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious TCP Tunnel Via PowerShell Script",
+      "description": "Detects powershell scripts that creates sockets/listeners which could be indicative of tunneling activity Note: Unmapped fields: ScriptBlockText",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*\\\\[System\\\\\\.Net\\\\\\.HttpWebRequest\\\\].*\") AND ScriptBlockText = RGX(\".*System\\\\\\.Net\\\\\\.Sockets\\\\\\.TcpListener.*\") AND ScriptBlockText = RGX(\".*AcceptTcpClient.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "27c22cc2-2d2e-42ed-93fd-b4c19341d6b0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

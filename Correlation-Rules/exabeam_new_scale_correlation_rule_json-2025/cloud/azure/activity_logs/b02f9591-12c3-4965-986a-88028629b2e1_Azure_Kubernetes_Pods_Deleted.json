@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Azure Kubernetes Pods Deleted",
+      "description": "Identifies the deletion of Azure Kubernetes Pods. Note: Unmapped fields: operationName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "operationName = \"MICROSOFT\\.KUBERNETES\\/CONNECTEDCLUSTERS\\/PODS\\/DELETE\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "cb44c333-1cb6-467e-ad61-839489ebe5bb"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PowerShell ShellCode",
+      "description": "Detects Base64 encoded Shellcode Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*OiCAAAAYInlM.*\") OR ScriptBlockText = RGX(\".*OiJAAAAYInlM.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "52ff48ac-8910-4da0-bb4e-fc628e0314a7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

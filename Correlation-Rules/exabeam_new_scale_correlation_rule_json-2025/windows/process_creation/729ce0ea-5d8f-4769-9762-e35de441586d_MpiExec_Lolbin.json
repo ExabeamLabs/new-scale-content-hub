@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "MpiExec Lolbin",
+      "description": "Detects a certain command line flag combination used by mpiexec.exe LOLBIN from HPC pack that can be used to execute any other binary",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\mpiexec\\\\\\.exe$\") OR process_hash = RGX(\".*IMPHASH\\\\=d8b52ef6aaa3a81501bdfff9dbb96217.*\")) AND (process_command_line = RGX(\".*\\\\ \\\\/n\\\\ 1\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-n\\\\ 1\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "bebf0c2f-9d13-48a1-809d-32d53e516ec4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "RDP Port Forwarding Rule Added Via Netsh.EXE",
+      "description": "Detects the execution of netsh to configure a port forwarding of port 3389 (RDP) rule",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\netsh\\\\\\.exe$\") OR process_original_file_name = \"netsh\\.exe\") AND (process_command_line = RGX(\".*\\\\ i.*\") AND process_command_line = RGX(\".*\\\\ p.*\") AND process_command_line = RGX(\".*\\\\=3389.*\") AND process_command_line = RGX(\".*\\\\ c.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1bdfdb70-acf0-4eba-9d2b-9d9b0fef9d53"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

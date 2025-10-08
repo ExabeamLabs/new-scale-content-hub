@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Scheduled Task Creation Involving Temp Folder",
+      "description": "Detects the creation of scheduled tasks that involves a temporary folder and runs only once",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\ \\\\/create\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\/sc\\\\ once\\\\ .*\") AND process_command_line = RGX(\".*\\\\\\\\Temp\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "10916c01-1292-4cf5-8065-5536a3ddf813"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

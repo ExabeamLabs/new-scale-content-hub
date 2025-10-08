@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Persistence Via VMwareToolBoxCmd.EXE VM State Change Script",
+      "description": "Detects execution of the \"VMwareToolBoxCmd.exe\" with the \"script\" and \"set\" flag to setup a specific script to run for a specific VM state",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\VMwareToolBoxCmd\\\\\\.exe$\") OR process_original_file_name = \"toolbox\\-cmd\\.exe\") AND (process_command_line = RGX(\".*\\\\ script\\\\ .*\") AND process_command_line = RGX(\".*\\\\ set\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2e531f5e-a725-4d90-af0d-ee0a5e815049"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

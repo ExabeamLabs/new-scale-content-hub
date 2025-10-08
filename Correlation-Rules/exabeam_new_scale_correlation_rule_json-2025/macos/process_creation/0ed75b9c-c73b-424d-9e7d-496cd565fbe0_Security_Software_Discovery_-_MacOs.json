@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Security Software Discovery - MacOs",
+      "description": "Detects usage of system utilities (only grep for now) to discover security software discovery",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_path = \"\\/usr\\/bin\\/grep\" AND ((process_command_line = RGX(\".*nessusd.*\") OR process_command_line = RGX(\".*santad.*\") OR process_command_line = RGX(\".*CbDefense.*\") OR process_command_line = RGX(\".*falcond.*\") OR process_command_line = RGX(\".*td\\\\-agent.*\") OR process_command_line = RGX(\".*packetbeat.*\") OR process_command_line = RGX(\".*filebeat.*\") OR process_command_line = RGX(\".*auditbeat.*\") OR process_command_line = RGX(\".*osqueryd.*\") OR process_command_line = RGX(\".*BlockBlock.*\") OR process_command_line = RGX(\".*LuLu.*\")) OR (process_command_line = RGX(\".*Little.*\") AND process_command_line = RGX(\".*Snitch.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "72d464aa-7ade-4a56-b607-460da8cbb77b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

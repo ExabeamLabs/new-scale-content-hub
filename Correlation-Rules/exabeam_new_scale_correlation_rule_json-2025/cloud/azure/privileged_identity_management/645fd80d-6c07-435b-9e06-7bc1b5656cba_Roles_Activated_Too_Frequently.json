@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Roles Activated Too Frequently",
+      "description": "Identifies when the same privilege role has multiple activations by the same user. Note: Unmapped fields: riskEventType",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "riskEventType = \"sequentialActivationRenewalsAlertIncident\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4184c232-fad4-403d-9631-ad30dbcd29d5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

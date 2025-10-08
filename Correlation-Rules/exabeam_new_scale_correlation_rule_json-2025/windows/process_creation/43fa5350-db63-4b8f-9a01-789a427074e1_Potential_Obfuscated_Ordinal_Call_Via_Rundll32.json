@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Obfuscated Ordinal Call Via Rundll32",
+      "description": "Detects execution of \"rundll32\" with potential obfuscated ordinal calls",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_original_file_name = \"RUNDLL32\\.EXE\" OR process_command_line = RGX(\".*rundll32.*\")) AND (process_command_line = RGX(\".*\\\\#\\\\+.*\") OR process_command_line = RGX(\".*\\\\#\\\\-.*\") OR process_command_line = RGX(\".*\\\\#0.*\") OR process_command_line = RGX(\".*\\\\#655.*\") OR process_command_line = RGX(\".*\\\\#656.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "531a1aab-bf94-42ab-9bea-b1ed601e11d2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

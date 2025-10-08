@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious PROCEXP152.sys File Created In TMP",
+      "description": "Detects the creation of the PROCEXP152.sys file in the application-data local temporary folder.\nThis driver is used by Sysinternals Process Explorer but also by KDU (https://github.com/hfiref0x/KDU) or Ghost-In-The-Logs (https://github.com/bats3c/Ghost-In-The-Logs), which uses KDU.\n",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(file_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") AND file_path = RGX(\"PROCEXP152\\\\\\.sys$\")) AND  NOT ((process_path = RGX(\".*\\\\\\\\procexp64\\\\\\.exe.*\") OR process_path = RGX(\".*\\\\\\\\procexp\\\\\\.exe.*\") OR process_path = RGX(\".*\\\\\\\\procmon64\\\\\\.exe.*\") OR process_path = RGX(\".*\\\\\\\\procmon\\\\\\.exe.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "78e96abb-42a4-4e94-b572-bf8197ffb486"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

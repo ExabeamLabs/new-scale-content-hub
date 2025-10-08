@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Firewall Rule Deleted Via Netsh.EXE",
+      "description": "Detects the removal of a port or application rule in the Windows Firewall configuration using netsh",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\netsh\\\\\\.exe$\") OR process_original_file_name = \"netsh\\.exe\") AND (process_command_line = RGX(\".*firewall.*\") AND process_command_line = RGX(\".*delete\\\\ .*\"))) AND  NOT ((parent_process_path = RGX(\"\\\\\\\\Dropbox\\\\\\.exe$\") AND process_command_line = RGX(\".*name\\\\=Dropbox.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "aa9b807b-93e2-442c-a64e-ee930378aec5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

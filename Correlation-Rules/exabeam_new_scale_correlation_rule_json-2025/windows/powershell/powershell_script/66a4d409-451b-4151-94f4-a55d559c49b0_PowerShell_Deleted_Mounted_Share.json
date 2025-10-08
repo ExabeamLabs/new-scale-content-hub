@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PowerShell Deleted Mounted Share",
+      "description": "Detects when when a mounted share is removed. Adversaries may remove share connections that are no longer useful in order to clean up traces of their operation Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Remove\\\\-SmbShare.*\") OR ScriptBlockText = RGX(\".*Remove\\\\-FileShare.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1e70b162-b106-4e75-9411-b9f4ec3d3868"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

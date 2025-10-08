@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Pass the Hash Activity 2",
+      "description": "Detects the attack technique pass the hash which is used to move laterally inside the network Note: Unmapped fields: SubjectUserSid, LogonType, LogonProcessName, KeyLength",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((event_id = 4624 AND SubjectUserSid = \"S\\-1\\-0\\-0\" AND LogonType = 3 AND LogonProcessName = \"NtLmSsp\" AND KeyLength = 0) OR (event_id = 4624 AND LogonType = 9 AND LogonProcessName = \"seclogo\")) AND  NOT (dest_user = \"ANONYMOUS\\ LOGON\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2d057f16-ebef-46a6-b1c6-925f7909f8e1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

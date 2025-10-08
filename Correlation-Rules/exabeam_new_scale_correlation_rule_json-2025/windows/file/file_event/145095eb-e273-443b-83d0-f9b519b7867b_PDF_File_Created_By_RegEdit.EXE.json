@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PDF File Created By RegEdit.EXE",
+      "description": "Detects the creation of a file with the \".pdf\" extension by the \"RegEdit.exe\" process.\nThis indicates that a user is trying to print/save a registry key as a PDF in order to potentially extract sensitive information and bypass defenses.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\regedit\\\\\\.exe$\") AND file_path = RGX(\"\\\\\\.pdf$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e20636af-339b-431d-88a5-cf332b5e2f2e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

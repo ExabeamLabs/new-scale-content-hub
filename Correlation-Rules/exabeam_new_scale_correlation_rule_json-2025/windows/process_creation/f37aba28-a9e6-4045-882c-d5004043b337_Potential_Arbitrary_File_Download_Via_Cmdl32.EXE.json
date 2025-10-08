@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Arbitrary File Download Via Cmdl32.EXE",
+      "description": "Detects execution of Cmdl32 with the \"/vpn\" and \"/lan\" flags.\nAttackers can abuse this utility in order to download arbitrary files via a configuration file.\nInspect the location and the content of the file passed as an argument in order to determine if it is suspicious.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\cmdl32\\\\\\.exe$\") OR process_original_file_name = \"CMDL32\\.EXE\") AND (process_command_line = RGX(\".*\\\\/vpn.*\") AND process_command_line = RGX(\".*\\\\/lan.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c9f4bc7d-796c-44fd-95c8-8ca3544415ab"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

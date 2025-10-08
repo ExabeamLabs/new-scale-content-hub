@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "CodeIntegrity - Revoked Image Loaded",
+      "description": "Detects image load events with revoked certificates by code integrity.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 3032 OR event_id = 3035)",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e6927dce-4fe1-44b6-82a2-bad3e6e830ad"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

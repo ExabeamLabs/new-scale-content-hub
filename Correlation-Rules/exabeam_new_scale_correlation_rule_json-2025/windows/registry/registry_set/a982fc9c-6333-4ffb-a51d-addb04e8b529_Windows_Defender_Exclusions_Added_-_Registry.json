@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows Defender Exclusions Added - Registry",
+      "description": "Detects the Setting of Windows Defender Exclusions",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\ Defender\\\\\\\\Exclusions.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ce4a60a7-d433-4584-a5e4-869b95db4b0f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

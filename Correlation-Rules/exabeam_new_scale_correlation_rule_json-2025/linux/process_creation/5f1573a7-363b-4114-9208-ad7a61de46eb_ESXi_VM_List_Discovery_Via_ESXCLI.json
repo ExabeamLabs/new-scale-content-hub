@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "ESXi VM List Discovery Via ESXCLI",
+      "description": "Detects execution of the \"esxcli\" command with the \"vm\" flag in order to retrieve information about the installed VMs.",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/esxcli$\") AND process_command_line = RGX(\".*vm\\\\ process.*\") AND process_command_line = RGX(\"\\\\ list$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "dc48cc9c-97bb-4701-9486-0b7299d72d1c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

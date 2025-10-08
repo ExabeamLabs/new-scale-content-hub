@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Protected Storage Service Access",
+      "description": "Detects access to a protected_storage service over the network. Potential abuse of DPAPI to extract domain backup keys from Domain Controllers Note: Unmapped fields: ShareName, RelativeTargetName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 5145 AND ShareName = RGX(\".*IPC.*\") AND RelativeTargetName = \"protected\\_storage\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1fac0f75-1a07-4497-b896-2d386f540119"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Tap Driver Installation - Security",
+      "description": "Detects the installation of a well-known TAP driver service. This could be a sign of potential preparation for data exfiltration using tunnelling techniques.\n Note: Unmapped fields: ServiceFileName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4697 AND ServiceFileName = RGX(\".*tap0901.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7921a67f-8547-4a3c-be95-c9453b8eeb58"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

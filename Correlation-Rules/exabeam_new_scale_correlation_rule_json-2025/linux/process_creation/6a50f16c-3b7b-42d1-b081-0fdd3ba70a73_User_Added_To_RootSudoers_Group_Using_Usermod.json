@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "User Added To Root/Sudoers Group Using Usermod",
+      "description": "Detects usage of the \"usermod\" binary to add users add users to the root or suoders groups",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/usermod$\") AND (process_command_line = RGX(\".*\\\\-aG\\\\ root.*\") OR process_command_line = RGX(\".*\\\\-aG\\\\ sudoers.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5f8a459b-2e51-4b91-bcc2-bf4532c84d42"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

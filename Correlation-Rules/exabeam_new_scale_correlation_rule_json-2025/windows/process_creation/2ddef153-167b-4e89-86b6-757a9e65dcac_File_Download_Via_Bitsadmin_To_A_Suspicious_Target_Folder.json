@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "File Download Via Bitsadmin To A Suspicious Target Folder",
+      "description": "Detects usage of bitsadmin downloading a file to a suspicious target folder",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\bitsadmin\\\\\\.exe$\") OR process_original_file_name = \"bitsadmin\\.exe\") AND (process_command_line = RGX(\".*\\\\ \\\\/transfer\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\/create\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\/addfile\\\\ .*\")) AND (process_command_line = RGX(\".*\\\\:\\\\\\\\Perflogs.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\ProgramData\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Desktop\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\%ProgramData\\\\%.*\") OR process_command_line = RGX(\".*\\\\%public\\\\%.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "dcba1e0e-2f24-40ce-aafc-4bc764c5ce3f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

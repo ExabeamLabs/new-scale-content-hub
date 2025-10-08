@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Suspicious Execution Of Regasm/Regsvcs With Uncommon Extension",
+      "description": "Detects potentially suspicious execution of the Regasm/Regsvcs utilities with an uncommon extension.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\Regsvcs\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\Regasm\\\\\\.exe$\")) OR (process_original_file_name = \"RegSvcs\\.exe\" OR process_original_file_name = \"RegAsm\\.exe\")) AND (process_command_line = RGX(\".*\\\\\\.dat.*\") OR process_command_line = RGX(\".*\\\\\\.gif.*\") OR process_command_line = RGX(\".*\\\\\\.jpeg.*\") OR process_command_line = RGX(\".*\\\\\\.jpg.*\") OR process_command_line = RGX(\".*\\\\\\.png.*\") OR process_command_line = RGX(\".*\\\\\\.txt.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9cac930c-6ad3-40ce-a2b9-7f07d7dce326"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

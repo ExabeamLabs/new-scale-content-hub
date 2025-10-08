@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation Via Stdin - Security",
+      "description": "Detects Obfuscated Powershell via Stdin in Scripts Note: Unmapped fields: ServiceFileName",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4697 AND (ServiceFileName = RGX(\".*set.*\") AND ServiceFileName = RGX(\".*\\\\&\\\\&.*\")) AND (ServiceFileName = RGX(\".*environment.*\") OR ServiceFileName = RGX(\".*invoke.*\") OR ServiceFileName = RGX(\".*\\\\$\\\\{input\\\\).*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a33d20a8-3b78-44fa-a1ec-2349a3422257"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

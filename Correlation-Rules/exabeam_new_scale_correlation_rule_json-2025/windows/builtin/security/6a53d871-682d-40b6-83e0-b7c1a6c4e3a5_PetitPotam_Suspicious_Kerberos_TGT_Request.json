@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PetitPotam Suspicious Kerberos TGT Request",
+      "description": "Detect suspicious Kerberos TGT requests.\nOnce an attacer obtains a computer certificate by abusing Active Directory Certificate Services in combination with PetitPotam, the next step would be to leverage the certificate for malicious purposes.\nOne way of doing this is to request a Kerberos Ticket Granting Ticket using a tool like Rubeus.\nThis request will generate a 4768 event with some unusual fields depending on the environment.\nThis analytic will require tuning, we recommend filtering Account_Name to the Domain Controller computer accounts.\n Note: Unmapped fields: CertThumbprint, IpAddress",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4768 AND dest_user = RGX(\"\\\\$$\") AND CertThumbprint = RGX(\".**.*\")) AND  NOT (IpAddress = \"\\:\\:1\" OR CertThumbprint = \"\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6878031a-1046-4cc4-a807-779fc134a970"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

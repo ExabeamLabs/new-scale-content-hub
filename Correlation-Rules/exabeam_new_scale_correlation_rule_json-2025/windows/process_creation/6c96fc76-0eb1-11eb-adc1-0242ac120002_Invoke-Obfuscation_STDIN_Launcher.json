@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation STDIN+ Launcher",
+      "description": "Detects Obfuscated use of stdin to execute PowerShell",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_command_line = RGX(\"cmd.{0,5}(?:/c|/r).+powershell.+(?:${?input}?|noexit).+\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9d84df2e-a975-46f3-873f-158d1e975635"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

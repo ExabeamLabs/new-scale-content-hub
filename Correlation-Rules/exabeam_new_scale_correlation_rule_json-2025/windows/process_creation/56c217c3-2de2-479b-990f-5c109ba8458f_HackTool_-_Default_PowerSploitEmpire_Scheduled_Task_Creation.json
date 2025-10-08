@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - Default PowerSploit/Empire Scheduled Task Creation",
+      "description": "Detects the creation of a schtask via PowerSploit or Empire Default Configuration.",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((parent_process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\")) AND process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\/Create.*\") AND process_command_line = RGX(\".*powershell\\\\\\.exe\\\\ \\\\-NonI.*\") AND process_command_line = RGX(\".*\\\\/TN\\\\ Updater\\\\ \\\\/TR.*\")) AND (process_command_line = RGX(\".*\\\\/SC\\\\ ONLOGON.*\") OR process_command_line = RGX(\".*\\\\/SC\\\\ DAILY\\\\ \\\\/ST.*\") OR process_command_line = RGX(\".*\\\\/SC\\\\ ONIDLE.*\") OR process_command_line = RGX(\".*\\\\/SC\\\\ HOURLY.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "42aba528-6fab-4e2e-948d-a5a795a369a0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

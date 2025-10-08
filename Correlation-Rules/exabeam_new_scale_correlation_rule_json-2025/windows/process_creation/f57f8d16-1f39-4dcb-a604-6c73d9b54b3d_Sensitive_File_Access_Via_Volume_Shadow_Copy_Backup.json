@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Sensitive File Access Via Volume Shadow Copy Backup",
+      "description": "Detects a command that accesses the VolumeShadowCopy in order to extract sensitive files such as the Security or SAM registry hives or the AD database (ntds.dit)\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\\\\\\\\\\\\\\\\\?\\\\\\\\GLOBALROOT\\\\\\\\Device\\\\\\\\HarddiskVolumeShadowCopy.*\") AND (process_command_line = RGX(\".*\\\\\\\\NTDS\\\\\\.dit.*\") OR process_command_line = RGX(\".*\\\\\\\\SYSTEM.*\") OR process_command_line = RGX(\".*\\\\\\\\SECURITY.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "54298da0-ee3c-4232-a9bd-0a685edc24c1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

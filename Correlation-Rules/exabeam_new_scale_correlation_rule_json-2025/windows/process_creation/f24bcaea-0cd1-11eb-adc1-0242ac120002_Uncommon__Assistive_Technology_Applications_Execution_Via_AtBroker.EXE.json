@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Uncommon  Assistive Technology Applications Execution Via AtBroker.EXE",
+      "description": "Detects the start of a non built-in assistive technology applications via \"Atbroker.EXE\".",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\AtBroker\\\\\\.exe$\") OR process_original_file_name = \"AtBroker\\.exe\") AND process_command_line = RGX(\".*start.*\")) AND  NOT ((process_command_line = RGX(\".*animations.*\") OR process_command_line = RGX(\".*audiodescription.*\") OR process_command_line = RGX(\".*caretbrowsing.*\") OR process_command_line = RGX(\".*caretwidth.*\") OR process_command_line = RGX(\".*colorfiltering.*\") OR process_command_line = RGX(\".*cursorindicator.*\") OR process_command_line = RGX(\".*cursorscheme.*\") OR process_command_line = RGX(\".*filterkeys.*\") OR process_command_line = RGX(\".*focusborderheight.*\") OR process_command_line = RGX(\".*focusborderwidth.*\") OR process_command_line = RGX(\".*highcontrast.*\") OR process_command_line = RGX(\".*keyboardcues.*\") OR process_command_line = RGX(\".*keyboardpref.*\") OR process_command_line = RGX(\".*livecaptions.*\") OR process_command_line = RGX(\".*magnifierpane.*\") OR process_command_line = RGX(\".*messageduration.*\") OR process_command_line = RGX(\".*minimumhitradius.*\") OR process_command_line = RGX(\".*mousekeys.*\") OR process_command_line = RGX(\".*Narrator.*\") OR process_command_line = RGX(\".*osk.*\") OR process_command_line = RGX(\".*overlappedcontent.*\") OR process_command_line = RGX(\".*showsounds.*\") OR process_command_line = RGX(\".*soundsentry.*\") OR process_command_line = RGX(\".*speechreco.*\") OR process_command_line = RGX(\".*stickykeys.*\") OR process_command_line = RGX(\".*togglekeys.*\") OR process_command_line = RGX(\".*voiceaccess.*\") OR process_command_line = RGX(\".*windowarranging.*\") OR process_command_line = RGX(\".*windowtracking.*\") OR process_command_line = RGX(\".*windowtrackingtimeout.*\") OR process_command_line = RGX(\".*windowtrackingzorder.*\"))) AND  NOT (process_command_line = RGX(\".*Oracle\\\\_JavaAccessBridge.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8909ab26-fcc8-4175-be7e-5a923db05d5e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

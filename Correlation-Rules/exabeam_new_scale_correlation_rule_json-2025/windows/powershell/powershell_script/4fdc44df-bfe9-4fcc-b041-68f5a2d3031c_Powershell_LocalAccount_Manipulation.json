@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Powershell LocalAccount Manipulation",
+      "description": "Adversaries may manipulate accounts to maintain access to victim systems.\nAccount manipulation may consist of any action that preserves adversary access to a compromised account, such as modifying credentials or permission groups\n Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Disable\\\\-LocalUser.*\") OR ScriptBlockText = RGX(\".*Enable\\\\-LocalUser.*\") OR ScriptBlockText = RGX(\".*Get\\\\-LocalUser.*\") OR ScriptBlockText = RGX(\".*Set\\\\-LocalUser.*\") OR ScriptBlockText = RGX(\".*New\\\\-LocalUser.*\") OR ScriptBlockText = RGX(\".*Rename\\\\-LocalUser.*\") OR ScriptBlockText = RGX(\".*Remove\\\\-LocalUser.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0cc196c9-24c3-46f5-9227-bf7a768386aa"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

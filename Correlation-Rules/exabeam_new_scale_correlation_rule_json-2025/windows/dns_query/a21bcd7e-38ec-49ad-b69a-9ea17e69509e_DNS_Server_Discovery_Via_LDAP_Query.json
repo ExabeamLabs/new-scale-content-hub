@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "DNS Server Discovery Via LDAP Query",
+      "description": "Detects DNS server discovery via LDAP query requests from uncommon applications Note: Unmapped fields: QueryName",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "QueryName = RGX(\"^\\\\_ldap\\\\\\.\") AND  NOT ((process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\.*\")) OR (process_path = RGX(\".*\\\\:\\\\\\\\ProgramData\\\\\\\\Microsoft\\\\\\\\Windows\\\\ Defender\\\\\\\\Platform\\\\\\\\.*\") AND process_path = RGX(\"\\\\\\\\MsMpEng\\\\\\.exe$\")) OR process_path = \"\\<unknown\\ process\\>\" OR process_path = \"None\") AND  NOT (process_path = RGX(\"^C\\\\:\\\\\\\\WindowsAzure\\\\\\\\GuestAgent\") OR (process_path = RGX(\"\\\\\\\\chrome\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\firefox\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\opera\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "df173215-35ec-42d1-badb-89a9ea94c9c6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

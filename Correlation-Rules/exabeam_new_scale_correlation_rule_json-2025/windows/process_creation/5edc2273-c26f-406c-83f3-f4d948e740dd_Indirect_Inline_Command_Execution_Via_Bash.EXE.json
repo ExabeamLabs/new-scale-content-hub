@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Indirect Inline Command Execution Via Bash.EXE",
+      "description": "Detects execution of Microsoft bash launcher with the \"-c\" flag.\nThis can be used to potentially bypass defenses and execute Linux or Windows-based binaries directly via bash.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\bash\\\\\\.exe$\") OR process_path = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\bash\\\\\\.exe$\")) OR process_original_file_name = \"Bash\\.exe\") AND process_command_line = RGX(\".*\\\\ \\\\-c\\\\ .*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3e4f2a41-0dd3-427b-9d00-b087f5d8f8c3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

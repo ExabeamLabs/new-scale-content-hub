@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Netsh Allow Group Policy on Microsoft Defender Firewall",
+      "description": "Adversaries may modify system firewalls in order to bypass controls limiting network usage",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\netsh\\\\\\.exe$\") OR process_original_file_name = \"netsh\\.exe\") AND (process_command_line = RGX(\".*advfirewall.*\") AND process_command_line = RGX(\".*firewall.*\") AND process_command_line = RGX(\".*set.*\") AND process_command_line = RGX(\".*rule.*\") AND process_command_line = RGX(\".*group\\\\=.*\") AND process_command_line = RGX(\".*new.*\") AND process_command_line = RGX(\".*enable\\\\=Yes.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6a9e51e8-e90e-4e47-998c-41ae1d6b71af"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

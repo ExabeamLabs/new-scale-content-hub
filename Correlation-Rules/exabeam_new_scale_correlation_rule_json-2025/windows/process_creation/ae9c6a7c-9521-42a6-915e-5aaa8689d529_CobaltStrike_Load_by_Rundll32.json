@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "CobaltStrike Load by Rundll32",
+      "description": "Rundll32 can be use by Cobalt Strike with StartW function to load DLLs from the command line.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_original_file_name = \"RUNDLL32\\.EXE\" OR (process_command_line = RGX(\".*rundll32\\\\\\.exe.*\") OR process_command_line = RGX(\".*rundll32\\\\ .*\"))) AND (process_command_line = RGX(\".*\\\\\\.dll.*\") AND (process_command_line = RGX(\"\\\\ StartW$\") OR process_command_line = RGX(\"\\\\,StartW$\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b4e78761-2d85-472f-8cd6-b4ea6a5ab2f5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

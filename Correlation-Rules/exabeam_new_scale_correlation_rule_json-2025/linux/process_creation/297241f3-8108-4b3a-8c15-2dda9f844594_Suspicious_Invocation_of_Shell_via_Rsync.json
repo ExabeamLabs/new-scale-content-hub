@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Invocation of Shell via Rsync",
+      "description": "Detects the execution of a shell as sub process of \"rsync\" without the expected command line flag \"-e\" being used, which could be an indication of exploitation as described in CVE-2024-12084. This behavior is commonly associated with attempts to execute arbitrary commands or escalate privileges, potentially leading to unauthorized access or further exploitation.\n",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((parent_process_path = RGX(\"\\\\/rsync$\") OR parent_process_path = RGX(\"\\\\/rsyncd$\")) AND (process_path = RGX(\"\\\\/ash$\") OR process_path = RGX(\"\\\\/bash$\") OR process_path = RGX(\"\\\\/csh$\") OR process_path = RGX(\"\\\\/dash$\") OR process_path = RGX(\"\\\\/ksh$\") OR process_path = RGX(\"\\\\/sh$\") OR process_path = RGX(\"\\\\/tcsh$\") OR process_path = RGX(\"\\\\/zsh$\"))) AND  NOT (process_command_line = RGX(\".*\\\\ \\\\-e\\\\ .*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "05bf082c-ea99-40bb-b413-5464f00b2571"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

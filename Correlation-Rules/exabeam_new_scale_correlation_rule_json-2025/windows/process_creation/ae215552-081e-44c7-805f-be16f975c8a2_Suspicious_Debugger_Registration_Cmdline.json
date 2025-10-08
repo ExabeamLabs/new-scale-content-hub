@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Debugger Registration Cmdline",
+      "description": "Detects the registration of a debugger for a program that is available in the logon screen (sticky key backdoor).",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\\\\\CurrentVersion\\\\\\\\Image\\\\ File\\\\ Execution\\\\ Options\\\\\\\\.*\") AND (process_command_line = RGX(\".*sethc\\\\\\.exe.*\") OR process_command_line = RGX(\".*utilman\\\\\\.exe.*\") OR process_command_line = RGX(\".*osk\\\\\\.exe.*\") OR process_command_line = RGX(\".*magnify\\\\\\.exe.*\") OR process_command_line = RGX(\".*narrator\\\\\\.exe.*\") OR process_command_line = RGX(\".*displayswitch\\\\\\.exe.*\") OR process_command_line = RGX(\".*atbroker\\\\\\.exe.*\") OR process_command_line = RGX(\".*HelpPane\\\\\\.exe.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6da0a7f6-d658-424a-8639-38d3b81dfa2d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

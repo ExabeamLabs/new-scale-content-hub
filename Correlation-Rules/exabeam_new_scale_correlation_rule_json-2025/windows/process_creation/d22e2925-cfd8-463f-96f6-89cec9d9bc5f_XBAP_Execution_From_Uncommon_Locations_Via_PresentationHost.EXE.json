@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "XBAP Execution From Uncommon Locations Via PresentationHost.EXE",
+      "description": "Detects the execution of \".xbap\" (Browser Applications) files via PresentationHost.EXE from an uncommon location. These files can be abused to run malicious \".xbap\" files any bypass AWL\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\presentationhost\\\\\\.exe$\") OR process_original_file_name = \"PresentationHost\\.exe\") AND process_command_line = RGX(\".*\\\\\\.xbap.*\")) AND  NOT ((process_command_line = RGX(\".*\\\\ C\\\\:\\\\\\\\Windows\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\ C\\\\:\\\\\\\\Program\\\\ Files.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "30d1e4c2-c3c3-4510-91bc-d06c666a1b99"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

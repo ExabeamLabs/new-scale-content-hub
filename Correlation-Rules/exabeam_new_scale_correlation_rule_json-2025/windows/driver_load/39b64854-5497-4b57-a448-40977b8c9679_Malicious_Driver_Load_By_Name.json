@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Malicious Driver Load By Name",
+      "description": "Detects loading of known malicious drivers via the file name of the drivers. Note: Unmapped fields: ImageLoaded",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ImageLoaded = RGX(\"\\\\\\\\wfshbr64\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\ktmutil7odm\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\ktes\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\a26363e7b02b13f2b8d697abb90cd5c3\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\kt2\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\4748696211bd56c2d93c21cab91e82a5\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\malicious\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\a236e7d654cd932b7d11cb604629a2d0\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\spwizimgvt\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\c94f405c5929cfcccc8ad00b42c95083\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\fur\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\wantd\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\windbg\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\4118b86e490aed091b1a219dba45f332\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\gmer64\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\1fc7aeeff3ab19004d2e53eae8160ab1\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\poortry2\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\wintapix\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\daxin\\\\_blank6\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\6771b13a53b9c7449d4891e427735ea2\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\blacklotus\\\\_driver\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\air\\\\_system10\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\dkrtk\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\7\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\sense5ext\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\ktgn\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\ndislan\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\nlslexicons0024uvn\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\be6318413160e589080df02bb3ca6e6a\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\4\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\wantd\\\\_2\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\e29f6311ae87542b3d693c1f38e4e3ad\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\daxin\\\\_blank3\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\gftkyj64\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\daxin\\\\_blank2\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\wantd\\\\_4\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\reddriver\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\834761775\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\mlgbbiicaihflrnh\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\mjj0ge\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\daxin\\\\_blank\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\daxin\\\\_blank5\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\poortry1\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\msqpq\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\mimidrv\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\e939448b28a4edc81f1f974cebf6e7d2\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\prokiller64\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\nodedriver\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\wantd\\\\_3\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\lctka\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\kapchelper\\\\_x64\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\daxin\\\\_blank4\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\a9df5964635ef8bd567ae487c3d214c4\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\wantd\\\\_6\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\ntbios\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\wantd\\\\_5\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\pciecubed\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\mimikatz\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\nqrmq\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\2\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\poortry\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\ntbios\\\\_2\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\fgme\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\telephonuafy\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\typelibde\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\daxin\\\\_blank1\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\ef0e1725aaf0c6c972593f860531a2ea\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\5a4fe297c7d42539303137b6d75b150d\\\\\\.sys$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d4fb0a7d-4328-4be6-8247-17afc4f949de"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

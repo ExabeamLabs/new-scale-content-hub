@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "TeamViewer Remote Session",
+      "description": "Detects the creation of log files during a TeamViewer remote session",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((file_path = RGX(\"\\\\\\\\TeamViewer\\\\\\\\RemotePrinting\\\\\\\\tvprint\\\\\\.db$\") OR file_path = RGX(\"\\\\\\\\TeamViewer\\\\\\\\TVNetwork\\\\\\.log$\")) OR (file_path = RGX(\".*\\\\\\\\TeamViewer.*\") AND file_path = RGX(\".*\\\\_Logfile\\\\\\.log.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2fbefd9a-138f-4622-aca3-a4f57f08fd52"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

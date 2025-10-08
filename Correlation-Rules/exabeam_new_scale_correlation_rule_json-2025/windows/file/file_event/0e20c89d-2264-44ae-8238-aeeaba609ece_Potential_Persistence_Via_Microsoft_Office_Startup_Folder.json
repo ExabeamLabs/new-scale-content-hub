@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Persistence Via Microsoft Office Startup Folder",
+      "description": "Detects creation of Microsoft Office files inside of one of the default startup folders in order to achieve persistence.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((file_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Word\\\\\\\\STARTUP.*\") OR (file_path = RGX(\".*\\\\\\\\Office.*\") AND file_path = RGX(\".*\\\\\\\\Program\\\\ Files.*\") AND file_path = RGX(\".*\\\\\\\\STARTUP.*\"))) AND (file_path = RGX(\"\\\\\\.doc$\") OR file_path = RGX(\"\\\\\\.docm$\") OR file_path = RGX(\"\\\\\\.docx$\") OR file_path = RGX(\"\\\\\\.dot$\") OR file_path = RGX(\"\\\\\\.dotm$\") OR file_path = RGX(\"\\\\\\.rtf$\"))) OR ((file_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Excel\\\\\\\\XLSTART.*\") OR (file_path = RGX(\".*\\\\\\\\Office.*\") AND file_path = RGX(\".*\\\\\\\\Program\\\\ Files.*\") AND file_path = RGX(\".*\\\\\\\\XLSTART.*\"))) AND (file_path = RGX(\"\\\\\\.xls$\") OR file_path = RGX(\"\\\\\\.xlsm$\") OR file_path = RGX(\"\\\\\\.xlsx$\") OR file_path = RGX(\"\\\\\\.xlt$\") OR file_path = RGX(\"\\\\\\.xltm$\")))) AND  NOT ((process_path = RGX(\"\\\\\\\\WINWORD\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\EXCEL\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "87118a01-32c5-4a85-90e5-4a200e3bd880"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

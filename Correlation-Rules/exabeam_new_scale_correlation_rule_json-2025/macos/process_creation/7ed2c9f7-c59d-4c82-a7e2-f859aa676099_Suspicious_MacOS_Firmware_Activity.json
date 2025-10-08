@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious MacOS Firmware Activity",
+      "description": "Detects when a user manipulates with Firmward Password on MacOS. NOTE - this command has been disabled on silicon-based apple computers.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = \"\\/usr\\/sbin\\/firmwarepasswd\" AND (process_command_line = RGX(\".*setpasswd.*\") OR process_command_line = RGX(\".*full.*\") OR process_command_line = RGX(\".*delete.*\") OR process_command_line = RGX(\".*check.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7f5b4bc6-6e31-4ab7-a87a-e0dc18203148"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

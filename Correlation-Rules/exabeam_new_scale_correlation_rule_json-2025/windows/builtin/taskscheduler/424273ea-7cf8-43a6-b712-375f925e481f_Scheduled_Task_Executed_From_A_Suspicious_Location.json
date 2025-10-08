@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Scheduled Task Executed From A Suspicious Location",
+      "description": "Detects the execution of Scheduled Tasks where the Program being run is located in a suspicious location or it's an unusale program to be run from a Scheduled Task Note: Unmapped fields: Path",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 129 AND (Path = RGX(\".*C\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\") OR Path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") OR Path = RGX(\".*\\\\\\\\Desktop\\\\\\\\.*\") OR Path = RGX(\".*\\\\\\\\Downloads\\\\\\\\.*\") OR Path = RGX(\".*\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR Path = RGX(\".*C\\\\:\\\\\\\\Temp\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1a1621fa-39b0-46cd-9299-b9ed37627d4e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

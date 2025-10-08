@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "DLL Loaded via CertOC.EXE",
+      "description": "Detects when a user installs certificates by using CertOC.exe to loads the target DLL file.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\certoc\\\\\\.exe$\") OR process_original_file_name = \"CertOC\\.exe\") AND process_command_line = RGX(\".*\\\\ \\\\-LoadDLL\\\\ .*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "44896c9c-3f8c-4782-88c6-af5fb8427b34"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

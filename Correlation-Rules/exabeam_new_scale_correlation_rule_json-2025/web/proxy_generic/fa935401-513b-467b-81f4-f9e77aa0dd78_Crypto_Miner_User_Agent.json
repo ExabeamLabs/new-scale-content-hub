@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Crypto Miner User Agent",
+      "description": "Detects suspicious user agent strings used by crypto miners in proxy logs Note: Unmapped fields: c-useragent",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(c-useragent = RGX(\"^XMRig\\\\ \") OR c-useragent = RGX(\"^ccminer\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a9667b3b-1357-4883-970f-695f338c0f83"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

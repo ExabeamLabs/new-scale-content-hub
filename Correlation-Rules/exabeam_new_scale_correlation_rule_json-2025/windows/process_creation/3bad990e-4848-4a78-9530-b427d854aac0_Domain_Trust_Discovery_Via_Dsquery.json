@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Domain Trust Discovery Via Dsquery",
+      "description": "Detects execution of \"dsquery.exe\" for domain trust discovery",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\dsquery\\\\\\.exe$\") OR process_original_file_name = \"dsquery\\.exe\") AND process_command_line = RGX(\".*trustedDomain.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "fb1cbaa9-ce87-42a8-bb27-c9d1887e7b0b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

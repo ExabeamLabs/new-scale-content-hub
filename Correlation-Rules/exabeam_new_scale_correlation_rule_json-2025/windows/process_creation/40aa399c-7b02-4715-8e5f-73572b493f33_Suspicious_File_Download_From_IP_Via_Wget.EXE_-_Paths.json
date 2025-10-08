@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious File Download From IP Via Wget.EXE - Paths",
+      "description": "Detects potentially suspicious file downloads directly from IP addresses and stored in suspicious locations using Wget.exe",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\wget\\\\\\.exe$\") OR process_original_file_name = \"wget\\.exe\") AND process_command_line = RGX(\"://[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}\") AND process_command_line = RGX(\".*http.*\") AND (process_command_line = RGX(\"\\s-O\\s\") OR process_command_line = RGX(\".*\\\\-\\\\-output\\\\-document.*\")) AND ((process_command_line = RGX(\".*\\\\:\\\\\\\\PerfLogs\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Help\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Temporary\\\\ Internet.*\")) OR (process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\\\\\Favorites\\\\\\\\.*\")) OR (process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\\\\\Favourites\\\\\\\\.*\")) OR (process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\\\\\Contacts\\\\\\\\.*\")) OR (process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\\\\\Pictures\\\\\\\\.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "dae7e784-e363-4763-9aa5-651f8bbc8c4b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

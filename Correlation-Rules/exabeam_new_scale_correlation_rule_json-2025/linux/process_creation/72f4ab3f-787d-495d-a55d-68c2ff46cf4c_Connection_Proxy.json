@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Connection Proxy",
+      "description": "Detects setting proxy configuration",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*http\\\\_proxy\\\\=.*\") OR process_command_line = RGX(\".*https\\\\_proxy\\\\=.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "74f53b49-4503-4c81-8129-843157794ce0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

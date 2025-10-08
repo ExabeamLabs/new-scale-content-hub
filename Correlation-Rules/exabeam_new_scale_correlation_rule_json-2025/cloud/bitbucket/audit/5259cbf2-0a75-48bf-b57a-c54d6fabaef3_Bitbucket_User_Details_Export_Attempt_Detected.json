@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Bitbucket User Details Export Attempt Detected",
+      "description": "Detects user data export activity. Note: Unmapped fields: auditType.category, auditType.action",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(auditType.category = \"Users\\ and\\ groups\" AND (auditType.action = \"User\\ permissions\\ export\\ failed\" OR auditType.action = \"User\\ permissions\\ export\\ started\" OR auditType.action = \"User\\ permissions\\ exported\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2e3b34d1-8e8a-431f-9fe3-5cbe9a34df98"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

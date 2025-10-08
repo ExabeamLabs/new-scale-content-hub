@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Active Directory Structure Export Via Csvde.EXE",
+      "description": "Detects the execution of \"csvde.exe\" in order to export organizational Active Directory structure.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\csvde\\\\\\.exe$\") OR process_original_file_name = \"csvde\\.exe\") AND process_command_line = RGX(\".*\\\\ \\\\-f.*\")) AND  NOT (process_command_line = RGX(\".*\\\\ \\\\-i.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4c38f579-2083-4d03-8f59-ffb2713c7f29"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

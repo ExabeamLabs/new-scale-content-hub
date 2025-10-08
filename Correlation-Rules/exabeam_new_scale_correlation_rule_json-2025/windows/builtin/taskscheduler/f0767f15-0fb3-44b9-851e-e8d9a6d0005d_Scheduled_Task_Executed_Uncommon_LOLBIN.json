@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Scheduled Task Executed Uncommon LOLBIN",
+      "description": "Detects the execution of Scheduled Tasks where the program being run is located in a suspicious location or where it is an unusual program to be run from a Scheduled Task Note: Unmapped fields: Path",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 129 AND (Path = RGX(\"\\\\\\\\calc\\\\\\.exe$\") OR Path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR Path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR Path = RGX(\"\\\\\\\\mspaint\\\\\\.exe$\") OR Path = RGX(\"\\\\\\\\notepad\\\\\\.exe$\") OR Path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR Path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "53c44e59-d58d-4efd-87c6-3ebfc159d73a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

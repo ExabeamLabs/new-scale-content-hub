@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "SysKey Registry Keys Access",
+      "description": "Detects handle requests and access operations to specific registry keys to calculate the SysKey Note: Unmapped fields: ObjectType, ObjectName",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((event_id = 4656 OR event_id = 4663) AND ObjectType = \"key\" AND (ObjectName = RGX(\"lsa\\\\\\\\JD$\") OR ObjectName = RGX(\"lsa\\\\\\\\GBG$\") OR ObjectName = RGX(\"lsa\\\\\\\\Skew1$\") OR ObjectName = RGX(\"lsa\\\\\\\\Data$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4132151f-4eef-4302-8c01-6afb4dc2cb46"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

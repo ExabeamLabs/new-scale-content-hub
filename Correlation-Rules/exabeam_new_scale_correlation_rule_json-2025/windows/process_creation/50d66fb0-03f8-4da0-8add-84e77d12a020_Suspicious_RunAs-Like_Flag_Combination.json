@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious RunAs-Like Flag Combination",
+      "description": "Detects suspicious command line flags that let the user set a target user and command as e.g. seen in PsExec-like tools",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*\\\\ \\\\-u\\\\ system\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-\\\\-user\\\\ system\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-u\\\\ NT.*\") OR process_command_line = RGX(\".*\\\\ \\\\-u\\\\ \\\\\"NT.*\") OR process_command_line = RGX(\".*\\\\ \\\\-u\\\\ \\\\'NT.*\") OR process_command_line = RGX(\".*\\\\ \\\\-\\\\-system\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-u\\\\ administrator\\\\ .*\")) AND (process_command_line = RGX(\".*\\\\ \\\\-c\\\\ cmd.*\") OR process_command_line = RGX(\".*\\\\ \\\\-c\\\\ \\\\\"cmd.*\") OR process_command_line = RGX(\".*\\\\ \\\\-c\\\\ powershell.*\") OR process_command_line = RGX(\".*\\\\ \\\\-c\\\\ \\\\\"powershell.*\") OR process_command_line = RGX(\".*\\\\ \\\\-\\\\-command\\\\ cmd.*\") OR process_command_line = RGX(\".*\\\\ \\\\-\\\\-command\\\\ powershell.*\") OR process_command_line = RGX(\".*\\\\ \\\\-c\\\\ whoami.*\") OR process_command_line = RGX(\".*\\\\ \\\\-c\\\\ wscript.*\") OR process_command_line = RGX(\".*\\\\ \\\\-c\\\\ cscript.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a76727df-317e-4f37-b749-029659136aab"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

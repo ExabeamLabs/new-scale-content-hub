@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "File Download From Browser Process Via Inline URL",
+      "description": "Detects execution of a browser process with a URL argument pointing to a file with a potentially interesting extension. This can be abused to download arbitrary files or to hide from the user for example by launching the browser in a minimized state.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\brave\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\chrome\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msedge\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\opera\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\vivaldi\\\\\\.exe$\")) AND process_command_line = RGX(\".*http.*\") AND (process_command_line = RGX(\"\\\\\\.7z$\") OR process_command_line = RGX(\"\\\\\\.dat$\") OR process_command_line = RGX(\"\\\\\\.dll$\") OR process_command_line = RGX(\"\\\\\\.exe$\") OR process_command_line = RGX(\"\\\\\\.hta$\") OR process_command_line = RGX(\"\\\\\\.ps1$\") OR process_command_line = RGX(\"\\\\\\.psm1$\") OR process_command_line = RGX(\"\\\\\\.txt$\") OR process_command_line = RGX(\"\\\\\\.vbe$\") OR process_command_line = RGX(\"\\\\\\.vbs$\") OR process_command_line = RGX(\"\\\\\\.zip$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e90233aa-de37-448b-bb7f-c8cdddbe4c1f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

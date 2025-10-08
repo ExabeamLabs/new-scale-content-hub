@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - LocalPotato Execution",
+      "description": "Detects the execution of the LocalPotato POC based on basic PE metadata information and default CLI examples",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\LocalPotato\\\\\\.exe$\") OR (process_command_line = RGX(\".*\\\\\\.exe\\\\ \\\\-i\\\\ C\\\\:\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\-o\\\\ Windows\\\\\\\\.*\")) OR (process_hash = RGX(\".*IMPHASH\\\\=E1742EE971D6549E8D4D81115F88F1FC.*\") OR process_hash = RGX(\".*IMPHASH\\\\=DD82066EFBA94D7556EF582F247C8BB5.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c2f89789-dd5f-4294-a014-6795eaac9e93"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

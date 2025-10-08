@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Gpresult Display Group Policy Information",
+      "description": "Detects cases in which a user uses the built-in Windows utility gpresult to display the Resultant Set of Policy (RSoP) information",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\gpresult\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\/z.*\") OR process_command_line = RGX(\".*\\\\/v.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ffc8e7fc-f0ca-43cd-8a2e-d4832f07b2db"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

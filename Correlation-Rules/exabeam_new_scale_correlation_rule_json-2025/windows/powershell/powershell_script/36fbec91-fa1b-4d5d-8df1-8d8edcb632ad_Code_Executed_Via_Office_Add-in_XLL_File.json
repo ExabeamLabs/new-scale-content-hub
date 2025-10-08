@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Code Executed Via Office Add-in XLL File",
+      "description": "Adversaries may abuse Microsoft Office add-ins to obtain persistence on a compromised system.\nOffice add-ins can be used to add functionality to Office programs\n Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*new\\\\-object\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\-ComObject\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\\\.application.*\") AND ScriptBlockText = RGX(\".*\\\\\\.RegisterXLL.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0aa7ed54-5016-4e2a-8ada-456209189694"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

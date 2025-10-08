@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Base64 MZ Header In CommandLine",
+      "description": "Detects encoded base64 MZ header in the commandline",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*TVqQAAMAAAAEAAAA.*\") OR process_command_line = RGX(\".*TVpQAAIAAAAEAA8A.*\") OR process_command_line = RGX(\".*TVqAAAEAAAAEABAA.*\") OR process_command_line = RGX(\".*TVoAAAAAAAAAAAAA.*\") OR process_command_line = RGX(\".*TVpTAQEAAAAEAAAA.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "972ff65b-1a6f-4b2a-bd86-9b7968e464ee"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "LiveKD Driver Creation By Uncommon Process",
+      "description": "Detects the creation of the LiveKD driver by a process image other than \"livekd.exe\".",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "file_path = \"C\\:\\\\Windows\\\\System32\\\\drivers\\\\LiveKdD\\.SYS\" AND  NOT ((process_path = RGX(\"\\\\\\\\livekd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\livek64\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "27e521f2-0871-4e4e-b808-75ca1ddda5f6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

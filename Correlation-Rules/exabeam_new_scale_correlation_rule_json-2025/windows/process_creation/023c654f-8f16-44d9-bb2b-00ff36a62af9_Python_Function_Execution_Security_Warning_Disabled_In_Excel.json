@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Python Function Execution Security Warning Disabled In Excel",
+      "description": "Detects changes to the registry value \"PythonFunctionWarnings\" that would prevent any warnings or alerts from showing when Python functions are about to be executed.\nThreat actors could run malicious code through the new Microsoft Excel feature that allows Python to run within the spreadsheet.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Office\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\\\\\Excel\\\\\\\\Security.*\") AND process_command_line = RGX(\".*PythonFunctionWarnings.*\")) AND process_command_line = RGX(\".*\\\\ 0.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "cb5bfb33-4d24-468f-a9dd-3f5d14320b78"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

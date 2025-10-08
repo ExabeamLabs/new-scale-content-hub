@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Double Extension File Execution",
+      "description": "Detects suspicious use of an .exe extension after a non-executable file extension like .pdf.exe, a set of spaces or underlines to cloak the executable file in spear phishing campaigns",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\ \\\\ \\\\ \\\\ \\\\ \\\\ \\\\\\.exe$\") OR process_path = RGX(\"\\\\_\\\\_\\\\_\\\\_\\\\_\\\\_\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\.doc\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\.doc\\\\\\.js$\") OR process_path = RGX(\"\\\\\\.docx\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\.docx\\\\\\.js$\") OR process_path = RGX(\"\\\\\\.gif\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\.jpeg\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\.jpg\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\.mkv\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\.mov\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\.mp3\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\.mp4\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\.pdf\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\.pdf\\\\\\.js$\") OR process_path = RGX(\"\\\\\\.png\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\.ppt\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\.ppt\\\\\\.js$\") OR process_path = RGX(\"\\\\\\.pptx\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\.pptx\\\\\\.js$\") OR process_path = RGX(\"\\\\\\.rtf\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\.rtf\\\\\\.js$\") OR process_path = RGX(\"\\\\\\.svg\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\.txt\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\.txt\\\\\\.js$\") OR process_path = RGX(\"\\\\\\.xls\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\.xls\\\\\\.js$\") OR process_path = RGX(\"\\\\\\.xlsx\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\.xlsx\\\\\\.js$\") OR process_path = RGX(\"\u2800\u2800\u2800\u2800\u2800\u2800\\\\\\.exe$\")) AND (process_command_line = RGX(\".*\\\\ \\\\ \\\\ \\\\ \\\\ \\\\ \\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\_\\\\_\\\\_\\\\_\\\\_\\\\_\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\\\.doc\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\\\.doc\\\\\\.js.*\") OR process_command_line = RGX(\".*\\\\\\.docx\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\\\.docx\\\\\\.js.*\") OR process_command_line = RGX(\".*\\\\\\.gif\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\\\.jpeg\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\\\.jpg\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\\\.mkv\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\\\.mov\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\\\.mp3\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\\\.mp4\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\\\.pdf\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\\\.pdf\\\\\\.js.*\") OR process_command_line = RGX(\".*\\\\\\.png\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\\\.ppt\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\\\.ppt\\\\\\.js.*\") OR process_command_line = RGX(\".*\\\\\\.pptx\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\\\.pptx\\\\\\.js.*\") OR process_command_line = RGX(\".*\\\\\\.rtf\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\\\.rtf\\\\\\.js.*\") OR process_command_line = RGX(\".*\\\\\\.svg\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\\\.txt\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\\\.txt\\\\\\.js.*\") OR process_command_line = RGX(\".*\\\\\\.xls\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\\\.xls\\\\\\.js.*\") OR process_command_line = RGX(\".*\\\\\\.xlsx\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\\\.xlsx\\\\\\.js.*\") OR process_command_line = RGX(\".*\u2800\u2800\u2800\u2800\u2800\u2800\\\\\\.exe.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3ea3759f-4b78-48d8-9111-8d3dd01f20c1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

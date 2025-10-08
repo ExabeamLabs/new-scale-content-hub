@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Renamed Powershell Under Powershell Channel",
+      "description": "Detects a renamed Powershell execution, which is a common technique used to circumvent security controls and bypass detection logic that's dependent on process names and process paths.\n Note: Unmapped fields: Data",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "Data = RGX(\".*HostName\\\\=ConsoleHost.*\") AND  NOT ((Data = RGX(\".*HostApplication\\\\=powershell.*\") OR Data = RGX(\".*HostApplication\\\\=C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\WindowsPowerShell\\\\\\\\v1\\\\\\.0\\\\\\\\powershell.*\") OR Data = RGX(\".*HostApplication\\\\=C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\WindowsPowerShell\\\\\\\\v1\\\\\\.0\\\\\\\\powershell.*\") OR Data = RGX(\".*HostApplication\\\\=C\\\\:\\\\/Windows\\\\/System32\\\\/WindowsPowerShell\\\\/v1\\\\\\.0\\\\/powershell.*\") OR Data = RGX(\".*HostApplication\\\\=C\\\\:\\\\/Windows\\\\/SysWOW64\\\\/WindowsPowerShell\\\\/v1\\\\\\.0\\\\/powershell.*\") OR Data = RGX(\".*HostApplication\\\\=C\\\\:\\\\\\\\\\\\\\\\WINDOWS\\\\\\\\\\\\\\\\system32\\\\\\\\\\\\\\\\WindowsPowerShell\\\\\\\\\\\\\\\\v1\\\\\\.0\\\\\\\\\\\\\\\\powershell\\\\\\.exe.*\") OR Data = RGX(\".*HostApplication\\\\=C\\\\:\\\\\\\\\\\\\\\\WINDOWS\\\\\\\\\\\\\\\\SysWOW64\\\\\\\\\\\\\\\\WindowsPowerShell\\\\\\\\\\\\\\\\v1\\\\\\.0\\\\\\\\\\\\\\\\powershell\\\\\\.exe.*\")) OR Data = RGX(\"HostId=[a-zA-Z0-9-]{36}\\s+EngineVersion=\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "08ec511c-c41d-401b-95f9-53c08e0d04b6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

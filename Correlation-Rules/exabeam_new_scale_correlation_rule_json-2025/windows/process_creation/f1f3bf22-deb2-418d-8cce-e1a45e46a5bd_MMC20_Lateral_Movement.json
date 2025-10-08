@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "MMC20 Lateral Movement",
+      "description": "Detects MMC20.Application Lateral Movement; specifically looks for the spawning of the parent MMC.exe with a command line of \"-Embedding\" as a child of svchost.exe",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\svchost\\\\\\.exe$\") AND process_path = RGX(\"\\\\\\\\mmc\\\\\\.exe$\") AND process_command_line = RGX(\".*\\\\-Embedding.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "28b49010-04ff-48f1-8a18-ca1ad7cdb3ec"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

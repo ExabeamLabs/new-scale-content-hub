@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Time Machine Backup Deletion Attempt Via Tmutil - MacOS",
+      "description": "Detects deletion attempts of MacOS Time Machine backups via the native backup utility \"tmutil\".\nAn adversary may perform this action before launching a ransonware attack to prevent the victim from restoring their files.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/tmutil$\") OR process_command_line = RGX(\".*tmutil.*\")) AND process_command_line = RGX(\".*delete.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "994c32d8-6ec3-451b-bedf-bea2e2acd460"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

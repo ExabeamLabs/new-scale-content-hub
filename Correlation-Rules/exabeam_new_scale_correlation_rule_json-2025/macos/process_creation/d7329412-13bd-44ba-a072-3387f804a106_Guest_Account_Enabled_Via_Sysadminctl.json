@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Guest Account Enabled Via Sysadminctl",
+      "description": "Detects attempts to enable the guest account using the sysadminctl utility",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/sysadminctl$\") AND (process_command_line = RGX(\".*\\\\ \\\\-guestAccount.*\") AND process_command_line = RGX(\".*\\\\ on.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "51ad62d7-7b78-44ff-a282-8d6629cd248b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

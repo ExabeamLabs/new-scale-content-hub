@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Rundll32 Invoking Inline VBScript",
+      "description": "Detects suspicious process related to rundll32 based on command line that invokes inline VBScript as seen being used by UNC2452",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*rundll32\\\\\\.exe.*\") AND process_command_line = RGX(\".*Execute.*\") AND process_command_line = RGX(\".*RegRead.*\") AND process_command_line = RGX(\".*window\\\\\\.close.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d3c958aa-f52d-4367-93af-a4cc166da75a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

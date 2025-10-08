@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Recursive Takeown",
+      "description": "Adversaries can interact with the DACLs using built-in Windows commands takeown which can grant adversaries higher permissions on specific files and folders",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\takeown\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\/f\\\\ .*\") AND process_command_line = RGX(\".*\\\\/r.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "081dc08e-3527-4042-a90d-f33630ff8f71"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

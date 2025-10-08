@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PsExec/PAExec Escalation to LOCAL SYSTEM",
+      "description": "Detects suspicious commandline flags used by PsExec and PAExec to escalate a command line to LOCAL_SYSTEM rights",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*\\\\ \\\\-s\\\\ cmd.*\") OR process_command_line = RGX(\".*\\\\ \\\\-s\\\\ \\\\-i\\\\ cmd.*\") OR process_command_line = RGX(\".*\\\\ \\\\-i\\\\ \\\\-s\\\\ cmd.*\") OR process_command_line = RGX(\".*\\\\ \\\\-s\\\\ pwsh.*\") OR process_command_line = RGX(\".*\\\\ \\\\-s\\\\ \\\\-i\\\\ pwsh.*\") OR process_command_line = RGX(\".*\\\\ \\\\-i\\\\ \\\\-s\\\\ pwsh.*\") OR process_command_line = RGX(\".*\\\\ \\\\-s\\\\ powershell.*\") OR process_command_line = RGX(\".*\\\\ \\\\-s\\\\ \\\\-i\\\\ powershell.*\") OR process_command_line = RGX(\".*\\\\ \\\\-i\\\\ \\\\-s\\\\ powershell.*\")) AND (process_command_line = RGX(\".*psexec.*\") OR process_command_line = RGX(\".*paexec.*\") OR process_command_line = RGX(\".*accepteula.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e2176c11-e2a0-45a6-8c1b-d9062e5a69b8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

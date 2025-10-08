@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - RemoteKrbRelay Execution",
+      "description": "Detects the use of RemoteKrbRelay, a Kerberos relaying tool via CommandLine flags and PE metadata.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\RemoteKrbRelay\\\\\\.exe$\") OR process_original_file_name = \"RemoteKrbRelay\\.exe\") OR (process_command_line = RGX(\".*\\\\ \\\\-clsid\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-target\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-victim\\\\ .*\")) OR (process_command_line = RGX(\".*\\\\-rbcd\\\\ .*\") AND (process_command_line = RGX(\".*\\\\-cn\\\\ .*\") OR process_command_line = RGX(\".*\\\\-\\\\-computername\\\\ .*\"))) OR (process_command_line = RGX(\".*\\\\-chp\\\\ .*\") AND (process_command_line = RGX(\".*\\\\-chpPass\\\\ .*\") AND process_command_line = RGX(\".*\\\\-chpUser\\\\ .*\"))) OR (process_command_line = RGX(\".*\\\\-addgroupmember\\\\ .*\") AND process_command_line = RGX(\".*\\\\-group\\\\ .*\") AND process_command_line = RGX(\".*\\\\-groupuser\\\\ .*\")) OR ((process_command_line = RGX(\".*\\\\-smb\\\\ .*\") AND process_command_line = RGX(\".*\\\\-\\\\-smbkeyword\\\\ .*\")) AND (process_command_line = RGX(\".*interactive.*\") OR process_command_line = RGX(\".*secrets.*\") OR process_command_line = RGX(\".*service\\\\-add.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "42955263-9176-4f7b-ab5e-7884c6c7e0b2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

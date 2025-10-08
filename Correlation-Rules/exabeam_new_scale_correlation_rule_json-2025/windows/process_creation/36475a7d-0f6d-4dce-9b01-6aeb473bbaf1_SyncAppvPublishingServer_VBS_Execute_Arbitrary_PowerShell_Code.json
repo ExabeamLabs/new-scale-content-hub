@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "SyncAppvPublishingServer VBS Execute Arbitrary PowerShell Code",
+      "description": "Executes arbitrary PowerShell code using SyncAppvPublishingServer.vbs",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\\\\\SyncAppvPublishingServer\\\\\\.vbs.*\") AND process_command_line = RGX(\".*\\\\;.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b1daa383-db21-40b8-8492-d050161bde3b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

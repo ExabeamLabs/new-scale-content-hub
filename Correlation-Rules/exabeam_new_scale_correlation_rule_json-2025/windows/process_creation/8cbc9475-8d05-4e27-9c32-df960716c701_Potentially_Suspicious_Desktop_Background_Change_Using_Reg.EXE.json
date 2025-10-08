@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Suspicious Desktop Background Change Using Reg.EXE",
+      "description": "Detects the execution of \"reg.exe\" to alter registry keys that would replace the user's desktop background.\nThis is a common technique used by malware to change the desktop background to a ransom note or other image.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\reg\\\\\\.exe$\") OR process_original_file_name = \"reg\\.exe\") AND process_command_line = RGX(\".*add.*\")) AND (process_command_line = RGX(\".*Control\\\\ Panel\\\\\\\\Desktop.*\") OR process_command_line = RGX(\".*CurrentVersion\\\\\\\\Policies\\\\\\\\ActiveDesktop.*\") OR process_command_line = RGX(\".*CurrentVersion\\\\\\\\Policies\\\\\\\\System.*\")) AND ((process_command_line = RGX(\".*\\\\/v\\\\ NoChangingWallpaper.*\") AND process_command_line = RGX(\".*\\\\/d\\\\ 1.*\")) OR (process_command_line = RGX(\".*\\\\/v\\\\ Wallpaper.*\") AND process_command_line = RGX(\".*\\\\/t\\\\ REG\\\\_SZ.*\")) OR (process_command_line = RGX(\".*\\\\/v\\\\ WallpaperStyle.*\") AND process_command_line = RGX(\".*\\\\/d\\\\ 2.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "194afef0-13af-49c1-97d7-f67832b1bbac"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

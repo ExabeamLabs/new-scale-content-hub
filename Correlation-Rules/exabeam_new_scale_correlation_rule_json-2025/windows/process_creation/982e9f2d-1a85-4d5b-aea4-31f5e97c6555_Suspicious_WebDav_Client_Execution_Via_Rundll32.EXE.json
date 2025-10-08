@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious WebDav Client Execution Via Rundll32.EXE",
+      "description": "Detects \"svchost.exe\" spawning \"rundll32.exe\" with command arguments like C:\\windows\\system32\\davclnt.dll,DavSetCookie. This could be an indicator of exfiltration or use of WebDav to launch code (hosted on WebDav Server) or potentially a sign of exploitation of CVE-2023-23397\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\svchost\\\\\\.exe$\") AND parent_process_command_line = RGX(\".*\\\\-s\\\\ WebClient.*\") AND process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") AND process_command_line = RGX(\".*C\\\\:\\\\\\\\windows\\\\\\\\system32\\\\\\\\davclnt\\\\\\.dll\\\\,DavSetCookie.*\") AND process_command_line = RGX(\"://\\d{1,3}.\\d{1,3}.\\d{1,3}.\\d{1,3}\")) AND  NOT ((process_command_line = RGX(\".*\\\\:\\\\/\\\\/10\\\\\\..*\") OR process_command_line = RGX(\".*\\\\:\\\\/\\\\/192\\\\\\.168\\\\\\..*\") OR process_command_line = RGX(\".*\\\\:\\\\/\\\\/172\\\\\\.16\\\\\\..*\") OR process_command_line = RGX(\".*\\\\:\\\\/\\\\/172\\\\\\.17\\\\\\..*\") OR process_command_line = RGX(\".*\\\\:\\\\/\\\\/172\\\\\\.18\\\\\\..*\") OR process_command_line = RGX(\".*\\\\:\\\\/\\\\/172\\\\\\.19\\\\\\..*\") OR process_command_line = RGX(\".*\\\\:\\\\/\\\\/172\\\\\\.20\\\\\\..*\") OR process_command_line = RGX(\".*\\\\:\\\\/\\\\/172\\\\\\.21\\\\\\..*\") OR process_command_line = RGX(\".*\\\\:\\\\/\\\\/172\\\\\\.22\\\\\\..*\") OR process_command_line = RGX(\".*\\\\:\\\\/\\\\/172\\\\\\.23\\\\\\..*\") OR process_command_line = RGX(\".*\\\\:\\\\/\\\\/172\\\\\\.24\\\\\\..*\") OR process_command_line = RGX(\".*\\\\:\\\\/\\\\/172\\\\\\.25\\\\\\..*\") OR process_command_line = RGX(\".*\\\\:\\\\/\\\\/172\\\\\\.26\\\\\\..*\") OR process_command_line = RGX(\".*\\\\:\\\\/\\\\/172\\\\\\.27\\\\\\..*\") OR process_command_line = RGX(\".*\\\\:\\\\/\\\\/172\\\\\\.28\\\\\\..*\") OR process_command_line = RGX(\".*\\\\:\\\\/\\\\/172\\\\\\.29\\\\\\..*\") OR process_command_line = RGX(\".*\\\\:\\\\/\\\\/172\\\\\\.30\\\\\\..*\") OR process_command_line = RGX(\".*\\\\:\\\\/\\\\/172\\\\\\.31\\\\\\..*\") OR process_command_line = RGX(\".*\\\\:\\\\/\\\\/127\\\\\\..*\") OR process_command_line = RGX(\".*\\\\:\\\\/\\\\/169\\\\\\.254\\\\\\..*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e0501d3b-7545-4a5c-999a-d048e0a28120"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

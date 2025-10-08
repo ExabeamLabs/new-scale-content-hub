@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Locked Workstation",
+      "description": "Detects locked workstation session events that occur automatically after a standard period of inactivity.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "event_id = 4800",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c0d33117-0954-498a-abca-13797cd53fe5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Launch-VsDevShell.PS1 Proxy Execution",
+      "description": "Detects the use of the 'Launch-VsDevShell.ps1' Microsoft signed script to execute commands.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*Launch\\\\-VsDevShell\\\\\\.ps1.*\") AND (process_command_line = RGX(\".*VsWherePath\\\\ .*\") OR process_command_line = RGX(\".*VsInstallationPath\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "247bf81f-82fd-4c0c-808c-849a22c15731"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

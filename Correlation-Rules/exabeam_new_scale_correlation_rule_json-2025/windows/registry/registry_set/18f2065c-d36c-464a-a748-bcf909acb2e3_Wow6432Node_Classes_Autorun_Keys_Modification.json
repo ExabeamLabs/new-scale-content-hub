@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Wow6432Node Classes Autorun Keys Modification",
+      "description": "Detects modification of autostart extensibility point (ASEP) in registry. Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\".*\\\\\\\\Software\\\\\\\\Wow6432Node\\\\\\\\Classes.*\") AND (registry_path = RGX(\".*\\\\\\\\Folder\\\\\\\\ShellEx\\\\\\\\ExtShellFolderViews.*\") OR registry_path = RGX(\".*\\\\\\\\Folder\\\\\\\\ShellEx\\\\\\\\DragDropHandlers.*\") OR registry_path = RGX(\".*\\\\\\\\Folder\\\\\\\\ShellEx\\\\\\\\ColumnHandlers.*\") OR registry_path = RGX(\".*\\\\\\\\Directory\\\\\\\\Shellex\\\\\\\\DragDropHandlers.*\") OR registry_path = RGX(\".*\\\\\\\\Directory\\\\\\\\Shellex\\\\\\\\CopyHookHandlers.*\") OR registry_path = RGX(\".*\\\\\\\\CLSID\\\\\\\\\\\\{AC757296\\\\-3522\\\\-4E11\\\\-9862\\\\-C17BE5A1767E\\\\}\\\\\\\\Instance.*\") OR registry_path = RGX(\".*\\\\\\\\CLSID\\\\\\\\\\\\{ABE3B9A4\\\\-257D\\\\-4B97\\\\-BD1A\\\\-294AF496222E\\\\}\\\\\\\\Instance.*\") OR registry_path = RGX(\".*\\\\\\\\CLSID\\\\\\\\\\\\{7ED96837\\\\-96F0\\\\-4812\\\\-B211\\\\-F13C24117ED3\\\\}\\\\\\\\Instance.*\") OR registry_path = RGX(\".*\\\\\\\\CLSID\\\\\\\\\\\\{083863F1\\\\-70DE\\\\-11d0\\\\-BD40\\\\-00A0C911CE86\\\\}\\\\\\\\Instance.*\") OR registry_path = RGX(\".*\\\\\\\\AllFileSystemObjects\\\\\\\\ShellEx\\\\\\\\DragDropHandlers.*\") OR registry_path = RGX(\".*\\\\\\\\ShellEx\\\\\\\\PropertySheetHandlers.*\") OR registry_path = RGX(\".*\\\\\\\\ShellEx\\\\\\\\ContextMenuHandlers.*\")) AND  NOT (Details = \"\\(Empty\\)\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "08fa2f58-3641-48b1-9edc-3a9a24b1f95c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

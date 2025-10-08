@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Psexec Execution",
+      "description": "Detects user accept agreement execution in psexec commandline",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\psexec\\\\\\.exe$\") OR process_original_file_name = \"psexec\\.c\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c5f1b099-dced-4dd7-bba9-bee189d85e7a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

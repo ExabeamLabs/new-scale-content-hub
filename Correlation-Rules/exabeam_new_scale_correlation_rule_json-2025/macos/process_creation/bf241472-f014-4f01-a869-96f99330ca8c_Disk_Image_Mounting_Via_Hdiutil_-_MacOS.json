@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Disk Image Mounting Via Hdiutil - MacOS",
+      "description": "Detects the execution of the hdiutil utility in order to mount disk images.",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/hdiutil$\") AND (process_command_line = RGX(\".*attach\\\\ .*\") OR process_command_line = RGX(\".*mount\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7e278bdc-40b5-4c8d-9338-c5821cd6386c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

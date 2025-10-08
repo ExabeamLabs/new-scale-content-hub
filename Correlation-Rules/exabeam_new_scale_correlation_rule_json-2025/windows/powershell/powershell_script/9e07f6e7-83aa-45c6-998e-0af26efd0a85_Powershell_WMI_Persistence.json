@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Powershell WMI Persistence",
+      "description": "Adversaries may establish persistence and elevate privileges by executing malicious content triggered by a Windows Management Instrumentation (WMI) event subscription. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ScriptBlockText = RGX(\".*New\\\\-CimInstance\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\-Namespace\\\\ root\\\\/subscription\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\-ClassName\\\\ \\\\_\\\\_EventFilter\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\-Property\\\\ .*\")) OR (ScriptBlockText = RGX(\".*New\\\\-CimInstance\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\-Namespace\\\\ root\\\\/subscription\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\-ClassName\\\\ CommandLineEventConsumer\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\-Property\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0ba3725f-0bab-4e2a-8f3a-16739cfb2397"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

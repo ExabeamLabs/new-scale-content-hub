@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HTTP Request With Empty User Agent",
+      "description": "Detects a potentially suspicious empty user agent strings in proxy log.\nCould potentially indicate an uncommon request method.\n Note: Unmapped fields: c-useragent",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "c-useragent = \"\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "37ab380a-56cb-45d0-a893-07a04327ae1c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

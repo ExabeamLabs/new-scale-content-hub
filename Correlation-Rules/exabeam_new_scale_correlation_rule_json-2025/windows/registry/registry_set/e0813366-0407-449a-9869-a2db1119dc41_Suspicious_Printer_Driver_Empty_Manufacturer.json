@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Printer Driver Empty Manufacturer",
+      "description": "Detects a suspicious printer driver installation with an empty Manufacturer value Note: Unmapped fields: Details",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((registry_path = RGX(\".*\\\\\\\\Control\\\\\\\\Print\\\\\\\\Environments\\\\\\\\Windows\\\\ x64\\\\\\\\Drivers.*\") AND registry_path = RGX(\".*\\\\\\\\Manufacturer.*\")) AND Details = \"\\(Empty\\)\") AND  NOT (registry_path = RGX(\".*\\\\\\\\CutePDF\\\\ Writer\\\\ v4\\\\\\.0\\\\\\\\.*\") OR (registry_path = RGX(\".*\\\\\\\\VNC\\\\ Printer\\\\ \\\\(PS\\\\)\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\VNC\\\\ Printer\\\\ \\\\(UD\\\\)\\\\\\\\.*\")) OR registry_path = RGX(\".*\\\\\\\\Version\\\\-3\\\\\\\\PDF24\\\\\\\\.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8452c4e3-50e1-48c0-9e3d-ef65629c34bd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

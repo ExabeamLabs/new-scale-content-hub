@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - SharPersist Execution",
+      "description": "Detects the execution of the hacktool SharPersist - used to deploy various different kinds of persistence mechanisms",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\SharPersist\\\\\\.exe$\") OR process_product = \"SharPersist\") OR (process_command_line = RGX(\".*\\\\ \\\\-t\\\\ schtask\\\\ \\\\-c\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-t\\\\ startupfolder\\\\ \\\\-c\\\\ .*\")) OR (process_command_line = RGX(\".*\\\\ \\\\-t\\\\ reg\\\\ \\\\-c\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-m\\\\ add.*\")) OR (process_command_line = RGX(\".*\\\\ \\\\-t\\\\ service\\\\ \\\\-c\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-m\\\\ add.*\")) OR (process_command_line = RGX(\".*\\\\ \\\\-t\\\\ schtask\\\\ \\\\-c\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-m\\\\ add.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e65f9052-4712-44e8-93a1-3a6387d2acdc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

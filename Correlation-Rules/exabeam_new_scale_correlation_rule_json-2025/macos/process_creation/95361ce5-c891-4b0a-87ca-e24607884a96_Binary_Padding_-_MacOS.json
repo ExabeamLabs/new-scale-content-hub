@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Binary Padding - MacOS",
+      "description": "Adversaries may use binary padding to add junk data and change the on-disk representation of malware. This rule detect using dd and truncate to add a junk data to file.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/truncate$\") AND process_command_line = RGX(\".*\\\\-s\\\\ \\\\+.*\")) OR (process_path = RGX(\"\\\\/dd$\") AND (process_command_line = RGX(\".*if\\\\=\\\\/dev\\\\/zero.*\") OR process_command_line = RGX(\".*if\\\\=\\\\/dev\\\\/random.*\") OR process_command_line = RGX(\".*if\\\\=\\\\/dev\\\\/urandom.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c6e7f488-9269-40b1-a12e-d2db93485535"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

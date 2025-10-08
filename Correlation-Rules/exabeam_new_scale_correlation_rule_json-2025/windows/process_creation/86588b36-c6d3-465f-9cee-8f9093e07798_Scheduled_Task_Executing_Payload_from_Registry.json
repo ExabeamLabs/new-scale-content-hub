@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Scheduled Task Executing Payload from Registry",
+      "description": "Detects the creation of a schtasks that potentially executes a payload stored in the Windows Registry using PowerShell.",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") OR process_original_file_name = \"schtasks\\.exe\") AND process_command_line = RGX(\".*\\\\/Create.*\") AND (process_command_line = RGX(\".*Get\\\\-ItemProperty.*\") OR process_command_line = RGX(\".*\\\\ gp\\\\ .*\")) AND (process_command_line = RGX(\".*HKCU\\\\:.*\") OR process_command_line = RGX(\".*HKLM\\\\:.*\") OR process_command_line = RGX(\".*registry\\\\:\\\\:.*\") OR process_command_line = RGX(\".*HKEY\\\\_.*\"))) AND  NOT ((process_command_line = RGX(\".*FromBase64String.*\") OR process_command_line = RGX(\".*encodedcommand.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3bc6e52b-1079-43ce-bf2f-2233f5890f71"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

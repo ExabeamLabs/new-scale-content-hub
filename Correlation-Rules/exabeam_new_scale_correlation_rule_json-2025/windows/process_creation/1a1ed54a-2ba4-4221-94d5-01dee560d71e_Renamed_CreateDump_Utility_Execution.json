@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Renamed CreateDump Utility Execution",
+      "description": "Detects uses of a renamed legitimate createdump.exe LOLOBIN utility to dump process memory",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_original_file_name = \"FX\\_VER\\_INTERNALNAME\\_STR\" OR ((process_command_line = RGX(\".*\\\\ \\\\-u\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-f\\\\ .*\") AND process_command_line = RGX(\".*\\\\\\.dmp.*\")) OR (process_command_line = RGX(\".*\\\\ \\\\-\\\\-full\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-\\\\-name\\\\ .*\") AND process_command_line = RGX(\".*\\\\\\.dmp.*\")))) AND  NOT (process_path = RGX(\"\\\\\\\\createdump\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "abc3c335-2ee5-47b3-be3f-4f043278fdb0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

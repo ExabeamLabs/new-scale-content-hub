@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious IIS Module Registration",
+      "description": "Detects a suspicious IIS module registration as described in Microsoft threat report on IIS backdoors",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "parent_process_path = RGX(\"\\\\\\\\w3wp\\\\\\.exe$\") AND (process_command_line = RGX(\".*appcmd\\\\\\.exe\\\\ add\\\\ module.*\") OR (process_command_line = RGX(\".*\\\\ system\\\\\\.enterpriseservices\\\\\\.internal\\\\\\.publish.*\") AND process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\")) OR (process_command_line = RGX(\".*gacutil.*\") AND process_command_line = RGX(\".*\\\\ \\\\/I.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "42269880-5b13-4f83-b176-87255be8f00d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

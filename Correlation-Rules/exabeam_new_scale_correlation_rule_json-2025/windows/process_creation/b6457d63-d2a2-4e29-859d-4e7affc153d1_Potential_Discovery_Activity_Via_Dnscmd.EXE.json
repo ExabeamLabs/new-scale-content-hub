@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Discovery Activity Via Dnscmd.EXE",
+      "description": "Detects an attempt to leverage dnscmd.exe to enumerate the DNS zones of a domain. DNS zones used to host the DNS records for a particular domain.",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\dnscmd\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\/enumrecords.*\") OR process_command_line = RGX(\".*\\\\/enumzones.*\") OR process_command_line = RGX(\".*\\\\/ZonePrint.*\") OR process_command_line = RGX(\".*\\\\/info.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0aac0c52-1eb9-4a48-9c4a-35147ddb851a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

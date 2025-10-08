@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential SentinelOne Shell Context Menu Scan Command Tampering",
+      "description": "Detects potentially suspicious changes to the SentinelOne context menu scan command by a process other than SentinelOne. Note: Unmapped fields: Details",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\".*\\\\\\\\shell\\\\\\\\SentinelOneScan\\\\\\\\command\\\\\\\\.*\") AND  NOT (((Details = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\SentinelOne\\\\\\\\Sentinel\\\\ Agent\") OR Details = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\SentinelOne\\\\\\\\Sentinel\\\\ Agent\")) AND Details = RGX(\".*\\\\\\\\SentinelScanFromContextMenu\\\\\\.exe.*\")) OR (process_path = RGX(\"C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\SentinelOne\\\\\\\\$\") OR process_path = RGX(\"C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\SentinelOne\\\\\\\\$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7cc01d7e-68e5-491f-88ce-3c403589ef82"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Wget Creating Files in Tmp Directory",
+      "description": "Detects the use of wget to download content in a temporary directory such as \"/tmp\" or \"/var/tmp\"",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/wget$\") AND (file_path = RGX(\"^\\\\/tmp\\\\/\") OR file_path = RGX(\"^\\\\/var\\\\/tmp\\\\/\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2c9e009c-6513-41e0-8bed-ec694cde622f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

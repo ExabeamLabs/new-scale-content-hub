@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Renamed Visual Studio Code Tunnel Execution",
+      "description": "Detects renamed Visual Studio Code tunnel execution. Attackers can abuse this functionality to establish a C2 channel",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_original_file_name = \"None\" AND process_command_line = RGX(\"\\\\\\.exe\\\\ tunnel$\")) OR (process_command_line = RGX(\".*\\\\\\.exe\\\\ tunnel.*\") AND process_command_line = RGX(\".*\\\\-\\\\-accept\\\\-server\\\\-license\\\\-terms.*\")) OR (process_command_line = RGX(\".*tunnel\\\\ .*\") AND process_command_line = RGX(\".*service.*\") AND process_command_line = RGX(\".*internal\\\\-run.*\") AND process_command_line = RGX(\".*tunnel\\\\-service\\\\\\.log.*\"))) AND  NOT ((process_path = RGX(\"\\\\\\\\code\\\\-tunnel\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\code\\\\\\.exe$\")))) OR ((parent_process_command_line = RGX(\"\\\\ tunnel$\") AND process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\/d\\\\ \\\\/c\\\\ .*\") AND process_command_line = RGX(\".*\\\\\\\\servers\\\\\\\\Stable\\\\-.*\") AND process_command_line = RGX(\".*code\\\\-server\\\\\\.cmd.*\"))) AND  NOT ((parent_process_path = RGX(\"\\\\\\\\code\\\\-tunnel\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\code\\\\\\.exe$\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7dee364c-2f65-491a-8b02-85a030bb785a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

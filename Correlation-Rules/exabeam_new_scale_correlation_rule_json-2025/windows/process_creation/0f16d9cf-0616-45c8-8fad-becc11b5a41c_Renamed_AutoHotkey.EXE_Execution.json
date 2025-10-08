@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Renamed AutoHotkey.EXE Execution",
+      "description": "Detects execution of a renamed autohotkey.exe binary based on PE metadata fields",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_product = RGX(\".*AutoHotkey.*\") OR process_description = RGX(\".*AutoHotkey.*\") OR (process_original_file_name = \"AutoHotkey\\.exe\" OR process_original_file_name = \"AutoHotkey\\.rc\")) AND  NOT (((process_path = RGX(\"\\\\\\\\AutoHotkey\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\AutoHotkey32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\AutoHotkey32\\\\_UIA\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\AutoHotkey64\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\AutoHotkey64\\\\_UIA\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\AutoHotkeyA32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\AutoHotkeyA32\\\\_UIA\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\AutoHotkeyU32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\AutoHotkeyU32\\\\_UIA\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\AutoHotkeyU64\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\AutoHotkeyU64\\\\_UIA\\\\\\.exe$\")) OR process_path = RGX(\".*\\\\\\\\AutoHotkey.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3d7959e2-68b1-47f1-ac91-c2c42e38f97d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

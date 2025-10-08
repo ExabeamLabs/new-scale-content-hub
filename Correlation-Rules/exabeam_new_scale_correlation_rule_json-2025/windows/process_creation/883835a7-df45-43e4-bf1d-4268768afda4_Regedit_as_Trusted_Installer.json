@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Regedit as Trusted Installer",
+      "description": "Detects a regedit started with TrustedInstaller privileges or by ProcessHacker.exe",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\regedit\\\\\\.exe$\") AND (parent_process_path = RGX(\"\\\\\\\\TrustedInstaller\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\ProcessHacker\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "55ecaeb5-2863-49a3-9ccf-8d0fc9b44645"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

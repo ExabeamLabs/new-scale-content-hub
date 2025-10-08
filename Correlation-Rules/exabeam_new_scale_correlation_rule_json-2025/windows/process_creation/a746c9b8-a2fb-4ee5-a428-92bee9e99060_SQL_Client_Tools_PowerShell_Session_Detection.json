@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "SQL Client Tools PowerShell Session Detection",
+      "description": "This rule detects execution of a PowerShell code through the sqltoolsps.exe utility, which is included in the standard set of utilities supplied with the Microsoft SQL Server Management studio.\nScript blocks are not logged in this case, so this utility helps to bypass protection mechanisms based on the analysis of these logs.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\sqltoolsps\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\sqltoolsps\\\\\\.exe$\") OR process_original_file_name = \"\\\\sqltoolsps\\.exe\") AND  NOT (parent_process_path = RGX(\"\\\\\\\\smss\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9619a740-76f6-416b-bdbb-d88bfce9dda1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

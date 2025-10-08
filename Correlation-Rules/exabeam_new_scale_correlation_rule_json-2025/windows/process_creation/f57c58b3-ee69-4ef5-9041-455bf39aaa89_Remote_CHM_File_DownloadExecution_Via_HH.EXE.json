@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remote CHM File Download/Execution Via HH.EXE",
+      "description": "Detects the usage of \"hh.exe\" to execute/download remotely hosted \".chm\" files.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_original_file_name = \"HH\\.exe\" OR process_path = RGX(\"\\\\\\\\hh\\\\\\.exe$\")) AND (process_command_line = RGX(\".*http\\\\:\\\\/\\\\/.*\") OR process_command_line = RGX(\".*https\\\\:\\\\/\\\\/.*\") OR process_command_line = RGX(\".*\\\\\\\\\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4f5f9b08-7cb0-4844-99aa-f3946e0f2014"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

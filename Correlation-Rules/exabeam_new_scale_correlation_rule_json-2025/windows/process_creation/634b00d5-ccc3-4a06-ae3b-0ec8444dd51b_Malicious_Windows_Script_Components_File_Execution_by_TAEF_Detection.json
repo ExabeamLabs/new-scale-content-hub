@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Malicious Windows Script Components File Execution by TAEF Detection",
+      "description": "Windows Test Authoring and Execution Framework (TAEF) framework allows you to run automation by executing tests files written on different languages (C, C#, Microsoft COM Scripting interfaces\nAdversaries may execute malicious code (such as WSC file with VBScript, dll and so on) directly by running te.exe\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\te\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\te\\\\\\.exe$\") OR process_original_file_name = \"\\\\te\\.exe\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "fb5df230-d8bc-46a0-a2d3-60a504d59f62"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

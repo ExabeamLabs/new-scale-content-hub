@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Disabling Windows Defender WMI Autologger Session via Reg.exe",
+      "description": "Detects the use of reg.exe to disable the Event Tracing for Windows (ETW) Autologger session for Windows Defender API and Audit events.\nBy setting the 'Start' value to '0' for the 'DefenderApiLogger' or 'DefenderAuditLogger' session, an attacker can prevent these critical security events\nfrom being logged, effectively blinding monitoring tools that rely on this data. This is a powerful defense evasion technique.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\reg\\\\\\.exe$\") OR process_original_file_name = \"reg\\.exe\") AND (process_command_line = RGX(\".*\\\\\\\\Control\\\\\\\\WMI\\\\\\\\Autologger\\\\\\\\DefenderApiLogger\\\\\\\\Start.*\") OR process_command_line = RGX(\".*\\\\\\\\Control\\\\\\\\WMI\\\\\\\\Autologger\\\\\\\\DefenderAuditLogger\\\\\\\\Start.*\")) AND (process_command_line = RGX(\".*add.*\") AND process_command_line = RGX(\".*0.*\"))) AND  NOT (process_command_line = RGX(\".*0x00000001.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0f2d6021-68d3-43a1-8552-db75e799f903"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

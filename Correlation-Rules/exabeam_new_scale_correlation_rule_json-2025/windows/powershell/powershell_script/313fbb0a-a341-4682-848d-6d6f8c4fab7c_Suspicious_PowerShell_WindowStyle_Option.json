@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious PowerShell WindowStyle Option",
+      "description": "Adversaries may use hidden windows to conceal malicious activity from the plain sight of users.\nIn some cases, windows that would typically be displayed when an application carries out an operation can be hidden\n Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*powershell.*\") AND ScriptBlockText = RGX(\".*WindowStyle.*\") AND ScriptBlockText = RGX(\".*Hidden.*\")) AND  NOT ((ScriptBlockText = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Amazon\\\\\\\\WorkSpacesConfig\\\\\\\\Scripts\\\\\\\\.*\") AND ScriptBlockText = RGX(\".*\\\\$PSScriptRoot\\\\\\\\Module\\\\\\\\WorkspaceScriptModule\\\\\\\\WorkspaceScriptModule.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "553cadc7-8b57-4381-9c3e-7b80f932e344"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

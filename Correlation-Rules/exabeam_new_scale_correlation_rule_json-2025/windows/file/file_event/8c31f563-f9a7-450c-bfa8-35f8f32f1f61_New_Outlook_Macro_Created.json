@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New Outlook Macro Created",
+      "description": "Detects the creation of a macro file for Outlook.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\outlook\\\\\\.exe$\") AND file_path = RGX(\"\\\\\\\\Microsoft\\\\\\\\Outlook\\\\\\\\VbaProject\\\\\\.OTM$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d636e7a9-4c05-4ca6-836e-40d310529f5c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

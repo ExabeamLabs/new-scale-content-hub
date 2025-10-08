@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Remote Child Process From Outlook",
+      "description": "Detects a suspicious child process spawning from Outlook where the image is located in a remote location (SMB/WebDav shares).",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\outlook\\\\\\.exe$\") AND process_path = RGX(\"^\\\\\\\\\\\\\\\\\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "82786e30-41ba-4f0b-a4bc-e24c6ffd15e5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

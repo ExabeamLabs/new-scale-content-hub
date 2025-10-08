@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Arbitrary Command Execution Using Msdt.EXE",
+      "description": "Detects processes leveraging the \"ms-msdt\" handler or the \"msdt.exe\" binary to execute arbitrary commands as seen in the follina (CVE-2022-30190) vulnerability",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\msdt\\\\\\.exe$\") OR process_original_file_name = \"msdt\\.exe\") AND (process_command_line = RGX(\".*IT\\\\_BrowseForFile\\\\=.*\") OR (process_command_line = RGX(\".*\\\\ PCWDiagnostic.*\") AND process_command_line = RGX(\".*\\\\ \\\\-af\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b380e388-b498-4577-a346-7199118a66a6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

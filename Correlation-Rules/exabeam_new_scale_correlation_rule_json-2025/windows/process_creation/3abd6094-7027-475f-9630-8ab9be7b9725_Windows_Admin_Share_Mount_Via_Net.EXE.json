@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows Admin Share Mount Via Net.EXE",
+      "description": "Detects when an admin share is mounted using net.exe",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\net\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\net1\\\\\\.exe$\")) OR (process_original_file_name = \"net\\.exe\" OR process_original_file_name = \"net1\\.exe\")) AND (process_command_line = RGX(\".*\\\\ use\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\\\\\\\\\\\\\*\\\\\\\\*\\\\$.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2dbcdc04-8253-4ec4-9a21-8e0fd62d0bad"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

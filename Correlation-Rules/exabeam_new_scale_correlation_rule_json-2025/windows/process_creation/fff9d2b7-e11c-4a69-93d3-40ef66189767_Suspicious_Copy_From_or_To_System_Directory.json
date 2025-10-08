@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Copy From or To System Directory",
+      "description": "Detects a suspicious copy operation that tries to copy a program from system (System32, SysWOW64, WinSxS) directories to another on disk.\nOften used to move LOLBINs such as 'certutil' or 'desktopimgdownldr' to a different location with a different name in order to bypass detections based on locations.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") AND process_command_line = RGX(\".*copy\\\\ .*\")) OR ((process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\")) AND (process_command_line = RGX(\".*copy\\\\-item.*\") OR process_command_line = RGX(\".*\\\\ copy\\\\ .*\") OR process_command_line = RGX(\".*cpi\\\\ .*\") OR process_command_line = RGX(\".*\\\\ cp\\\\ .*\"))) OR ((process_path = RGX(\"\\\\\\\\robocopy\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\xcopy\\\\\\.exe$\")) OR (process_original_file_name = \"robocopy\\.exe\" OR process_original_file_name = \"XCOPY\\.EXE\"))) AND (process_command_line = RGX(\".*\\\\\\\\System32.*\") OR process_command_line = RGX(\".*\\\\\\\\SysWOW64.*\") OR process_command_line = RGX(\".*\\\\\\\\WinSxS.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "27af21a5-19d5-4cbc-acfc-14b6afae56ee"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

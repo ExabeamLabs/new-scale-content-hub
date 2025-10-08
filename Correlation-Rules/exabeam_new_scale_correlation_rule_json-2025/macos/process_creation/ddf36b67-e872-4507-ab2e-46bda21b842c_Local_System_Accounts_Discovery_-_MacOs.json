@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Local System Accounts Discovery - MacOs",
+      "description": "Detects enumeration of local systeam accounts on MacOS",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/dscl$\") AND (process_command_line = RGX(\".*list.*\") AND process_command_line = RGX(\".*\\\\/users.*\"))) OR (process_path = RGX(\"\\\\/dscacheutil$\") AND (process_command_line = RGX(\".*\\\\-q.*\") AND process_command_line = RGX(\".*user.*\"))) OR process_command_line = RGX(\".*\\\\'x\\\\:0\\\\:\\\\.*\") OR (process_path = RGX(\"\\\\/cat$\") AND (process_command_line = RGX(\".*\\\\/etc\\\\/passwd.*\") OR process_command_line = RGX(\".*\\\\/etc\\\\/sudoers.*\"))) OR process_path = RGX(\"\\\\/id$\") OR (process_path = RGX(\"\\\\/lsof$\") AND process_command_line = RGX(\".*\\\\-u.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6d3a18a6-b513-49b2-a9a4-eb9941681994"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

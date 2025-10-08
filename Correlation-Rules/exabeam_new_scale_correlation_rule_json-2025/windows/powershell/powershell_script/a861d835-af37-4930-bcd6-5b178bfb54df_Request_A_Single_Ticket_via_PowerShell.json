@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Request A Single Ticket via PowerShell",
+      "description": "utilize native PowerShell Identity modules to query the domain to extract the Service Principal Names for a single computer.\nThis behavior is typically used during a kerberos or silver ticket attack.\nA successful execution will output the SPNs for the endpoint in question.\n Note: Unmapped fields: ScriptBlockText",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ScriptBlockText = RGX(\".*System\\\\\\.IdentityModel\\\\\\.Tokens\\\\\\.KerberosRequestorSecurityToken.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "246798ae-eb13-4de9-bc7b-2722ec20f382"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

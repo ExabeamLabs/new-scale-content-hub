@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "MSI Installation From Suspicious Locations",
+      "description": "Detects MSI package installation from suspicious locations Note: Unmapped fields: Provider_Name, Data",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Provider_Name = \"MsiInstaller\" AND (event_id = 1040 OR event_id = 1042) AND (Data = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\TEMP\\\\\\\\.*\") OR Data = RGX(\".*\\\\\\\\\\\\\\\\.*\") OR Data = RGX(\".*\\\\\\\\Desktop\\\\\\\\.*\") OR Data = RGX(\".*\\\\\\\\PerfLogs\\\\\\\\.*\") OR Data = RGX(\".*\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\"))) AND  NOT (Data = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\WinGet\\\\\\\\.*\") OR Data = RGX(\".*C\\\\:\\\\\\\\Windows\\\\\\\\TEMP\\\\\\\\UpdHealthTools\\\\\\.msi.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ace5e4dc-bcce-4934-917d-1d8645b33858"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

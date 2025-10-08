@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Arbitrary Shell Command Execution Via Settingcontent-Ms",
+      "description": "The .SettingContent-ms file type was introduced in Windows 10 and allows a user to create \"shortcuts\" to various Windows 10 setting pages. These files are simply XML and contain paths to various Windows 10 settings binaries.",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_command_line = RGX(\".*\\\\\\.SettingContent\\\\-ms.*\") AND  NOT (process_command_line = RGX(\".*immersivecontrolpanel.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "43f8fca5-78b9-4ec6-9987-cf30fc60039c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

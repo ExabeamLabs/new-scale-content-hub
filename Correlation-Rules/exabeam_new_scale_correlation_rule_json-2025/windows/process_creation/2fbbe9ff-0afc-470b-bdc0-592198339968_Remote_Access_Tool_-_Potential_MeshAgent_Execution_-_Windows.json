@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remote Access Tool - Potential MeshAgent Execution - Windows",
+      "description": "Detects potential execution of MeshAgent which is a tool used for remote access.\nHistorical data shows that threat actors rename MeshAgent binary to evade detection.\nMatching command lines with the '--meshServiceName' argument can indicate that the MeshAgent is being used for remote access.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_command_line = RGX(\".*\\\\-\\\\-meshServiceName.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2035d131-0a1b-4958-865b-7a8f284a6fee"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

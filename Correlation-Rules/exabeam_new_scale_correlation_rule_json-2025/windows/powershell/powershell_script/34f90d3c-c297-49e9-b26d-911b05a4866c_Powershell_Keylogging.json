@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Powershell Keylogging",
+      "description": "Adversaries may log user keystrokes to intercept credentials as the user types them. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Get\\\\-Keystrokes.*\") OR (ScriptBlockText = RGX(\".*Get\\\\-ProcAddress\\\\ user32\\\\\\.dll\\\\ GetAsyncKeyState.*\") AND ScriptBlockText = RGX(\".*Get\\\\-ProcAddress\\\\ user32\\\\\\.dll\\\\ GetForegroundWindow.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e51a14f8-a0b7-4b38-bb7b-05bb446bb9b7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

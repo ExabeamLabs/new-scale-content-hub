@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "App Assigned To Azure RBAC/Microsoft Entra Role",
+      "description": "Detects when an app is assigned Azure AD roles, such as global administrator, or Azure RBAC roles, such as subscription owner. Note: Unmapped fields: targetResources.type, properties.message",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(targetResources.type = \"Service\\ Principal\" AND (properties.message = \"Add\\ member\\ to\\ role\" OR properties.message = \"Add\\ eligible\\ member\\ to\\ role\" OR properties.message = \"Add\\ scoped\\ member\\ to\\ role\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8062967e-d554-492a-ae51-f93a4d828c2a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

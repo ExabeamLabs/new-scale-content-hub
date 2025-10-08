@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious TSCON Start as SYSTEM",
+      "description": "Detects a tscon.exe start as LOCAL SYSTEM",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((user = RGX(\".*AUTHORI.*\") OR user = RGX(\".*AUTORI.*\")) AND process_path = RGX(\"\\\\\\\\tscon\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e08b14a7-0e7f-4049-8c5e-f134740876e3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

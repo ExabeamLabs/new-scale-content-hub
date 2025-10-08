@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remote PowerShell Sessions Network Connections (WinRM)",
+      "description": "Detects basic PowerShell Remoting (WinRM) by monitoring for network inbound connections to ports 5985 OR 5986 Note: Unmapped fields: DestPort, LayerRTID",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 5156 AND (DestPort = 5985 OR DestPort = 5986) AND LayerRTID = 44)",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "aa11bad9-3a57-4b4e-b319-1d5530101975"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation VAR+ Launcher - PowerShell",
+      "description": "Detects Obfuscated use of Environment Variables to execute PowerShell Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ScriptBlockText = RGX(\"cmd.{0,5}(?:/c|/r)(?:\\s|)\"set\\s[a-zA-Z]{3,6}.*(?:{\\d}){1,}\\\"\\s+?-f(?:.*)){1,}.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "bf366a21-c33e-468d-84cd-a0d4e19a74c8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

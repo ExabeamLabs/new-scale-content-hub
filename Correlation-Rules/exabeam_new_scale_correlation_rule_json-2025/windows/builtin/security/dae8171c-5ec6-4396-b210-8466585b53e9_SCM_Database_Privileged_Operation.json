@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "SCM Database Privileged Operation",
+      "description": "Detects non-system users performing privileged operation os the SCM database Note: Unmapped fields: ObjectType, ObjectName, PrivilegeList, SubjectLogonId, ProcessName",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4674 AND ObjectType = \"SC\\_MANAGER\\ OBJECT\" AND ObjectName = \"servicesactive\" AND PrivilegeList = \"SeTakeOwnershipPrivilege\") AND  NOT ((SubjectLogonId = \"0x3e4\" AND ProcessName = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\services\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "af395510-57f6-4e2c-bf15-5803538eac5d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

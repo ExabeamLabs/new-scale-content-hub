@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Renamed Microsoft Teams Execution",
+      "description": "Detects the execution of a renamed Microsoft Teams binary.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_original_file_name = \"msteams\\.exe\" OR process_original_file_name = \"teams\\.exe\") AND  NOT ((process_path = RGX(\"\\\\\\\\msteams\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\teams\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6357ec3c-c6fc-486e-8e83-7b3bff3978be"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

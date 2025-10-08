@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Browser Started with Remote Debugging",
+      "description": "Detects browsers starting with the remote debugging flags. Which is a technique often used to perform browser injection attacks",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\ \\\\-\\\\-remote\\\\-debugging\\\\-.*\") OR (process_path = RGX(\"\\\\\\\\firefox\\\\\\.exe$\") AND process_command_line = RGX(\".*\\\\ \\\\-start\\\\-debugger\\\\-server.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b3058347-4c4a-49e5-9199-4f007ae70208"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

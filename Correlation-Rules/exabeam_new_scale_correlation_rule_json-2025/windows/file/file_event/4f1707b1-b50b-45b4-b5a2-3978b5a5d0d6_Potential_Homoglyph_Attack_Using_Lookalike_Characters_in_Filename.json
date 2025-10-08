@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Homoglyph Attack Using Lookalike Characters in Filename",
+      "description": "Detects the presence of unicode characters which are homoglyphs, or identical in appearance, to ASCII letter characters.\nThis is used as an obfuscation and masquerading techniques. Only \"perfect\" homoglyphs are included; these are characters that\nare indistinguishable from ASCII characters and thus may make excellent candidates for homoglyph attack characters.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((file_path = RGX(\".*\u0410.*\") OR file_path = RGX(\".*\u0412.*\") OR file_path = RGX(\".*\u0415.*\") OR file_path = RGX(\".*\u041a.*\") OR file_path = RGX(\".*\u041c.*\") OR file_path = RGX(\".*\u041d.*\") OR file_path = RGX(\".*\u041e.*\") OR file_path = RGX(\".*\u0420.*\") OR file_path = RGX(\".*\u0421.*\") OR file_path = RGX(\".*\u0422.*\") OR file_path = RGX(\".*\u0425.*\") OR file_path = RGX(\".*\u0405.*\") OR file_path = RGX(\".*\u0406.*\") OR file_path = RGX(\".*\u0408.*\") OR file_path = RGX(\".*\u04ae.*\") OR file_path = RGX(\".*\u04c0.*\") OR file_path = RGX(\".*\u050c.*\") OR file_path = RGX(\".*\u051a.*\") OR file_path = RGX(\".*\u051c.*\") OR file_path = RGX(\".*\u0391.*\") OR file_path = RGX(\".*\u0392.*\") OR file_path = RGX(\".*\u0395.*\") OR file_path = RGX(\".*\u0396.*\") OR file_path = RGX(\".*\u0397.*\") OR file_path = RGX(\".*\u0399.*\") OR file_path = RGX(\".*\u039a.*\") OR file_path = RGX(\".*\u039c.*\") OR file_path = RGX(\".*\u039d.*\") OR file_path = RGX(\".*\u039f.*\") OR file_path = RGX(\".*\u03a1.*\") OR file_path = RGX(\".*\u03a4.*\") OR file_path = RGX(\".*\u03a5.*\") OR file_path = RGX(\".*\u03a7.*\")) OR (file_path = RGX(\".*\u0430.*\") OR file_path = RGX(\".*\u0435.*\") OR file_path = RGX(\".*\u043e.*\") OR file_path = RGX(\".*\u0440.*\") OR file_path = RGX(\".*\u0441.*\") OR file_path = RGX(\".*\u0445.*\") OR file_path = RGX(\".*\u0455.*\") OR file_path = RGX(\".*\u0456.*\") OR file_path = RGX(\".*\u04cf.*\") OR file_path = RGX(\".*\u0458.*\") OR file_path = RGX(\".*\u04bb.*\") OR file_path = RGX(\".*\u0501.*\") OR file_path = RGX(\".*\u051b.*\") OR file_path = RGX(\".*\u051d.*\") OR file_path = RGX(\".*\u03bf.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "92069b2a-48c9-4669-861a-dde23b9138ef"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

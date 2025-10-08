@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Bitbucket Full Data Export Triggered",
+      "description": "Detects when full data export is attempted. Note: Unmapped fields: auditType.category, auditType.action",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(auditType.category = \"Data\\ pipeline\" AND auditType.action = \"Full\\ data\\ export\\ triggered\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d0b3d744-c871-457b-a475-ebff5ab8d665"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

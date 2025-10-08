@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Usage of Renamed Sysinternals Tools - RegistrySet",
+      "description": "Detects non-sysinternals tools setting the \"accepteula\" key which normally is set on sysinternals tool execution",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((registry_path = RGX(\".*\\\\\\\\PsExec.*\") OR registry_path = RGX(\".*\\\\\\\\ProcDump.*\") OR registry_path = RGX(\".*\\\\\\\\Handle.*\") OR registry_path = RGX(\".*\\\\\\\\LiveKd.*\") OR registry_path = RGX(\".*\\\\\\\\Process\\\\ Explorer.*\") OR registry_path = RGX(\".*\\\\\\\\PsLoglist.*\") OR registry_path = RGX(\".*\\\\\\\\PsPasswd.*\") OR registry_path = RGX(\".*\\\\\\\\Active\\\\ Directory\\\\ Explorer.*\")) AND registry_path = RGX(\"\\\\\\\\EulaAccepted$\")) AND  NOT ((process_path = RGX(\"\\\\\\\\PsExec\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\PsExec64\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\procdump\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\procdump64\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\handle\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\handle64\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\livekd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\livekd64\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\procexp\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\procexp64\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\psloglist\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\psloglist64\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pspasswd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pspasswd64\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\ADExplorer\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\ADExplorer64\\\\\\.exe$\"))) AND  NOT (process_path = \"None\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "042a72d2-f409-4601-becb-607fc2d549ae"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

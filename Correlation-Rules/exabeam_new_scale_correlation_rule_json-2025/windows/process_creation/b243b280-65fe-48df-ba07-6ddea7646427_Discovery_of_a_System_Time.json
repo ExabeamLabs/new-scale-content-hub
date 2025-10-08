@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Discovery of a System Time",
+      "description": "Identifies use of various commands to query a systems time. This technique may be used before executing a scheduled task or to discover the time zone of a target system.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\net\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\net1\\\\\\.exe$\")) AND process_command_line = RGX(\".*time.*\")) OR (process_path = RGX(\"\\\\\\\\w32tm\\\\\\.exe$\") AND process_command_line = RGX(\".*tz.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "764879f7-d837-4c2b-9b82-306a46a0d2f2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

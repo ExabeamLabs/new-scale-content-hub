@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Runscripthelper.exe",
+      "description": "Detects execution of powershell scripts via Runscripthelper.exe",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\Runscripthelper\\\\\\.exe$\") AND process_command_line = RGX(\".*surfacecheck.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f2eb765a-b0c5-4424-92fd-f93c0c0cf8ab"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Persistence Using DebugPath",
+      "description": "Detects potential persistence using Appx DebugPath",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((registry_path = RGX(\".*Classes\\\\\\\\ActivatableClasses\\\\\\\\Package\\\\\\\\Microsoft\\\\\\..*\") AND registry_path = RGX(\"\\\\\\\\DebugPath$\")) OR (registry_path = RGX(\".*\\\\\\\\Software\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\PackagedAppXDebug\\\\\\\\Microsoft\\\\\\..*\") AND registry_path = RGX(\"\\\\\\\\\\\\(Default\\\\)$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "dfe1df6b-4e3f-424c-9a8a-345d1bbd2a61"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Process Access via TrolleyExpress Exclusion",
+      "description": "Detects a possible process memory dump that uses the white-listed Citrix TrolleyExpress.exe filename as a way to dump the lsass process memory",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\\\\\TrolleyExpress\\\\ 7.*\") OR process_command_line = RGX(\".*\\\\\\\\TrolleyExpress\\\\ 8.*\") OR process_command_line = RGX(\".*\\\\\\\\TrolleyExpress\\\\ 9.*\") OR process_command_line = RGX(\".*\\\\\\\\TrolleyExpress\\\\\\.exe\\\\ 7.*\") OR process_command_line = RGX(\".*\\\\\\\\TrolleyExpress\\\\\\.exe\\\\ 8.*\") OR process_command_line = RGX(\".*\\\\\\\\TrolleyExpress\\\\\\.exe\\\\ 9.*\") OR process_command_line = RGX(\".*\\\\\\\\TrolleyExpress\\\\\\.exe\\\\ \\\\-ma\\\\ .*\")) OR (process_path = RGX(\"\\\\\\\\TrolleyExpress\\\\\\.exe$\") AND  NOT (process_original_file_name = RGX(\".*CtxInstall.*\") OR process_original_file_name = \"None\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f62c5409-41a5-4821-9876-ff1a9e32ea44"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

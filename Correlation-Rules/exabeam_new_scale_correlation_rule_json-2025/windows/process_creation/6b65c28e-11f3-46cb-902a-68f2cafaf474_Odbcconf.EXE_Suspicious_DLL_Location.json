@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Odbcconf.EXE Suspicious DLL Location",
+      "description": "Detects execution of \"odbcconf\" where the path of the DLL being registered is located in a potentially suspicious location.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\odbcconf\\\\\\.exe$\") OR process_original_file_name = \"odbcconf\\.exe\") AND (process_command_line = RGX(\".*\\\\:\\\\\\\\PerfLogs\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\ProgramData\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Registration\\\\\\\\CRMLog.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\com\\\\\\\\dmp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\FxsTmp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\Microsoft\\\\\\\\Crypto\\\\\\\\RSA\\\\\\\\MachineKeys\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\spool\\\\\\\\drivers\\\\\\\\color\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\spool\\\\\\\\PRINTERS\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\spool\\\\\\\\SERVERS\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\Tasks\\\\_Migrated\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\Tasks\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\SyncCenter\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\com\\\\\\\\dmp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\FxsTmp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\Tasks\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\PLA\\\\\\\\System\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\Tasks\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\SyncCenter\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Tasks\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Tracing\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9cb5f6ab-3f66-4daf-8854-e76d65b74c83"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Persistence Via New SIP Provider",
+      "description": "Detects when an attacker register a new SIP provider for persistence and defense evasion Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Cryptography\\\\\\\\Providers\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Cryptography\\\\\\\\OID\\\\\\\\EncodingType.*\") OR registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\WOW6432Node\\\\\\\\Microsoft\\\\\\\\Cryptography\\\\\\\\Providers\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\WOW6432Node\\\\\\\\Microsoft\\\\\\\\Cryptography\\\\\\\\OID\\\\\\\\EncodingType.*\")) AND (registry_path = RGX(\".*\\\\\\\\Dll.*\") OR registry_path = RGX(\".*\\\\\\\\\\\\$DLL.*\"))) AND  NOT ((Details = \"WINTRUST\\.DLL\" OR Details = \"mso\\.dll\") OR (process_path = \"C\\:\\\\Windows\\\\System32\\\\poqexec\\.exe\" AND registry_path = RGX(\".*\\\\\\\\CryptSIPDll.*\") AND Details = \"C\\:\\\\Windows\\\\System32\\\\PsfSip\\.dll\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ca0753db-3126-4a6f-b2f5-489953b9efa1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

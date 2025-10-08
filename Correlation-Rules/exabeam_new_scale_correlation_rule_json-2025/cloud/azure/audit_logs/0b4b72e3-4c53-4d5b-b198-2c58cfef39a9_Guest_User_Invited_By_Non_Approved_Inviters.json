@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Guest User Invited By Non Approved Inviters",
+      "description": "Detects when a user that doesn't have permissions to invite a guest user attempts to invite one. Note: Unmapped fields: properties.message, Status",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(properties.message = \"Invite\\ external\\ user\" AND Status = \"failure\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "891e0575-b0bf-4edb-b65a-5f86900c88c5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

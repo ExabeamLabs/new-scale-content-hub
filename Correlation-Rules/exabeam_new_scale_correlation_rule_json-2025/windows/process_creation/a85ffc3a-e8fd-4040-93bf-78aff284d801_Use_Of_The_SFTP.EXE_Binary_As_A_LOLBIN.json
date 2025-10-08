@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Use Of The SFTP.EXE Binary As A LOLBIN",
+      "description": "Detects the usage of the \"sftp.exe\" binary as a LOLBIN by abusing the \"-D\" flag",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\sftp\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\ \\\\-D\\\\ \\\\\\.\\\\\\..*\") OR process_command_line = RGX(\".*\\\\ \\\\-D\\\\ C\\\\:\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a37084ea-fba4-4e25-a763-21f239cf5fe6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

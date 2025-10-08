@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Apache Spark Shell Command Injection - ProcessCreation",
+      "description": "Detects attempts to exploit an apache spark server via CVE-2014-6287 from a commandline perspective",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\bash$\") AND (process_command_line = RGX(\".*id\\\\ \\\\-Gn\\\\ \\\\`.*\") OR process_command_line = RGX(\".*id\\\\ \\\\-Gn\\\\ \\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "be7f9a72-d742-41de-9401-18a69fee4294"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Netcat The Powershell Version",
+      "description": "Adversaries may use a non-application layer protocol for communication between host and C2 server or among infected hosts within a network Note: Unmapped fields: Data",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Data = RGX(\".*powercat\\\\ .*\") OR Data = RGX(\".*powercat\\\\\\.ps1.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8b620b8d-ebb8-46fe-b874-d04e8c6f6456"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - CobaltStrike Malleable Profile Patterns - Proxy",
+      "description": "Detects cobalt strike malleable profiles patterns (URI, User-Agents, Methods). Note: Unmapped fields: c-useragent, cs-method, c-uri, cs-host, cs-cookie",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((c-useragent = \"Mozilla\\/5\\.0\\ \\(Windows\\ NT\\ 6\\.1\\;\\ WOW64\\;\\ Trident\\/7\\.0\\;\\ rv\\:11\\.0\\)\\ like\\ Gecko\" AND cs-method = \"GET\" AND c-uri = \"\\/s\\/ref\\=nb\\_sb\\_noss\\_1\\/167\\-3294888\\-0262949\\/field\\-keywords\\=books\" AND cs-host = \"www\\.amazon\\.com\" AND cs-cookie = RGX(\"\\\\=csm\\\\-hit\\\\=s\\\\-24KU11BB82RZSYGJ3BDK\\\\|1419899012996$\")) OR (c-useragent = \"Mozilla\\/5\\.0\\ \\(Windows\\ NT\\ 6\\.1\\;\\ WOW64\\;\\ Trident\\/7\\.0\\;\\ rv\\:11\\.0\\)\\ like\\ Gecko\" AND cs-method = \"POST\" AND c-uri = \"\\/N4215\\/adj\\/amzn\\.us\\.sr\\.aps\" AND cs-host = \"www\\.amazon\\.com\") OR (c-useragent = \"Mozilla\\/4\\.0\\ \\(compatible\\;\\ MSIE\\ 6\\.0\\;Windows\\ NT\\ 5\\.1\\)\" OR c-useragent = \"Mozilla\\/4\\.0\\ \\(compatible\\;\\ MSIE\\ 7\\.0\\;\\ Windows\\ NT\\ 6\\.1\\;\\ WOW64\\;\\ Trident\\/4\\.0\\;\\ SLCC2\\;\\ \\.NET\\ CLR\\ 3\\.0\\.30729\\;\\ \\.NET4\\.0C\\;\\ \\.NET4\\.0E\\ \\)\" OR c-useragent = \"Mozilla\\/5\\.0\\ \\(Windows\\;\\ U\\;\\ MSIE\\ 7\\.0\\;\\ Windows\\ NT\\ 5\\.2\\)\\ Java\\/1\\.5\\.0\\_08\") OR c-useragent = RGX(\"\\\\;\\\\ MANM\\\\;\\\\ MANM\\\\)$\") OR (c-uri = RGX(\".*\\\\/oscp\\\\/.*\") AND cs-host = \"ocsp\\.verisign\\.com\") OR (cs-method = \"GET\" AND c-uri = RGX(\"\\\\?manifest\\\\=wac$\") AND cs-host = \"onedrive\\.live\\.com\")) AND  NOT ((c-uri = RGX(\"^http\") AND c-uri = RGX(\".*\\\\:\\\\/\\\\/onedrive\\\\\\.live\\\\\\.com\\\\/.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3e662061-ae55-4408-bc5d-5f9fab7d10ef"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "UEFI Persistence Via Wpbbin - FileCreation",
+      "description": "Detects creation of a file named \"wpbbin\" in the \"%systemroot%\\system32\\\" directory. Which could be indicative of UEFI based persistence method",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "file_path = \"C\\:\\\\Windows\\\\System32\\\\wpbbin\\.exe\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "695b8c22-ff8c-4a10-a5ca-1e4b8c094568"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

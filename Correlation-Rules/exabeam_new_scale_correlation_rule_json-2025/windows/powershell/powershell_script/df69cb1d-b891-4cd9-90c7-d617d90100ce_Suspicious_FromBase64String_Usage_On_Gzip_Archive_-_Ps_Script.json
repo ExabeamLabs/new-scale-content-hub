@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious FromBase64String Usage On Gzip Archive - Ps Script",
+      "description": "Detects attempts of decoding a base64 Gzip archive in a PowerShell script. This technique is often used as a method to load malicious content into memory afterward. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*FromBase64String.*\") AND ScriptBlockText = RGX(\".*MemoryStream.*\") AND ScriptBlockText = RGX(\".*H4sI.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "90e1069b-8c23-465a-b01d-075cd9307827"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

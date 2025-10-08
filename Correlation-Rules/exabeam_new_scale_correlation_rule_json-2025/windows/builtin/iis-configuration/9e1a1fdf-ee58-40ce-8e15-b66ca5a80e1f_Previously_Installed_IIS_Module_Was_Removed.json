@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Previously Installed IIS Module Was Removed",
+      "description": "Detects the removal of a previously installed IIS module. Note: Unmapped fields: Configuration",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 29 AND Configuration = RGX(\".*\\\\/system\\\\\\.webServer\\\\/modules\\\\/remove.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "35edb9bf-8f7c-4df5-8de9-c8684b519892"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

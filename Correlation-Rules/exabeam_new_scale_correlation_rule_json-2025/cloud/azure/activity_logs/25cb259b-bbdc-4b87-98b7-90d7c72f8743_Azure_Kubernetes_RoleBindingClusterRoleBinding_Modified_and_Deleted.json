@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Azure Kubernetes RoleBinding/ClusterRoleBinding Modified and Deleted",
+      "description": "Detects the creation or patching of potential malicious RoleBinding/ClusterRoleBinding. Note: Unmapped fields: operationName",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(operationName = \"MICROSOFT\\.KUBERNETES\\/CONNECTEDCLUSTERS\\/RBAC\\.AUTHORIZATION\\.K8S\\.IO\\/CLUSTERROLEBINDINGS\\/WRITE\" OR operationName = \"MICROSOFT\\.KUBERNETES\\/CONNECTEDCLUSTERS\\/RBAC\\.AUTHORIZATION\\.K8S\\.IO\\/CLUSTERROLEBINDINGS\\/DELETE\" OR operationName = \"MICROSOFT\\.KUBERNETES\\/CONNECTEDCLUSTERS\\/RBAC\\.AUTHORIZATION\\.K8S\\.IO\\/ROLEBINDINGS\\/WRITE\" OR operationName = \"MICROSOFT\\.KUBERNETES\\/CONNECTEDCLUSTERS\\/RBAC\\.AUTHORIZATION\\.K8S\\.IO\\/ROLEBINDINGS\\/DELETE\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6569e3d1-a849-44c7-9c56-e04d41eb2885"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

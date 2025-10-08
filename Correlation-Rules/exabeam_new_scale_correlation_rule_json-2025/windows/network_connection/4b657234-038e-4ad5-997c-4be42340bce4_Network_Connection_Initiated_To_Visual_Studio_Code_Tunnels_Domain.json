@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Network Connection Initiated To Visual Studio Code Tunnels Domain",
+      "description": "Detects network connections to Visual Studio Code tunnel domains initiated by a process on a system. Attackers can abuse that feature to establish a reverse shell or persistence on a machine.\n Note: Unmapped fields: DestinationHostname",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(network_initiated = \"true\" AND DestinationHostname = RGX(\"\\\\\\.tunnels\\\\\\.api\\\\\\.visualstudio\\\\\\.com$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "da294828-5b15-4cc9-b6cc-6a7641936bdf"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Office Macro File Creation From Suspicious Process",
+      "description": "Detects the creation of a office macro file from a a suspicious process",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\")) OR (parent_process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\"))) AND (file_path = RGX(\"\\\\\\.docm$\") OR file_path = RGX(\"\\\\\\.dotm$\") OR file_path = RGX(\"\\\\\\.xlsm$\") OR file_path = RGX(\"\\\\\\.xltm$\") OR file_path = RGX(\"\\\\\\.potm$\") OR file_path = RGX(\"\\\\\\.pptm$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "da84bcb0-3423-4d9d-8d67-e5f48d63d89c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

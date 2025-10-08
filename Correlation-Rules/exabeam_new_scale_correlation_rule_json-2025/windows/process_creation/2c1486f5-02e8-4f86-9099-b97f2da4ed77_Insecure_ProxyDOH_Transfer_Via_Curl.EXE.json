@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Insecure Proxy/DOH Transfer Via Curl.EXE",
+      "description": "Detects execution of \"curl.exe\" with the \"insecure\" flag over proxy or DOH.",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\curl\\\\\\.exe$\") OR process_original_file_name = \"curl\\.exe\") AND (process_command_line = RGX(\".*\\\\-\\\\-doh\\\\-insecure.*\") OR process_command_line = RGX(\".*\\\\-\\\\-proxy\\\\-insecure.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d204b0b3-50ce-4e1d-ae4e-784498eb8648"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HTML Help HH.EXE Suspicious Child Process",
+      "description": "Detects a suspicious child process of a Microsoft HTML Help (HH.exe)",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\hh\\\\\\.exe$\") AND (process_path = RGX(\"\\\\\\\\CertReq\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\CertUtil\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\installutil\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\MSbuild\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\MSHTA\\\\\\.EXE$\") OR process_path = RGX(\"\\\\\\\\msiexec\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wmic\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "af3e57b1-dfc5-4445-a263-cbd886bf54b6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

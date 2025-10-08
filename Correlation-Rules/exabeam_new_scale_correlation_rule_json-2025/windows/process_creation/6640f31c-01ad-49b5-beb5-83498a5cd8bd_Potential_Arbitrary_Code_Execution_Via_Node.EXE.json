@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Arbitrary Code Execution Via Node.EXE",
+      "description": "Detects the execution node.exe which is shipped with multiple software such as VMware, Adobe...etc. In order to execute arbitrary code. For example to establish reverse shell as seen in Log4j attacks...etc",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\node\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\ \\\\-e\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-\\\\-eval\\\\ .*\"))) AND ((process_command_line = RGX(\".*\\\\\\.exec\\\\(.*\") AND process_command_line = RGX(\".*net\\\\\\.socket.*\") AND process_command_line = RGX(\".*\\\\\\.connect.*\") AND process_command_line = RGX(\".*child\\\\_process.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c7fa3072-965d-4086-b0c4-f74511f0383f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

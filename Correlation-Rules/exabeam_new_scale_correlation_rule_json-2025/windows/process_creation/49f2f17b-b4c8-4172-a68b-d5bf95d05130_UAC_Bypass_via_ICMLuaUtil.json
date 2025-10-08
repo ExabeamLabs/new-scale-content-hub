@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "UAC Bypass via ICMLuaUtil",
+      "description": "Detects the pattern of UAC Bypass using ICMLuaUtil Elevated COM interface",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\dllhost\\\\\\.exe$\") AND (parent_process_command_line = RGX(\".*\\\\/Processid\\\\:\\\\{3E5FC7F9\\\\-9A51\\\\-4367\\\\-9063\\\\-A120244FBEC7\\\\}.*\") OR parent_process_command_line = RGX(\".*\\\\/Processid\\\\:\\\\{D2E7041B\\\\-2927\\\\-42FB\\\\-8E9F\\\\-7CE93B6DC937\\\\}.*\"))) AND  NOT ((process_path = RGX(\"\\\\\\\\WerFault\\\\\\.exe$\") OR process_original_file_name = \"WerFault\\.exe\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6b91e8ab-9b04-40ec-856c-49495e31f625"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

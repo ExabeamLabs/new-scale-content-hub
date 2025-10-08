@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Telegram API Access",
+      "description": "Detects suspicious requests to Telegram API without the usual Telegram User-Agent Note: Unmapped fields: cs-host, c-useragent",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "cs-host = \"api\\.telegram\\.org\" AND  NOT ((c-useragent = RGX(\".*Telegram.*\") OR c-useragent = RGX(\".*Bot.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a4328d78-b57a-4b8b-bdbd-3c590daa4087"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Rebuild Performance Counter Values Via Lodctr.EXE",
+      "description": "Detects the execution of \"lodctr.exe\" to rebuild the performance counter registry values. This can be abused by attackers by providing a malicious config file to overwrite performance counter configuration to confuse and evade monitoring and security solutions.",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\lodctr\\\\\\.exe$\") AND process_original_file_name = \"LODCTR\\.EXE\") AND process_command_line = RGX(\".*\\\\ \\\\-r.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1d4b6a97-d08b-4d39-95ef-1fc383c0224e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

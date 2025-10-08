@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Tor Client/Browser Execution",
+      "description": "Detects the use of Tor or Tor-Browser to connect to onion routing networks",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\tor\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\Tor\\\\ Browser\\\\\\\\Browser\\\\\\\\firefox\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "bf99d2e8-b3b1-405e-b19f-3deebecff64e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

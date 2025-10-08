@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Driver Added To Disallowed Images In HVCI - Registry",
+      "description": "Detects changes to the \"HVCIDisallowedImages\" registry value to potentially add a driver to the list, in order to prevent it from loading.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\Control\\\\\\\\CI\\\\\\\\.*\") AND registry_path = RGX(\".*\\\\\\\\HVCIDisallowedImages.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a986cd9d-c285-44eb-bb4b-ceb045a709cf"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

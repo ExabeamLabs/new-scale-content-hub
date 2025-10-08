@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Program Names",
+      "description": "Detects suspicious patterns in program names or folders that are often found in malicious samples or hacktools",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\".*\\\\\\\\CVE\\\\-202.*\") OR process_path = RGX(\".*\\\\\\\\CVE202.*\")) OR (process_path = RGX(\"\\\\\\\\poc\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\artifact\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\artifact64\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\artifact\\\\_protected\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\artifact32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\artifact32big\\\\\\.exe$\") OR process_path = RGX(\"obfuscated\\\\\\.exe$\") OR process_path = RGX(\"obfusc\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\meterpreter$\"))) OR (process_command_line = RGX(\".*inject\\\\\\.ps1.*\") OR process_command_line = RGX(\".*Invoke\\\\-CVE.*\") OR process_command_line = RGX(\".*pupy\\\\\\.ps1.*\") OR process_command_line = RGX(\".*payload\\\\\\.ps1.*\") OR process_command_line = RGX(\".*beacon\\\\\\.ps1.*\") OR process_command_line = RGX(\".*PowerView\\\\\\.ps1.*\") OR process_command_line = RGX(\".*bypass\\\\\\.ps1.*\") OR process_command_line = RGX(\".*obfuscated\\\\\\.ps1.*\") OR process_command_line = RGX(\".*obfusc\\\\\\.ps1.*\") OR process_command_line = RGX(\".*obfus\\\\\\.ps1.*\") OR process_command_line = RGX(\".*obfs\\\\\\.ps1.*\") OR process_command_line = RGX(\".*evil\\\\\\.ps1.*\") OR process_command_line = RGX(\".*MiniDogz\\\\\\.ps1.*\") OR process_command_line = RGX(\".*\\\\_enc\\\\\\.ps1.*\") OR process_command_line = RGX(\".*\\\\\\\\shell\\\\\\.ps1.*\") OR process_command_line = RGX(\".*\\\\\\\\rshell\\\\\\.ps1.*\") OR process_command_line = RGX(\".*revshell\\\\\\.ps1.*\") OR process_command_line = RGX(\".*\\\\\\\\av\\\\\\.ps1.*\") OR process_command_line = RGX(\".*\\\\\\\\av\\\\_test\\\\\\.ps1.*\") OR process_command_line = RGX(\".*adrecon\\\\\\.ps1.*\") OR process_command_line = RGX(\".*mimikatz\\\\\\.ps1.*\") OR process_command_line = RGX(\".*\\\\\\\\PowerUp\\\\_.*\") OR process_command_line = RGX(\".*powerup\\\\\\.ps1.*\") OR process_command_line = RGX(\".*\\\\\\\\Temp\\\\\\\\a\\\\\\.ps1.*\") OR process_command_line = RGX(\".*\\\\\\\\Temp\\\\\\\\p\\\\\\.ps1.*\") OR process_command_line = RGX(\".*\\\\\\\\Temp\\\\\\\\1\\\\\\.ps1.*\") OR process_command_line = RGX(\".*Hound\\\\\\.ps1.*\") OR process_command_line = RGX(\".*encode\\\\\\.ps1.*\") OR process_command_line = RGX(\".*powercat\\\\\\.ps1.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9e7d0a07-8077-4174-bacb-f2887b4dd8fe"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

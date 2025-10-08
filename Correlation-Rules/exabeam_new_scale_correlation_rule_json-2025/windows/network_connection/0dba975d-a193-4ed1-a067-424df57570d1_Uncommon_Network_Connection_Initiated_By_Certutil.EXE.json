@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Uncommon Network Connection Initiated By Certutil.EXE",
+      "description": "Detects a network connection initiated by the certutil.exe utility.\nAttackers can abuse the utility in order to download malware or additional payloads.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\certutil\\\\\\.exe$\") AND network_initiated = \"true\" AND (dest_port = 80 OR dest_port = 135 OR dest_port = 443 OR dest_port = 445))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "454be2e0-96bd-49fc-b1c7-cbeb35b38a54"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

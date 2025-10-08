@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Account Tampering - Suspicious Failed Logon Reasons",
+      "description": "This method uses uncommon error codes on failed logons to determine suspicious activity and tampering with accounts that have been disabled or somehow restricted. Note: Unmapped fields: Status, SubjectUserSid",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((event_id = 4625 OR event_id = 4776) AND (Status = \"0xC0000072\" OR Status = \"0xC000006F\" OR Status = \"0xC0000070\" OR Status = \"0xC0000413\" OR Status = \"0xC000018C\" OR Status = \"0xC000015B\")) AND  NOT (SubjectUserSid = \"S\\-1\\-0\\-0\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "225cde4f-8c71-4113-bcb3-165a2f303885"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

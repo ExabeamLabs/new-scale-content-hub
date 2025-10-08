@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Curl File Upload - Linux",
+      "description": "Detects a suspicious curl process start the adds a file to a web request",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/curl$\") AND ((process_command_line = RGX(\".*\\\\ \\\\-\\\\-form.*\") OR process_command_line = RGX(\".*\\\\ \\\\-\\\\-upload\\\\-file\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-\\\\-data\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-\\\\-data\\\\-.*\")) OR process_command_line = RGX(\"\\s-[FTd]\\s\"))) AND  NOT ((process_command_line = RGX(\".*\\\\:\\\\/\\\\/localhost.*\") OR process_command_line = RGX(\".*\\\\:\\\\/\\\\/127\\\\\\.0\\\\\\.0\\\\\\.1.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4571d86a-846a-49bd-918f-74bafa1f6efd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

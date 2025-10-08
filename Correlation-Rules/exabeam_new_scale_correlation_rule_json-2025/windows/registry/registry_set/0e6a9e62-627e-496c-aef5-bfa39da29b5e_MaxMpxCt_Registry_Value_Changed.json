@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "MaxMpxCt Registry Value Changed",
+      "description": "Detects changes to the \"MaxMpxCt\" registry value.\nMaxMpxCt specifies the maximum outstanding network requests for the server per client, which is used when negotiating a Server Message Block (SMB) connection with a client. Note if the value is set beyond 125 older Windows 9x clients will fail to negotiate.\nRansomware threat actors and operators (specifically BlackCat) were seen increasing this value in order to handle a higher volume of traffic.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\"\\\\\\\\Services\\\\\\\\LanmanServer\\\\\\\\Parameters\\\\\\\\MaxMpxCt$\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a65d11ad-f6c5-435a-97f0-0acdf6ed90b5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential NTLM Coercion Via Certutil.EXE",
+      "description": "Detects possible NTLM coercion via certutil using the 'syncwithWU' flag",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\certutil\\\\\\.exe$\") OR process_original_file_name = \"CertUtil\\.exe\") AND (process_command_line = RGX(\".*\\\\ \\\\-syncwithWU\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\\\\\\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3c75322c-0dc8-4d45-8d27-ef6a589df085"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

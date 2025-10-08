@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Manipulation Of Default Accounts Via Net.EXE",
+      "description": "Detects suspicious manipulations of default accounts such as 'administrator' and 'guest'. For example 'enable' or 'disable' accounts or change the password...etc",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\net\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\net1\\\\\\.exe$\")) OR (process_original_file_name = \"net\\.exe\" OR process_original_file_name = \"net1\\.exe\")) AND process_command_line = RGX(\".*\\\\ user\\\\ .*\") AND (process_command_line = RGX(\".*\\\\ J\u00e4rjestelm\u00e4nvalvoja\\\\ .*\") OR process_command_line = RGX(\".*\\\\ Rendszergazda\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \u0410\u0434\u043c\u0438\u043d\u0438\u0441\u0442\u0440\u0430\u0442\u043e\u0440\\\\ .*\") OR process_command_line = RGX(\".*\\\\ Administrateur\\\\ .*\") OR process_command_line = RGX(\".*\\\\ Administrador\\\\ .*\") OR process_command_line = RGX(\".*\\\\ Administrat\u00f6r\\\\ .*\") OR process_command_line = RGX(\".*\\\\ Administrator\\\\ .*\") OR process_command_line = RGX(\".*\\\\ guest\\\\ .*\") OR process_command_line = RGX(\".*\\\\ DefaultAccount\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\\"J\u00e4rjestelm\u00e4nvalvoja\\\\\"\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\\"Rendszergazda\\\\\"\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\\"\u0410\u0434\u043c\u0438\u043d\u0438\u0441\u0442\u0440\u0430\u0442\u043e\u0440\\\\\"\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\\"Administrateur\\\\\"\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\\"Administrador\\\\\"\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\\"Administrat\u00f6r\\\\\"\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\\"Administrator\\\\\"\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\\"guest\\\\\"\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\\"DefaultAccount\\\\\"\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\'J\u00e4rjestelm\u00e4nvalvoja\\\\'\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\'Rendszergazda\\\\'\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\'\u0410\u0434\u043c\u0438\u043d\u0438\u0441\u0442\u0440\u0430\u0442\u043e\u0440\\\\'\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\'Administrateur\\\\'\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\'Administrador\\\\'\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\'Administrat\u00f6r\\\\'\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\'Administrator\\\\'\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\'guest\\\\'\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\'DefaultAccount\\\\'\\\\ .*\"))) AND  NOT ((process_command_line = RGX(\".*guest.*\") AND process_command_line = RGX(\".*\\\\/active\\\\ no.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2c0c8251-6f55-40c5-91c1-a268c3b0d368"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

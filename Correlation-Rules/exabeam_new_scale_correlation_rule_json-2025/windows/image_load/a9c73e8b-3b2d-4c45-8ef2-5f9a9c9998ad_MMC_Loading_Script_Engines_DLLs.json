@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "MMC Loading Script Engines DLLs",
+      "description": "Detects when the Microsoft Management Console (MMC) loads the DLL libraries like vbscript, jscript etc which might indicate an attempt\nto execute malicious scripts within a trusted system process for bypassing application whitelisting or defense evasion.\n Note: Unmapped fields: ImageLoaded",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\mmc\\\\\\.exe$\") AND (ImageLoaded = RGX(\"\\\\\\\\vbscript\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\jscript\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\jscript9\\\\\\.dll$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2ebca0c0-f9c3-4244-a50e-5dc15febbb72"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

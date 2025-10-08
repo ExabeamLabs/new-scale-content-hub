@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Firewall Disabled via Netsh.EXE",
+      "description": "Detects netsh commands that turns off the Windows firewall",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\netsh\\\\\\.exe$\") OR process_original_file_name = \"netsh\\.exe\") AND ((process_command_line = RGX(\".*firewall.*\") AND process_command_line = RGX(\".*set.*\") AND process_command_line = RGX(\".*opmode.*\") AND process_command_line = RGX(\".*disable.*\")) OR (process_command_line = RGX(\".*advfirewall.*\") AND process_command_line = RGX(\".*set.*\") AND process_command_line = RGX(\".*state.*\") AND process_command_line = RGX(\".*off.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a2da1fd4-8e58-40c3-8f94-c4ef019d661d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

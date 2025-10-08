@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PsExec Service Child Process Execution as LOCAL SYSTEM",
+      "description": "Detects suspicious launch of the PSEXESVC service on this system and a sub process run as LOCAL_SYSTEM (-s), which means that someone remotely started a command on this system running it with highest privileges and not only the privileges of the login user account (e.g. the administrator account)",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = \"C\\:\\\\Windows\\\\PSEXESVC\\.exe\" AND (user = RGX(\".*AUTHORI.*\") OR user = RGX(\".*AUTORI.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3c67c4d2-c6ca-430d-ae8f-b2cd66b79fa8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

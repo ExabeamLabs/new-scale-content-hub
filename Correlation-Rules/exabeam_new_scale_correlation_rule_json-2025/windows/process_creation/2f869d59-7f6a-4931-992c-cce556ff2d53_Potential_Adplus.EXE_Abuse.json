@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Adplus.EXE Abuse",
+      "description": "Detects execution of \"AdPlus.exe\", a binary that is part of the Windows SDK that can be used as a LOLBIN in order to dump process memory and execute arbitrary commands.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\adplus\\\\\\.exe$\") OR process_original_file_name = \"Adplus\\.exe\") AND (process_command_line = RGX(\".*\\\\ \\\\-hang\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-pn\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-pmn\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-p\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-po\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-c\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-sc\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "55a7073c-c362-415f-8824-4f576c58768d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

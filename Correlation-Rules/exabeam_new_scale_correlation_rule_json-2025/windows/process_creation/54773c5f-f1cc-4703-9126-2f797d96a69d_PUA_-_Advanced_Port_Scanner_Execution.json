@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - Advanced Port Scanner Execution",
+      "description": "Detects the use of Advanced Port Scanner.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\".*\\\\\\\\advanced\\\\_port\\\\_scanner.*\") OR process_original_file_name = RGX(\".*advanced\\\\_port\\\\_scanner.*\") OR process_description = RGX(\".*Advanced\\\\ Port\\\\ Scanner.*\")) OR (process_command_line = RGX(\".*\\\\/portable.*\") AND process_command_line = RGX(\".*\\\\/lng.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e958890c-a908-4840-a55a-c31d5c83f3d4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

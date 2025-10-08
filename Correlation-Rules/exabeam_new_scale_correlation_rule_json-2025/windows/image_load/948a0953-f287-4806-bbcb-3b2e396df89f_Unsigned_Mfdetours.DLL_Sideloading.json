@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Unsigned Mfdetours.DLL Sideloading",
+      "description": "Detects DLL sideloading of unsigned \"mfdetours.dll\". Executing \"mftrace.exe\" can be abused to attach to an arbitrary process and force load any DLL named \"mfdetours.dll\" from the current directory of execution. Note: Unmapped fields: ImageLoaded, SignatureStatus",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ImageLoaded = RGX(\"\\\\\\\\mfdetours\\\\\\.dll$\") AND  NOT ((ImageLoaded = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Windows\\\\ Kits\\\\\\\\10\\\\\\\\bin\\\\\\\\.*\") AND SignatureStatus = \"Valid\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7f27d73a-de7f-4a4b-9e23-c41e97fb366c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Shell Execution via Git - Linux",
+      "description": "Detects the use of the \"git\" utility to execute a shell. Such behavior may be associated with privilege escalation, unauthorized command execution, or to break out from restricted environments.\n",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\/git$\") AND (parent_process_command_line = RGX(\".*\\\\ \\\\-p\\\\ .*\") AND parent_process_command_line = RGX(\".*help.*\")) AND (process_command_line = RGX(\".*bash\\\\ 0\\\\<\\\\&1.*\") OR process_command_line = RGX(\".*dash\\\\ 0\\\\<\\\\&1.*\") OR process_command_line = RGX(\".*sh\\\\ 0\\\\<\\\\&1.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "cafeca13-d0a4-44c4-83f4-1335876438ad"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

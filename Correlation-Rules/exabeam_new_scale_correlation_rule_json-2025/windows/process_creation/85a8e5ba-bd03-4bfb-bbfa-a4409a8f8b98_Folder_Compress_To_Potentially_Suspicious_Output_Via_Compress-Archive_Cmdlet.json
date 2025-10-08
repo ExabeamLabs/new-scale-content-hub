@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Folder Compress To Potentially Suspicious Output Via Compress-Archive Cmdlet",
+      "description": "Detects PowerShell scripts that make use of the \"Compress-Archive\" Cmdlet in order to compress folders and files where the output is stored in a potentially suspicious location that is used often by malware for exfiltration.\nAn adversary might compress data (e.g., sensitive documents) that is collected prior to exfiltration in order to make it portable and minimize the amount of data sent over the network.\n",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*Compress\\\\-Archive\\\\ \\\\-Path*\\\\-DestinationPath\\\\ \\\\$env\\\\:TEMP.*\") OR process_command_line = RGX(\".*Compress\\\\-Archive\\\\ \\\\-Path*\\\\-DestinationPath*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*Compress\\\\-Archive\\\\ \\\\-Path*\\\\-DestinationPath*\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8eeae24f-8d02-4bbf-ad61-567b9fd6d13e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

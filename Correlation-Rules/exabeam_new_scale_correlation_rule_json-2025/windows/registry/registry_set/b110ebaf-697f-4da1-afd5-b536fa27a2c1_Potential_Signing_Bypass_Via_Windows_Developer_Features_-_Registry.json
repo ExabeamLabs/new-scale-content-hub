@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Signing Bypass Via Windows Developer Features - Registry",
+      "description": "Detects when the enablement of developer features such as \"Developer Mode\" or \"Application Sideloading\". Which allows the user to install untrusted packages. Note: Unmapped fields: Details",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((registry_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\AppModelUnlock.*\") OR registry_path = RGX(\".*\\\\\\\\Policies\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\Appx\\\\\\\\.*\")) AND (registry_path = RGX(\"\\\\\\\\AllowAllTrustedApps$\") OR registry_path = RGX(\"\\\\\\\\AllowDevelopmentWithoutDevLicense$\")) AND Details = \"DWORD\\ \\(0x00000001\\)\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0e9681b9-77ec-4c83-b879-1f12ef2eebd3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Unsigned Binary Loaded From Suspicious Location",
+      "description": "Detects Code Integrity (CI) engine blocking processes from loading unsigned DLLs residing in suspicious locations Note: Unmapped fields: ImageName",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((event_id = 11 OR event_id = 12) AND (ImageName = RGX(\".*\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR ImageName = RGX(\".*\\\\\\\\PerfLogs\\\\\\\\.*\") OR ImageName = RGX(\".*\\\\\\\\Desktop\\\\\\\\.*\") OR ImageName = RGX(\".*\\\\\\\\Downloads\\\\\\\\.*\") OR ImageName = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") OR ImageName = RGX(\".*C\\\\:\\\\\\\\Windows\\\\\\\\TEMP\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2e5cfe8d-6ec7-4800-a610-1940eaad6888"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

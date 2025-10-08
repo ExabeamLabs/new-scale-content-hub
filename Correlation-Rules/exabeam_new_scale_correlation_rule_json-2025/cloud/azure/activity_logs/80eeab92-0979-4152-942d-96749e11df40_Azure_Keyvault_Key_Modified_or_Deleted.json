@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Azure Keyvault Key Modified or Deleted",
+      "description": "Identifies when a Keyvault Key is modified or deleted in Azure. Note: Unmapped fields: operationName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(operationName = \"MICROSOFT\\.KEYVAULT\\/VAULTS\\/KEYS\\/UPDATE\\/ACTION\" OR operationName = \"MICROSOFT\\.KEYVAULT\\/VAULTS\\/KEYS\\/CREATE\" OR operationName = \"MICROSOFT\\.KEYVAULT\\/VAULTS\\/KEYS\\/CREATE\\/ACTION\" OR operationName = \"MICROSOFT\\.KEYVAULT\\/VAULTS\\/KEYS\\/IMPORT\\/ACTION\" OR operationName = \"MICROSOFT\\.KEYVAULT\\/VAULTS\\/KEYS\\/RECOVER\\/ACTION\" OR operationName = \"MICROSOFT\\.KEYVAULT\\/VAULTS\\/KEYS\\/RESTORE\\/ACTION\" OR operationName = \"MICROSOFT\\.KEYVAULT\\/VAULTS\\/KEYS\\/DELETE\" OR operationName = \"MICROSOFT\\.KEYVAULT\\/VAULTS\\/KEYS\\/BACKUP\\/ACTION\" OR operationName = \"MICROSOFT\\.KEYVAULT\\/VAULTS\\/KEYS\\/PURGE\\/ACTION\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7b338abf-fb2f-41e8-a861-40c573f84286"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

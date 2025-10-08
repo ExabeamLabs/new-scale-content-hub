@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Load Of RstrtMgr.DLL By A Suspicious Process",
+      "description": "Detects the load of RstrtMgr DLL (Restart Manager) by a suspicious process.\nThis library has been used during ransomware campaigns to kill processes that would prevent file encryption by locking them (e.g. Conti ransomware, Cactus ransomware). It has also recently been seen used by the BiBi wiper for Windows.\nIt could also be used for anti-analysis purposes by shut downing specific processes.\n Note: Unmapped fields: ImageLoaded",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ImageLoaded = RGX(\"\\\\\\\\RstrtMgr\\\\\\.dll$\") OR process_original_file_name = \"RstrtMgr\\.dll\") AND ((process_path = RGX(\".*\\\\:\\\\\\\\Perflogs\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\Temporary\\\\ Internet.*\")) OR ((process_path = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND process_path = RGX(\".*\\\\\\\\Favorites\\\\\\\\.*\")) OR (process_path = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND process_path = RGX(\".*\\\\\\\\Favourites\\\\\\\\.*\")) OR (process_path = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND process_path = RGX(\".*\\\\\\\\Contacts\\\\\\\\.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "df9125f5-8053-403a-a5d1-bb66290060f1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

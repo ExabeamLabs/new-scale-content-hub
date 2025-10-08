@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Third Party Software DLL Sideloading",
+      "description": "Detects DLL sideloading of DLLs that are part of third party software (zoom, discord....etc) Note: Unmapped fields: ImageLoaded",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ImageLoaded = RGX(\"\\\\\\\\commfunc\\\\\\.dll$\") AND  NOT ((ImageLoaded = RGX(\".*\\\\\\\\AppData\\\\\\\\local\\\\\\\\Google\\\\\\\\Chrome\\\\\\\\Application\\\\\\\\.*\") OR (ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Lenovo\\\\\\\\Communications\\\\ Utility\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Lenovo\\\\\\\\Communications\\\\ Utility\\\\\\\\\"))))) OR (ImageLoaded = RGX(\"\\\\\\\\tosbtkbd\\\\\\.dll$\") AND  NOT ((ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Toshiba\\\\\\\\Bluetooth\\\\ Toshiba\\\\ Stack\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Toshiba\\\\\\\\Bluetooth\\\\ Toshiba\\\\ Stack\\\\\\\\\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b67a3d0a-4b1f-4fcc-8244-1f1da30497cb"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Addition of SID History to Active Directory Object",
+      "description": "An attacker can use the SID history attribute to gain additional privileges. Note: Unmapped fields: SidHistory",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4765 OR event_id = 4766) OR (event_id = 4738 AND  NOT ((SidHistory = \"\\-\" OR SidHistory = \"\\%\\%1793\")) AND  NOT (SidHistory = \"None\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7df86e2f-50e3-49e8-9644-9f9f68a00bc8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

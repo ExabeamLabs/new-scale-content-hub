@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Webshell Tool Reconnaissance Activity",
+      "description": "Detects processes spawned from web servers (PHP, Tomcat, IIS, etc.) that perform reconnaissance looking for the existence of popular scripting tools (perl, python, wget) on the system via the help commands\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((parent_process_path = RGX(\"\\\\\\\\caddy\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\httpd\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\nginx\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\php\\\\-cgi\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\w3wp\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\ws\\\\_tomcatservice\\\\\\.exe$\")) OR ((parent_process_path = RGX(\"\\\\\\\\java\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\javaw\\\\\\.exe$\")) AND (parent_process_path = RGX(\".*\\\\-tomcat\\\\-.*\") OR parent_process_path = RGX(\".*\\\\\\\\tomcat.*\"))) OR ((parent_process_path = RGX(\"\\\\\\\\java\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\javaw\\\\\\.exe$\")) AND (process_command_line = RGX(\".*CATALINA\\\\_HOME.*\") OR process_command_line = RGX(\".*catalina\\\\\\.jar.*\")))) AND (process_command_line = RGX(\".*perl\\\\ \\\\-\\\\-help.*\") OR process_command_line = RGX(\".*perl\\\\ \\\\-h.*\") OR process_command_line = RGX(\".*python\\\\ \\\\-\\\\-help.*\") OR process_command_line = RGX(\".*python\\\\ \\\\-h.*\") OR process_command_line = RGX(\".*python3\\\\ \\\\-\\\\-help.*\") OR process_command_line = RGX(\".*python3\\\\ \\\\-h.*\") OR process_command_line = RGX(\".*wget\\\\ \\\\-\\\\-help.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c154e13c-bef6-4cb8-b25c-b81080495255"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

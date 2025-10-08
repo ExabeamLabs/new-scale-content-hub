@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows Screen Capture with CopyFromScreen",
+      "description": "Adversaries may attempt to take screen captures of the desktop to gather information over the course of an operation.\nScreen capturing functionality may be included as a feature of a remote access tool used in post-compromise operations\n Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ScriptBlockText = RGX(\".*\\\\\\.CopyFromScreen.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e3eb96c9-ef02-4c4d-baad-93356c6a25b1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

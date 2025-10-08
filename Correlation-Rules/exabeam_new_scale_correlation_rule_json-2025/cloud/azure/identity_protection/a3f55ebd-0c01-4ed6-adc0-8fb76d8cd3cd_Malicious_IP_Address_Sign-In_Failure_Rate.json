@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Malicious IP Address Sign-In Failure Rate",
+      "description": "Indicates sign-in from a malicious IP address based on high failure rates. Note: Unmapped fields: riskEventType",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "riskEventType = \"maliciousIPAddress\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "477e6ea5-f569-4d96-81dc-3dbc345904a1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

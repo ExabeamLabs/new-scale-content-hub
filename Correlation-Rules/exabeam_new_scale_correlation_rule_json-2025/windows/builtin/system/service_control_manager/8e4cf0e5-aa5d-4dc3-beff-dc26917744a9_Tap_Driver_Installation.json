@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Tap Driver Installation",
+      "description": "Well-known TAP software installation. Possible preparation for data exfiltration using tunnelling techniques Note: Unmapped fields: Provider_Name, ImagePath",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Provider_Name = \"Service\\ Control\\ Manager\" AND event_id = 7045 AND ImagePath = RGX(\".*tap0901.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "15a2411b-a658-4b5f-9a6a-34f07c975846"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

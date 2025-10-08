@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows Registry Trust Record Modification",
+      "description": "Alerts on trust record modification within the registry, indicating usage of macros",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\".*\\\\\\\\Security\\\\\\\\Trusted\\\\ Documents\\\\\\\\TrustRecords.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ce446028-ef33-4a7c-a0b5-ed8c5af27197"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

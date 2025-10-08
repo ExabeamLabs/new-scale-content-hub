@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Copy From VolumeShadowCopy Via Cmd.EXE",
+      "description": "Detects the execution of the builtin \"copy\" command that targets a shadow copy (sometimes used to copy registry hives that are in use)",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*copy\\\\ .*\") AND process_command_line = RGX(\".*\\\\\\\\\\\\\\\\\\\\?\\\\\\\\GLOBALROOT\\\\\\\\Device\\\\\\\\HarddiskVolumeShadowCopy.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3afe58d3-6949-46f5-bf59-3b818526cf2a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

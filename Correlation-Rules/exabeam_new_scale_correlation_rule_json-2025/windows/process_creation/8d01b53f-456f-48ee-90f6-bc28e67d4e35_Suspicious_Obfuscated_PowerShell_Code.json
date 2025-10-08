@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Obfuscated PowerShell Code",
+      "description": "Detects suspicious UTF16 and base64 encoded and often obfuscated PowerShell code often used in command lines",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*IAAtAGIAeABvAHIAIAAwAHgA.*\") OR process_command_line = RGX(\".*AALQBiAHgAbwByACAAMAB4A.*\") OR process_command_line = RGX(\".*gAC0AYgB4AG8AcgAgADAAeA.*\") OR process_command_line = RGX(\".*AC4ASQBuAHYAbwBrAGUAKAApACAAfAAg.*\") OR process_command_line = RGX(\".*AuAEkAbgB2AG8AawBlACgAKQAgAHwAI.*\") OR process_command_line = RGX(\".*ALgBJAG4AdgBvAGsAZQAoACkAIAB8AC.*\") OR process_command_line = RGX(\".*AHsAMQB9AHsAMAB9ACIAIAAtAGYAI.*\") OR process_command_line = RGX(\".*B7ADEAfQB7ADAAfQAiACAALQBmAC.*\") OR process_command_line = RGX(\".*AewAxAH0AewAwAH0AIgAgAC0AZgAg.*\") OR process_command_line = RGX(\".*AHsAMAB9AHsAMwB9ACIAIAAtAGYAI.*\") OR process_command_line = RGX(\".*B7ADAAfQB7ADMAfQAiACAALQBmAC.*\") OR process_command_line = RGX(\".*AewAwAH0AewAzAH0AIgAgAC0AZgAg.*\") OR process_command_line = RGX(\".*AHsAMgB9AHsAMAB9ACIAIAAtAGYAI.*\") OR process_command_line = RGX(\".*B7ADIAfQB7ADAAfQAiACAALQBmAC.*\") OR process_command_line = RGX(\".*AewAyAH0AewAwAH0AIgAgAC0AZgAg.*\") OR process_command_line = RGX(\".*AHsAMQB9AHsAMAB9ACcAIAAtAGYAI.*\") OR process_command_line = RGX(\".*B7ADEAfQB7ADAAfQAnACAALQBmAC.*\") OR process_command_line = RGX(\".*AewAxAH0AewAwAH0AJwAgAC0AZgAg.*\") OR process_command_line = RGX(\".*AHsAMAB9AHsAMwB9ACcAIAAtAGYAI.*\") OR process_command_line = RGX(\".*B7ADAAfQB7ADMAfQAnACAALQBmAC.*\") OR process_command_line = RGX(\".*AewAwAH0AewAzAH0AJwAgAC0AZgAg.*\") OR process_command_line = RGX(\".*AHsAMgB9AHsAMAB9ACcAIAAtAGYAI.*\") OR process_command_line = RGX(\".*B7ADIAfQB7ADAAfQAnACAALQBmAC.*\") OR process_command_line = RGX(\".*AewAyAH0AewAwAH0AJwAgAC0AZgAg.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "89b5a41a-1830-43c1-99ce-a7131f3649d2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

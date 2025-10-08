@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Persistence Via Event Viewer Events.asp",
+      "description": "Detects potential registry persistence technique using the Event Viewer \"Events.asp\" technique Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\Event\\\\ Viewer\\\\\\\\MicrosoftRedirectionProgram.*\") OR registry_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\Event\\\\ Viewer\\\\\\\\MicrosoftRedirectionURL.*\")) AND  NOT ((process_path = RGX(\"C\\\\:\\\\\\\\WINDOWS\\\\\\\\system32\\\\\\\\svchost\\\\\\.exe$\") AND registry_path = RGX(\"\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\Event\\\\ Viewer\\\\\\\\MicrosoftRedirectionProgram$\") AND Details = \"\\%\\%SystemRoot\\%\\%\\\\PCHealth\\\\HelpCtr\\\\Binaries\\\\HelpCtr\\.exe\") OR (process_path = RGX(\"C\\\\:\\\\\\\\WINDOWS\\\\\\\\system32\\\\\\\\svchost\\\\\\.exe$\") AND registry_path = RGX(\"\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\Event\\\\ Viewer\\\\\\\\MicrosoftRedirectionProgramCommandLineParameters$\") AND Details = \"\\-url\\ hcp\\:\\/\\/services\\/centers\\/support?topic\\=\\%\\%s\") OR Details = \"http\\:\\/\\/go\\.microsoft\\.com\\/fwlink\\/events\\.asp\" OR Details = \"\\(Empty\\)\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0bb152b2-8e81-4708-9baa-b289fb787d75"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

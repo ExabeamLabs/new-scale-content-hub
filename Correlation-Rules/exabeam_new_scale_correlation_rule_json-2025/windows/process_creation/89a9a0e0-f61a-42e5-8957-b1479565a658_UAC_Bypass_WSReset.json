@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "UAC Bypass WSReset",
+      "description": "Detects the pattern of UAC Bypass via WSReset usable by default sysmon-config",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\wsreset\\\\\\.exe$\") AND (process_integrity_level = \"High\" OR process_integrity_level = \"System\" OR process_integrity_level = \"S\\-1\\-16\\-16384\" OR process_integrity_level = \"S\\-1\\-16\\-12288\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "988bd08f-030b-4095-9b33-c1aef6087fe1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PSExec and WMI Process Creations Block",
+      "description": "Detects blocking of process creations originating from PSExec and WMI commands Note: Unmapped fields: ProcessName",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 1121 AND (ProcessName = RGX(\"\\\\\\\\wmiprvse\\\\\\.exe$\") OR ProcessName = RGX(\"\\\\\\\\psexesvc\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b0b17ca9-66d5-485f-b3bd-bc851c609857"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

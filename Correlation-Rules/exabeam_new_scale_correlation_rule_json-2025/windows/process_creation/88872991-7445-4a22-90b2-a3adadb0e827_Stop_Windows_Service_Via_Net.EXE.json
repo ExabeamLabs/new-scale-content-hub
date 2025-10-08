@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Stop Windows Service Via Net.EXE",
+      "description": "Detects the stopping of a Windows service via the \"net\" utility.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_original_file_name = \"net\\.exe\" OR process_original_file_name = \"net1\\.exe\") OR (process_path = RGX(\"\\\\\\\\net\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\net1\\\\\\.exe$\"))) AND process_command_line = RGX(\".*\\\\ stop\\\\ .*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f1bb0b9f-30e7-4817-ba29-2f6978756296"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

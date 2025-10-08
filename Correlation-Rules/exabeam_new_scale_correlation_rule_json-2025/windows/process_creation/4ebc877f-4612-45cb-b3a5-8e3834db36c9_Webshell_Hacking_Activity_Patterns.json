@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Webshell Hacking Activity Patterns",
+      "description": "Detects certain parent child patterns found in cases in which a web shell is used to perform certain credential dumping or exfiltration activities on a compromised system\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((parent_process_path = RGX(\"\\\\\\\\caddy\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\httpd\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\nginx\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\php\\\\-cgi\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\w3wp\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\ws\\\\_tomcatservice\\\\\\.exe$\")) OR ((parent_process_path = RGX(\"\\\\\\\\java\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\javaw\\\\\\.exe$\")) AND (parent_process_path = RGX(\".*\\\\-tomcat\\\\-.*\") OR parent_process_path = RGX(\".*\\\\\\\\tomcat.*\"))) OR ((parent_process_path = RGX(\"\\\\\\\\java\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\javaw\\\\\\.exe$\")) AND (process_command_line = RGX(\".*catalina\\\\\\.jar.*\") OR process_command_line = RGX(\".*CATALINA\\\\_HOME.*\")))) AND ((process_command_line = RGX(\".*rundll32.*\") AND process_command_line = RGX(\".*comsvcs.*\")) OR (process_command_line = RGX(\".*\\\\ \\\\-hp.*\") AND process_command_line = RGX(\".*\\\\ a\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-m.*\")) OR (process_command_line = RGX(\".*net.*\") AND process_command_line = RGX(\".*\\\\ user\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\/add.*\")) OR (process_command_line = RGX(\".*net.*\") AND process_command_line = RGX(\".*\\\\ localgroup\\\\ .*\") AND process_command_line = RGX(\".*\\\\ administrators\\\\ .*\") AND process_command_line = RGX(\".*\\\\/add.*\")) OR (process_path = RGX(\"\\\\\\\\ntdsutil\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\ldifde\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\adfind\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\procdump\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\Nanodump\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\vssadmin\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\fsutil\\\\\\.exe$\")) OR (process_command_line = RGX(\".*\\\\ \\\\-decode\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-NoP\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-W\\\\ Hidden\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\/decode\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\/ticket\\\\:.*\") OR process_command_line = RGX(\".*\\\\ sekurlsa.*\") OR process_command_line = RGX(\".*\\\\\\.dmp\\\\ full.*\") OR process_command_line = RGX(\".*\\\\\\.downloadfile\\\\(.*\") OR process_command_line = RGX(\".*\\\\\\.downloadstring\\\\(.*\") OR process_command_line = RGX(\".*FromBase64String.*\") OR process_command_line = RGX(\".*process\\\\ call\\\\ create.*\") OR process_command_line = RGX(\".*reg\\\\ save\\\\ .*\") OR process_command_line = RGX(\".*whoami\\\\ \\\\/priv.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2fbb83f6-041f-4e44-9dc8-fc1ec808bfa0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

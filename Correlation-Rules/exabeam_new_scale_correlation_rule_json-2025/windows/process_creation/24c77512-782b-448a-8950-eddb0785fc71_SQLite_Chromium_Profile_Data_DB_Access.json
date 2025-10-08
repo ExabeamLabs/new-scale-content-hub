@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "SQLite Chromium Profile Data DB Access",
+      "description": "Detect usage of the \"sqlite\" binary to query databases in Chromium-based browsers for potential data stealing.",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_product = \"SQLite\" OR (process_path = RGX(\"\\\\\\\\sqlite\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\sqlite3\\\\\\.exe$\"))) AND (process_command_line = RGX(\".*\\\\\\\\User\\\\ Data\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Opera\\\\ Software\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\ChromiumViewer\\\\\\\\.*\")) AND (process_command_line = RGX(\".*Login\\\\ Data.*\") OR process_command_line = RGX(\".*Cookies.*\") OR process_command_line = RGX(\".*Web\\\\ Data.*\") OR process_command_line = RGX(\".*History.*\") OR process_command_line = RGX(\".*Bookmarks.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "de99fcb2-a054-4a06-aa5a-326b37df3aa2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

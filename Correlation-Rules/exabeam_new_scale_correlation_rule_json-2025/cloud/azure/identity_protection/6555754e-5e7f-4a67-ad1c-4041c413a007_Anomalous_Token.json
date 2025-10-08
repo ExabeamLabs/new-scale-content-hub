@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Anomalous Token",
+      "description": "Indicates that there are abnormal characteristics in the token such as an unusual token lifetime or a token that is played from an unfamiliar location. Note: Unmapped fields: riskEventType",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "riskEventType = \"anomalousToken\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8b81c2c1-b8e4-487e-891a-0a8a79683da3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

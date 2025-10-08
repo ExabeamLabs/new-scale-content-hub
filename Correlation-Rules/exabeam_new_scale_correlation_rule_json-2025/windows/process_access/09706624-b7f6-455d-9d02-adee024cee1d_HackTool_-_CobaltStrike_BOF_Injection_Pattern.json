@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - CobaltStrike BOF Injection Pattern",
+      "description": "Detects a typical pattern of a CobaltStrike BOF which inject into other processes Note: Unmapped fields: CallTrace, GrantedAccess",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(CallTrace = RGX(\"^C:\\Windows\\SYSTEM32\\ntdll.dll+[a-z0-9]{4,6}|C:\\Windows\\System32\\KERNELBASE.dll+[a-z0-9]{4,6}|UNKNOWN([A-Z0-9]{16})$\") AND (GrantedAccess = \"0x1028\" OR GrantedAccess = \"0x1fffff\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1e30687a-4025-48a6-a1b5-4c271b3907ed"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

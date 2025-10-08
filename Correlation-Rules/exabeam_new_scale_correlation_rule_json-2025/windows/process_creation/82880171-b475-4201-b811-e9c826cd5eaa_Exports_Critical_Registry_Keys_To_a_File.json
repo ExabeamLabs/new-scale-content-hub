@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Exports Critical Registry Keys To a File",
+      "description": "Detects the export of a crital Registry key to a file.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\regedit\\\\\\.exe$\") OR process_original_file_name = \"REGEDIT\\.EXE\") AND process_command_line = RGX(\".*\\\\ \\\\-E\\\\ .*\") AND (process_command_line = RGX(\".*hklm.*\") OR process_command_line = RGX(\".*hkey\\\\_local\\\\_machine.*\")) AND (process_command_line = RGX(\"\\\\\\\\system$\") OR process_command_line = RGX(\"\\\\\\\\sam$\") OR process_command_line = RGX(\"\\\\\\\\security$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "acdf6f21-8066-43ca-85c9-a84bd88a44af"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

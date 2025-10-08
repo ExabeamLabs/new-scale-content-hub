@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Uncommon File Created In Office Startup Folder",
+      "description": "Detects the creation of a file with an uncommon extension in an Office application startup folder",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((file_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Word\\\\\\\\STARTUP.*\") OR (file_path = RGX(\".*\\\\\\\\Office.*\") AND file_path = RGX(\".*\\\\\\\\Program\\\\ Files.*\") AND file_path = RGX(\".*\\\\\\\\STARTUP.*\"))) AND  NOT ((file_path = RGX(\"\\\\\\.docb$\") OR file_path = RGX(\"\\\\\\.docm$\") OR file_path = RGX(\"\\\\\\.docx$\") OR file_path = RGX(\"\\\\\\.dotm$\") OR file_path = RGX(\"\\\\\\.mdb$\") OR file_path = RGX(\"\\\\\\.mdw$\") OR file_path = RGX(\"\\\\\\.pdf$\") OR file_path = RGX(\"\\\\\\.wll$\") OR file_path = RGX(\"\\\\\\.wwl$\")))) OR ((file_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Excel\\\\\\\\XLSTART.*\") OR (file_path = RGX(\".*\\\\\\\\Office.*\") AND file_path = RGX(\".*\\\\\\\\Program\\\\ Files.*\") AND file_path = RGX(\".*\\\\\\\\XLSTART.*\"))) AND  NOT ((file_path = RGX(\"\\\\\\.xll$\") OR file_path = RGX(\"\\\\\\.xls$\") OR file_path = RGX(\"\\\\\\.xlsm$\") OR file_path = RGX(\"\\\\\\.xlsx$\") OR file_path = RGX(\"\\\\\\.xlt$\") OR file_path = RGX(\"\\\\\\.xltm$\") OR file_path = RGX(\"\\\\\\.xlw$\"))))) AND  NOT ((process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Common\\\\ Files\\\\\\\\Microsoft\\\\ Shared\\\\\\\\ClickToRun\\\\\\\\.*\") AND process_path = RGX(\"\\\\\\\\OfficeClickToRun\\\\\\.exe$\")) OR ((process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Microsoft\\\\ Office\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Microsoft\\\\ Office\\\\\\\\.*\")) AND (process_path = RGX(\"\\\\\\\\winword\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\excel\\\\\\.exe$\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3729e258-8b55-474d-983b-234692920c9d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

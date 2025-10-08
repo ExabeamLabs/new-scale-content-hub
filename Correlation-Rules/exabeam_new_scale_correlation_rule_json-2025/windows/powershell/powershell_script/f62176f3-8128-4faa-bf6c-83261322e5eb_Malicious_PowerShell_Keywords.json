@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Malicious PowerShell Keywords",
+      "description": "Detects keywords from well-known PowerShell exploitation frameworks Note: Unmapped fields: ScriptBlockText",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*AdjustTokenPrivileges.*\") OR ScriptBlockText = RGX(\".*IMAGE\\\\_NT\\\\_OPTIONAL\\\\_HDR64\\\\_MAGIC.*\") OR ScriptBlockText = RGX(\".*Metasploit.*\") OR ScriptBlockText = RGX(\".*Microsoft\\\\\\.Win32\\\\\\.UnsafeNativeMethods.*\") OR ScriptBlockText = RGX(\".*Mimikatz.*\") OR ScriptBlockText = RGX(\".*MiniDumpWriteDump.*\") OR ScriptBlockText = RGX(\".*PAGE\\\\_EXECUTE\\\\_READ.*\") OR ScriptBlockText = RGX(\".*ReadProcessMemory\\\\\\.Invoke.*\") OR ScriptBlockText = RGX(\".*SE\\\\_PRIVILEGE\\\\_ENABLED.*\") OR ScriptBlockText = RGX(\".*SECURITY\\\\_DELEGATION.*\") OR ScriptBlockText = RGX(\".*TOKEN\\\\_ADJUST\\\\_PRIVILEGES.*\") OR ScriptBlockText = RGX(\".*TOKEN\\\\_ALL\\\\_ACCESS.*\") OR ScriptBlockText = RGX(\".*TOKEN\\\\_ASSIGN\\\\_PRIMARY.*\") OR ScriptBlockText = RGX(\".*TOKEN\\\\_DUPLICATE.*\") OR ScriptBlockText = RGX(\".*TOKEN\\\\_ELEVATION.*\") OR ScriptBlockText = RGX(\".*TOKEN\\\\_IMPERSONATE.*\") OR ScriptBlockText = RGX(\".*TOKEN\\\\_INFORMATION\\\\_CLASS.*\") OR ScriptBlockText = RGX(\".*TOKEN\\\\_PRIVILEGES.*\") OR ScriptBlockText = RGX(\".*TOKEN\\\\_QUERY.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "dec30826-cb2c-4138-bc68-5d3b739e4735"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

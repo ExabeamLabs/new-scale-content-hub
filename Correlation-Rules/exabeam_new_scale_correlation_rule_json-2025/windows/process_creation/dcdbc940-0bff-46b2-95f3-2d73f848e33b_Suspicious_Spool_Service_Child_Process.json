@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Spool Service Child Process",
+      "description": "Detects suspicious print spool service (spoolsv.exe) child processes.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\spoolsv\\\\\\.exe$\") AND (process_integrity_level = \"System\" OR process_integrity_level = \"S\\-1\\-16\\-16384\")) AND ((process_path = RGX(\"\\\\\\\\gpupdate\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\whoami\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\nltest\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\taskkill\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wmic\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\taskmgr\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\sc\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\findstr\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\curl\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wget\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\certutil\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\bitsadmin\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\accesschk\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wevtutil\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\bcdedit\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\fsutil\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cipher\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\write\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wuauclt\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\systeminfo\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\reg\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\query\\\\\\.exe$\")) OR ((process_path = RGX(\"\\\\\\\\net\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\net1\\\\\\.exe$\")) AND  NOT (process_command_line = RGX(\".*start.*\"))) OR (process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") AND  NOT ((process_command_line = RGX(\".*\\\\\\.spl.*\") OR process_command_line = RGX(\".*route\\\\ add.*\") OR process_command_line = RGX(\".*program\\\\ files.*\")))) OR (process_path = RGX(\"\\\\\\\\netsh\\\\\\.exe$\") AND  NOT ((process_command_line = RGX(\".*add\\\\ portopening.*\") OR process_command_line = RGX(\".*rule\\\\ name.*\")))) OR ((process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\")) AND  NOT (process_command_line = RGX(\".*\\\\\\.spl.*\"))) OR ((process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_original_file_name = \"RUNDLL32\\.EXE\") AND process_command_line = RGX(\"rundll32\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7f1ae7d2-fc55-4d73-852c-c09e839c71f6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

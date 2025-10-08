@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Authentications To Important Apps Using Single Factor Authentication",
+      "description": "Detect when authentications to important application(s) only required single-factor authentication Note: Unmapped fields: Status, AppId, AuthenticationRequirement",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Status = \"Success\" AND AppId = \"Insert\\ Application\\ ID\\ use\\ OR\\ for\\ multiple\" AND AuthenticationRequirement = \"singleFactorAuthentication\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "cdfaf69b-7ddf-4fe4-835a-b540a6ace5f5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

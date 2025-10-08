@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious File Characteristics Due to Missing Fields",
+      "description": "Detects Executables in the Downloads folder without FileVersion,Description,Product,Company likely created with py2exe",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_description = \"\\?\" AND process_file_version = \"\\?\") OR (process_description = \"\\?\" AND process_product = \"\\?\") OR (process_description = \"\\?\" AND process_company = \"\\?\")) AND process_path = RGX(\".*\\\\\\\\Downloads\\\\\\\\.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "099876fb-fbc5-43cf-a79b-50f1a5f93520"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

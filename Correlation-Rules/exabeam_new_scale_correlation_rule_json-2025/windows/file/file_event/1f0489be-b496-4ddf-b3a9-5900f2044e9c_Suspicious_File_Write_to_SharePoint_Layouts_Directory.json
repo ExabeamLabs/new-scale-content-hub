@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious File Write to SharePoint Layouts Directory",
+      "description": "Detects suspicious file writes to SharePoint layouts directory which could indicate webshell activity or post-exploitation.\nThis behavior has been observed in the exploitation of SharePoint vulnerabilities such as CVE-2025-49704, CVE-2025-49706 or CVE-2025-53770.\n",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\_ise\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\w3wp\\\\\\.exe$\")) AND (file_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Common\\\\ Files\\\\\\\\Microsoft\\\\ Shared\\\\\\\\Web\\\\ Server\\\\ Extensions\\\\\\\\\") OR file_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Common\\\\ Files\\\\\\\\Microsoft\\\\ Shared\\\\\\\\Web\\\\ Server\\\\ Extensions\\\\\\\\\")) AND (file_path = RGX(\".*\\\\\\\\15\\\\\\\\TEMPLATE\\\\\\\\LAYOUTS\\\\\\\\.*\") OR file_path = RGX(\".*\\\\\\\\16\\\\\\\\TEMPLATE\\\\\\\\LAYOUTS\\\\\\\\.*\")) AND (file_path = RGX(\"\\\\\\.asax$\") OR file_path = RGX(\"\\\\\\.ascx$\") OR file_path = RGX(\"\\\\\\.ashx$\") OR file_path = RGX(\"\\\\\\.asmx$\") OR file_path = RGX(\"\\\\\\.asp$\") OR file_path = RGX(\"\\\\\\.aspx$\") OR file_path = RGX(\"\\\\\\.bat$\") OR file_path = RGX(\"\\\\\\.cmd$\") OR file_path = RGX(\"\\\\\\.cer$\") OR file_path = RGX(\"\\\\\\.config$\") OR file_path = RGX(\"\\\\\\.hta$\") OR file_path = RGX(\"\\\\\\.js$\") OR file_path = RGX(\"\\\\\\.jsp$\") OR file_path = RGX(\"\\\\\\.jspx$\") OR file_path = RGX(\"\\\\\\.php$\") OR file_path = RGX(\"\\\\\\.ps1$\") OR file_path = RGX(\"\\\\\\.vbs$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ac6e182b-155e-4389-bc7a-df8c9b872939"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

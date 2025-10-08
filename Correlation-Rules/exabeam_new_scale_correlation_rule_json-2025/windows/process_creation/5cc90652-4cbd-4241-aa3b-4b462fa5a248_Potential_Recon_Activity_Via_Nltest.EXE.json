@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Recon Activity Via Nltest.EXE",
+      "description": "Detects nltest commands that can be used for information discovery",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\nltest\\\\\\.exe$\") OR process_original_file_name = \"nltestrk\\.exe\") AND ((process_command_line = RGX(\".*server.*\") AND process_command_line = RGX(\".*query.*\")) OR (process_command_line = RGX(\".*\\\\/user.*\") OR process_command_line = RGX(\".*all\\\\_trusts.*\") OR process_command_line = RGX(\".*dclist\\\\:.*\") OR process_command_line = RGX(\".*dnsgetdc\\\\:.*\") OR process_command_line = RGX(\".*domain\\\\_trusts.*\") OR process_command_line = RGX(\".*dsgetdc\\\\:.*\") OR process_command_line = RGX(\".*parentdomain.*\") OR process_command_line = RGX(\".*trusted\\\\_domains.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "41acdf71-2ad0-4a98-aa8f-6e503509aaf8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

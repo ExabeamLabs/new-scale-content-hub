@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "DNS Query for Anonfiles.com Domain - DNS Client",
+      "description": "Detects DNS queries for anonfiles.com, which is an anonymous file upload platform often used for malicious purposes Note: Unmapped fields: QueryName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 3008 AND QueryName = RGX(\".*\\\\\\.anonfiles\\\\\\.com.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c0d5e90f-127a-4c27-98f8-dd90a0c03626"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

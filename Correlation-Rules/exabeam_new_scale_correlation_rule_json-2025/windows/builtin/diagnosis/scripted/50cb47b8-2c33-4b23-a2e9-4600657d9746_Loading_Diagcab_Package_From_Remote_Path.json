@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Loading Diagcab Package From Remote Path",
+      "description": "Detects loading of diagcab packages from a remote path, as seen in DogWalk vulnerability Note: Unmapped fields: PackagePath",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 101 AND PackagePath = RGX(\".*\\\\\\\\\\\\\\\\.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "69af414b-f60a-497d-9385-cc1acfe871fc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - Wmiexec Default Powershell Command",
+      "description": "Detects the execution of PowerShell with a specific flag sequence that is used by the Wmiexec script",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_command_line = RGX(\".*\\\\-NoP\\\\ \\\\-NoL\\\\ \\\\-sta\\\\ \\\\-NonI\\\\ \\\\-W\\\\ Hidden\\\\ \\\\-Exec\\\\ Bypass\\\\ \\\\-Enc.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "90da9c9f-a440-469f-ae8d-e95014341198"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

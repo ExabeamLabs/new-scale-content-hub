@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Double Extension Files",
+      "description": "Detects dropped files with double extensions, which is often used by malware as a method to abuse the fact that Windows hide default extensions by default.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((file_path = RGX(\"\\\\\\.exe$\") OR file_path = RGX(\"\\\\\\.iso$\") OR file_path = RGX(\"\\\\\\.rar$\") OR file_path = RGX(\"\\\\\\.svg$\") OR file_path = RGX(\"\\\\\\.zip$\")) AND (file_path = RGX(\".*\\\\\\.doc\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.docx\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.gif\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.jpeg\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.jpg\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.mp3\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.mp4\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.pdf\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.png\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.ppt\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.pptx\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.rtf\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.svg\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.txt\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.xls\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.xlsx\\\\\\..*\"))) OR (file_path = RGX(\"\\\\\\.rar\\\\\\.exe$\") OR file_path = RGX(\"\\\\\\.zip\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0419a2e0-8ec1-4cf8-9762-f85706523064"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Custom File Open Handler Executes PowerShell",
+      "description": "Detects the abuse of custom file open handler, executing powershell Note: Unmapped fields: Details",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*shell\\\\\\\\open\\\\\\\\command\\\\\\\\.*\") AND (Details = RGX(\".*powershell.*\") AND Details = RGX(\".*\\\\-command.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e7a598a9-c81e-44ff-94e7-11a7bee3bcb9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

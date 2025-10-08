@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Eventlog Clear",
+      "description": "Detects usage of known powershell cmdlets such as \"Clear-EventLog\" to clear the Windows event logs Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ScriptBlockText = RGX(\".*Clear\\\\-EventLog\\\\ .*\") OR ScriptBlockText = RGX(\".*Remove\\\\-EventLog\\\\ .*\") OR ScriptBlockText = RGX(\".*Limit\\\\-EventLog\\\\ .*\") OR ScriptBlockText = RGX(\".*Clear\\\\-WinEvent\\\\ .*\")) OR (ScriptBlockText = RGX(\".*Eventing\\\\\\.Reader\\\\\\.EventLogSession.*\") AND ScriptBlockText = RGX(\".*ClearLog.*\")) OR (ScriptBlockText = RGX(\".*Diagnostics\\\\\\.EventLog.*\") OR ScriptBlockText = RGX(\".*Clear.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "fb045b0c-a6d9-4d33-8dbe-783d95f634fa"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

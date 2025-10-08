@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "AWS IAM S3Browser User or AccessKey Creation",
+      "description": "Detects S3 Browser utility creating IAM User or AccessKey. Note: Unmapped fields: eventSource, eventName, userAgent",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(eventSource = \"iam\\.amazonaws\\.com\" AND (eventName = \"CreateUser\" OR eventName = \"CreateAccessKey\") AND userAgent = RGX(\".*S3\\\\ Browser.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1c437ae1-4279-42e5-8c32-fe04034fe5bd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

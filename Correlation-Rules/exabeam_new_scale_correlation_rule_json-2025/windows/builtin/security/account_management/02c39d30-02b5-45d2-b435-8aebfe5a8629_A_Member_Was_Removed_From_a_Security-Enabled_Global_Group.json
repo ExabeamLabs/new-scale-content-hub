@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "A Member Was Removed From a Security-Enabled Global Group",
+      "description": "Detects activity when a member is removed from a security-enabled global group",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 633 OR event_id = 4729)",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "20022d16-75ca-4247-b51d-733ae05381a9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

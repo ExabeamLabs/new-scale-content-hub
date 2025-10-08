@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Azure Network Security Configuration Modified or Deleted",
+      "description": "Identifies when a network security configuration is modified or deleted. Note: Unmapped fields: operationName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(operationName = \"MICROSOFT\\.NETWORK\\/NETWORKSECURITYGROUPS\\/WRITE\" OR operationName = \"MICROSOFT\\.NETWORK\\/NETWORKSECURITYGROUPS\\/DELETE\" OR operationName = \"MICROSOFT\\.NETWORK\\/NETWORKSECURITYGROUPS\\/SECURITYRULES\\/WRITE\" OR operationName = \"MICROSOFT\\.NETWORK\\/NETWORKSECURITYGROUPS\\/SECURITYRULES\\/DELETE\" OR operationName = \"MICROSOFT\\.NETWORK\\/NETWORKSECURITYGROUPS\\/JOIN\\/ACTION\" OR operationName = \"MICROSOFT\\.NETWORK\\/NETWORKSECURITYGROUPS\\/PROVIDERS\\/MICROSOFT\\.INSIGHTS\\/DIAGNOSTICSETTINGS\\/WRITE\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "310ffc52-1c98-4ae6-b6bd-e5f96325623a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

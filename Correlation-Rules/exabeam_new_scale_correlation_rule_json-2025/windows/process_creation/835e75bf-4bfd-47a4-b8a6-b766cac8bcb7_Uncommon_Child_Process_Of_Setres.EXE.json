@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Uncommon Child Process Of Setres.EXE",
+      "description": "Detects uncommon child process of Setres.EXE.\nSetres.EXE is a Windows server only process and tool that can be used to set the screen resolution.\nIt can potentially be abused in order to launch any arbitrary file with a name containing the word \"choice\" from the current execution path.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\setres\\\\\\.exe$\") AND process_path = RGX(\".*\\\\\\\\choice.*\")) AND  NOT ((process_path = RGX(\"C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\choice\\\\\\.exe$\") OR process_path = RGX(\"C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\choice\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "336d324e-ea0b-4806-b612-4ac0f5ba74c6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

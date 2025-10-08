@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - Certify Execution",
+      "description": "Detects Certify a tool for Active Directory certificate abuse based on PE metadata characteristics and common command line arguments.",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\Certify\\\\\\.exe$\") OR process_original_file_name = \"Certify\\.exe\" OR process_description = RGX(\".*Certify.*\")) OR ((process_command_line = RGX(\".*\\\\\\.exe\\\\ cas\\\\ .*\") OR process_command_line = RGX(\".*\\\\\\.exe\\\\ find\\\\ .*\") OR process_command_line = RGX(\".*\\\\\\.exe\\\\ pkiobjects\\\\ .*\") OR process_command_line = RGX(\".*\\\\\\.exe\\\\ request\\\\ .*\") OR process_command_line = RGX(\".*\\\\\\.exe\\\\ download\\\\ .*\")) AND (process_command_line = RGX(\".*\\\\ \\\\/vulnerable.*\") OR process_command_line = RGX(\".*\\\\ \\\\/template\\\\:.*\") OR process_command_line = RGX(\".*\\\\ \\\\/altname\\\\:.*\") OR process_command_line = RGX(\".*\\\\ \\\\/domain\\\\:.*\") OR process_command_line = RGX(\".*\\\\ \\\\/path\\\\:.*\") OR process_command_line = RGX(\".*\\\\ \\\\/ca\\\\:.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ec37849d-cc57-4dcb-a1ef-f3e47f3dcc9a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

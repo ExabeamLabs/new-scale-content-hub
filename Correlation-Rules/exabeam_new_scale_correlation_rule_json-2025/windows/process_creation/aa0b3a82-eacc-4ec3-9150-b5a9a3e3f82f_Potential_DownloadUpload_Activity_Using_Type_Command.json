@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Download/Upload Activity Using Type Command",
+      "description": "Detects usage of the \"type\" command to download/upload data from WebDAV server",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*type\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\>\\\\ \\\\\\\\\\\\\\\\.*\")) OR (process_command_line = RGX(\".*type\\\\ \\\\\\\\\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\ \\\\>\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "400922da-821c-4fa6-bc81-0fcf6f9571ff"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

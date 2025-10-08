@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Certreq Command to Download",
+      "description": "Detects a suspicious certreq execution taken from the LOLBAS examples, which can be abused to download (small) files",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\certreq\\\\\\.exe$\") OR process_original_file_name = \"CertReq\\.exe\") AND (process_command_line = RGX(\".*\\\\ \\\\-Post\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-config\\\\ .*\") AND process_command_line = RGX(\".*\\\\ http.*\") AND process_command_line = RGX(\".*\\\\ C\\\\:\\\\\\\\windows\\\\\\\\win\\\\\\.ini\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4b08eeb5-f93d-4bd3-8269-5d96fe475a1a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

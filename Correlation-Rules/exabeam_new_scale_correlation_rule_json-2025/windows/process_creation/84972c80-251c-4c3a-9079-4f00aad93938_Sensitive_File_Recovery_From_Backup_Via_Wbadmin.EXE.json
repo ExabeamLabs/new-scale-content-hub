@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Sensitive File Recovery From Backup Via Wbadmin.EXE",
+      "description": "Detects the dump of highly sensitive files such as \"NTDS.DIT\" and \"SECURITY\" hive.\nAttackers can leverage the \"wbadmin\" utility in order to dump sensitive files that might contain credential or sensitive information.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\wbadmin\\\\\\.exe$\") OR process_original_file_name = \"WBADMIN\\.EXE\") AND ((process_command_line = RGX(\".*\\\\ recovery.*\") AND process_command_line = RGX(\".*recoveryTarget.*\") AND process_command_line = RGX(\".*itemtype\\\\:File.*\")) AND (process_command_line = RGX(\".*\\\\\\\\config\\\\\\\\SAM.*\") OR process_command_line = RGX(\".*\\\\\\\\config\\\\\\\\SECURITY.*\") OR process_command_line = RGX(\".*\\\\\\\\config\\\\\\\\SYSTEM.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\NTDS\\\\\\\\NTDS\\\\\\.dit.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a4dc325f-d759-422d-9e8b-5c00bfc3de0b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

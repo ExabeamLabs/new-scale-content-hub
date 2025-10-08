@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "System Information Discovery via Registry Queries",
+      "description": "Detects attempts to query system information directly from the Windows Registry.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\reg\\\\\\.exe$\") AND process_command_line = RGX(\".*query.*\") AND (process_command_line = RGX(\".*\\\\-v.*\") OR process_command_line = RGX(\".*\\\\/v.*\"))) OR ((process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\")) AND (process_command_line = RGX(\".*Get\\\\-ItemPropertyValue.*\") OR process_command_line = RGX(\".*gpv.*\")))) AND (process_command_line = RGX(\".*\\\\\\\\SYSTEM\\\\\\\\CurrentControlSet\\\\\\\\Control\\\\\\\\TimeZoneInformation.*\") OR process_command_line = RGX(\".*\\\\\\\\SYSTEM\\\\\\\\CurrentControlSet\\\\\\\\Services\\\\\\\\Tcpip\\\\\\\\Parameters\\\\\\\\Interfaces.*\") OR process_command_line = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion.*\") OR process_command_line = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Uninstall.*\") OR process_command_line = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\ Defender.*\") OR process_command_line = RGX(\".*\\\\\\\\SYSTEM\\\\\\\\CurrentControlSet\\\\\\\\Services.*\") OR process_command_line = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\Schedule\\\\\\\\TaskCache\\\\\\\\Tasks.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "02ce98ef-73f8-4695-8995-80bd1fc21f46"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

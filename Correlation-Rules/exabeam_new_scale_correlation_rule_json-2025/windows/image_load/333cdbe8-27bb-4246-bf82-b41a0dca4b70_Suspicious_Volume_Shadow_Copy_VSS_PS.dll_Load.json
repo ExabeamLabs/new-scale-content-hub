@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Volume Shadow Copy VSS_PS.dll Load",
+      "description": "Detects the image load of vss_ps.dll by uncommon executables. This DLL is used by the Volume Shadow Copy Service (VSS) to manage shadow copies of files and volumes.\nIt is often abused by attackers to delete or manipulate shadow copies, which can hinder forensic investigations and data recovery efforts.\nThe fact that it is loaded by processes that are not typically associated with VSS operations can indicate suspicious activity.\n Note: Unmapped fields: ImageLoaded",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ImageLoaded = RGX(\"\\\\\\\\vss\\\\_ps\\\\\\.dll$\") AND  NOT ((process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\\") AND (process_path = RGX(\"\\\\\\\\clussvc\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\dismhost\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\dllhost\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\inetsrv\\\\\\\\appcmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\inetsrv\\\\\\\\iissetup\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msiexec\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\searchindexer\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\srtasks\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\svchost\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\System32\\\\\\\\SystemPropertiesAdvanced\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\taskhostw\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\thor\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\thor64\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\tiworker\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\vssvc\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\vssadmin\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\WmiPrvSE\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wsmprovhost\\\\\\.exe$\"))) OR (process_command_line = RGX(\"^C\\\\:\\\\\\\\\\\\$WinREAgent\\\\\\\\Scratch\\\\\\\\\") AND process_command_line = RGX(\".*\\\\\\\\dismhost\\\\\\.exe\\\\ \\\\{.*\")) OR process_path = \"None\") AND  NOT ((process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5a1b0950-65de-4f84-8b5a-3ba9a363d8f8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Malicious IP Address Sign-In Suspicious",
+      "description": "Indicates sign-in from a malicious IP address known to be malicious at time of sign-in. Note: Unmapped fields: riskEventType",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "riskEventType = \"suspiciousIPAddress\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f149a9da-e024-4b64-b8fe-f365f218b764"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

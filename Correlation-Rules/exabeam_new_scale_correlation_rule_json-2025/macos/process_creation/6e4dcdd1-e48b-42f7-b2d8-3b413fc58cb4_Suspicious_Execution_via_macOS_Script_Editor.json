@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Execution via macOS Script Editor",
+      "description": "Detects when the macOS Script Editor utility spawns an unusual child process.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\/Script\\\\ Editor$\") AND ((process_path = RGX(\"\\\\/curl$\") OR process_path = RGX(\"\\\\/bash$\") OR process_path = RGX(\"\\\\/sh$\") OR process_path = RGX(\"\\\\/zsh$\") OR process_path = RGX(\"\\\\/dash$\") OR process_path = RGX(\"\\\\/fish$\") OR process_path = RGX(\"\\\\/osascript$\") OR process_path = RGX(\"\\\\/mktemp$\") OR process_path = RGX(\"\\\\/chmod$\") OR process_path = RGX(\"\\\\/php$\") OR process_path = RGX(\"\\\\/nohup$\") OR process_path = RGX(\"\\\\/openssl$\") OR process_path = RGX(\"\\\\/plutil$\") OR process_path = RGX(\"\\\\/PlistBuddy$\") OR process_path = RGX(\"\\\\/xattr$\") OR process_path = RGX(\"\\\\/sqlite$\") OR process_path = RGX(\"\\\\/funzip$\") OR process_path = RGX(\"\\\\/popen$\")) OR (process_path = RGX(\".*python.*\") OR process_path = RGX(\".*perl.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0a0eb35d-8917-4f88-815a-b0660060cbf9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

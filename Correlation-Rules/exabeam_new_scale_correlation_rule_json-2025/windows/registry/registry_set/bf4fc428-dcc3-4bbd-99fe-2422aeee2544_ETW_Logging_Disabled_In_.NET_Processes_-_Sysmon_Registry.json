@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "ETW Logging Disabled In .NET Processes - Sysmon Registry",
+      "description": "Potential adversaries stopping ETW providers recording loaded .NET assemblies. Note: Unmapped fields: Details",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((registry_path = RGX(\"SOFTWARE\\\\\\\\Microsoft\\\\\\\\\\\\\\.NETFramework\\\\\\\\ETWEnabled$\") AND Details = \"DWORD\\ \\(0x00000000\\)\") OR ((registry_path = RGX(\"\\\\\\\\COMPlus\\\\_ETWEnabled$\") OR registry_path = RGX(\"\\\\\\\\COMPlus\\\\_ETWFlags$\")) AND (Details = 0 OR Details = \"DWORD\\ \\(0x00000000\\)\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5b7989cc-ae9d-4937-b23f-902fc4fd0319"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Download from Office Domain",
+      "description": "Detects suspicious ways to download files from Microsoft domains that are used to store attachments in Emails or OneNote documents",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\curl\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wget\\\\\\.exe$\")) OR (process_command_line = RGX(\".*Invoke\\\\-WebRequest.*\") OR process_command_line = RGX(\".*iwr\\\\ .*\") OR process_command_line = RGX(\".*curl\\\\ .*\") OR process_command_line = RGX(\".*wget\\\\ .*\") OR process_command_line = RGX(\".*Start\\\\-BitsTransfer.*\") OR process_command_line = RGX(\".*\\\\\\.DownloadFile\\\\(.*\") OR process_command_line = RGX(\".*\\\\\\.DownloadString\\\\(.*\"))) AND (process_command_line = RGX(\".*https\\\\:\\\\/\\\\/attachment\\\\\\.outlook\\\\\\.live\\\\\\.net\\\\/owa\\\\/.*\") OR process_command_line = RGX(\".*https\\\\:\\\\/\\\\/onenoteonlinesync\\\\\\.onenote\\\\\\.com\\\\/onenoteonlinesync\\\\/.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "057fb735-b0b9-4fcd-9b2d-a47c30cb3a8b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

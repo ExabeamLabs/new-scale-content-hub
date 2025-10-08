@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Cisco Duo Successful MFA Authentication Via Bypass Code",
+      "description": "Detects when a successful MFA authentication occurs due to the use of a bypass code.\nA bypass code is a temporary passcode created by an administrator for a specific user to access a Duo-protected application. These are generally used as \"backup codes,\" so that enrolled users who are having problems with their mobile devices (e.g., mobile service is disrupted, the device is lost or stolen, etc.) or who temporarily can't use their enrolled devices (on a plane without mobile data services) can still access their Duo-protected systems.\n Note: Unmapped fields: event_type, reason",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_type = \"authentication\" AND reason = \"bypass\\_user\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "37e94de9-df10-401e-9b2d-4bb401e9bd6a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

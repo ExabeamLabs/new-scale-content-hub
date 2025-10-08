@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "ImagingDevices Unusual Parent/Child Processes",
+      "description": "Detects unusual parent or children of the ImagingDevices.exe (Windows Contacts) process as seen being used with Bumblebee activity",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((parent_process_path = RGX(\"\\\\\\\\WmiPrvSE\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\svchost\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\dllhost\\\\\\.exe$\")) AND process_path = RGX(\"\\\\\\\\ImagingDevices\\\\\\.exe$\")) OR parent_process_path = RGX(\"\\\\\\\\ImagingDevices\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "24c89364-3e52-42b9-bc0e-cb9e7f622cd5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

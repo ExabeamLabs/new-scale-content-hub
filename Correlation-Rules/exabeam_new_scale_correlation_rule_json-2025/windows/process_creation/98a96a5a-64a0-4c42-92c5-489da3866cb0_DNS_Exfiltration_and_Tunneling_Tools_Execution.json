@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "DNS Exfiltration and Tunneling Tools Execution",
+      "description": "Well-known DNS Exfiltration tools execution",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\iodine\\\\\\.exe$\") OR process_path = RGX(\".*\\\\\\\\dnscat2.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "af783858-f85c-4661-897b-38a1a96f80e8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

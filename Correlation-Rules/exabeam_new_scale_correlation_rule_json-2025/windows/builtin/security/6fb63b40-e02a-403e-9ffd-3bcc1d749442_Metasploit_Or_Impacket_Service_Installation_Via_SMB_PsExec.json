@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Metasploit Or Impacket Service Installation Via SMB PsExec",
+      "description": "Detects usage of Metasploit SMB PsExec (exploit/windows/smb/psexec) and Impacket psexec.py by triggering on specific service installation Note: Unmapped fields: ServiceFileName, ServiceName, ServiceStartType, ServiceType",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4697 AND ServiceFileName = RGX(\"^%systemroot%\\[a-zA-Z]{8}.exe$\") AND ServiceName = RGX(\"(^[a-zA-Z]{4}$)|(^[a-zA-Z]{8}$)|(^[a-zA-Z]{16}$)\") AND ServiceStartType = 3 AND ServiceType = \"0x10\") AND  NOT (ServiceName = \"PSEXESVC\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "06792519-49b1-427d-afad-067e54332857"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

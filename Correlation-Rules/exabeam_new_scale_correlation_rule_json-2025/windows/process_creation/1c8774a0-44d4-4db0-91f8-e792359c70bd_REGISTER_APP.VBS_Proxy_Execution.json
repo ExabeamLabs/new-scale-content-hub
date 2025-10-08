@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "REGISTER_APP.VBS Proxy Execution",
+      "description": "Detects the use of a Microsoft signed script 'REGISTER_APP.VBS' to register a VSS/VDS Provider as a COM+ application.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\\\\\register\\\\_app\\\\\\.vbs.*\") AND process_command_line = RGX(\".*\\\\-register.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b7c5b474-8a51-44fa-a1c2-2f53fe1c95e4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Execution of Shutdown to Log Out",
+      "description": "Detects the rare use of the command line tool shutdown to logoff a user",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\shutdown\\\\\\.exe$\") AND process_command_line = RGX(\".*\\\\/l.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8345d473-31ba-442d-a3f0-aa35adf41be3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

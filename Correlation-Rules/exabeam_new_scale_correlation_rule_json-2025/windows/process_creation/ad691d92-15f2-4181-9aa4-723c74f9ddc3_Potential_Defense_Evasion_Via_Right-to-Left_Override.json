@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Defense Evasion Via Right-to-Left Override",
+      "description": "Detects the presence of the \"u202+E\" character, which causes a terminal, browser, or operating system to render text in a right-to-left sequence.\nThis is used as an obfuscation and masquerading techniques.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\\\\\u202e.*\") OR process_command_line = RGX(\".*\\\\[U\\\\+202E\\\\].*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "fc840e96-2547-4f65-b44b-71287e29f71b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

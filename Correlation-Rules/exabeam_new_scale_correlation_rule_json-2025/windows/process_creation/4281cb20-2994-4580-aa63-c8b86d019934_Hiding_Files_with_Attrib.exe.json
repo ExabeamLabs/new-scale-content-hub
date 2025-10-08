@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Hiding Files with Attrib.exe",
+      "description": "Detects usage of attrib.exe to hide files from users.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\attrib\\\\\\.exe$\") OR process_original_file_name = \"ATTRIB\\.EXE\") AND process_command_line = RGX(\".*\\\\ \\\\+h\\\\ .*\")) AND  NOT (process_command_line = RGX(\".*\\\\\\\\desktop\\\\\\.ini\\\\ .*\")) AND  NOT ((parent_process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") AND process_command_line = \"\\+R\\ \\+H\\ \\+S\\ \\+A\\ \\\\\\*\\.cui\" AND parent_process_command_line = \"C\\:\\\\WINDOWS\\\\system32\\\\\\*\\.bat\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b69f4328-45fd-4bce-9c2a-478daaf86661"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

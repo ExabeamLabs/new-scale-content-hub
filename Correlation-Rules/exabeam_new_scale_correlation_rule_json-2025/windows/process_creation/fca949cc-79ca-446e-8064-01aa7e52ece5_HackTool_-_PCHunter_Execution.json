@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - PCHunter Execution",
+      "description": "Detects suspicious use of PCHunter, a tool like Process Hacker to view and manipulate processes, kernel options and other low level stuff",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\PCHunter64\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\PCHunter32\\\\\\.exe$\")) OR (process_original_file_name = \"PCHunter\\.exe\" OR process_description = \"Epoolsoft\\ Windows\\ Information\\ View\\ Tools\") OR (process_hash = RGX(\".*SHA1\\\\=5F1CBC3D99558307BC1250D084FA968521482025.*\") OR process_hash = RGX(\".*MD5\\\\=987B65CD9B9F4E9A1AFD8F8B48CF64A7.*\") OR process_hash = RGX(\".*SHA256\\\\=2B214BDDAAB130C274DE6204AF6DBA5AEEC7433DA99AA950022FA306421A6D32.*\") OR process_hash = RGX(\".*IMPHASH\\\\=444D210CEA1FF8112F256A4997EED7FF.*\") OR process_hash = RGX(\".*SHA1\\\\=3FB89787CB97D902780DA080545584D97FB1C2EB.*\") OR process_hash = RGX(\".*MD5\\\\=228DD0C2E6287547E26FFBD973A40F14.*\") OR process_hash = RGX(\".*SHA256\\\\=55F041BF4E78E9BFA6D4EE68BE40E496CE3A1353E1CA4306598589E19802522C.*\") OR process_hash = RGX(\".*IMPHASH\\\\=0479F44DF47CFA2EF1CCC4416A538663.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ad4376dd-c839-4618-a5f5-3073d46bb87e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

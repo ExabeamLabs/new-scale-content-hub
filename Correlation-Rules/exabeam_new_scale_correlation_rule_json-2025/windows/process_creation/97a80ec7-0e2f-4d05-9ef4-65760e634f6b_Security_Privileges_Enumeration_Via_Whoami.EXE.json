@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Security Privileges Enumeration Via Whoami.EXE",
+      "description": "Detects a whoami.exe executed with the /priv command line flag instructing the tool to show all current user privileges. This is often used after a privilege escalation attempt.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\whoami\\\\\\.exe$\") OR process_original_file_name = \"whoami\\.exe\") AND (process_command_line = RGX(\".*\\\\ \\\\/priv.*\") OR process_command_line = RGX(\".*\\\\ \\\\-priv.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "fa551524-6e78-4254-a40a-c6c584c962dd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

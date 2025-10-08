@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious PowerShell Mailbox SMTP Forward Rule",
+      "description": "Detects usage of the powerShell Set-Mailbox Cmdlet to set-up an SMTP forwarding rule. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Set\\\\-Mailbox\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\ \\\\-DeliverToMailboxAndForward\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\ \\\\-ForwardingSmtpAddress\\\\ .*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "23b23015-a47a-40db-86fb-be0ae70936e5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

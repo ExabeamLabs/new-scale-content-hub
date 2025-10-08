@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Uninstall Sysinternals Sysmon",
+      "description": "Detects the removal of Sysmon, which could be a potential attempt at defense evasion",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\Sysmon64\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\Sysmon\\\\\\.exe$\")) OR process_description = \"System\\ activity\\ monitor\") AND (process_command_line = RGX(\".*\\\\-u.*\") OR process_command_line = RGX(\".*\\\\/u.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "660d97e6-fb49-4cb2-905e-fe1c9836a20f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

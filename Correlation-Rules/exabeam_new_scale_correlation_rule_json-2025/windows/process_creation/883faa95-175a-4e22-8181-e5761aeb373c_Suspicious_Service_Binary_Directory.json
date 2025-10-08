@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Service Binary Directory",
+      "description": "Detects a service binary running in a suspicious directory",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\".*\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\\\\\$Recycle\\\\\\.bin.*\") OR process_path = RGX(\".*\\\\\\\\Users\\\\\\\\All\\\\ Users\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\Users\\\\\\\\Default\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\Users\\\\\\\\Contacts\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\Users\\\\\\\\Searches\\\\\\\\.*\") OR process_path = RGX(\".*C\\\\:\\\\\\\\Perflogs\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\config\\\\\\\\systemprofile\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\Windows\\\\\\\\Fonts\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\Windows\\\\\\\\IME\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\Windows\\\\\\\\addins\\\\\\\\.*\")) AND (parent_process_path = RGX(\"\\\\\\\\services\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\svchost\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6e38ada4-b20d-4a56-8a3b-be17bf41c70d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

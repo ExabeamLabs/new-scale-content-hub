@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Private Keys Reconnaissance Via CommandLine Tools",
+      "description": "Adversaries may search for private key certificate files on compromised systems for insecurely stored credential",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\\\.key.*\") OR process_command_line = RGX(\".*\\\\\\.pgp.*\") OR process_command_line = RGX(\".*\\\\\\.gpg.*\") OR process_command_line = RGX(\".*\\\\\\.ppk.*\") OR process_command_line = RGX(\".*\\\\\\.p12.*\") OR process_command_line = RGX(\".*\\\\\\.pem.*\") OR process_command_line = RGX(\".*\\\\\\.pfx.*\") OR process_command_line = RGX(\".*\\\\\\.cer.*\") OR process_command_line = RGX(\".*\\\\\\.p7b.*\") OR process_command_line = RGX(\".*\\\\\\.asc.*\")) AND (((process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_original_file_name = \"Cmd\\.Exe\") AND process_command_line = RGX(\".*dir\\\\ .*\")) OR (((process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\")) OR (process_original_file_name = \"PowerShell\\.EXE\" OR process_original_file_name = \"pwsh\\.dll\")) AND process_command_line = RGX(\".*Get\\\\-ChildItem\\\\ .*\")) OR (process_path = RGX(\"\\\\\\\\findstr\\\\\\.exe$\") OR process_original_file_name = \"FINDSTR\\.EXE\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5af39388-244f-4984-a9d2-fe0a560e4efa"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

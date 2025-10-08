@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Lolbin Unregmp2.exe Use As Proxy",
+      "description": "Detect usage of the \"unregmp2.exe\" binary as a proxy to launch a custom version of \"wmpnscfg.exe\"",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\unregmp2\\\\\\.exe$\") OR process_original_file_name = \"unregmp2\\.exe\") AND process_command_line = RGX(\".*\\\\ \\\\/HideWMP.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d2143d39-6559-40ef-b653-b5679576f68f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

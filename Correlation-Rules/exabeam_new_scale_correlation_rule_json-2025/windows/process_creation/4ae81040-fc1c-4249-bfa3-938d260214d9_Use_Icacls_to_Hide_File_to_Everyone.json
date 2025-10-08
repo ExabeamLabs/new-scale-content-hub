@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Use Icacls to Hide File to Everyone",
+      "description": "Detect use of icacls to deny access for everyone in Users folder sometimes used to hide malicious files",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_original_file_name = \"iCACLS\\.EXE\" OR process_path = RGX(\"\\\\\\\\icacls\\\\\\.exe$\")) AND (process_command_line = RGX(\".*\\\\/deny.*\") AND process_command_line = RGX(\".**S\\\\-1\\\\-1\\\\-0\\\\:.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "723e82fd-130e-4b35-b16c-f307d7a9d08c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

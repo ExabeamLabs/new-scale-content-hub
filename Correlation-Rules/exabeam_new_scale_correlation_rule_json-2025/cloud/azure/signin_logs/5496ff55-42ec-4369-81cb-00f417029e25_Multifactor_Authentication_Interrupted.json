@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Multifactor Authentication Interrupted",
+      "description": "Identifies user login with multifactor authentication failures, which might be an indication an attacker has the password for the account but can't pass the MFA challenge. Note: Unmapped fields: ResultType, ResultDescription",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ResultType = 50074 AND ResultDescription = RGX(\".*Strong\\\\ Auth\\\\ required.*\")) OR (ResultType = 500121 AND ResultDescription = RGX(\".*Authentication\\\\ failed\\\\ during\\\\ strong\\\\ authentication\\\\ request.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b407396b-f326-4206-a65c-a766ae8b691a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

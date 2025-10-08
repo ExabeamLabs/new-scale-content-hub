@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Local System Accounts Discovery - Linux",
+      "description": "Detects enumeration of local systeam accounts. This information can help adversaries determine which local accounts exist on a system to aid in follow-on behavior.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/lastlog$\") OR process_command_line = RGX(\".*\\\\'x\\\\:0\\\\:\\\\.*\") OR ((process_path = RGX(\"\\\\/cat$\") OR process_path = RGX(\"\\\\/ed$\") OR process_path = RGX(\"\\\\/head$\") OR process_path = RGX(\"\\\\/more$\") OR process_path = RGX(\"\\\\/nano$\") OR process_path = RGX(\"\\\\/tail$\") OR process_path = RGX(\"\\\\/vi$\") OR process_path = RGX(\"\\\\/vim$\") OR process_path = RGX(\"\\\\/less$\") OR process_path = RGX(\"\\\\/emacs$\") OR process_path = RGX(\"\\\\/sqlite3$\") OR process_path = RGX(\"\\\\/makemap$\")) AND (process_command_line = RGX(\".*\\\\/etc\\\\/passwd.*\") OR process_command_line = RGX(\".*\\\\/etc\\\\/shadow.*\") OR process_command_line = RGX(\".*\\\\/etc\\\\/sudoers.*\") OR process_command_line = RGX(\".*\\\\/etc\\\\/spwd\\\\\\.db.*\") OR process_command_line = RGX(\".*\\\\/etc\\\\/pwd\\\\\\.db.*\") OR process_command_line = RGX(\".*\\\\/etc\\\\/master\\\\\\.passwd.*\"))) OR process_path = RGX(\"\\\\/id$\") OR (process_path = RGX(\"\\\\/lsof$\") AND process_command_line = RGX(\".*\\\\-u.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "797dfb1e-9255-4f32-a985-7b2aa30125f6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

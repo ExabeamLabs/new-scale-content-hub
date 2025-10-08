@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Unusual File Download From File Sharing Websites - File Stream",
+      "description": "Detects the download of suspicious file type from a well-known file and paste sharing domain Note: Unmapped fields: Contents",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((Contents = RGX(\".*\\\\\\.githubusercontent\\\\\\.com.*\") OR Contents = RGX(\".*anonfiles\\\\\\.com.*\") OR Contents = RGX(\".*cdn\\\\\\.discordapp\\\\\\.com.*\") OR Contents = RGX(\".*ddns\\\\\\.net.*\") OR Contents = RGX(\".*dl\\\\\\.dropboxusercontent\\\\\\.com.*\") OR Contents = RGX(\".*ghostbin\\\\\\.co.*\") OR Contents = RGX(\".*glitch\\\\\\.me.*\") OR Contents = RGX(\".*gofile\\\\\\.io.*\") OR Contents = RGX(\".*hastebin\\\\\\.com.*\") OR Contents = RGX(\".*mediafire\\\\\\.com.*\") OR Contents = RGX(\".*mega\\\\\\.nz.*\") OR Contents = RGX(\".*onrender\\\\\\.com.*\") OR Contents = RGX(\".*pages\\\\\\.dev.*\") OR Contents = RGX(\".*paste\\\\\\.ee.*\") OR Contents = RGX(\".*pastebin\\\\\\.com.*\") OR Contents = RGX(\".*pastebin\\\\\\.pl.*\") OR Contents = RGX(\".*pastetext\\\\\\.net.*\") OR Contents = RGX(\".*pixeldrain\\\\\\.com.*\") OR Contents = RGX(\".*privatlab\\\\\\.com.*\") OR Contents = RGX(\".*privatlab\\\\\\.net.*\") OR Contents = RGX(\".*send\\\\\\.exploit\\\\\\.in.*\") OR Contents = RGX(\".*sendspace\\\\\\.com.*\") OR Contents = RGX(\".*storage\\\\\\.googleapis\\\\\\.com.*\") OR Contents = RGX(\".*storjshare\\\\\\.io.*\") OR Contents = RGX(\".*supabase\\\\\\.co.*\") OR Contents = RGX(\".*temp\\\\\\.sh.*\") OR Contents = RGX(\".*transfer\\\\\\.sh.*\") OR Contents = RGX(\".*trycloudflare\\\\\\.com.*\") OR Contents = RGX(\".*ufile\\\\\\.io.*\") OR Contents = RGX(\".*w3spaces\\\\\\.com.*\") OR Contents = RGX(\".*workers\\\\\\.dev.*\")) AND (file_path = RGX(\".*\\\\\\.bat\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.cmd\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.ps1\\\\:Zone.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "126b00cf-f1ff-4763-a133-0073cd0505ea"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

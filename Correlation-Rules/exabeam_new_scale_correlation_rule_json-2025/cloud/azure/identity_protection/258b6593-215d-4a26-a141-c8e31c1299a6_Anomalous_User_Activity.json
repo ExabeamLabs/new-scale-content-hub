@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Anomalous User Activity",
+      "description": "Indicates that there are anomalous patterns of behavior like suspicious changes to the directory. Note: Unmapped fields: riskEventType",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "riskEventType = \"anomalousUserActivity\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d266a5ac-2bee-4738-942d-b0628a67419e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

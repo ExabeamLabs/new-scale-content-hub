@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Download and Execute Pattern via Curl/Wget",
+      "description": "Detects suspicious use of command-line tools such as curl or wget to download remote\ncontent - particularly scripts - into temporary directories (e.g., /dev/shm, /tmp), followed by\nimmediate execution, indicating potential malicious activity. This pattern is commonly used\nby malicious scripts, stagers, or downloaders in fileless or multi-stage Linux attacks.\n",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*\\\\/curl.*\") OR process_command_line = RGX(\".*\\\\/wget.*\")) AND (process_command_line = RGX(\".*\\\\/tmp\\\\/.*\") OR process_command_line = RGX(\".*\\\\/dev\\\\/shm\\\\/.*\")) AND process_command_line = RGX(\".*sh\\\\ \\\\-c.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d7bd5930-277c-4662-8f8d-7dd444fa4e51"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

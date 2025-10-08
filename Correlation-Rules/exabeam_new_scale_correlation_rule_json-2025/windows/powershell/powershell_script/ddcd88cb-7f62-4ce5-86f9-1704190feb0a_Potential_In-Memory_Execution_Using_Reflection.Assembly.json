@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential In-Memory Execution Using Reflection.Assembly",
+      "description": "Detects usage of \"Reflection.Assembly\" load functions to dynamically load assemblies in memory Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ScriptBlockText = RGX(\".*\\\\[Reflection\\\\\\.Assembly\\\\]\\\\:\\\\:load.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e39567bf-fe2e-4c52-b9fd-b619b8ce4480"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

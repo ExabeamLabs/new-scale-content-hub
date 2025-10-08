@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New Country",
+      "description": "Detects sign-ins from new countries. The detection considers past activity locations to determine new and infrequent locations. Note: Unmapped fields: riskEventType",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "riskEventType = \"newCountry\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5a315463-b2d9-4b04-b934-7f9d09b067dc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

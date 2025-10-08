@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PowerShell Get-Process LSASS in ScriptBlock",
+      "description": "Detects a Get-Process command on lsass process, which is in almost all cases a sign of malicious activity Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ScriptBlockText = RGX(\".*Get\\\\-Process\\\\ lsass.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "611aa5b8-1eef-4e8d-8ecb-6d5a5705bdab"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

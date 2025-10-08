@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Process Monitor Driver Creation By Non-Sysinternals Binary",
+      "description": "Detects creation of the Process Monitor driver by processes other than Process Monitor (procmon) itself.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(file_path = RGX(\".*\\\\\\\\procmon.*\") AND file_path = RGX(\"\\\\\\.sys$\")) AND  NOT ((process_path = RGX(\"\\\\\\\\procmon\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\procmon64\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "59de1995-2662-4b63-9ce9-8938c753af57"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New Root Certificate Installed Via Certutil.EXE",
+      "description": "Detects execution of \"certutil\" with the \"addstore\" flag in order to install a new certificate on the system.\nAdversaries may install a root certificate on a compromised system to avoid warnings when connecting to adversary controlled web servers.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\certutil\\\\\\.exe$\") OR process_original_file_name = \"CertUtil\\.exe\") AND (process_command_line = RGX(\".*\\\\-addstore.*\") OR process_command_line = RGX(\".*\\\\/addstore.*\")) AND process_command_line = RGX(\".*root.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9e36e8f8-6c83-47cd-94a6-c12636f791dd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

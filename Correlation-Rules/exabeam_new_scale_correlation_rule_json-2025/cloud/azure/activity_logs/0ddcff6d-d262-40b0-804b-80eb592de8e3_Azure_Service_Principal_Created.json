@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Azure Service Principal Created",
+      "description": "Identifies when a service principal is created in Azure. Note: Unmapped fields: properties.message",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "properties.message = \"Add\\ service\\ principal\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "652dc45c-0ccd-4d6c-a593-ca007374e21e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

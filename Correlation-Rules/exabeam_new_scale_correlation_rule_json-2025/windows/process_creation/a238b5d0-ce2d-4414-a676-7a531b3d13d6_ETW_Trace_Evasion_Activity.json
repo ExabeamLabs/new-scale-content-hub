@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "ETW Trace Evasion Activity",
+      "description": "Detects command line activity that tries to clear or disable any ETW trace log which could be a sign of logging evasion.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*cl.*\") AND process_command_line = RGX(\".*\\\\/Trace.*\")) OR (process_command_line = RGX(\".*clear\\\\-log.*\") AND process_command_line = RGX(\".*\\\\/Trace.*\")) OR (process_command_line = RGX(\".*sl.*\") AND process_command_line = RGX(\".*\\\\/e\\\\:false.*\")) OR (process_command_line = RGX(\".*set\\\\-log.*\") AND process_command_line = RGX(\".*\\\\/e\\\\:false.*\")) OR (process_command_line = RGX(\".*logman.*\") AND process_command_line = RGX(\".*update.*\") AND process_command_line = RGX(\".*trace.*\") AND process_command_line = RGX(\".*\\\\-\\\\-p.*\") AND process_command_line = RGX(\".*\\\\-ets.*\")) OR process_command_line = RGX(\".*Remove\\\\-EtwTraceProvider.*\") OR (process_command_line = RGX(\".*Set\\\\-EtwTraceProvider.*\") AND process_command_line = RGX(\".*0x11.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "da9b81b5-3f56-4f69-bef3-0e5b1ada01e6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

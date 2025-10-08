@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows PowerShell User Agent",
+      "description": "Detects Windows PowerShell Web Access Note: Unmapped fields: c-useragent",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "c-useragent = RGX(\".*\\\\ WindowsPowerShell\\\\/.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f8d14c23-d71e-4c6b-a9cc-4c27fc0440cf"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

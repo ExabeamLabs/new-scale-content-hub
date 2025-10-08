@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Users Added to Global or Device Admin Roles",
+      "description": "Monitor and alert for users added to device admin roles. Note: Unmapped fields: Category, OperationName, TargetResources",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Category = \"RoleManagement\" AND (OperationName = RGX(\".*Add.*\") AND OperationName = RGX(\".*member\\\\ to\\\\ role.*\")) AND (TargetResources = RGX(\".*7698a772\\\\-787b\\\\-4ac8\\\\-901f\\\\-60d6b08affd2.*\") OR TargetResources = RGX(\".*62e90394\\\\-69f5\\\\-4237\\\\-9190\\\\-012177145e10.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e2a289ac-babe-42de-bda7-deac4970fa2c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

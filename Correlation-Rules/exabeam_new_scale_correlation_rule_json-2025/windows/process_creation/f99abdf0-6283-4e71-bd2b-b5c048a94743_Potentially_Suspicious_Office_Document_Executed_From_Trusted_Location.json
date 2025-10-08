@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Suspicious Office Document Executed From Trusted Location",
+      "description": "Detects the execution of an Office application that points to a document that is located in a trusted location. Attackers often used this to avoid macro security and execute their malicious code.",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((parent_process_path = RGX(\"\\\\\\\\explorer\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\dopus\\\\\\.exe$\")) AND ((process_path = RGX(\"\\\\\\\\EXCEL\\\\\\.EXE$\") OR process_path = RGX(\"\\\\\\\\POWERPNT\\\\\\.EXE$\") OR process_path = RGX(\"\\\\\\\\WINWORD\\\\\\.exe$\")) OR (process_original_file_name = \"Excel\\.exe\" OR process_original_file_name = \"POWERPNT\\.EXE\" OR process_original_file_name = \"WinWord\\.exe\")) AND (process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\Microsoft\\\\\\\\Templates.*\") OR process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\Microsoft\\\\\\\\Word\\\\\\\\Startup\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Microsoft\\\\ Office\\\\\\\\root\\\\\\\\Templates\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Microsoft\\\\ Office\\\\\\\\Templates\\\\\\\\.*\"))) AND  NOT ((process_command_line = RGX(\"\\\\\\.dotx$\") OR process_command_line = RGX(\"\\\\\\.xltx$\") OR process_command_line = RGX(\"\\\\\\.potx$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ee049f10-b1b7-46fe-a3bc-2bfbc9185852"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

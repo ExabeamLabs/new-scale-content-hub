@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - RedMimicry Winnti Playbook Execution",
+      "description": "Detects actions caused by the RedMimicry Winnti playbook a automated breach emulations utility",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\")) AND (process_command_line = RGX(\".*gthread\\\\-3\\\\\\.6\\\\\\.dll.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\tmp\\\\\\.bat.*\") OR process_command_line = RGX(\".*sigcmm\\\\-2\\\\\\.4\\\\\\.dll.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "240393dc-bb43-4438-b285-28fb5a9835d5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

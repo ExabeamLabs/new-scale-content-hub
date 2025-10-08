@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows Kernel Debugger Execution",
+      "description": "Detects execution of the Windows Kernel Debugger \"kd.exe\".",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\kd\\\\\\.exe$\") OR process_original_file_name = \"kd\\.exe\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ff04bc04-136e-481e-b368-0dfefbeb5bff"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

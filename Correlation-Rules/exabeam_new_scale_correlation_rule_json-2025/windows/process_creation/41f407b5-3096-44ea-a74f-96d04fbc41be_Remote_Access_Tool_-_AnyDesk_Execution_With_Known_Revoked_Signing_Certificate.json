@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remote Access Tool - AnyDesk Execution With Known Revoked Signing Certificate",
+      "description": "Detects the execution of an AnyDesk binary with a version prior to 8.0.8.\nPrior to version 8.0.8, the Anydesk application used a signing certificate that got compromised by threat actors.\nUse this rule to detect instances of older versions of Anydesk using the compromised certificate\nThis is recommended in order to avoid attackers leveraging the certificate and signing their binaries to bypass detections.\n",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\AnyDesk\\\\\\.exe$\") OR process_description = \"AnyDesk\" OR process_product = \"AnyDesk\" OR process_company = \"AnyDesk\\ Software\\ GmbH\") AND (process_file_version = RGX(\"^7\\\\\\.0\\\\\\.\") OR process_file_version = RGX(\"^7\\\\\\.1\\\\\\.\") OR process_file_version = RGX(\"^8\\\\\\.0\\\\\\.1\") OR process_file_version = RGX(\"^8\\\\\\.0\\\\\\.2\") OR process_file_version = RGX(\"^8\\\\\\.0\\\\\\.3\") OR process_file_version = RGX(\"^8\\\\\\.0\\\\\\.4\") OR process_file_version = RGX(\"^8\\\\\\.0\\\\\\.5\") OR process_file_version = RGX(\"^8\\\\\\.0\\\\\\.6\") OR process_file_version = RGX(\"^8\\\\\\.0\\\\\\.7\"))) AND  NOT ((process_command_line = RGX(\".*\\\\ \\\\-\\\\-remove.*\") OR process_command_line = RGX(\".*\\\\ \\\\-\\\\-uninstall.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "bf608449-e2f7-4cee-af28-a26f6daa8cef"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

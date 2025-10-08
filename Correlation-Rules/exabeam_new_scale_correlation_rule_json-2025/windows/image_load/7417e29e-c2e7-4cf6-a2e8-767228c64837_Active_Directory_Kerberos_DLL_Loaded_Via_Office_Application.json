@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Active Directory Kerberos DLL Loaded Via Office Application",
+      "description": "Detects Kerberos DLL being loaded by an Office Product Note: Unmapped fields: ImageLoaded",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\excel\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mspub\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\onenote\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\onenoteim\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\outlook\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powerpnt\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\winword\\\\\\.exe$\")) AND ImageLoaded = RGX(\"\\\\\\\\kerberos\\\\\\.dll$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9298bf22-08df-4386-87c5-d0b42ab75c2e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

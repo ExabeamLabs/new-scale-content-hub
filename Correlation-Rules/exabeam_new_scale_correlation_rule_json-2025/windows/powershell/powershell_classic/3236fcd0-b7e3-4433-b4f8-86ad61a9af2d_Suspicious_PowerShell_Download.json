@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious PowerShell Download",
+      "description": "Detects suspicious PowerShell download command Note: Unmapped fields: Data",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Data = RGX(\".*Net\\\\\\.WebClient.*\") AND (Data = RGX(\".*\\\\\\.DownloadFile\\\\(.*\") OR Data = RGX(\".*\\\\\\.DownloadString\\\\(.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5e5066de-de7f-45dd-86f0-e500d1e20233"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

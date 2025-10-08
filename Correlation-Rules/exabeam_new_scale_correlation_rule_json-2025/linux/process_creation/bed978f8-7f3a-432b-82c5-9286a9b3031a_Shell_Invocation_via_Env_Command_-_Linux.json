@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Shell Invocation via Env Command - Linux",
+      "description": "Detects the use of the env command to invoke a shell. This may indicate an attempt to bypass restricted environments, escalate privileges, or execute arbitrary commands.\n",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/env$\") AND (process_command_line = RGX(\"\\\\/bin\\\\/bash$\") OR process_command_line = RGX(\"\\\\/bin\\\\/dash$\") OR process_command_line = RGX(\"\\\\/bin\\\\/fish$\") OR process_command_line = RGX(\"\\\\/bin\\\\/sh$\") OR process_command_line = RGX(\"\\\\/bin\\\\/zsh$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9e7f65dd-d1c4-458a-bcd9-f65e0c5c4c00"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

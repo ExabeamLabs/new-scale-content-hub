@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Hiding User Account Via SpecialAccounts Registry Key - CommandLine",
+      "description": "Detects changes to the registry key \"HKLM\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\SpecialAccounts\\Userlist\" where the value is set to \"0\" in order to hide user account from being listed on the logon screen.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\reg\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\Winlogon\\\\\\\\SpecialAccounts\\\\\\\\UserList.*\") AND process_command_line = RGX(\".*add.*\") AND process_command_line = RGX(\".*\\\\/v.*\") AND process_command_line = RGX(\".*\\\\/d\\\\ 0.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "445e83e2-5986-4410-a6bf-1f0a0aeddf74"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

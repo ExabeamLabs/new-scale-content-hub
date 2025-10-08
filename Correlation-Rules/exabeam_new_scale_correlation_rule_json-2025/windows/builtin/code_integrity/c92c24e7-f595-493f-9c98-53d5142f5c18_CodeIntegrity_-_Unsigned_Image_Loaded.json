@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "CodeIntegrity - Unsigned Image Loaded",
+      "description": "Detects loaded unsigned image on the system",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "event_id = 3037",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9e9e0edf-62e1-441c-9398-77018668c217"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

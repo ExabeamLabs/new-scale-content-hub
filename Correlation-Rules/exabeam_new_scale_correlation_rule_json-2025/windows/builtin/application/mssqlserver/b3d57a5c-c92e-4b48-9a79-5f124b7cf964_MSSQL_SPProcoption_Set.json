@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "MSSQL SPProcoption Set",
+      "description": "Detects when the a stored procedure is set or cleared for automatic execution in MSSQL. A stored procedure that is set to automatic execution runs every time an instance of SQL Server is started Note: Unmapped fields: Provider_Name, Data",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Provider_Name = RGX(\".*MSSQL.*\") AND event_id = 33205 AND (Data = RGX(\".*object\\\\_name\\\\:sp\\\\_procoption.*\") AND Data = RGX(\".*statement\\\\:EXEC.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a87853f2-80b4-4937-b247-3248c4a11f03"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

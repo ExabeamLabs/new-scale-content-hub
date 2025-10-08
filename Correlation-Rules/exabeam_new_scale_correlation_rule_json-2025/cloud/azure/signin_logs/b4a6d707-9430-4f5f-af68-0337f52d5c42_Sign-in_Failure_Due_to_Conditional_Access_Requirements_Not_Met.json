@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Sign-in Failure Due to Conditional Access Requirements Not Met",
+      "description": "Define a baseline threshold for failed sign-ins due to Conditional Access failures Note: Unmapped fields: ResultType, Resultdescription",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ResultType = 53003 AND Resultdescription = \"Blocked\\ by\\ Conditional\\ Access\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "fa97ce9c-fee1-425b-b640-719825acff9a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

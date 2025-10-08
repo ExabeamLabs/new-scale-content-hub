@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New Netsh Helper DLL Registered From A Suspicious Location",
+      "description": "Detects changes to the Netsh registry key to add a new DLL value that is located on a suspicious location. This change might be an indication of a potential persistence attempt by adding a malicious Netsh helper\n Note: Unmapped fields: Details",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\NetSh.*\") AND ((Details = RGX(\".*\\\\:\\\\\\\\Perflogs\\\\\\\\.*\") OR Details = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR Details = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\") OR Details = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") OR Details = RGX(\".*\\\\\\\\Temporary\\\\ Internet.*\")) OR ((Details = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND Details = RGX(\".*\\\\\\\\Favorites\\\\\\\\.*\")) OR (Details = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND Details = RGX(\".*\\\\\\\\Favourites\\\\\\\\.*\")) OR (Details = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND Details = RGX(\".*\\\\\\\\Contacts\\\\\\\\.*\")) OR (Details = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND Details = RGX(\".*\\\\\\\\Pictures\\\\\\\\.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "92a0a930-8167-412b-95e0-15620dcbd80b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

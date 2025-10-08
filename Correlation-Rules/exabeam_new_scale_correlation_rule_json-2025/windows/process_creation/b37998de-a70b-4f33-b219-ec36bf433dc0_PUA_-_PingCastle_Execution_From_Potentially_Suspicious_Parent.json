@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - PingCastle Execution From Potentially Suspicious Parent",
+      "description": "Detects the execution of PingCastle, a tool designed to quickly assess the Active Directory security level via a script located in a potentially suspicious or uncommon location.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((parent_process_command_line = RGX(\".*\\\\\\.bat.*\") OR parent_process_command_line = RGX(\".*\\\\\\.chm.*\") OR parent_process_command_line = RGX(\".*\\\\\\.cmd.*\") OR parent_process_command_line = RGX(\".*\\\\\\.hta.*\") OR parent_process_command_line = RGX(\".*\\\\\\.htm.*\") OR parent_process_command_line = RGX(\".*\\\\\\.html.*\") OR parent_process_command_line = RGX(\".*\\\\\\.js.*\") OR parent_process_command_line = RGX(\".*\\\\\\.lnk.*\") OR parent_process_command_line = RGX(\".*\\\\\\.ps1.*\") OR parent_process_command_line = RGX(\".*\\\\\\.vbe.*\") OR parent_process_command_line = RGX(\".*\\\\\\.vbs.*\") OR parent_process_command_line = RGX(\".*\\\\\\.wsf.*\")) OR (parent_process_command_line = RGX(\".*\\\\:\\\\\\\\Perflogs\\\\\\\\.*\") OR parent_process_command_line = RGX(\".*\\\\:\\\\\\\\Temp\\\\\\\\.*\") OR parent_process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR parent_process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\") OR parent_process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp.*\") OR parent_process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\.*\") OR parent_process_command_line = RGX(\".*\\\\\\\\Temporary\\\\ Internet.*\")) OR ((parent_process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND parent_process_command_line = RGX(\".*\\\\\\\\Favorites\\\\\\\\.*\")) OR (parent_process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND parent_process_command_line = RGX(\".*\\\\\\\\Favourites\\\\\\\\.*\")) OR (parent_process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND parent_process_command_line = RGX(\".*\\\\\\\\Contacts\\\\\\\\.*\")))) AND (parent_process_command_line = RGX(\".*\\\\\\.bat.*\") OR parent_process_command_line = RGX(\".*\\\\\\.chm.*\") OR parent_process_command_line = RGX(\".*\\\\\\.cmd.*\") OR parent_process_command_line = RGX(\".*\\\\\\.hta.*\") OR parent_process_command_line = RGX(\".*\\\\\\.htm.*\") OR parent_process_command_line = RGX(\".*\\\\\\.html.*\") OR parent_process_command_line = RGX(\".*\\\\\\.js.*\") OR parent_process_command_line = RGX(\".*\\\\\\.lnk.*\") OR parent_process_command_line = RGX(\".*\\\\\\.ps1.*\") OR parent_process_command_line = RGX(\".*\\\\\\.vbe.*\") OR parent_process_command_line = RGX(\".*\\\\\\.vbs.*\") OR parent_process_command_line = RGX(\".*\\\\\\.wsf.*\")) AND (process_path = RGX(\"\\\\\\\\PingCastle\\\\\\.exe$\") OR process_original_file_name = \"PingCastle\\.exe\" OR process_product = \"Ping\\ Castle\" OR (process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ aclcheck.*\") OR process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ antivirus.*\") OR process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ computerversion.*\") OR process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ foreignusers.*\") OR process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ laps\\\\_bitlocker.*\") OR process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ localadmin.*\") OR process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ nullsession.*\") OR process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ nullsession\\\\-trust.*\") OR process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ oxidbindings.*\") OR process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ remote.*\") OR process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ share.*\") OR process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ smb.*\") OR process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ smb3querynetwork.*\") OR process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ spooler.*\") OR process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ startup.*\") OR process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ zerologon.*\")) OR process_command_line = RGX(\".*\\\\-\\\\-no\\\\-enum\\\\-limit.*\") OR (process_command_line = RGX(\".*\\\\-\\\\-healthcheck.*\") AND process_command_line = RGX(\".*\\\\-\\\\-level\\\\ Full.*\")) OR (process_command_line = RGX(\".*\\\\-\\\\-healthcheck.*\") AND process_command_line = RGX(\".*\\\\-\\\\-server\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "69305ccd-12a7-495b-b0eb-d9bea54638ab"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

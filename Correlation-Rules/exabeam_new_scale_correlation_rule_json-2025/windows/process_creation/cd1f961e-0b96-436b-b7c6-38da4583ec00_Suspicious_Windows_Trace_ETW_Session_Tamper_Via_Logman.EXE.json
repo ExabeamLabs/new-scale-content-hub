@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Windows Trace ETW Session Tamper Via Logman.EXE",
+      "description": "Detects the execution of \"logman\" utility in order to disable or delete Windows trace sessions",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\logman\\\\\\.exe$\") OR process_original_file_name = \"Logman\\.exe\") AND (process_command_line = RGX(\".*stop\\\\ .*\") OR process_command_line = RGX(\".*delete\\\\ .*\")) AND (process_command_line = RGX(\".*Circular\\\\ Kernel\\\\ Context\\\\ Logger.*\") OR process_command_line = RGX(\".*EventLog\\\\-.*\") OR process_command_line = RGX(\".*SYSMON\\\\ TRACE.*\") OR process_command_line = RGX(\".*SysmonDnsEtwSession.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "94d97ff1-962e-40c4-aa6c-dea8be2f5db2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

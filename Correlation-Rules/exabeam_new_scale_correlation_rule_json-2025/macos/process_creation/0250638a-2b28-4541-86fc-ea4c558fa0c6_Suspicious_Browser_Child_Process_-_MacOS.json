@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Browser Child Process - MacOS",
+      "description": "Detects suspicious child processes spawned from browsers. This could be a result of a potential web browser exploitation.",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((parent_process_path = RGX(\".*com\\\\\\.apple\\\\\\.WebKit\\\\\\.WebContent.*\") OR parent_process_path = RGX(\".*firefox.*\") OR parent_process_path = RGX(\".*Google\\\\ Chrome\\\\ Helper.*\") OR parent_process_path = RGX(\".*Google\\\\ Chrome.*\") OR parent_process_path = RGX(\".*Microsoft\\\\ Edge.*\") OR parent_process_path = RGX(\".*Opera.*\") OR parent_process_path = RGX(\".*Safari.*\") OR parent_process_path = RGX(\".*Tor\\\\ Browser.*\")) AND (process_path = RGX(\"\\\\/bash$\") OR process_path = RGX(\"\\\\/curl$\") OR process_path = RGX(\"\\\\/dash$\") OR process_path = RGX(\"\\\\/ksh$\") OR process_path = RGX(\"\\\\/osascript$\") OR process_path = RGX(\"\\\\/perl$\") OR process_path = RGX(\"\\\\/php$\") OR process_path = RGX(\"\\\\/pwsh$\") OR process_path = RGX(\"\\\\/python$\") OR process_path = RGX(\"\\\\/sh$\") OR process_path = RGX(\"\\\\/tcsh$\") OR process_path = RGX(\"\\\\/wget$\") OR process_path = RGX(\"\\\\/zsh$\"))) AND  NOT (process_command_line = RGX(\".*\\\\-\\\\-defaults\\\\-torrc.*\") OR process_command_line = RGX(\".*\\\\/Library\\\\/Application\\\\ Support\\\\/Microsoft\\\\/MAU*\\\\/Microsoft\\\\ AutoUpdate\\\\\\.app\\\\/Contents\\\\/MacOS\\\\/msupdate.*\") OR ((parent_process_path = RGX(\".*Google\\\\ Chrome\\\\ Helper.*\") OR parent_process_path = RGX(\".*Google\\\\ Chrome.*\")) AND (process_command_line = RGX(\".*\\\\/Volumes\\\\/Google\\\\ Chrome\\\\/Google\\\\ Chrome\\\\\\.app\\\\/Contents\\\\/Frameworks\\\\/*\\\\/Resources\\\\/install\\\\\\.sh.*\") OR process_command_line = RGX(\".*\\\\/Applications\\\\/Google\\\\ Chrome\\\\\\.app\\\\/Contents\\\\/Frameworks\\\\/Google\\\\ Chrome\\\\ Framework\\\\\\.framework\\\\/*\\\\/Resources\\\\/keystone\\\\_promote\\\\_preflight\\\\\\.sh.*\") OR process_command_line = RGX(\".*\\\\/Applications\\\\/Google\\\\ Chrome\\\\\\.app\\\\/Contents\\\\/Frameworks\\\\/Google\\\\ Chrome\\\\ Framework\\\\\\.framework\\\\/*\\\\/Resources\\\\/keystone\\\\_promote\\\\_postflight\\\\\\.sh.*\"))) OR (parent_process_path = RGX(\".*Microsoft\\\\ Edge.*\") AND (process_command_line = RGX(\".*IOPlatformExpertDevice.*\") OR process_command_line = RGX(\".*hw\\\\\\.model.*\"))) OR ((parent_process_path = RGX(\".*Google\\\\ Chrome\\\\ Helper.*\") OR parent_process_path = RGX(\".*Google\\\\ Chrome.*\")) AND (process_command_line = RGX(\".*\\\\/Users\\\\/.*\") AND process_command_line = RGX(\".*\\\\/Library\\\\/Application\\\\ Support\\\\/Google\\\\/Chrome\\\\/recovery\\\\/.*\") AND process_command_line = RGX(\".*\\\\/ChromeRecovery.*\")))) AND  NOT (process_command_line = \"None\" OR process_command_line = \"\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "dd890976-7be2-49c9-a0db-47cbecb62d8e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

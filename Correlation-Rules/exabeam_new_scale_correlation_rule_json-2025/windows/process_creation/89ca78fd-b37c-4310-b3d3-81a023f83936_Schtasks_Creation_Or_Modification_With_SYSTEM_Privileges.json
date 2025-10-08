@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Schtasks Creation Or Modification With SYSTEM Privileges",
+      "description": "Detects the creation or update of a scheduled task to run with \"NT AUTHORITY\\SYSTEM\" privileges",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\ \\\\/change\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\/create\\\\ .*\"))) AND process_command_line = RGX(\".*\\\\/ru\\\\ .*\") AND (process_command_line = RGX(\".*NT\\\\ AUT.*\") OR process_command_line = RGX(\".*\\\\ SYSTEM\\\\ .*\"))) AND  NOT ((process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\/TN\\\\ TVInstallRestore.*\") AND process_command_line = RGX(\".*\\\\\\\\TeamViewer\\\\_\\\\\\.exe.*\"))) OR (process_command_line = RGX(\".*Subscription\\\\ Heartbeat.*\") AND process_command_line = RGX(\".*\\\\\\\\HeartbeatConfig\\\\\\.xml.*\") AND process_command_line = RGX(\".*\\\\\\\\Microsoft\\\\ Shared\\\\\\\\OFFICE.*\")) OR (process_command_line = RGX(\".*\\\\/Create\\\\ \\\\/F\\\\ \\\\/RU\\\\ System\\\\ \\\\/SC\\\\ WEEKLY\\\\ \\\\/TN\\\\ AviraSystemSpeedupVerify\\\\ \\\\/TR\\\\ .*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Avira\\\\\\\\System\\\\ Speedup\\\\\\\\setup\\\\\\\\avira\\\\_speedup\\\\_setup\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\/VERIFY\\\\ \\\\/VERYSILENT\\\\ \\\\/NOSTART\\\\ \\\\/NODOTNET\\\\ \\\\/NORESTART\\\\\"\\\\ \\\\/RL\\\\ HIGHEST.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5494dea5-2398-4f79-b099-42aadc73a4f9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

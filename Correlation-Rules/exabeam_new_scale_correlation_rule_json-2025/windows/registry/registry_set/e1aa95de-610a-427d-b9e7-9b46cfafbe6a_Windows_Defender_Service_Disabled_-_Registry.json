@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows Defender Service Disabled - Registry",
+      "description": "Detects when an attacker or tool disables the  Windows Defender service (WinDefend) via the registry Note: Unmapped fields: Details",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\"\\\\\\\\Services\\\\\\\\WinDefend\\\\\\\\Start$\") AND Details = \"DWORD\\ \\(0x00000004\\)\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "794e8bcd-3c33-4563-8cab-39b977c4226a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

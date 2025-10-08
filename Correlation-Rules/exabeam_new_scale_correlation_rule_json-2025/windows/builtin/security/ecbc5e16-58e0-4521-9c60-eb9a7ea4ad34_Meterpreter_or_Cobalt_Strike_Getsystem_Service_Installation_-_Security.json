@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Meterpreter or Cobalt Strike Getsystem Service Installation - Security",
+      "description": "Detects the use of getsystem Meterpreter/Cobalt Strike command by detecting a specific service installation Note: Unmapped fields: ServiceFileName",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "event_id = 4697 AND (((ServiceFileName = RGX(\".*\\\\/c.*\") AND ServiceFileName = RGX(\".*echo.*\") AND ServiceFileName = RGX(\".*\\\\\\\\pipe\\\\\\\\.*\")) AND (ServiceFileName = RGX(\".*cmd.*\") OR ServiceFileName = RGX(\".*\\\\%COMSPEC\\\\%.*\"))) OR (ServiceFileName = RGX(\".*rundll32.*\") AND ServiceFileName = RGX(\".*\\\\\\.dll\\\\,a.*\") AND ServiceFileName = RGX(\".*\\\\/p\\\\:.*\")) OR ServiceFileName = RGX(\"^\\\\\\\\\\\\\\\\127\\\\\\.0\\\\\\.0\\\\\\.1\\\\\\\\ADMIN\\\\$\\\\\\\\\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0a05f5f0-b5a4-4158-a33f-a3d9d5c7ac36"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

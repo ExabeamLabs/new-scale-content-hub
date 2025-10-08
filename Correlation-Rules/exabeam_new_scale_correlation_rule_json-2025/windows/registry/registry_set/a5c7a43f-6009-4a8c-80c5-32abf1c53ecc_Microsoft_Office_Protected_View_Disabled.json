@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Microsoft Office Protected View Disabled",
+      "description": "Detects changes to Microsoft Office protected view registry keys with which the attacker disables this feature. Note: Unmapped fields: Details",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Office\\\\\\\\.*\") AND registry_path = RGX(\".*\\\\\\\\Security\\\\\\\\ProtectedView\\\\\\\\.*\")) AND ((Details = \"DWORD\\ \\(0x00000001\\)\" AND (registry_path = RGX(\"\\\\\\\\DisableAttachementsInPV$\") OR registry_path = RGX(\"\\\\\\\\DisableInternetFilesInPV$\") OR registry_path = RGX(\"\\\\\\\\DisableIntranetCheck$\") OR registry_path = RGX(\"\\\\\\\\DisableUnsafeLocationsInPV$\"))) OR (Details = \"DWORD\\ \\(0x00000000\\)\" AND (registry_path = RGX(\"\\\\\\\\enabledatabasefileprotectedview$\") OR registry_path = RGX(\"\\\\\\\\enableforeigntextfileprotectedview$\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a8ae6167-d269-4cde-b79e-7dc4d9883359"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

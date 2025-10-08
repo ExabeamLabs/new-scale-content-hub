@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "UAC Bypass Using IEInstal - Process",
+      "description": "Detects the pattern of UAC Bypass using IEInstal.exe (UACMe 64)",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_integrity_level = \"High\" OR process_integrity_level = \"System\" OR process_integrity_level = \"S\\-1\\-16\\-16384\" OR process_integrity_level = \"S\\-1\\-16\\-12288\") AND parent_process_path = RGX(\"\\\\\\\\ieinstal\\\\\\.exe$\") AND process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") AND process_path = RGX(\"consent\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5aca7f85-532f-4fda-b2c4-122a216d5c8f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

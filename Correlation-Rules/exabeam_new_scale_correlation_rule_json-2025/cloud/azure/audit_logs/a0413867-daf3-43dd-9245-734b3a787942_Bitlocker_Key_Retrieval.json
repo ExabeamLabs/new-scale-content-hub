@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Bitlocker Key Retrieval",
+      "description": "Monitor and alert for Bitlocker key retrieval. Note: Unmapped fields: Category, OperationName",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Category = \"KeyManagement\" AND OperationName = \"Read\\ BitLocker\\ key\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c47e332e-8795-4c44-b14f-f14fec9531a1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

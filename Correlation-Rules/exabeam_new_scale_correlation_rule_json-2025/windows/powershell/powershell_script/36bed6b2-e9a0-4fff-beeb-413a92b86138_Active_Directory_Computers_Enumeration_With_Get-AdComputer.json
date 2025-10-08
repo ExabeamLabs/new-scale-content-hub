@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Active Directory Computers Enumeration With Get-AdComputer",
+      "description": "Detects usage of the \"Get-AdComputer\" to enumerate Computers or properties within Active Directory. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Get\\\\-AdComputer\\\\ .*\") AND (ScriptBlockText = RGX(\".*\\\\-Filter\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\-LDAPFilter\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\-Properties\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "bc8c5671-e84a-4296-8323-7398ec0d9dfe"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

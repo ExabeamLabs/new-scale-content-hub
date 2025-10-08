@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Osacompile Execution By Potentially Suspicious Applet/Osascript",
+      "description": "Detects potential suspicious applet or osascript executing \"osacompile\".",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((parent_process_path = RGX(\"\\\\/applet$\") OR parent_process_path = RGX(\"\\\\/osascript$\")) AND process_command_line = RGX(\".*osacompile.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "25a32eb4-d58d-4192-ad12-39e7748ae46f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

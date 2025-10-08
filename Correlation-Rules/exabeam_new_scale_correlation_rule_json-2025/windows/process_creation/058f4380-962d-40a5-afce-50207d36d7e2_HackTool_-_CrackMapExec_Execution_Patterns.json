@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - CrackMapExec Execution Patterns",
+      "description": "Detects various execution patterns of the CrackMapExec pentesting framework",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*cmd\\\\\\.exe\\\\ \\\\/Q\\\\ \\\\/c\\\\ *\\\\ 1\\\\>\\\\ \\\\\\\\\\\\\\\\*\\\\\\\\*\\\\\\\\*\\\\ 2\\\\>\\\\&1.*\") OR process_command_line = RGX(\".*cmd\\\\\\.exe\\\\ \\\\/C\\\\ *\\\\ \\\\>\\\\ \\\\\\\\\\\\\\\\*\\\\\\\\*\\\\\\\\*\\\\ 2\\\\>\\\\&1.*\") OR process_command_line = RGX(\".*cmd\\\\\\.exe\\\\ \\\\/C\\\\ *\\\\ \\\\>\\\\ *\\\\\\\\Temp\\\\\\\\*\\\\ 2\\\\>\\\\&1.*\") OR process_command_line = RGX(\".*powershell\\\\\\.exe\\\\ \\\\-exec\\\\ bypass\\\\ \\\\-noni\\\\ \\\\-nop\\\\ \\\\-w\\\\ 1\\\\ \\\\-C\\\\ \\\\.*\") OR process_command_line = RGX(\".*powershell\\\\\\.exe\\\\ \\\\-noni\\\\ \\\\-nop\\\\ \\\\-w\\\\ 1\\\\ \\\\-enc\\\\ .*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c56d9db1-db77-457b-b4e0-d23fa1f2e356"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

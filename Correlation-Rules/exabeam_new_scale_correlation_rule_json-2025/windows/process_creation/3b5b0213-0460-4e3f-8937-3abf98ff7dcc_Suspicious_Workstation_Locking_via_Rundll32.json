@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Workstation Locking via Rundll32",
+      "description": "Detects a suspicious call to the user32.dll function that locks the user workstation",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_original_file_name = \"RUNDLL32\\.EXE\") AND parent_process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") AND process_command_line = RGX(\".*user32\\\\\\.dll\\\\,.*\") AND process_command_line = RGX(\".*LockWorkStation.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "308ad319-df2d-4e9c-81d6-80dbe6750b25"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

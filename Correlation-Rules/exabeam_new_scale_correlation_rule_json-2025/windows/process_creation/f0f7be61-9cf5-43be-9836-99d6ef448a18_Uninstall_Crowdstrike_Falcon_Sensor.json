@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Uninstall Crowdstrike Falcon Sensor",
+      "description": "Adversaries may disable security tools to avoid possible detection of their tools and activities by uninstalling Crowdstrike Falcon",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\\\\\WindowsSensor\\\\\\.exe.*\") AND process_command_line = RGX(\".*\\\\ \\\\/uninstall.*\") AND process_command_line = RGX(\".*\\\\ \\\\/quiet.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3517c8d7-732c-4e9a-8737-39a8a04294c0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Mshtml.DLL RunHTMLApplication Suspicious Usage",
+      "description": "Detects execution of commands that leverage the \"mshtml.dll\" RunHTMLApplication export to run arbitrary code via different protocol handlers (vbscript, javascript, file, http...)\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*\\\\\\\\\\\\\\.\\\\\\.\\\\\\\\.*\") AND process_command_line = RGX(\".*mshtml.*\")) AND (process_command_line = RGX(\".*\\\\#135.*\") OR process_command_line = RGX(\".*RunHTMLApplication.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ee5727e9-70b6-4fe6-98b2-9398e4558372"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

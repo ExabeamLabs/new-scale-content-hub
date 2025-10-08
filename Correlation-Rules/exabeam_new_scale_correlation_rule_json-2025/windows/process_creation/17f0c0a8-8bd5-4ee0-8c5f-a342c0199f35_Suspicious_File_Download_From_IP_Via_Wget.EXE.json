@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious File Download From IP Via Wget.EXE",
+      "description": "Detects potentially suspicious file downloads directly from IP addresses using Wget.exe",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\wget\\\\\\.exe$\") OR process_original_file_name = \"wget\\.exe\") AND process_command_line = RGX(\"://[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}\") AND process_command_line = RGX(\".*http.*\") AND (process_command_line = RGX(\"\\s-O\\s\") OR process_command_line = RGX(\".*\\\\-\\\\-output\\\\-document.*\")) AND (process_command_line = RGX(\"\\\\\\.ps1$\") OR process_command_line = RGX(\"\\\\\\.ps1\\\\$\") OR process_command_line = RGX(\"\\\\\\.ps1\\\\$\") OR process_command_line = RGX(\"\\\\\\.dat$\") OR process_command_line = RGX(\"\\\\\\.dat\\\\$\") OR process_command_line = RGX(\"\\\\\\.dat\\\\$\") OR process_command_line = RGX(\"\\\\\\.msi$\") OR process_command_line = RGX(\"\\\\\\.msi\\\\$\") OR process_command_line = RGX(\"\\\\\\.msi\\\\$\") OR process_command_line = RGX(\"\\\\\\.bat$\") OR process_command_line = RGX(\"\\\\\\.bat\\\\$\") OR process_command_line = RGX(\"\\\\\\.bat\\\\$\") OR process_command_line = RGX(\"\\\\\\.exe$\") OR process_command_line = RGX(\"\\\\\\.exe\\\\$\") OR process_command_line = RGX(\"\\\\\\.exe\\\\$\") OR process_command_line = RGX(\"\\\\\\.vbs$\") OR process_command_line = RGX(\"\\\\\\.vbs\\\\$\") OR process_command_line = RGX(\"\\\\\\.vbs\\\\$\") OR process_command_line = RGX(\"\\\\\\.vbe$\") OR process_command_line = RGX(\"\\\\\\.vbe\\\\$\") OR process_command_line = RGX(\"\\\\\\.vbe\\\\$\") OR process_command_line = RGX(\"\\\\\\.hta$\") OR process_command_line = RGX(\"\\\\\\.hta\\\\$\") OR process_command_line = RGX(\"\\\\\\.hta\\\\$\") OR process_command_line = RGX(\"\\\\\\.dll$\") OR process_command_line = RGX(\"\\\\\\.dll\\\\$\") OR process_command_line = RGX(\"\\\\\\.dll\\\\$\") OR process_command_line = RGX(\"\\\\\\.psm1$\") OR process_command_line = RGX(\"\\\\\\.psm1\\\\$\") OR process_command_line = RGX(\"\\\\\\.psm1\\\\$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "dc58497e-2d1b-4066-b0e7-3d274f0c80a9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - HandleKatz LSASS Dumper Execution",
+      "description": "Detects the use of HandleKatz, a tool that demonstrates the usage of cloned handles to Lsass in order to create an obfuscated memory dump of the same",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\loader\\\\\\.exe$\") AND process_command_line = RGX(\".*\\\\-\\\\-pid\\\\:.*\")) OR (process_hash = RGX(\".*IMPHASH\\\\=38D9E015591BBFD4929E0D0F47FA0055.*\") OR process_hash = RGX(\".*IMPHASH\\\\=0E2216679CA6E1094D63322E3412D650.*\")) OR ((process_command_line = RGX(\".*\\\\-\\\\-pid\\\\:.*\") AND process_command_line = RGX(\".*\\\\-\\\\-outfile\\\\:.*\")) AND (process_command_line = RGX(\".*\\\\\\.dmp.*\") OR process_command_line = RGX(\".*lsass.*\") OR process_command_line = RGX(\".*\\\\\\.obf.*\") OR process_command_line = RGX(\".*dump.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3f4d1a8f-6250-40bd-918e-710a260c790d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

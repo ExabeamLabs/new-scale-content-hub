@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": ".RDP File Created By Uncommon Application",
+      "description": "Detects creation of a file with an \".rdp\" extension by an application that doesn't commonly create such files.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(file_path = RGX(\"\\\\\\.rdp$\") AND (process_path = RGX(\"\\\\\\\\brave\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\CCleaner\\\\ Browser\\\\\\\\Application\\\\\\\\CCleanerBrowser\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\chromium\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\firefox\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\Google\\\\\\\\Chrome\\\\\\\\Application\\\\\\\\chrome\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\iexplore\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\microsoftedge\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msedge\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\Opera\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\Vivaldi\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\Whale\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\olk\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\Outlook\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\RuntimeBroker\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\Thunderbird\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\Discord\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\Keybase\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msteams\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\Slack\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\teams\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "cca2fecb-8f43-4a32-b696-bdf1e47c3d6c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

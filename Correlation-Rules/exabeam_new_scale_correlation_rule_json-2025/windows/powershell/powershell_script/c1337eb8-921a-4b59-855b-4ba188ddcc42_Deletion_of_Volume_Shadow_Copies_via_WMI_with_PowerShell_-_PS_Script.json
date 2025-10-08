@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Deletion of Volume Shadow Copies via WMI with PowerShell - PS Script",
+      "description": "Detects deletion of Windows Volume Shadow Copies with PowerShell code and Get-WMIObject. This technique is used by numerous ransomware families such as Sodinokibi/REvil Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ScriptBlockText = RGX(\".*Get\\\\-WmiObject.*\") OR ScriptBlockText = RGX(\".*gwmi.*\") OR ScriptBlockText = RGX(\".*Get\\\\-CimInstance.*\") OR ScriptBlockText = RGX(\".*gcim.*\")) AND ScriptBlockText = RGX(\".*Win32\\\\_ShadowCopy.*\") AND (ScriptBlockText = RGX(\".*\\\\\\.Delete\\\\(\\\\).*\") OR ScriptBlockText = RGX(\".*Remove\\\\-WmiObject.*\") OR ScriptBlockText = RGX(\".*rwmi.*\") OR ScriptBlockText = RGX(\".*Remove\\\\-CimInstance.*\") OR ScriptBlockText = RGX(\".*rcim.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4c7a69c2-5131-4586-b713-0d46ef94be94"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

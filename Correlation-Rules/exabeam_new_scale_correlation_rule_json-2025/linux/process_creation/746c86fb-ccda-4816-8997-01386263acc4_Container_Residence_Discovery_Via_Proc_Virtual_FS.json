@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Container Residence Discovery Via Proc Virtual FS",
+      "description": "Detects potential container discovery via listing of certain kernel features in the \"/proc\" virtual filesystem",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"awk$\") OR process_path = RGX(\"\\\\/cat$\") OR process_path = RGX(\"grep$\") OR process_path = RGX(\"\\\\/head$\") OR process_path = RGX(\"\\\\/less$\") OR process_path = RGX(\"\\\\/more$\") OR process_path = RGX(\"\\\\/nl$\") OR process_path = RGX(\"\\\\/tail$\")) AND (process_command_line = RGX(\".*\\\\/proc\\\\/2\\\\/.*\") OR (process_command_line = RGX(\".*\\\\/proc\\\\/.*\") AND (process_command_line = RGX(\"\\\\/cgroup$\") OR process_command_line = RGX(\"\\\\/sched$\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d0072200-67c3-4829-9b9a-592573d71655"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

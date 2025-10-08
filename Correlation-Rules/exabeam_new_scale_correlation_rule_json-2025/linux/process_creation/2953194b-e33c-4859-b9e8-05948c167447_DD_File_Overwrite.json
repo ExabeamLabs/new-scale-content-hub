@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "DD File Overwrite",
+      "description": "Detects potential overwriting and deletion of a file using DD.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = \"\\/bin\\/dd\" OR process_path = \"\\/usr\\/bin\\/dd\") AND process_command_line = RGX(\".*of\\\\=.*\") AND (process_command_line = RGX(\".*if\\\\=\\\\/dev\\\\/zero.*\") OR process_command_line = RGX(\".*if\\\\=\\\\/dev\\\\/null.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "eb8b5a48-4600-4bdd-abea-bb39578d271e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

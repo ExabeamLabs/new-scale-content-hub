@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Uncommon Microsoft Office Trusted Location Added",
+      "description": "Detects changes to registry keys related to \"Trusted Location\" of Microsoft Office where the path is set to something uncommon. Attackers might add additional trusted locations to avoid macro security restrictions. Note: Unmapped fields: Details",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*Security\\\\\\\\Trusted\\\\ Locations\\\\\\\\Location.*\") AND registry_path = RGX(\"\\\\\\\\Path$\")) AND  NOT ((process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Common\\\\ Files\\\\\\\\Microsoft\\\\ Shared\\\\\\\\ClickToRun\\\\\\\\.*\") AND process_path = RGX(\"\\\\\\\\OfficeClickToRun\\\\\\.exe$\")) OR (process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Microsoft\\\\ Office\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Microsoft\\\\ Office\\\\\\\\.*\"))) AND  NOT ((Details = RGX(\".*\\\\%APPDATA\\\\%\\\\\\\\Microsoft\\\\\\\\Templates.*\") OR Details = RGX(\".*\\\\%\\\\%APPDATA\\\\%\\\\%\\\\\\\\Microsoft\\\\\\\\Templates.*\") OR Details = RGX(\".*\\\\%APPDATA\\\\%\\\\\\\\Microsoft\\\\\\\\Word\\\\\\\\Startup.*\") OR Details = RGX(\".*\\\\%\\\\%APPDATA\\\\%\\\\%\\\\\\\\Microsoft\\\\\\\\Word\\\\\\\\Startup.*\") OR Details = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Microsoft\\\\ Office\\\\\\\\root\\\\\\\\Templates\\\\\\\\.*\") OR Details = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Microsoft\\\\ Office\\\\ \\\\(x86\\\\)\\\\\\\\Templates.*\") OR Details = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Microsoft\\\\ Office\\\\\\\\root\\\\\\\\Templates\\\\\\\\.*\") OR Details = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Microsoft\\\\ Office\\\\\\\\Templates\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0558b981-f583-485e-9946-3e1f8371fb18"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

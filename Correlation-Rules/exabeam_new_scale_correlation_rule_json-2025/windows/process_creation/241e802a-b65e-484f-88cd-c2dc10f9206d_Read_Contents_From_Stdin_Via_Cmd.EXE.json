@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Read Contents From Stdin Via Cmd.EXE",
+      "description": "Detect the use of \"<\" to read and potentially execute a file via cmd.exe",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_original_file_name = \"Cmd\\.Exe\" OR process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\")) AND process_command_line = RGX(\".*\\\\<.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ddb5d1a1-f562-4a9e-a231-abd357c847c1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

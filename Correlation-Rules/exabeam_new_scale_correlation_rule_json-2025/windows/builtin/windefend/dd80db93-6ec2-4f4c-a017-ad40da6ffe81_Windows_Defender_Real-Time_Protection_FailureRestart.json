@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows Defender Real-Time Protection Failure/Restart",
+      "description": "Detects issues with Windows Defender Real-Time Protection features Note: Unmapped fields: Feature_Name, Reason",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 3002 OR event_id = 3007) AND  NOT ((Feature_Name = \"\\%\\%886\" AND (Reason = \"\\%\\%892\" OR Reason = \"\\%\\%858\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c1ad21e9-7add-4c58-8015-835feff867b1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

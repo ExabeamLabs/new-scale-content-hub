@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Privilege Escalation To LOCAL SYSTEM",
+      "description": "Detects unknown program using commandline flags usually used by tools such as PsExec and PAExec to start programs with SYSTEM Privileges",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\ \\\\-s\\\\ cmd.*\") OR process_command_line = RGX(\".*\\\\ \\\\-s\\\\ \\\\-i\\\\ cmd.*\") OR process_command_line = RGX(\".*\\\\ \\\\-i\\\\ \\\\-s\\\\ cmd.*\") OR process_command_line = RGX(\".*\\\\ \\\\-s\\\\ pwsh.*\") OR process_command_line = RGX(\".*\\\\ \\\\-s\\\\ \\\\-i\\\\ pwsh.*\") OR process_command_line = RGX(\".*\\\\ \\\\-i\\\\ \\\\-s\\\\ pwsh.*\") OR process_command_line = RGX(\".*\\\\ \\\\-s\\\\ powershell.*\") OR process_command_line = RGX(\".*\\\\ \\\\-s\\\\ \\\\-i\\\\ powershell.*\") OR process_command_line = RGX(\".*\\\\ \\\\-i\\\\ \\\\-s\\\\ powershell.*\")) AND  NOT ((process_command_line = RGX(\".*paexec.*\") OR process_command_line = RGX(\".*PsExec.*\") OR process_command_line = RGX(\".*accepteula.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "30e84ca7-4d55-400d-bf3e-89bc19d585f7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

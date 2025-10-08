@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Suspicious PowerShell Keywords",
+      "description": "Detects potentially suspicious keywords that could indicate the use of a PowerShell exploitation framework Note: Unmapped fields: ScriptBlockText",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*System\\\\\\.Reflection\\\\\\.Assembly\\\\\\.Load\\\\(\\\\$.*\") OR ScriptBlockText = RGX(\".*\\\\[System\\\\\\.Reflection\\\\\\.Assembly\\\\]\\\\:\\\\:Load\\\\(\\\\$.*\") OR ScriptBlockText = RGX(\".*\\\\[Reflection\\\\\\.Assembly\\\\]\\\\:\\\\:Load\\\\(\\\\$.*\") OR ScriptBlockText = RGX(\".*System\\\\\\.Reflection\\\\\\.AssemblyName.*\") OR ScriptBlockText = RGX(\".*Reflection\\\\\\.Emit\\\\\\.AssemblyBuilderAccess.*\") OR ScriptBlockText = RGX(\".*Reflection\\\\\\.Emit\\\\\\.CustomAttributeBuilder.*\") OR ScriptBlockText = RGX(\".*Runtime\\\\\\.InteropServices\\\\\\.UnmanagedType.*\") OR ScriptBlockText = RGX(\".*Runtime\\\\\\.InteropServices\\\\\\.DllImportAttribute.*\") OR ScriptBlockText = RGX(\".*SuspendThread.*\") OR ScriptBlockText = RGX(\".*rundll32.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0d58d846-f03e-476c-8251-133cc61d5633"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

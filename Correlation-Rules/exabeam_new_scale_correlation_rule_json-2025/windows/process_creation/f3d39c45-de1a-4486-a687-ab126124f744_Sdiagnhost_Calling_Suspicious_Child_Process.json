@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Sdiagnhost Calling Suspicious Child Process",
+      "description": "Detects sdiagnhost.exe calling a suspicious child process (e.g. used in exploits for Follina / CVE-2022-30190)",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\sdiagnhost\\\\\\.exe$\") AND (process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\taskkill\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\calc\\\\\\.exe$\"))) AND  NOT ((process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") AND process_command_line = RGX(\".*bits.*\")) OR (process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") AND (process_command_line = RGX(\"\\\\-noprofile\\\\ \\\\-$\") OR process_command_line = RGX(\"\\\\-noprofile$\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "980b841a-9298-43ea-9592-8a37ba5e03c3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

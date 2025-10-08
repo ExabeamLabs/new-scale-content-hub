@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Teams Application Related ObjectAcess Event",
+      "description": "Detects an access to authentication tokens and accounts of Microsoft Teams desktop application. Note: Unmapped fields: ObjectName, ProcessName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4663 AND (ObjectName = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Teams\\\\\\\\Cookies.*\") OR ObjectName = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Teams\\\\\\\\Local\\\\ Storage\\\\\\\\leveldb.*\"))) AND  NOT (ProcessName = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Teams\\\\\\\\current\\\\\\\\Teams\\\\\\.exe.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b2f0dbaa-01b7-463c-86d6-2d984f38a04d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

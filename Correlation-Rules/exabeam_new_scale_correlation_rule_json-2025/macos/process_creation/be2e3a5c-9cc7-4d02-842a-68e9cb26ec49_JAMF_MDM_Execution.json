@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "JAMF MDM Execution",
+      "description": "Detects execution of the \"jamf\" binary to create user accounts and run commands. For example, the binary can be abused by attackers on the system in order to bypass security controls or remove application control polices.\n",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/jamf$\") AND (process_command_line = RGX(\".*createAccount.*\") OR process_command_line = RGX(\".*manage.*\") OR process_command_line = RGX(\".*removeFramework.*\") OR process_command_line = RGX(\".*removeMdmProfile.*\") OR process_command_line = RGX(\".*resetPassword.*\") OR process_command_line = RGX(\".*setComputerName.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "cbf9bc88-5075-435b-a8ad-906735c4a827"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

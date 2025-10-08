@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Scheduled Task Creation via Masqueraded XML File",
+      "description": "Detects the creation of a scheduled task using the \"-XML\" flag with a file without the '.xml' extension. This behavior could be indicative of potential defense evasion attempt during persistence",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") OR process_original_file_name = \"schtasks\\.exe\") AND (process_command_line = RGX(\".*\\\\/create.*\") OR process_command_line = RGX(\".*\\\\-create.*\")) AND (process_command_line = RGX(\".*\\\\/xml.*\") OR process_command_line = RGX(\".*\\\\-xml.*\"))) AND  NOT (process_command_line = RGX(\".*\\\\\\.xml.*\") OR (process_integrity_level = \"System\" OR process_integrity_level = \"S\\-1\\-16\\-16384\") OR (parent_process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") AND (parent_process_command_line = RGX(\".*\\\\:\\\\\\\\WINDOWS\\\\\\\\Installer\\\\\\\\MSI.*\") AND parent_process_command_line = RGX(\".*\\\\\\.tmp\\\\,zzzzInvokeManagedCustomActionOutOfProc.*\")))) AND  NOT ((parent_process_path = RGX(\"\\\\:\\\\\\\\ProgramData\\\\\\\\OEM\\\\\\\\UpgradeTool\\\\\\\\CareCenter\\\\_*\\\\\\\\BUnzip\\\\\\\\Setup\\\\_msi\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Axis\\\\ Communications\\\\\\\\AXIS\\\\ Camera\\\\ Station\\\\\\\\SetupActions\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Axis\\\\ Communications\\\\\\\\AXIS\\\\ Device\\\\ Manager\\\\\\\\AdmSetupActions\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Zemana\\\\\\\\AntiMalware\\\\\\\\AntiMalware\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Dell\\\\\\\\SupportAssist\\\\\\\\pcdrcui\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "de1435ff-f0f0-4852-be92-03fbce090a51"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

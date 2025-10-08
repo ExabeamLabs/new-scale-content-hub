@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Wmiexec Default Output File",
+      "description": "Detects the creation of the default output filename used by the wmiexec tool",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(file_path = RGX(\"\\Windows\\__1\\d{9}.\\d{1,7}$\") OR file_path = RGX(\"C:\\__1\\d{9}.\\d{1,7}$\") OR file_path = RGX(\"D:\\__1\\d{9}.\\d{1,7}$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "fa55df4a-0fdf-4536-90ee-a39a067fa0a6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

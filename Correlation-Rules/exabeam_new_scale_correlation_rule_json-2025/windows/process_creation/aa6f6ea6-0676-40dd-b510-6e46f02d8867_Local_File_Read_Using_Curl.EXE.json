@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Local File Read Using Curl.EXE",
+      "description": "Detects execution of \"curl.exe\" with the \"file://\" protocol handler in order to read local files.",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\curl\\\\\\.exe$\") OR process_original_file_name = \"curl\\.exe\") AND process_command_line = RGX(\".*file\\\\:\\\\/\\\\/\\\\/.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "cc72c991-952d-4fa5-8174-c3a96052b66b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

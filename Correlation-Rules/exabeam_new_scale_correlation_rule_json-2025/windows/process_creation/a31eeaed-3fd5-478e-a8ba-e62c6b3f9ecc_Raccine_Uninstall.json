@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Raccine Uninstall",
+      "description": "Detects commands that indicate a Raccine removal from an end system. Raccine is a free ransomware protection tool.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*taskkill\\\\ .*\") AND process_command_line = RGX(\".*RaccineSettings\\\\\\.exe.*\")) OR (process_command_line = RGX(\".*reg\\\\\\.exe.*\") AND process_command_line = RGX(\".*delete.*\") AND process_command_line = RGX(\".*Raccine\\\\ Tray.*\")) OR (process_command_line = RGX(\".*schtasks.*\") AND process_command_line = RGX(\".*\\\\/DELETE.*\") AND process_command_line = RGX(\".*Raccine\\\\ Rules\\\\ Updater.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c3b54daa-e8ee-4573-98d5-ad89e3739a0d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Dosfuscation Activity",
+      "description": "Detects possible payload obfuscation via the commandline",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\^\\\\^.*\") OR process_command_line = RGX(\".*\\\\^\\\\|\\\\^.*\") OR process_command_line = RGX(\".*\\\\,\\\\;\\\\,.*\") OR process_command_line = RGX(\".*\\\\;\\\\;\\\\;\\\\;.*\") OR process_command_line = RGX(\".*\\\\;\\\\;\\\\ \\\\;\\\\;.*\") OR process_command_line = RGX(\".*\\\\(\\\\,\\\\(\\\\,.*\") OR process_command_line = RGX(\".*\\\\%COMSPEC\\\\:\\\\~.*\") OR process_command_line = RGX(\".*\\\\ c\\\\^m\\\\^d.*\") OR process_command_line = RGX(\".*\\\\^c\\\\^m\\\\^d.*\") OR process_command_line = RGX(\".*\\\\ c\\\\^md.*\") OR process_command_line = RGX(\".*\\\\ cm\\\\^d.*\") OR process_command_line = RGX(\".*\\\\^cm\\\\^d.*\") OR process_command_line = RGX(\".*\\\\ s\\\\^et\\\\ .*\") OR process_command_line = RGX(\".*\\\\ s\\\\^e\\\\^t\\\\ .*\") OR process_command_line = RGX(\".*\\\\ se\\\\^t\\\\ .*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "68257208-8211-44de-9d02-0f2d6cbe64bb"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

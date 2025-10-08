@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Registry Persistence via Service in Safe Mode",
+      "description": "Detects the modification of the registry to allow a driver or service to persist in Safe Mode. Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((registry_path = RGX(\".*\\\\\\\\Control\\\\\\\\SafeBoot\\\\\\\\Minimal\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\Control\\\\\\\\SafeBoot\\\\\\\\Network\\\\\\\\.*\")) AND registry_path = RGX(\"\\\\\\\\\\\\(Default\\\\)$\") AND Details = \"Service\") AND  NOT ((process_path = \"C\\:\\\\WINDOWS\\\\system32\\\\msiexec\\.exe\" AND (registry_path = RGX(\"\\\\\\\\Control\\\\\\\\SafeBoot\\\\\\\\Minimal\\\\\\\\SAVService\\\\\\\\\\\\(Default\\\\)$\") OR registry_path = RGX(\"\\\\\\\\Control\\\\\\\\SafeBoot\\\\\\\\Network\\\\\\\\SAVService\\\\\\\\\\\\(Default\\\\)$\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "88685214-c188-4241-813b-3a21dc3244bf"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

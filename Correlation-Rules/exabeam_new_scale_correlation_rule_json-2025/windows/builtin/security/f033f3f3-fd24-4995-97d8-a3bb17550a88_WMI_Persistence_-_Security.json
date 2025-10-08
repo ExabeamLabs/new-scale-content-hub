@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "WMI Persistence - Security",
+      "description": "Detects suspicious WMI event filter and command line event consumer based on WMI and Security Logs. Note: Unmapped fields: ObjectType, ObjectName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4662 AND ObjectType = \"WMI\\ Namespace\" AND ObjectName = RGX(\".*subscription.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "240e7b4f-f7f6-490e-958a-acfe9f0a8ae4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

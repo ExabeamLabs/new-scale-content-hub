@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious ScreenSave Change by Reg.exe",
+      "description": "Adversaries may establish persistence by executing malicious content triggered by user inactivity.\nScreensavers are programs that execute after a configurable time of user inactivity and consist of Portable Executable (PE) files with a .scr file extension\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\reg\\\\\\.exe$\") AND (process_command_line = RGX(\".*HKEY\\\\_CURRENT\\\\_USER\\\\\\\\Control\\\\ Panel\\\\\\\\Desktop.*\") OR process_command_line = RGX(\".*HKCU\\\\\\\\Control\\\\ Panel\\\\\\\\Desktop.*\"))) AND ((process_command_line = RGX(\".*\\\\/v\\\\ ScreenSaveActive.*\") AND process_command_line = RGX(\".*\\\\/t\\\\ REG\\\\_SZ.*\") AND process_command_line = RGX(\".*\\\\/d\\\\ 1.*\") AND process_command_line = RGX(\".*\\\\/f.*\")) OR (process_command_line = RGX(\".*\\\\/v\\\\ ScreenSaveTimeout.*\") AND process_command_line = RGX(\".*\\\\/t\\\\ REG\\\\_SZ.*\") AND process_command_line = RGX(\".*\\\\/d\\\\ .*\") AND process_command_line = RGX(\".*\\\\/f.*\")) OR (process_command_line = RGX(\".*\\\\/v\\\\ ScreenSaverIsSecure.*\") AND process_command_line = RGX(\".*\\\\/t\\\\ REG\\\\_SZ.*\") AND process_command_line = RGX(\".*\\\\/d\\\\ 0.*\") AND process_command_line = RGX(\".*\\\\/f.*\")) OR (process_command_line = RGX(\".*\\\\/v\\\\ SCRNSAVE\\\\\\.EXE.*\") AND process_command_line = RGX(\".*\\\\/t\\\\ REG\\\\_SZ.*\") AND process_command_line = RGX(\".*\\\\/d\\\\ .*\") AND process_command_line = RGX(\".*\\\\\\.scr.*\") AND process_command_line = RGX(\".*\\\\/f.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3a4e4f9a-5ee2-46f0-9d1b-14d190fe9198"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

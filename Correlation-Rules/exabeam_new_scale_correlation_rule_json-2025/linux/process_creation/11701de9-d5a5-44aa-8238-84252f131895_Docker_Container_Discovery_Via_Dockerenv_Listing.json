@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Docker Container Discovery Via Dockerenv Listing",
+      "description": "Detects listing or file reading of \".dockerenv\" which can be a sing of potential container discovery",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/cat$\") OR process_path = RGX(\"\\\\/dir$\") OR process_path = RGX(\"\\\\/find$\") OR process_path = RGX(\"\\\\/ls$\") OR process_path = RGX(\"\\\\/stat$\") OR process_path = RGX(\"\\\\/test$\") OR process_path = RGX(\"grep$\")) AND process_command_line = RGX(\"\\\\\\.dockerenv$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a05bef10-8995-4f11-9d9a-cae750eb0708"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

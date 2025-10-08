@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Impossible Travel",
+      "description": "Identifies user activities originating from geographically distant locations within a time period shorter than the time it takes to travel from the first location to the second. Note: Unmapped fields: riskEventType",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "riskEventType = \"impossibleTravel\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e3e883f8-db86-4e84-b289-558f0c2da1e9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

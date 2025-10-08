@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Files in Default GPO Folder",
+      "description": "Detects the creation of copy of suspicious files (EXE/DLL) to the default GPO storage folder",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(file_path = RGX(\".*\\\\\\\\Policies\\\\\\\\\\\\{31B2F340\\\\-016D\\\\-11D2\\\\-945F\\\\-00C04FB984F9\\\\}\\\\\\\\.*\") AND (file_path = RGX(\"\\\\\\.dll$\") OR file_path = RGX(\"\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "84693684-0f67-4a04-9a28-98687bfa74d4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

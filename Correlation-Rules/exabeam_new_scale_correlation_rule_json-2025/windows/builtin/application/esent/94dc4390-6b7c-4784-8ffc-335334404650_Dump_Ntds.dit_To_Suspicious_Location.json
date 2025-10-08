@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Dump Ntds.dit To Suspicious Location",
+      "description": "Detects potential abuse of ntdsutil to dump ntds.dit database to a suspicious location Note: Unmapped fields: Provider_Name, Data",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((Provider_Name = \"ESENT\" AND event_id = 325 AND Data = RGX(\".*ntds\\\\\\.dit.*\")) AND (Data = RGX(\".*\\\\:\\\\\\\\ntds\\\\\\.dit.*\") OR Data = RGX(\".*\\\\\\\\Appdata\\\\\\\\.*\") OR Data = RGX(\".*\\\\\\\\Desktop\\\\\\\\.*\") OR Data = RGX(\".*\\\\\\\\Downloads\\\\\\\\.*\") OR Data = RGX(\".*\\\\\\\\Perflogs\\\\\\\\.*\") OR Data = RGX(\".*\\\\\\\\Temp\\\\\\\\.*\") OR Data = RGX(\".*\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5a99abf9-6bd2-42b5-8e44-3bb2a738f88a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

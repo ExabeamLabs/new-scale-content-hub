@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Registry Persistence Attempt Via Windows Telemetry",
+      "description": "Detects potential persistence behavior using the windows telemetry registry key.\nWindows telemetry makes use of the binary CompatTelRunner.exe to run a variety of commands and perform the actual telemetry collections.\nThis binary was created to be easily extensible, and to that end, it relies on the registry to instruct on which commands to run.\nThe problem is, it will run any arbitrary command without restriction of location or type.\n Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\AppCompatFlags\\\\\\\\TelemetryController\\\\\\\\.*\") AND registry_path = RGX(\"\\\\\\\\Command$\") AND (Details = RGX(\".*\\\\\\.bat.*\") OR Details = RGX(\".*\\\\\\.bin.*\") OR Details = RGX(\".*\\\\\\.cmd.*\") OR Details = RGX(\".*\\\\\\.dat.*\") OR Details = RGX(\".*\\\\\\.dll.*\") OR Details = RGX(\".*\\\\\\.exe.*\") OR Details = RGX(\".*\\\\\\.hta.*\") OR Details = RGX(\".*\\\\\\.jar.*\") OR Details = RGX(\".*\\\\\\.js.*\") OR Details = RGX(\".*\\\\\\.msi.*\") OR Details = RGX(\".*\\\\\\.ps.*\") OR Details = RGX(\".*\\\\\\.sh.*\") OR Details = RGX(\".*\\\\\\.vb.*\"))) AND  NOT ((Details = RGX(\".*\\\\\\\\system32\\\\\\\\CompatTelRunner\\\\\\.exe.*\") OR Details = RGX(\".*\\\\\\\\system32\\\\\\\\DeviceCensus\\\\\\.exe.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "dc04fcdb-568f-46ef-83e4-1fa94f77a266"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

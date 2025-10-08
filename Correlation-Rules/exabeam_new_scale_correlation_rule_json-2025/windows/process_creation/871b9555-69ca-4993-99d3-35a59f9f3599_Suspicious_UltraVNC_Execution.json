@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious UltraVNC Execution",
+      "description": "Detects suspicious UltraVNC command line flag combination that indicate a auto reconnect upon execution, e.g. startup (as seen being used by Gamaredon threat group)",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\-autoreconnect\\\\ .*\") AND process_command_line = RGX(\".*\\\\-connect\\\\ .*\") AND process_command_line = RGX(\".*\\\\-id\\\\:.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "40be109e-d4bb-4530-8cb7-d2d980611536"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

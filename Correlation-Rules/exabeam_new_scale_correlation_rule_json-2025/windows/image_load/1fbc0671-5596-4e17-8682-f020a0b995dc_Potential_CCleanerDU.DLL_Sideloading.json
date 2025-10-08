@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential CCleanerDU.DLL Sideloading",
+      "description": "Detects potential DLL sideloading of \"CCleanerDU.dll\" Note: Unmapped fields: ImageLoaded",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ImageLoaded = RGX(\"\\\\\\\\CCleanerDU\\\\\\.dll$\") AND  NOT (((process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\CCleaner\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\CCleaner\\\\\\\\\")) AND (process_path = RGX(\"\\\\\\\\CCleaner\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\CCleaner64\\\\\\.exe$\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "df96ebf3-3192-4c3b-8185-f0a7d9b89d84"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

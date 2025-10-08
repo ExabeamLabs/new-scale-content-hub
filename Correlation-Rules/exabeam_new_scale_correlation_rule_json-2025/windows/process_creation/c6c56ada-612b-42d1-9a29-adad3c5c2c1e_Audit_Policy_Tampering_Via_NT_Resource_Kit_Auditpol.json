@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Audit Policy Tampering Via NT Resource Kit Auditpol",
+      "description": "Threat actors can use an older version of the auditpol binary available inside the NT resource kit to change audit policy configuration to impair detection capability.\nThis can be carried out by selectively disabling/removing certain audit policies as well as restoring a custom policy owned by the threat actor.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\/logon\\\\:none.*\") OR process_command_line = RGX(\".*\\\\/system\\\\:none.*\") OR process_command_line = RGX(\".*\\\\/sam\\\\:none.*\") OR process_command_line = RGX(\".*\\\\/privilege\\\\:none.*\") OR process_command_line = RGX(\".*\\\\/object\\\\:none.*\") OR process_command_line = RGX(\".*\\\\/process\\\\:none.*\") OR process_command_line = RGX(\".*\\\\/policy\\\\:none.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5e6e1f3b-f3d6-4d43-a31e-65f9d3e5a4ea"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

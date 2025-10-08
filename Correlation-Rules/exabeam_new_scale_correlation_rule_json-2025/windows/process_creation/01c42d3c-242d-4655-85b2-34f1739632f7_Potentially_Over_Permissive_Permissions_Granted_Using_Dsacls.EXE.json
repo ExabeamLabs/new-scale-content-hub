@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Over Permissive Permissions Granted Using Dsacls.EXE",
+      "description": "Detects usage of Dsacls to grant over permissive permissions",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\dsacls\\\\\\.exe$\") OR process_original_file_name = \"DSACLS\\.EXE\") AND process_command_line = RGX(\".*\\\\ \\\\/G\\\\ .*\") AND (process_command_line = RGX(\".*GR.*\") OR process_command_line = RGX(\".*GE.*\") OR process_command_line = RGX(\".*GW.*\") OR process_command_line = RGX(\".*GA.*\") OR process_command_line = RGX(\".*WP.*\") OR process_command_line = RGX(\".*WD.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7c432368-7eeb-4a19-bffa-121e4b83c8b3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

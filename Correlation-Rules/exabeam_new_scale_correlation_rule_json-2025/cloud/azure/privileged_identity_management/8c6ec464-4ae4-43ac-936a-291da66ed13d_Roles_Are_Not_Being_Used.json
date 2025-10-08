@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Roles Are Not Being Used",
+      "description": "Identifies when a user has been assigned a privilege role and are not using that role. Note: Unmapped fields: riskEventType",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "riskEventType = \"redundantAssignmentAlertIncident\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a510d054-faa0-480d-ba4b-f15bd87fe573"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

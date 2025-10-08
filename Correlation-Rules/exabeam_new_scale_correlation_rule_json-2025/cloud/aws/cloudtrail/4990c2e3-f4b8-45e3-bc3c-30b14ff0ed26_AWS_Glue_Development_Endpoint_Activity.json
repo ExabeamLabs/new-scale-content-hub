@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "AWS Glue Development Endpoint Activity",
+      "description": "Detects possible suspicious glue development endpoint activity. Note: Unmapped fields: eventSource, eventName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(eventSource = \"glue\\.amazonaws\\.com\" AND (eventName = \"CreateDevEndpoint\" OR eventName = \"DeleteDevEndpoint\" OR eventName = \"UpdateDevEndpoint\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d971fbb1-975b-4412-b1d7-933b17a793c8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

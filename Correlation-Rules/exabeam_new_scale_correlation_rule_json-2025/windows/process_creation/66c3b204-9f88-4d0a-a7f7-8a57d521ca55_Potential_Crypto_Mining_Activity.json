@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Crypto Mining Activity",
+      "description": "Detects command line parameters or strings often used by crypto miners",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\ \\\\-\\\\-cpu\\\\-priority\\\\=.*\") OR process_command_line = RGX(\".*\\\\-\\\\-donate\\\\-level\\\\=0.*\") OR process_command_line = RGX(\".*\\\\ \\\\-o\\\\ pool\\\\\\..*\") OR process_command_line = RGX(\".*\\\\ \\\\-\\\\-nicehash.*\") OR process_command_line = RGX(\".*\\\\ \\\\-\\\\-algo\\\\=rx\\\\/0\\\\ .*\") OR process_command_line = RGX(\".*stratum\\\\+tcp\\\\:\\\\/\\\\/.*\") OR process_command_line = RGX(\".*stratum\\\\+udp\\\\:\\\\/\\\\/.*\") OR process_command_line = RGX(\".*LS1kb25hdGUtbGV2ZWw9.*\") OR process_command_line = RGX(\".*0tZG9uYXRlLWxldmVsP.*\") OR process_command_line = RGX(\".*tLWRvbmF0ZS1sZXZlbD.*\") OR process_command_line = RGX(\".*c3RyYXR1bSt0Y3A6Ly.*\") OR process_command_line = RGX(\".*N0cmF0dW0rdGNwOi8v.*\") OR process_command_line = RGX(\".*zdHJhdHVtK3RjcDovL.*\") OR process_command_line = RGX(\".*c3RyYXR1bSt1ZHA6Ly.*\") OR process_command_line = RGX(\".*N0cmF0dW0rdWRwOi8v.*\") OR process_command_line = RGX(\".*zdHJhdHVtK3VkcDovL.*\")) AND  NOT ((process_command_line = RGX(\".*\\\\ pool\\\\\\.c\\\\ .*\") OR process_command_line = RGX(\".*\\\\ pool\\\\\\.o\\\\ .*\") OR process_command_line = RGX(\".*gcc\\\\ \\\\-.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "28914101-635f-4b67-8bc3-027a2a6c00ed"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

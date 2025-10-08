@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Waveedit.DLL Sideloading",
+      "description": "Detects potential DLL sideloading of \"waveedit.dll\", which is part of the Nero WaveEditor audio editing software. Note: Unmapped fields: ImageLoaded",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ImageLoaded = RGX(\"\\\\\\\\waveedit\\\\\\.dll$\") AND  NOT (((process_path = \"C\\:\\\\Program\\ Files\\ \\(x86\\)\\\\Nero\\\\Nero\\ Apps\\\\Nero\\ WaveEditor\\\\waveedit\\.exe\" OR process_path = \"C\\:\\\\Program\\ Files\\\\Nero\\\\Nero\\ Apps\\\\Nero\\ WaveEditor\\\\waveedit\\.exe\") AND (ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Nero\\\\\\\\Nero\\\\ Apps\\\\\\\\Nero\\\\ WaveEditor\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Nero\\\\\\\\Nero\\\\ Apps\\\\\\\\Nero\\\\ WaveEditor\\\\\\\\\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6c5cb11e-dd0f-4361-939a-14329083dfd0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

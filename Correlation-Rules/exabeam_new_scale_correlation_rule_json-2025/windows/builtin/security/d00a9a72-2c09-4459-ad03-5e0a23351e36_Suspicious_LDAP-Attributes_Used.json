@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious LDAP-Attributes Used",
+      "description": "Detects the usage of particular AttributeLDAPDisplayNames, which are known for data exchange via LDAP by the tool LDAPFragger and are additionally not commonly used in companies. Note: Unmapped fields: AttributeValue, AttributeLDAPDisplayName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 5136 AND AttributeValue = RGX(\".**.*\") AND (AttributeLDAPDisplayName = \"primaryInternationalISDNNumber\" OR AttributeLDAPDisplayName = \"otherFacsimileTelephoneNumber\" OR AttributeLDAPDisplayName = \"primaryTelexNumber\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3a27e578-7b90-4699-b36b-71a71552be2b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

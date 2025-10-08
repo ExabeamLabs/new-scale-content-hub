@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PowerShell Script Execution Policy Enabled",
+      "description": "Detects the enabling of the PowerShell script execution policy. Once enabled, this policy allows scripts to be executed. Note: Unmapped fields: Details",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\"\\\\\\\\Policies\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\PowerShell\\\\\\\\EnableScripts$\") AND Details = \"DWORD\\ \\(0x00000001\\)\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8cdcd7f2-ede3-415f-9b42-29a8b8238f5e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

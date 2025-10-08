@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Arbitrary File Download Via Squirrel.EXE",
+      "description": "Detects the usage of the \"Squirrel.exe\" to download arbitrary files. This binary is part of multiple Electron based software installations (Slack, Teams, Discord, etc.)\n",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\squirrel\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\update\\\\\\.exe$\")) AND (process_command_line = RGX(\".*\\\\ \\\\-\\\\-download\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-\\\\-update\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-\\\\-updateRollback\\\\=.*\")) AND process_command_line = RGX(\".*http.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9624654c-7055-4a32-bb4a-336a05285de3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

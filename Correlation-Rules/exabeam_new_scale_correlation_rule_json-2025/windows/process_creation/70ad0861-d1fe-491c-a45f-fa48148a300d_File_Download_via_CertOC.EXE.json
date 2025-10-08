@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "File Download via CertOC.EXE",
+      "description": "Detects when a user downloads a file by using CertOC.exe",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\certoc\\\\\\.exe$\") OR process_original_file_name = \"CertOC\\.exe\") AND (process_command_line = RGX(\".*\\\\-GetCACAPS.*\") AND process_command_line = RGX(\".*http.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "628b8d47-a85d-4953-a5de-a1c49b6d5232"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

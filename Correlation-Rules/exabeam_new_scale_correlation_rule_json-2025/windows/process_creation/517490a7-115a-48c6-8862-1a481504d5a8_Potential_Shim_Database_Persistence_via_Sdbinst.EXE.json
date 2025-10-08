@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Shim Database Persistence via Sdbinst.EXE",
+      "description": "Detects installation of a new shim using sdbinst.exe.\nAdversaries may establish persistence and/or elevate privileges by executing malicious content triggered by application shims\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\sdbinst\\\\\\.exe$\") OR process_original_file_name = \"sdbinst\\.exe\") AND process_command_line = RGX(\".*\\\\\\.sdb.*\")) AND  NOT ((parent_process_path = RGX(\"\\\\\\\\msiexec\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\IIS\\\\ Express\\\\\\\\iisexpressshim\\\\\\.sdb.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\IIS\\\\ Express\\\\\\\\iisexpressshim\\\\\\.sdb.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5c9e37fd-8e4d-4b9b-bb23-4aa9c347b513"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

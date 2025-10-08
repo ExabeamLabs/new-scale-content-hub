@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "JXA In-memory Execution Via OSAScript",
+      "description": "Detects possible malicious execution of JXA in-memory via OSAScript",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*osascript.*\") AND process_command_line = RGX(\".*\\\\ \\\\-e\\\\ .*\") AND process_command_line = RGX(\".*eval.*\") AND process_command_line = RGX(\".*NSData\\\\\\.dataWithContentsOfURL.*\")) AND ((process_command_line = RGX(\".*\\\\ \\\\-l\\\\ .*\") AND process_command_line = RGX(\".*JavaScript.*\")) OR process_command_line = RGX(\".*\\\\\\.js.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6631ee58-15bf-400a-95ec-a16eea3acd76"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

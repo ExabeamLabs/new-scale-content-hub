@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "WINEKEY Registry Modification",
+      "description": "Detects potential malicious modification of run keys by winekey or team9 backdoor",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\"Software\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Run\\\\\\\\Backup\\\\ Mgr$\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f26b1879-016a-4404-8e3e-1c446c532d98"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

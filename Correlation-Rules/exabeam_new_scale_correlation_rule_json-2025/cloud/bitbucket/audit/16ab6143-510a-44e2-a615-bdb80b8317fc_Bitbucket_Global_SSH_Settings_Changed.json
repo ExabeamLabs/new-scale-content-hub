@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Bitbucket Global SSH Settings Changed",
+      "description": "Detects Bitbucket global SSH access configuration changes. Note: Unmapped fields: auditType.category, auditType.action",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(auditType.category = \"Global\\ administration\" AND auditType.action = \"SSH\\ settings\\ changed\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a7b940ae-b85e-4122-a000-3697f27054ec"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

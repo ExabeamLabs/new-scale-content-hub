@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Disable Or Stop Services",
+      "description": "Detects the usage of utilities such as 'systemctl', 'service'...etc to stop or disable tools and services",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/service$\") OR process_path = RGX(\"\\\\/systemctl$\") OR process_path = RGX(\"\\\\/chkconfig$\")) AND (process_command_line = RGX(\".*stop.*\") OR process_command_line = RGX(\".*disable.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "352e95e6-180a-4ea4-bf4d-918c4938e12b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

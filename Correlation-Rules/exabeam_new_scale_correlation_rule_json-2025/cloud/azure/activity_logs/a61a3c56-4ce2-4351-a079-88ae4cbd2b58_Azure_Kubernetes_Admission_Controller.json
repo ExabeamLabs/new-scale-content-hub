@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Azure Kubernetes Admission Controller",
+      "description": "Identifies when an admission controller is executed in Azure Kubernetes.\nA Kubernetes Admission controller intercepts, and possibly modifies, requests to the Kubernetes API server.\nThe behavior of this admission controller is determined by an admission webhook (MutatingAdmissionWebhook or ValidatingAdmissionWebhook) that the user deploys in the cluster.\nAn adversary can use such webhooks as the MutatingAdmissionWebhook for obtaining persistence in the cluster.\nFor example, attackers can intercept and modify the pod creation operations in the cluster and add their malicious container to every created pod.\nAn adversary can use the webhook ValidatingAdmissionWebhook, which could be used to obtain access credentials.\nAn adversary could use the webhook to intercept the requests to the API server, record secrets, and other sensitive information.\n Note: Unmapped fields: operationName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((operationName = RGX(\"^MICROSOFT\\\\\\.KUBERNETES\\\\/CONNECTEDCLUSTERS\\\\/ADMISSIONREGISTRATION\\\\\\.K8S\\\\\\.IO\") OR operationName = RGX(\"^MICROSOFT\\\\\\.CONTAINERSERVICE\\\\/MANAGEDCLUSTERS\\\\/ADMISSIONREGISTRATION\\\\\\.K8S\\\\\\.IO\")) AND (operationName = RGX(\"\\\\/MUTATINGWEBHOOKCONFIGURATIONS\\\\/WRITE$\") OR operationName = RGX(\"\\\\/VALIDATINGWEBHOOKCONFIGURATIONS\\\\/WRITE$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "04e6d10f-f326-4caa-b9bc-d69c32beb530"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

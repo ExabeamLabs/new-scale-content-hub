@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA- IOX Tunneling Tool Execution",
+      "description": "Detects the use of IOX - a tool for port forwarding and intranet proxy purposes",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\iox\\\\\\.exe$\") OR (process_command_line = RGX(\".*\\\\\\.exe\\\\ fwd\\\\ \\\\-l\\\\ .*\") OR process_command_line = RGX(\".*\\\\\\.exe\\\\ fwd\\\\ \\\\-r\\\\ .*\") OR process_command_line = RGX(\".*\\\\\\.exe\\\\ proxy\\\\ \\\\-l\\\\ .*\") OR process_command_line = RGX(\".*\\\\\\.exe\\\\ proxy\\\\ \\\\-r\\\\ .*\")) OR (process_hash = RGX(\".*MD5\\\\=9DB2D314DD3F704A02051EF5EA210993.*\") OR process_hash = RGX(\".*SHA1\\\\=039130337E28A6623ECF9A0A3DA7D92C5964D8DD.*\") OR process_hash = RGX(\".*SHA256\\\\=C6CF82919B809967D9D90EA73772A8AA1C1EB3BC59252D977500F64F1A0D6731.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5e365d3d-70be-484d-a889-a52c2daefb41"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

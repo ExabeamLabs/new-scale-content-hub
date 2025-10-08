@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Renamed PingCastle Binary Execution",
+      "description": "Detects the execution of a renamed \"PingCastle\" binary based on the PE metadata fields.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_original_file_name = \"PingCastleReporting\\.exe\" OR process_original_file_name = \"PingCastleCloud\\.exe\" OR process_original_file_name = \"PingCastle\\.exe\") OR (process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ aclcheck.*\") OR process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ antivirus.*\") OR process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ computerversion.*\") OR process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ foreignusers.*\") OR process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ laps\\\\_bitlocker.*\") OR process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ localadmin.*\") OR process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ nullsession.*\") OR process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ nullsession\\\\-trust.*\") OR process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ oxidbindings.*\") OR process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ remote.*\") OR process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ share.*\") OR process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ smb.*\") OR process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ smb3querynetwork.*\") OR process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ spooler.*\") OR process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ startup.*\") OR process_command_line = RGX(\".*\\\\-\\\\-scanner\\\\ zerologon.*\")) OR process_command_line = RGX(\".*\\\\-\\\\-no\\\\-enum\\\\-limit.*\") OR (process_command_line = RGX(\".*\\\\-\\\\-healthcheck.*\") AND process_command_line = RGX(\".*\\\\-\\\\-level\\\\ Full.*\")) OR (process_command_line = RGX(\".*\\\\-\\\\-healthcheck.*\") AND process_command_line = RGX(\".*\\\\-\\\\-server\\\\ .*\"))) AND  NOT ((process_path = RGX(\"\\\\\\\\PingCastleReporting\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\PingCastleCloud\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\PingCastle\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "420d3379-f051-4a2e-b016-7b2cd7503877"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

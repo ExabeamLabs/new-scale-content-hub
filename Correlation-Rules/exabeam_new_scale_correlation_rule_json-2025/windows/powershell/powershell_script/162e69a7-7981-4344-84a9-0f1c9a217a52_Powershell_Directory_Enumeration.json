@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Powershell Directory Enumeration",
+      "description": "Detects technique used by MAZE ransomware to enumerate directories using Powershell Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*foreach.*\") AND ScriptBlockText = RGX(\".*Get\\\\-ChildItem.*\") AND ScriptBlockText = RGX(\".*\\\\-Path\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\-ErrorAction\\\\ .*\") AND ScriptBlockText = RGX(\".*SilentlyContinue.*\") AND ScriptBlockText = RGX(\".*Out\\\\-File\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\-append.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e5200860-a614-426f-b7be-2f52d8982ed8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

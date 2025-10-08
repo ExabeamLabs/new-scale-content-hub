@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Anonymous IP Address",
+      "description": "Indicates sign-ins from an anonymous IP address, for example, using an anonymous browser or VPN. Note: Unmapped fields: riskEventType",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "riskEventType = \"anonymizedIPAddress\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "64f4072a-de64-4d8d-978d-3d223b377e6a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

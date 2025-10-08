@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential CobaltStrike Process Patterns",
+      "description": "Detects potential process patterns related to Cobalt Strike beacon activity",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\"cmd\\\\\\.exe\\\\ \\\\/C\\\\ whoami$\") AND parent_process_path = RGX(\"^C\\\\:\\\\\\\\Temp\\\\\\\\\")) OR ((parent_process_path = RGX(\"\\\\\\\\runonce\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\dllhost\\\\\\.exe$\")) AND (process_command_line = RGX(\".*cmd\\\\\\.exe\\\\ \\\\/c\\\\ echo.*\") AND process_command_line = RGX(\".*\\\\>\\\\ \\\\\\\\\\\\\\\\\\\\\\.\\\\\\\\pipe.*\"))) OR ((parent_process_command_line = RGX(\".*cmd\\\\\\.exe\\\\ \\\\/C\\\\ echo.*\") AND parent_process_command_line = RGX(\".*\\\\ \\\\>\\\\ \\\\\\\\\\\\\\\\\\\\\\.\\\\\\\\pipe.*\")) AND process_command_line = RGX(\"conhost\\\\\\.exe\\\\ 0xffffffff\\\\ \\\\-ForceV1$\")) OR (parent_process_command_line = RGX(\"\\\\/C\\\\ whoami$\") AND process_command_line = RGX(\"conhost\\\\\\.exe\\\\ 0xffffffff\\\\ \\\\-ForceV1$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2b26bd5f-3f4c-41d4-b8b6-a75a1222cd49"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

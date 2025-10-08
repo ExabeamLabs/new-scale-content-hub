@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "MacOS Scripting Interpreter AppleScript",
+      "description": "Detects execution of AppleScript of the macOS scripting language AppleScript.",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/osascript$\") AND (process_command_line = RGX(\".*\\\\ \\\\-e\\\\ .*\") OR process_command_line = RGX(\".*\\\\\\.scpt.*\") OR process_command_line = RGX(\".*\\\\\\.js.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9499d4f3-b86c-4a61-9c65-1703d1919a2c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

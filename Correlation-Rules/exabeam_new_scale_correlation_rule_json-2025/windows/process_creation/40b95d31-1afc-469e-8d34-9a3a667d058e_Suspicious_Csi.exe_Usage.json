@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Csi.exe Usage",
+      "description": "Csi.exe is a signed binary from Microsoft that comes with Visual Studio and provides C# interactive capabilities. It can be used to run C# code from a file passed as a parameter in command line. Early version of this utility provided with Microsoft \u201cRoslyn\u201d Community Technology Preview was named 'rcsi.exe'",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\csi\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\rcsi\\\\\\.exe$\")) OR (process_original_file_name = \"csi\\.exe\" OR process_original_file_name = \"rcsi\\.exe\")) AND process_company = \"Microsoft\\ Corporation\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e612a8cc-c2a6-49d3-b33d-8a17167763c0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

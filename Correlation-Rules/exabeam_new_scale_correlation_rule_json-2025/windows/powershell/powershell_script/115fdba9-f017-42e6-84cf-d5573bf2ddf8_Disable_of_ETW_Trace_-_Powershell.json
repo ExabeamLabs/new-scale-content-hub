@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Disable of ETW Trace - Powershell",
+      "description": "Detects usage of powershell cmdlets to disable or remove ETW trace sessions Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Remove\\\\-EtwTraceProvider\\\\ .*\") OR (ScriptBlockText = RGX(\".*Set\\\\-EtwTraceProvider\\\\ .*\") AND ScriptBlockText = RGX(\".*0x11.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e1bd20af-a6d5-4645-ac0e-cd5567bf0fb8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

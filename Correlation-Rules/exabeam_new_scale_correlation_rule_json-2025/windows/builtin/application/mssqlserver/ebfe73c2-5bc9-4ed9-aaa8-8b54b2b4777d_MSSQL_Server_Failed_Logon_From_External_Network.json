@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "MSSQL Server Failed Logon From External Network",
+      "description": "Detects failed logon attempts from clients with external network IP to an MSSQL server. This can be a sign of a bruteforce attack. Note: Unmapped fields: Provider_Name, Data",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Provider_Name = RGX(\".*MSSQL.*\") AND event_id = 18456) AND  NOT ((Data = RGX(\".*CLIENT\\\\:\\\\ 10\\\\\\..*\") OR Data = RGX(\".*CLIENT\\\\:\\\\ 172\\\\\\.16\\\\\\..*\") OR Data = RGX(\".*CLIENT\\\\:\\\\ 172\\\\\\.17\\\\\\..*\") OR Data = RGX(\".*CLIENT\\\\:\\\\ 172\\\\\\.18\\\\\\..*\") OR Data = RGX(\".*CLIENT\\\\:\\\\ 172\\\\\\.19\\\\\\..*\") OR Data = RGX(\".*CLIENT\\\\:\\\\ 172\\\\\\.20\\\\\\..*\") OR Data = RGX(\".*CLIENT\\\\:\\\\ 172\\\\\\.21\\\\\\..*\") OR Data = RGX(\".*CLIENT\\\\:\\\\ 172\\\\\\.22\\\\\\..*\") OR Data = RGX(\".*CLIENT\\\\:\\\\ 172\\\\\\.23\\\\\\..*\") OR Data = RGX(\".*CLIENT\\\\:\\\\ 172\\\\\\.24\\\\\\..*\") OR Data = RGX(\".*CLIENT\\\\:\\\\ 172\\\\\\.25\\\\\\..*\") OR Data = RGX(\".*CLIENT\\\\:\\\\ 172\\\\\\.26\\\\\\..*\") OR Data = RGX(\".*CLIENT\\\\:\\\\ 172\\\\\\.27\\\\\\..*\") OR Data = RGX(\".*CLIENT\\\\:\\\\ 172\\\\\\.28\\\\\\..*\") OR Data = RGX(\".*CLIENT\\\\:\\\\ 172\\\\\\.29\\\\\\..*\") OR Data = RGX(\".*CLIENT\\\\:\\\\ 172\\\\\\.30\\\\\\..*\") OR Data = RGX(\".*CLIENT\\\\:\\\\ 172\\\\\\.31\\\\\\..*\") OR Data = RGX(\".*CLIENT\\\\:\\\\ 192\\\\\\.168\\\\\\..*\") OR Data = RGX(\".*CLIENT\\\\:\\\\ 127\\\\\\..*\") OR Data = RGX(\".*CLIENT\\\\:\\\\ 169\\\\\\.254\\\\\\..*\") OR Data = RGX(\".*CLIENT\\\\:\\\\ \\\\<local\\\\ machine\\\\>.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "417404f5-9be9-4453-a3d3-224f540576fb"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

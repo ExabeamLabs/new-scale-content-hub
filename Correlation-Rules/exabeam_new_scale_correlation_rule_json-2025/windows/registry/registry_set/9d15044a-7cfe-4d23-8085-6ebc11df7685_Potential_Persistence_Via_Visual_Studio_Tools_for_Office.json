@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Persistence Via Visual Studio Tools for Office",
+      "description": "Detects persistence via Visual Studio Tools for Office (VSTO) add-ins in Office applications.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\Software\\\\\\\\Microsoft\\\\\\\\Office\\\\\\\\Outlook\\\\\\\\Addins\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\Software\\\\\\\\Microsoft\\\\\\\\Office\\\\\\\\Word\\\\\\\\Addins\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\Software\\\\\\\\Microsoft\\\\\\\\Office\\\\\\\\Excel\\\\\\\\Addins\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\Software\\\\\\\\Microsoft\\\\\\\\Office\\\\\\\\Powerpoint\\\\\\\\Addins\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\Software\\\\\\\\Microsoft\\\\\\\\VSTO\\\\\\\\Security\\\\\\\\Inclusion\\\\\\\\.*\")) AND  NOT ((process_path = RGX(\"\\\\\\\\msiexec\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\")) OR (process_path = RGX(\"\\\\\\\\excel\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\integrator\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\OfficeClickToRun\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\winword\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\visio\\\\\\.exe$\")) OR process_path = RGX(\"\\\\\\\\Teams\\\\\\.exe$\") OR (process_path = \"C\\:\\\\Program\\ Files\\\\AVG\\\\Antivirus\\\\RegSvr\\.exe\" AND registry_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Office\\\\\\\\Outlook\\\\\\\\Addins\\\\\\\\Antivirus\\\\\\.AsOutExt\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ad7bfc15-2975-425b-a23c-5e40d59f531f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

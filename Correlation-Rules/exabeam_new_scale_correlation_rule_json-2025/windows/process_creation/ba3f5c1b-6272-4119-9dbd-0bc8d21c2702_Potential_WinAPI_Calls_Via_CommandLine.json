@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential WinAPI Calls Via CommandLine",
+      "description": "Detects the use of WinAPI Functions via the commandline. As seen used by threat actors via the tool winapiexec",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*AddSecurityPackage.*\") OR process_command_line = RGX(\".*AdjustTokenPrivileges.*\") OR process_command_line = RGX(\".*Advapi32.*\") OR process_command_line = RGX(\".*CloseHandle.*\") OR process_command_line = RGX(\".*CreateProcessWithToken.*\") OR process_command_line = RGX(\".*CreatePseudoConsole.*\") OR process_command_line = RGX(\".*CreateRemoteThread.*\") OR process_command_line = RGX(\".*CreateThread.*\") OR process_command_line = RGX(\".*CreateUserThread.*\") OR process_command_line = RGX(\".*DangerousGetHandle.*\") OR process_command_line = RGX(\".*DuplicateTokenEx.*\") OR process_command_line = RGX(\".*EnumerateSecurityPackages.*\") OR process_command_line = RGX(\".*FreeHGlobal.*\") OR process_command_line = RGX(\".*FreeLibrary.*\") OR process_command_line = RGX(\".*GetDelegateForFunctionPointer.*\") OR process_command_line = RGX(\".*GetLogonSessionData.*\") OR process_command_line = RGX(\".*GetModuleHandle.*\") OR process_command_line = RGX(\".*GetProcAddress.*\") OR process_command_line = RGX(\".*GetProcessHandle.*\") OR process_command_line = RGX(\".*GetTokenInformation.*\") OR process_command_line = RGX(\".*ImpersonateLoggedOnUser.*\") OR process_command_line = RGX(\".*kernel32.*\") OR process_command_line = RGX(\".*LoadLibrary.*\") OR process_command_line = RGX(\".*memcpy.*\") OR process_command_line = RGX(\".*MiniDumpWriteDump.*\") OR process_command_line = RGX(\".*ntdll.*\") OR process_command_line = RGX(\".*OpenDesktop.*\") OR process_command_line = RGX(\".*OpenProcess.*\") OR process_command_line = RGX(\".*OpenProcessToken.*\") OR process_command_line = RGX(\".*OpenThreadToken.*\") OR process_command_line = RGX(\".*OpenWindowStation.*\") OR process_command_line = RGX(\".*PtrToString.*\") OR process_command_line = RGX(\".*QueueUserApc.*\") OR process_command_line = RGX(\".*ReadProcessMemory.*\") OR process_command_line = RGX(\".*RevertToSelf.*\") OR process_command_line = RGX(\".*RtlCreateUserThread.*\") OR process_command_line = RGX(\".*secur32.*\") OR process_command_line = RGX(\".*SetThreadToken.*\") OR process_command_line = RGX(\".*VirtualAlloc.*\") OR process_command_line = RGX(\".*VirtualFree.*\") OR process_command_line = RGX(\".*VirtualProtect.*\") OR process_command_line = RGX(\".*WaitForSingleObject.*\") OR process_command_line = RGX(\".*WriteInt32.*\") OR process_command_line = RGX(\".*WriteProcessMemory.*\") OR process_command_line = RGX(\".*ZeroFreeGlobalAllocUnicode.*\")) AND  NOT ((process_path = RGX(\"\\\\\\\\MpCmdRun\\\\\\.exe$\") AND process_command_line = RGX(\".*GetLoadLibraryWAddress32.*\")) OR (parent_process_path = RGX(\"\\\\\\\\CompatTelRunner\\\\\\.exe$\") AND (process_command_line = RGX(\".*FreeHGlobal.*\") OR process_command_line = RGX(\".*PtrToString.*\") OR process_command_line = RGX(\".*kernel32.*\") OR process_command_line = RGX(\".*CloseHandle.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a289891b-0eed-4a4b-8965-9dc6557c1ed5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

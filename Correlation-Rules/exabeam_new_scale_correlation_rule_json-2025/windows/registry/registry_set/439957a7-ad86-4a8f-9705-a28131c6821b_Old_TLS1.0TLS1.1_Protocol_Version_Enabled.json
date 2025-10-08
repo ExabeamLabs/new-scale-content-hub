@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Old TLS1.0/TLS1.1 Protocol Version Enabled",
+      "description": "Detects applications or users re-enabling old TLS versions by setting the \"Enabled\" value to \"1\" for the \"Protocols\" registry key. Note: Unmapped fields: Details",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((registry_path = RGX(\".*\\\\\\\\Control\\\\\\\\SecurityProviders\\\\\\\\SCHANNEL\\\\\\\\Protocols\\\\\\\\TLS\\\\ 1\\\\\\.0\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\Control\\\\\\\\SecurityProviders\\\\\\\\SCHANNEL\\\\\\\\Protocols\\\\\\\\TLS\\\\ 1\\\\\\.1\\\\\\\\.*\")) AND registry_path = RGX(\"\\\\\\\\Enabled$\") AND Details = \"DWORD\\ \\(0x00000001\\)\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "faf167e7-319c-4346-9b97-a63a1eb81162"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

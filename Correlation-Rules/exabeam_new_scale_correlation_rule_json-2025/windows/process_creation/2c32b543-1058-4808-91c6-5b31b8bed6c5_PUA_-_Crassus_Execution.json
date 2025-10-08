@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - Crassus Execution",
+      "description": "Detects Crassus, a Windows privilege escalation discovery tool, based on PE metadata characteristics.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\Crassus\\\\\\.exe$\") OR process_original_file_name = \"Crassus\\.exe\" OR process_description = RGX(\".*Crassus.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d51526d7-2d34-4c61-a806-0a2e110bf1c5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

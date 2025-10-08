@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Run Once Task Configuration in Registry",
+      "description": "Rule to detect the configuration of Run Once registry key. Configured payload can be run by runonce.exe /AlternateShellStartup Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Active\\\\ Setup\\\\\\\\Installed\\\\ Components.*\") AND registry_path = RGX(\"\\\\\\\\StubPath$\")) AND  NOT ((Details = RGX(\".*C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Google\\\\\\\\Chrome\\\\\\\\Application\\\\\\\\.*\") AND Details = RGX(\".*\\\\\\\\Installer\\\\\\\\chrmstp\\\\\\.exe\\\\\"\\\\ \\\\-\\\\-configure\\\\-user\\\\-settings\\\\ \\\\-\\\\-verbose\\\\-logging\\\\ \\\\-\\\\-system\\\\-level.*\")) OR ((Details = RGX(\".*C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Microsoft\\\\\\\\Edge\\\\\\\\Application\\\\\\\\.*\") OR Details = RGX(\".*C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Microsoft\\\\\\\\Edge\\\\\\\\Application\\\\\\\\.*\")) AND Details = RGX(\"\\\\\\\\Installer\\\\\\\\setup\\\\\\.exe\\\\\"\\\\ \\\\-\\\\-configure\\\\-user\\\\-settings\\\\ \\\\-\\\\-verbose\\\\-logging\\\\ \\\\-\\\\-system\\\\-level\\\\ \\\\-\\\\-msedge\\\\ \\\\-\\\\-channel\\\\=stable$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "448fc9f0-c66b-4d3f-88e1-eb7774dc81b4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

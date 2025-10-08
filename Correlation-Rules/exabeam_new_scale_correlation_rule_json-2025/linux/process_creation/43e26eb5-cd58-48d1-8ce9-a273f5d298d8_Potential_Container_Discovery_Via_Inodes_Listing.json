@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Container Discovery Via Inodes Listing",
+      "description": "Detects listing of the inodes of the \"/\" directory to determine if the we are running inside of a container.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/ls$\") AND (process_command_line = RGX(\".*\\\\ \\\\-*i.*\") AND process_command_line = RGX(\".*\\\\ \\\\-*d.*\")) AND process_command_line = RGX(\"\\\\ \\\\/$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "16244713-f5cd-4ead-97fb-ecd34b13e74e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remote Thread Creation In Mstsc.Exe From Suspicious Location",
+      "description": "Detects remote thread creation in the \"mstsc.exe\" process by a process located in a potentially suspicious location.\nThis technique is often used by attackers in order to hook some APIs used by DLLs loaded by \"mstsc.exe\" during RDP authentications in order to steal credentials.\n Note: Unmapped fields: TargetImage, SourceImage",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(TargetImage = RGX(\"\\\\\\\\mstsc\\\\\\.exe$\") AND (SourceImage = RGX(\".*\\\\:\\\\\\\\Temp\\\\\\\\.*\") OR SourceImage = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR SourceImage = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\PerfLogs\\\\\\\\.*\") OR SourceImage = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Tasks\\\\\\\\.*\") OR SourceImage = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\") OR SourceImage = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ca26c551-f0a7-48ce-a8aa-497aa7cc9504"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

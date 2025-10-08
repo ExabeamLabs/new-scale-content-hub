@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - Empire PowerShell UAC Bypass",
+      "description": "Detects some Empire PowerShell UAC bypass methods",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\ \\\\-NoP\\\\ \\\\-NonI\\\\ \\\\-w\\\\ Hidden\\\\ \\\\-c\\\\ \\\\$x\\\\=\\\\$\\\\(\\\\(gp\\\\ HKCU\\\\:Software\\\\\\\\Microsoft\\\\\\\\Windows\\\\ Update\\\\)\\\\\\.Update\\\\).*\") OR process_command_line = RGX(\".*\\\\ \\\\-NoP\\\\ \\\\-NonI\\\\ \\\\-c\\\\ \\\\$x\\\\=\\\\$\\\\(\\\\(gp\\\\ HKCU\\\\:Software\\\\\\\\Microsoft\\\\\\\\Windows\\\\ Update\\\\)\\\\\\.Update\\\\)\\\\;.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "64cbaeba-29e0-4b85-84b3-96edb0a355c2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

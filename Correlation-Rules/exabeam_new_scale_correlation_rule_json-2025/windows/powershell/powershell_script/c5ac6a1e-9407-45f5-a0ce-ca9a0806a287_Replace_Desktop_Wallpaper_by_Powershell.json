@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Replace Desktop Wallpaper by Powershell",
+      "description": "An adversary may deface systems internal to an organization in an attempt to intimidate or mislead users.\nThis may take the form of modifications to internal websites, or directly to user systems with the replacement of the desktop wallpaper\n Note: Unmapped fields: ScriptBlockText",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ScriptBlockText = RGX(\".*Get\\\\-ItemProperty.*\") AND ScriptBlockText = RGX(\".*Registry\\\\:\\\\:.*\") AND ScriptBlockText = RGX(\".*HKEY\\\\_CURRENT\\\\_USER\\\\\\\\Control\\\\ Panel\\\\\\\\Desktop\\\\\\\\.*\") AND ScriptBlockText = RGX(\".*WallPaper.*\")) OR ScriptBlockText = RGX(\".*SystemParametersInfo\\\\(20\\\\,0\\\\,*\\\\,3\\\\).*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "427dc391-26d8-4194-be81-a56fd8db5e94"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

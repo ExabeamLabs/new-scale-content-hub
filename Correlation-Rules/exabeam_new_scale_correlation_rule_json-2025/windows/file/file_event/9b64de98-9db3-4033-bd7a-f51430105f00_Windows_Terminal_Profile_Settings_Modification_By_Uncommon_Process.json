@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows Terminal Profile Settings Modification By Uncommon Process",
+      "description": "Detects the creation or modification of the Windows Terminal Profile settings file \"settings.json\" by an uncommon process.",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\")) AND file_path = RGX(\"\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Packages\\\\\\\\Microsoft\\\\\\.WindowsTerminal\\\\_8wekyb3d8bbwe\\\\\\\\LocalState\\\\\\\\settings\\\\\\.json$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c2565355-b92b-4934-9fde-3a356b9f60ea"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

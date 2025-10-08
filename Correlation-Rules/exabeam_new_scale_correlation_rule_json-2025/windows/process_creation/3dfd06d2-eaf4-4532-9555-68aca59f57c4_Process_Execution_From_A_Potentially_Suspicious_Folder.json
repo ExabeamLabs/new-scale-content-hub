@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Process Execution From A Potentially Suspicious Folder",
+      "description": "Detects a potentially suspicious execution from an uncommon folder.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\".*\\\\:\\\\\\\\Perflogs\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\All\\\\ Users\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\Default\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\NetworkService\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\addins\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\debug\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Fonts\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Help\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\IME\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Media\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\repair\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\security\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\Tasks\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Tasks\\\\\\\\.*\") OR process_path = RGX(\".*\\\\$Recycle\\\\\\.bin.*\") OR process_path = RGX(\".*\\\\\\\\config\\\\\\\\systemprofile\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\Intel\\\\\\\\Logs\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\RSA\\\\\\\\MachineKeys\\\\\\\\.*\")) AND  NOT (process_path = RGX(\"^C\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\IBM\\\\\\\\ClientSolutions\\\\\\\\Start\\\\_Programs\\\\\\\\\") OR (process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\config\\\\\\\\systemprofile\\\\\\\\Citrix\\\\\\\\UpdaterBinaries\\\\\\\\\") AND process_path = RGX(\"\\\\\\\\CitrixReceiverUpdater\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3af8b954-0e69-49f2-b312-a86f2912b1ea"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

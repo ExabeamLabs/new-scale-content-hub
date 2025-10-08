@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remote Service Activity via SVCCTL Named Pipe",
+      "description": "Detects remote service activity via remote access to the svcctl named pipe Note: Unmapped fields: ShareName, RelativeTargetName, AccessList",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 5145 AND ShareName = \"\\\\\\\\\\*\\\\IPC\\$\" AND RelativeTargetName = \"svcctl\" AND AccessList = RGX(\".*WriteData.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c5c1690b-ccca-4ac8-82ac-a372d91f254a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

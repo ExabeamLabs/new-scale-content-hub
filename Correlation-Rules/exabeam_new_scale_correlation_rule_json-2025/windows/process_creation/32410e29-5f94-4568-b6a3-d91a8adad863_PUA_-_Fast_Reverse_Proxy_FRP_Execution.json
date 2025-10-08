@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - Fast Reverse Proxy (FRP) Execution",
+      "description": "Detects the use of Fast Reverse Proxy. frp is a fast reverse proxy to help you expose a local server behind a NAT or firewall to the Internet.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\frpc\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\frps\\\\\\.exe$\")) OR process_command_line = RGX(\".*\\\\\\\\frpc\\\\\\.ini.*\") OR (process_hash = RGX(\".*MD5\\\\=7D9C233B8C9E3F0EA290D2B84593C842.*\") OR process_hash = RGX(\".*SHA1\\\\=06DDC9280E1F1810677935A2477012960905942F.*\") OR process_hash = RGX(\".*SHA256\\\\=57B0936B8D336D8E981C169466A15A5FD21A7D5A2C7DAF62D5E142EE860E387C.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "93e68f73-93ce-4bc6-84f6-635fea2f33c0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Query Usage To Exfil Data",
+      "description": "Detects usage of \"query.exe\" a system binary to exfil information such as \"sessions\" and \"processes\" for later use",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\query\\\\\\.exe$\") AND (process_command_line = RGX(\".*session\\\\ \\\\>.*\") OR process_command_line = RGX(\".*process\\\\ \\\\>.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "71b35719-c0a0-4825-a06b-566c0a742958"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

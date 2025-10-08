@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remote Access Tool - TacticalRMM Agent Registration to Potentially Attacker-Controlled Server",
+      "description": "Detects TacticalRMM agent installations where the --api, --auth, and related flags are used on the command line.\nThese parameters configure the agent to connect to a specific RMM server with authentication, client ID, and site ID.\nThis technique could indicate a threat actor attempting to register the agent with an attacker-controlled RMM infrastructure silently.\n",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\".*\\\\\\\\TacticalAgent\\\\\\\\tacticalrmm\\\\\\.exe.*\") AND (process_command_line = RGX(\".*\\\\-\\\\-api.*\") AND process_command_line = RGX(\".*\\\\-\\\\-auth.*\") AND process_command_line = RGX(\".*\\\\-\\\\-client\\\\-id.*\") AND process_command_line = RGX(\".*\\\\-\\\\-site\\\\-id.*\") AND process_command_line = RGX(\".*\\\\-\\\\-agent\\\\-type.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f2fd9189-6e1d-4046-add5-d21510eac257"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

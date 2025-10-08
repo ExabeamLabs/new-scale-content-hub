@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "System Information Discovery Via Sysctl - MacOS",
+      "description": "Detects the execution of \"sysctl\" with specific arguments that have been used by threat actors and malware. It provides system hardware information.\nThis process is primarily used to detect and avoid virtualization and analysis environments.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/sysctl$\") OR process_command_line = RGX(\".*sysctl.*\")) AND (process_command_line = RGX(\".*hw\\\\\\..*\") OR process_command_line = RGX(\".*kern\\\\\\..*\") OR process_command_line = RGX(\".*machdep\\\\\\..*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0afde009-48cb-4717-aae6-3c4286211593"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

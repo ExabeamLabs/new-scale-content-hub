@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Windows Strings In URI",
+      "description": "Detects suspicious Windows strings in URI which could indicate possible exfiltration or webshell communication Note: Unmapped fields: cs-uri-query",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(cs-uri-query = RGX(\".*\\\\=C\\\\:\\\\/Users.*\") OR cs-uri-query = RGX(\".*\\\\=C\\\\:\\\\/Program\\\\%20Files.*\") OR cs-uri-query = RGX(\".*\\\\=C\\\\:\\\\/Windows.*\") OR cs-uri-query = RGX(\".*\\\\=C\\\\%3A\\\\%5CUsers.*\") OR cs-uri-query = RGX(\".*\\\\=C\\\\%3A\\\\%5CProgram\\\\%20Files.*\") OR cs-uri-query = RGX(\".*\\\\=C\\\\%3A\\\\%5CWindows.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1714d000-0afe-4617-81b8-ecfbed60d285"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

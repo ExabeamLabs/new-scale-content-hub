@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Suspicious Execution From Tmp Folder",
+      "description": "Detects a potentially suspicious execution of a process located in the '/tmp/' folder",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_path = RGX(\"^\\\\/tmp\\\\/\") AND  NOT (process_path = RGX(\"\\\\/usr\\\\/bin\\\\/nextcloud$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6fbe8e0e-b39b-4823-804b-36bcedbdeb4a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

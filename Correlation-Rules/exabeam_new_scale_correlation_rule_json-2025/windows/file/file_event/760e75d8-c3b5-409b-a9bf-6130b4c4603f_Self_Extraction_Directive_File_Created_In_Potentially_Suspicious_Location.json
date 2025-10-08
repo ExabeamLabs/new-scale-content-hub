@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Self Extraction Directive File Created In Potentially Suspicious Location",
+      "description": "Detects the creation of Self Extraction Directive files (.sed) in a potentially suspicious location.\nThese files are used by the \"iexpress.exe\" utility in order to create self extracting packages.\nAttackers were seen abusing this utility and creating PE files with embedded \".sed\" entries.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((file_path = RGX(\".*\\\\:\\\\\\\\ProgramData\\\\\\\\.*\") OR file_path = RGX(\".*\\\\:\\\\\\\\Temp\\\\\\\\.*\") OR file_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\Tasks\\\\\\\\.*\") OR file_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Tasks\\\\\\\\.*\") OR file_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\") OR file_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\")) AND file_path = RGX(\"\\\\\\.sed$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f9f6edf3-ccc0-424c-872d-f655e121d7a8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

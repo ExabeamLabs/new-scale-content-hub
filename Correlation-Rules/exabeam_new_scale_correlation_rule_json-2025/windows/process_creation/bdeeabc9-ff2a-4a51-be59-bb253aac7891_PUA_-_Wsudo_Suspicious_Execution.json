@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - Wsudo Suspicious Execution",
+      "description": "Detects usage of wsudo (Windows Sudo Utility). Which is a tool that let the user execute programs with different permissions (System, Trusted Installer, Administrator...etc)",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\wsudo\\\\\\.exe$\") OR process_original_file_name = \"wsudo\\.exe\" OR process_description = \"Windows\\ sudo\\ utility\" OR parent_process_path = RGX(\"\\\\\\\\wsudo\\\\-bridge\\\\\\.exe$\")) OR (process_command_line = RGX(\".*\\\\-u\\\\ System.*\") OR process_command_line = RGX(\".*\\\\-uSystem.*\") OR process_command_line = RGX(\".*\\\\-u\\\\ TrustedInstaller.*\") OR process_command_line = RGX(\".*\\\\-uTrustedInstaller.*\") OR process_command_line = RGX(\".*\\\\ \\\\-\\\\-ti\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a48aa124-6333-41a6-948d-d69e1f9ef885"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

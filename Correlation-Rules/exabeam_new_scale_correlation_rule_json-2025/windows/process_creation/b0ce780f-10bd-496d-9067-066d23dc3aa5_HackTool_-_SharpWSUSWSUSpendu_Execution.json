@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - SharpWSUS/WSUSpendu Execution",
+      "description": "Detects the execution of SharpWSUS or WSUSpendu, utilities that allow for lateral movement through WSUS.\nWindows Server Update Services (WSUS) is a critical component of Windows systems and is frequently configured in a way that allows an attacker to circumvent internal networking limitations.\n",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\ \\\\-Inject\\\\ .*\") AND (process_command_line = RGX(\".*\\\\ \\\\-PayloadArgs\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-PayloadFile\\\\ .*\"))) OR ((process_command_line = RGX(\".*\\\\ approve\\\\ .*\") OR process_command_line = RGX(\".*\\\\ create\\\\ .*\") OR process_command_line = RGX(\".*\\\\ check\\\\ .*\") OR process_command_line = RGX(\".*\\\\ delete\\\\ .*\")) AND (process_command_line = RGX(\".*\\\\ \\\\/payload\\\\:.*\") OR process_command_line = RGX(\".*\\\\ \\\\/payload\\\\=.*\") OR process_command_line = RGX(\".*\\\\ \\\\/updateid\\\\:.*\") OR process_command_line = RGX(\".*\\\\ \\\\/updateid\\\\=.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6199e00d-78c4-4c21-a00b-653019a69b64"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

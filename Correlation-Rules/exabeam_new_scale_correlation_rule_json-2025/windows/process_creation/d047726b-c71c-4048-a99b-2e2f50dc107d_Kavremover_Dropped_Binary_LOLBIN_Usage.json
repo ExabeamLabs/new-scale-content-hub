@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Kavremover Dropped Binary LOLBIN Usage",
+      "description": "Detects the execution of a signed binary dropped by Kaspersky Lab Products Remover (kavremover) which can be abused as a LOLBIN to execute arbitrary commands and binaries.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_command_line = RGX(\".*\\\\ run\\\\ run\\\\-cmd\\\\ .*\") AND  NOT ((parent_process_path = RGX(\"\\\\\\\\cleanapi\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\kavremover\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8e959798-16ba-4abf-900a-0be7db0220f1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Create Volume Shadow Copy with Powershell",
+      "description": "Adversaries may attempt to access or create a copy of the Active Directory domain database in order to steal credential information Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Win32\\\\_ShadowCopy.*\") AND ScriptBlockText = RGX(\".*\\\\)\\\\\\.Create\\\\(.*\") AND ScriptBlockText = RGX(\".*ClientAccessible.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "40f01708-ba24-41e5-9e90-8e4c2d02b3f6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

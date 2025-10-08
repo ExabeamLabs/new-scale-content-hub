@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Access to Browser Login Data",
+      "description": "Adversaries may acquire credentials from web browsers by reading files specific to the target browser.\nWeb browsers commonly save credentials such as website usernames and passwords so that they do not need to be entered manually in the future.\nWeb browsers typically store the credentials in an encrypted format within a credential store.\n Note: Unmapped fields: ScriptBlockText",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ScriptBlockText = RGX(\".*Copy\\\\-Item.*\") AND ScriptBlockText = RGX(\".*\\\\-Destination.*\")) AND (ScriptBlockText = RGX(\".*\\\\\\\\Opera\\\\ Software\\\\\\\\Opera\\\\ Stable\\\\\\\\Login\\\\ Data.*\") OR ScriptBlockText = RGX(\".*\\\\\\\\Mozilla\\\\\\\\Firefox\\\\\\\\Profiles.*\") OR ScriptBlockText = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Edge\\\\\\\\User\\\\ Data\\\\\\\\Default.*\") OR ScriptBlockText = RGX(\".*\\\\\\\\Google\\\\\\\\Chrome\\\\\\\\User\\\\ Data\\\\\\\\Default\\\\\\\\Login\\\\ Data.*\") OR ScriptBlockText = RGX(\".*\\\\\\\\Google\\\\\\\\Chrome\\\\\\\\User\\\\ Data\\\\\\\\Default\\\\\\\\Login\\\\ Data\\\\ For\\\\ Account.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a20788b2-2b09-4a84-a2c6-f56d99ae7a41"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

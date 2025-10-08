@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Persistence Via Security Descriptors - ScriptBlock",
+      "description": "Detects usage of certain functions and keywords that are used to manipulate security descriptors in order to potentially set a backdoor. As seen used in the DAMP project. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ScriptBlockText = RGX(\".*win32\\\\_Trustee.*\") AND ScriptBlockText = RGX(\".*win32\\\\_Ace.*\") AND ScriptBlockText = RGX(\".*\\\\\\.AccessMask.*\") AND ScriptBlockText = RGX(\".*\\\\\\.AceType.*\") AND ScriptBlockText = RGX(\".*\\\\\\.SetSecurityDescriptor.*\")) AND (ScriptBlockText = RGX(\".*\\\\\\\\Lsa\\\\\\\\JD.*\") OR ScriptBlockText = RGX(\".*\\\\\\\\Lsa\\\\\\\\Skew1.*\") OR ScriptBlockText = RGX(\".*\\\\\\\\Lsa\\\\\\\\Data.*\") OR ScriptBlockText = RGX(\".*\\\\\\\\Lsa\\\\\\\\GBG.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a572b429-6227-4603-bbcd-2414d857a2e7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

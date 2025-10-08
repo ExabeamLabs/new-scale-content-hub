@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious LSASS Access Via MalSecLogon",
+      "description": "Detects suspicious access to LSASS handle via a call trace to \"seclogon.dll\" with a suspicious access right. Note: Unmapped fields: TargetImage, SourceImage, GrantedAccess, CallTrace",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(TargetImage = RGX(\"\\\\\\\\lsass\\\\\\.exe$\") AND SourceImage = RGX(\"\\\\\\\\svchost\\\\\\.exe$\") AND GrantedAccess = \"0x14c0\" AND CallTrace = RGX(\".*seclogon\\\\\\.dll.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "814461cd-0553-482f-8798-11bacfe4ee18"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

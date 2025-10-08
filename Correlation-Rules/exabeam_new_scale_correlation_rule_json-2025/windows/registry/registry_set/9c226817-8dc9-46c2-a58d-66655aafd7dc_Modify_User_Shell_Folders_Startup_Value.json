@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Modify User Shell Folders Startup Value",
+      "description": "Detect modification of the startup key to a path where a payload could be stored to be launched during startup",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Explorer\\\\\\\\User\\\\ Shell\\\\ Folders.*\") AND registry_path = RGX(\"Startup$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f65ead98-2232-4bfb-9898-2c9acea4dc97"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

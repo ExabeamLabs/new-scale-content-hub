@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Ransomware or Unauthorized MBR Tampering Via Bcdedit.EXE",
+      "description": "Detects potential malicious and unauthorized usage of bcdedit.exe",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\bcdedit\\\\\\.exe$\") OR process_original_file_name = \"bcdedit\\.exe\") AND (process_command_line = RGX(\".*delete.*\") OR process_command_line = RGX(\".*deletevalue.*\") OR process_command_line = RGX(\".*import.*\") OR process_command_line = RGX(\".*safeboot.*\") OR process_command_line = RGX(\".*network.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c720c3fe-be1e-4cdc-9a32-1f96b1117623"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

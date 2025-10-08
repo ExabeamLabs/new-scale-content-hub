@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential RjvPlatform.DLL Sideloading From Default Location",
+      "description": "Detects loading of \"RjvPlatform.dll\" by the \"SystemResetPlatform.exe\" binary which can be abused as a method of DLL side loading since the \"$SysReset\" directory isn't created by default. Note: Unmapped fields: ImageLoaded",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = \"C\\:\\\\Windows\\\\System32\\\\SystemResetPlatform\\\\SystemResetPlatform\\.exe\" AND ImageLoaded = \"C\\:\\\\\\$SysReset\\\\Framework\\\\Stack\\\\RjvPlatform\\.dll\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c8db1218-5ee8-4e3c-9e68-0cacd4bae6b5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

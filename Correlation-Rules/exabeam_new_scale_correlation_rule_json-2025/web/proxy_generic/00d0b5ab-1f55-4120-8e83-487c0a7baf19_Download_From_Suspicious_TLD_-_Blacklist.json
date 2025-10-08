@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Download From Suspicious TLD - Blacklist",
+      "description": "Detects download of certain file types from hosts in suspicious TLDs Note: Unmapped fields: c-uri-extension, cs-host",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((c-uri-extension = \"exe\" OR c-uri-extension = \"vbs\" OR c-uri-extension = \"bat\" OR c-uri-extension = \"rar\" OR c-uri-extension = \"ps1\" OR c-uri-extension = \"doc\" OR c-uri-extension = \"docm\" OR c-uri-extension = \"xls\" OR c-uri-extension = \"xlsm\" OR c-uri-extension = \"pptm\" OR c-uri-extension = \"rtf\" OR c-uri-extension = \"hta\" OR c-uri-extension = \"dll\" OR c-uri-extension = \"ws\" OR c-uri-extension = \"wsf\" OR c-uri-extension = \"sct\" OR c-uri-extension = \"zip\") AND (cs-host = RGX(\"\\\\\\.country$\") OR cs-host = RGX(\"\\\\\\.stream$\") OR cs-host = RGX(\"\\\\\\.gdn$\") OR cs-host = RGX(\"\\\\\\.mom$\") OR cs-host = RGX(\"\\\\\\.xin$\") OR cs-host = RGX(\"\\\\\\.kim$\") OR cs-host = RGX(\"\\\\\\.men$\") OR cs-host = RGX(\"\\\\\\.loan$\") OR cs-host = RGX(\"\\\\\\.download$\") OR cs-host = RGX(\"\\\\\\.racing$\") OR cs-host = RGX(\"\\\\\\.online$\") OR cs-host = RGX(\"\\\\\\.science$\") OR cs-host = RGX(\"\\\\\\.ren$\") OR cs-host = RGX(\"\\\\\\.gb$\") OR cs-host = RGX(\"\\\\\\.win$\") OR cs-host = RGX(\"\\\\\\.top$\") OR cs-host = RGX(\"\\\\\\.review$\") OR cs-host = RGX(\"\\\\\\.vip$\") OR cs-host = RGX(\"\\\\\\.party$\") OR cs-host = RGX(\"\\\\\\.tech$\") OR cs-host = RGX(\"\\\\\\.xyz$\") OR cs-host = RGX(\"\\\\\\.date$\") OR cs-host = RGX(\"\\\\\\.faith$\") OR cs-host = RGX(\"\\\\\\.zip$\") OR cs-host = RGX(\"\\\\\\.cricket$\") OR cs-host = RGX(\"\\\\\\.space$\") OR cs-host = RGX(\"\\\\\\.info$\") OR cs-host = RGX(\"\\\\\\.vn$\") OR cs-host = RGX(\"\\\\\\.cm$\") OR cs-host = RGX(\"\\\\\\.am$\") OR cs-host = RGX(\"\\\\\\.cc$\") OR cs-host = RGX(\"\\\\\\.asia$\") OR cs-host = RGX(\"\\\\\\.ws$\") OR cs-host = RGX(\"\\\\\\.tk$\") OR cs-host = RGX(\"\\\\\\.biz$\") OR cs-host = RGX(\"\\\\\\.su$\") OR cs-host = RGX(\"\\\\\\.st$\") OR cs-host = RGX(\"\\\\\\.ro$\") OR cs-host = RGX(\"\\\\\\.ge$\") OR cs-host = RGX(\"\\\\\\.ms$\") OR cs-host = RGX(\"\\\\\\.pk$\") OR cs-host = RGX(\"\\\\\\.nu$\") OR cs-host = RGX(\"\\\\\\.me$\") OR cs-host = RGX(\"\\\\\\.ph$\") OR cs-host = RGX(\"\\\\\\.to$\") OR cs-host = RGX(\"\\\\\\.tt$\") OR cs-host = RGX(\"\\\\\\.name$\") OR cs-host = RGX(\"\\\\\\.tv$\") OR cs-host = RGX(\"\\\\\\.kz$\") OR cs-host = RGX(\"\\\\\\.tc$\") OR cs-host = RGX(\"\\\\\\.mobi$\") OR cs-host = RGX(\"\\\\\\.study$\") OR cs-host = RGX(\"\\\\\\.click$\") OR cs-host = RGX(\"\\\\\\.link$\") OR cs-host = RGX(\"\\\\\\.trade$\") OR cs-host = RGX(\"\\\\\\.accountant$\") OR cs-host = RGX(\"\\\\\\.cf$\") OR cs-host = RGX(\"\\\\\\.gq$\") OR cs-host = RGX(\"\\\\\\.ml$\") OR cs-host = RGX(\"\\\\\\.ga$\") OR cs-host = RGX(\"\\\\\\.pw$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a290ad63-5fac-4bc6-bf5f-028e9ae09fbf"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

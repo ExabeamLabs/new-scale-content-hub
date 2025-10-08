@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Bypass UAC Using DelegateExecute",
+      "description": "Bypasses User Account Control using a fileless method Note: Unmapped fields: Details",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\"\\\\\\\\open\\\\\\\\command\\\\\\\\DelegateExecute$\") AND Details = \"\\(Empty\\)\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "02823371-8b9d-4abc-9960-95ce2f6f015e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

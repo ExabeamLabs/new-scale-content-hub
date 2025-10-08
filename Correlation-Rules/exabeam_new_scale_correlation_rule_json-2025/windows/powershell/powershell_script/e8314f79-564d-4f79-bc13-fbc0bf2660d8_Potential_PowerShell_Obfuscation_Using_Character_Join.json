@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential PowerShell Obfuscation Using Character Join",
+      "description": "Detects specific techniques often seen used inside of PowerShell scripts to obfscuate Alias creation Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*\\\\-Alias.*\") AND ScriptBlockText = RGX(\".*\\\\ \\\\-Value\\\\ \\\\(\\\\-join\\\\(.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b6ffa8be-d6a5-4bb5-833d-b0a6f58e8b96"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

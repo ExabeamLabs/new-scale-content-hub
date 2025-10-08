@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Setuid and Setgid",
+      "description": "Detects suspicious change of file privileges with chown and chmod commands",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*chown\\\\ root.*\") AND (process_command_line = RGX(\".*\\\\ chmod\\\\ u\\\\+s.*\") OR process_command_line = RGX(\".*\\\\ chmod\\\\ g\\\\+s.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "45bca5a0-f753-44eb-9214-ccd1e9e9103d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

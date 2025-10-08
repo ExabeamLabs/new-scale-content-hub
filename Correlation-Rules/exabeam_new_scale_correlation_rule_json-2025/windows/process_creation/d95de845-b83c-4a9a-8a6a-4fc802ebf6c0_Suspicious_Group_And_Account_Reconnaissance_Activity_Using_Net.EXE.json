@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Group And Account Reconnaissance Activity Using Net.EXE",
+      "description": "Detects suspicious reconnaissance command line activity on Windows systems using Net.EXE\nCheck if the user that executed the commands is suspicious (e.g. service accounts, LOCAL_SYSTEM)\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\net\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\net1\\\\\\.exe$\")) OR (process_original_file_name = \"net\\.exe\" OR process_original_file_name = \"net1\\.exe\")) AND ((((process_command_line = RGX(\".*\\\\ group\\\\ .*\") OR process_command_line = RGX(\".*\\\\ localgroup\\\\ .*\")) AND (process_command_line = RGX(\".*domain\\\\ admins.*\") OR process_command_line = RGX(\".*\\\\ administrator.*\") OR process_command_line = RGX(\".*\\\\ administrateur.*\") OR process_command_line = RGX(\".*enterprise\\\\ admins.*\") OR process_command_line = RGX(\".*Exchange\\\\ Trusted\\\\ Subsystem.*\") OR process_command_line = RGX(\".*Remote\\\\ Desktop\\\\ Users.*\") OR process_command_line = RGX(\".*Utilisateurs\\\\ du\\\\ Bureau\\\\ \u00e0\\\\ distance.*\") OR process_command_line = RGX(\".*Usuarios\\\\ de\\\\ escritorio\\\\ remoto.*\") OR process_command_line = RGX(\".*\\\\ \\\\/do.*\"))) AND  NOT (process_command_line = RGX(\".*\\\\ \\\\/add.*\"))) OR (process_command_line = RGX(\".*\\\\ accounts\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\/do.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9a039491-86b5-4d97-be6f-0266a5ebc727"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

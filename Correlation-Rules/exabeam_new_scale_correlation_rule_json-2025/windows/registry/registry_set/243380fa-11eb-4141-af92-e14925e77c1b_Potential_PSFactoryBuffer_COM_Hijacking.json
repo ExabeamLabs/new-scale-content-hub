@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential PSFactoryBuffer COM Hijacking",
+      "description": "Detects changes to the PSFactory COM InProcServer32 registry. This technique was used by RomCom to create persistence storing a malicious DLL. Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\"\\\\\\\\CLSID\\\\\\\\\\\\{c90250f3\\\\-4d7d\\\\-4991\\\\-9b69\\\\-a5c5bc1c2ae6\\\\}\\\\\\\\InProcServer32\\\\\\\\\\\\(Default\\\\)$\") AND  NOT ((Details = \"\\%windir\\%\\\\System32\\\\ActXPrxy\\.dll\" OR Details = \"C\\:\\\\Windows\\\\System32\\\\ActXPrxy\\.dll\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "53a8aafc-d9fb-486e-a438-bdf294ac70e7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Regsvr32 DLL Execution With Suspicious File Extension",
+      "description": "Detects the execution of REGSVR32.exe with DLL files masquerading as other files",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR process_original_file_name = \"REGSVR32\\.EXE\") AND (process_command_line = RGX(\"\\\\\\.bin$\") OR process_command_line = RGX(\"\\\\\\.bmp$\") OR process_command_line = RGX(\"\\\\\\.cr2$\") OR process_command_line = RGX(\"\\\\\\.dat$\") OR process_command_line = RGX(\"\\\\\\.eps$\") OR process_command_line = RGX(\"\\\\\\.gif$\") OR process_command_line = RGX(\"\\\\\\.ico$\") OR process_command_line = RGX(\"\\\\\\.jpeg$\") OR process_command_line = RGX(\"\\\\\\.jpg$\") OR process_command_line = RGX(\"\\\\\\.log$\") OR process_command_line = RGX(\"\\\\\\.nef$\") OR process_command_line = RGX(\"\\\\\\.orf$\") OR process_command_line = RGX(\"\\\\\\.png$\") OR process_command_line = RGX(\"\\\\\\.raw$\") OR process_command_line = RGX(\"\\\\\\.rtf$\") OR process_command_line = RGX(\"\\\\\\.sr2$\") OR process_command_line = RGX(\"\\\\\\.temp$\") OR process_command_line = RGX(\"\\\\\\.tif$\") OR process_command_line = RGX(\"\\\\\\.tiff$\") OR process_command_line = RGX(\"\\\\\\.tmp$\") OR process_command_line = RGX(\"\\\\\\.txt$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "74c4eb62-9c5f-4c7b-a078-15474c41b009"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

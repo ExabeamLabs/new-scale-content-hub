@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious PowerShell Invocations - Generic",
+      "description": "Detects suspicious PowerShell invocation command parameters Note: Unmapped fields: ScriptBlockText",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ScriptBlockText = RGX(\".*\\\\ \\\\-enc\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\ \\\\-EncodedCommand\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\ \\\\-ec\\\\ .*\")) AND (ScriptBlockText = RGX(\".*\\\\ \\\\-w\\\\ hidden\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\ \\\\-window\\\\ hidden\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\ \\\\-windowstyle\\\\ hidden\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\ \\\\-w\\\\ 1\\\\ .*\")) AND (ScriptBlockText = RGX(\".*\\\\ \\\\-noni\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\ \\\\-noninteractive\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e05d44b7-78a4-4b4a-8f79-e2ece20a238c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

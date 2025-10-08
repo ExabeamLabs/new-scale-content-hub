@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Base64 Encoded User-Agent",
+      "description": "Detects suspicious encoded User-Agent strings, as seen used by some malware. Note: Unmapped fields: c-useragent",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(c-useragent = RGX(\"^Q2hyb21l\") OR c-useragent = RGX(\"^QXBwbGVXZWJLaX\") OR c-useragent = RGX(\"^RGFsdmlr\") OR c-useragent = RGX(\"^TW96aWxsY\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e9c0e259-490b-4a20-8b43-936f387ef742"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

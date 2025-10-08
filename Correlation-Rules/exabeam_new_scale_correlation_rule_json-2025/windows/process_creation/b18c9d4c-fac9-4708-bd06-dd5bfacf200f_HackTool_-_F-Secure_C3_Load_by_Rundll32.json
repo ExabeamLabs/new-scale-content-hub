@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - F-Secure C3 Load by Rundll32",
+      "description": "F-Secure C3 produces DLLs with a default exported StartNodeRelay function.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*rundll32\\\\\\.exe.*\") AND process_command_line = RGX(\".*\\\\\\.dll.*\") AND process_command_line = RGX(\".*StartNodeRelay.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a5eac85f-5c71-440f-8bea-1a3686c323aa"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

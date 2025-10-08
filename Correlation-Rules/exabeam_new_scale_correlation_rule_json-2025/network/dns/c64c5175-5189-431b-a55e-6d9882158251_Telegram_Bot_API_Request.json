@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Telegram Bot API Request",
+      "description": "Detects suspicious DNS queries to api.telegram.org used by Telegram Bots of any kind Note: Unmapped fields: query",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "query = \"api\\.telegram\\.org\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5131bfba-d8ef-4c53-9140-741e2cf560e3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

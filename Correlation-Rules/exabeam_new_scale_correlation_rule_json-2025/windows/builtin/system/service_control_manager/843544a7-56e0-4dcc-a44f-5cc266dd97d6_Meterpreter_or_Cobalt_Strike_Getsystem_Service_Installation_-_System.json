@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Meterpreter or Cobalt Strike Getsystem Service Installation - System",
+      "description": "Detects the use of getsystem Meterpreter/Cobalt Strike command by detecting a specific service installation Note: Unmapped fields: Provider_Name, ImagePath",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Provider_Name = \"Service\\ Control\\ Manager\" AND event_id = 7045) AND (((ImagePath = RGX(\".*\\\\/c.*\") AND ImagePath = RGX(\".*echo.*\") AND ImagePath = RGX(\".*\\\\\\\\pipe\\\\\\\\.*\")) AND (ImagePath = RGX(\".*cmd.*\") OR ImagePath = RGX(\".*\\\\%COMSPEC\\\\%.*\"))) OR (ImagePath = RGX(\".*rundll32.*\") AND ImagePath = RGX(\".*\\\\\\.dll\\\\,a.*\") AND ImagePath = RGX(\".*\\\\/p\\\\:.*\")) OR ImagePath = RGX(\"^\\\\\\\\\\\\\\\\127\\\\\\.0\\\\\\.0\\\\\\.1\\\\\\\\ADMIN\\\\$\\\\\\\\\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7b3dca69-98fd-4164-af49-19c64e976efc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

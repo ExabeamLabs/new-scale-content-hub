@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Install Root Certificate",
+      "description": "Detects installation of new certificate on the system which attackers may use to avoid warnings when connecting to controlled web servers or C2s",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/update\\\\-ca\\\\-certificates$\") OR process_path = RGX(\"\\\\/update\\\\-ca\\\\-trust$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "89b99758-c068-43d7-a136-a4ffa140c5ad"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

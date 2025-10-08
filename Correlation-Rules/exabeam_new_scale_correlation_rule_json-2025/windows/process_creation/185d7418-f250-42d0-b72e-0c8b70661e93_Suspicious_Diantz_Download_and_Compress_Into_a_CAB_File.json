@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Diantz Download and Compress Into a CAB File",
+      "description": "Download and compress a remote file and store it in a cab file on local machine.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*diantz\\\\\\.exe.*\") AND process_command_line = RGX(\".*\\\\ \\\\\\\\\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\\\.cab.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "02089216-b98b-4803-8dee-a03844456047"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

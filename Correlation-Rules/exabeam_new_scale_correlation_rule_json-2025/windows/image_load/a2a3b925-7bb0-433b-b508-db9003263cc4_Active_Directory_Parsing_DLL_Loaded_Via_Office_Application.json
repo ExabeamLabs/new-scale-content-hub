@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Active Directory Parsing DLL Loaded Via Office Application",
+      "description": "Detects DSParse DLL being loaded by an Office Product Note: Unmapped fields: ImageLoaded",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\excel\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mspub\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\onenote\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\onenoteim\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\outlook\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powerpnt\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\winword\\\\\\.exe$\")) AND ImageLoaded = RGX(\".*\\\\\\\\dsparse\\\\\\.dll.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "fdb63dc3-399a-493b-85fb-3f2cddf7cd99"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

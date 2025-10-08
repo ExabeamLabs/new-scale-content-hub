@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Execution Of Non-Existing File",
+      "description": "Checks whether the image specified in a process creation event is not a full, absolute path (caused by process ghosting or other unorthodox methods to start a process)",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": " NOT (process_path = RGX(\".*\\\\\\\\.*\")) AND  NOT (process_path = \"None\" OR (process_path = \"\\-\" OR process_path = \"\") OR ((process_path = \"System\" OR process_path = \"Registry\" OR process_path = \"MemCompression\" OR process_path = \"vmmem\") OR (process_command_line = \"Registry\" OR process_command_line = \"MemCompression\" OR process_command_line = \"vmmem\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b9d5b92a-90fe-4977-a7ad-38efab3d7d66"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

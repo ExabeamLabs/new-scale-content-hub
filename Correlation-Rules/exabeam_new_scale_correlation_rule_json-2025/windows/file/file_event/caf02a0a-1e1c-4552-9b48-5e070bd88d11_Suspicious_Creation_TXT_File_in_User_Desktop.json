@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Creation TXT File in User Desktop",
+      "description": "Ransomware create txt file in the user Desktop",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") AND (file_path = RGX(\".*\\\\\\\\Users\\\\\\\\.*\") AND file_path = RGX(\".*\\\\\\\\Desktop\\\\\\\\.*\")) AND file_path = RGX(\"\\\\\\.txt$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "38e71848-efe3-4892-9647-c3c3a1986e51"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

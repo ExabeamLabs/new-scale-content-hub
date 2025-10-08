@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Modification of IE Registry Settings",
+      "description": "Detects modification of the registry settings used for Internet Explorer and other Windows components that use these settings. An attacker can abuse this registry key to add a domain to the trusted sites Zone or insert JavaScript for persistence Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\".*\\\\\\\\Software\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Internet\\\\ Settings.*\") AND  NOT (Details = RGX(\"^DWORD\") OR (Details = \"Cookie\\:\" OR Details = \"Visited\\:\" OR Details = \"\\(Empty\\)\") OR (registry_path = RGX(\".*\\\\\\\\Cache.*\") OR registry_path = RGX(\".*\\\\\\\\ZoneMap.*\") OR registry_path = RGX(\".*\\\\\\\\WpadDecision.*\")) OR Details = \"Binary\\ Data\" OR registry_path = RGX(\".*\\\\\\\\Software\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Internet\\\\ Settings\\\\\\\\Accepted\\\\ Documents.*\") OR process_path = \"C\\:\\\\Windows\\\\System32\\\\RuntimeBroker\\.exe\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6c1b33b3-ba6e-4460-bf51-a7c59b2bfdca"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

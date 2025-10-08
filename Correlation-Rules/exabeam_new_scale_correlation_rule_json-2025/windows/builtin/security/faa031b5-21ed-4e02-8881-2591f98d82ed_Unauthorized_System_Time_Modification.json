@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Unauthorized System Time Modification",
+      "description": "Detect scenarios where a potentially unauthorized application or user is modifying the system time. Note: Unmapped fields: ProcessName, SubjectUserSid",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "event_id = 4616 AND  NOT ((ProcessName = \"C\\:\\\\Program\\ Files\\\\VMware\\\\VMware\\ Tools\\\\vmtoolsd\\.exe\" OR ProcessName = \"C\\:\\\\Windows\\\\System32\\\\VBoxService\\.exe\" OR ProcessName = \"C\\:\\\\Windows\\\\System32\\\\oobe\\\\msoobe\\.exe\") OR (ProcessName = \"C\\:\\\\Windows\\\\System32\\\\svchost\\.exe\" AND SubjectUserSid = \"S\\-1\\-5\\-19\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3b428ac6-2b22-44fb-bf3c-4f6b08479c60"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

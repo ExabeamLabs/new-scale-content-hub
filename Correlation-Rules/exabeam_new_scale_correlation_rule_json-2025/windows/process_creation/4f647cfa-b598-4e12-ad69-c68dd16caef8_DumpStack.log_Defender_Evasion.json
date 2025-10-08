@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "DumpStack.log Defender Evasion",
+      "description": "Detects the use of the filename DumpStack.log to evade Microsoft Defender",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\DumpStack\\\\\\.log$\") OR process_command_line = RGX(\".*\\\\ \\\\-o\\\\ DumpStack\\\\\\.log.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c01dfa8a-5a90-4f21-bf69-08b55b149849"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

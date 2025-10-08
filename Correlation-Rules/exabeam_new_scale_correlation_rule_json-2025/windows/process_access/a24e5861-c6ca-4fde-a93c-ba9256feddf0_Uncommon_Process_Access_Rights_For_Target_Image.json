@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Uncommon Process Access Rights For Target Image",
+      "description": "Detects process access request to uncommon target images with a \"PROCESS_ALL_ACCESS\" access mask.\n Note: Unmapped fields: TargetImage, GrantedAccess",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((TargetImage = RGX(\"\\\\\\\\calc\\\\\\.exe$\") OR TargetImage = RGX(\"\\\\\\\\calculator\\\\\\.exe$\") OR TargetImage = RGX(\"\\\\\\\\mspaint\\\\\\.exe$\") OR TargetImage = RGX(\"\\\\\\\\notepad\\\\\\.exe$\") OR TargetImage = RGX(\"\\\\\\\\ping\\\\\\.exe$\") OR TargetImage = RGX(\"\\\\\\\\wordpad\\\\\\.exe$\") OR TargetImage = RGX(\"\\\\\\\\write\\\\\\.exe$\")) AND GrantedAccess = \"0x1FFFFF\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3bdea27a-892e-41cc-8848-a139eb07743a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Microsoft IIS Connection Strings Decryption",
+      "description": "Detects use of aspnet_regiis to decrypt Microsoft IIS connection strings. An attacker with Microsoft IIS web server access via a webshell or alike can decrypt and dump any hardcoded connection strings, such as the MSSQL service account password using aspnet_regiis command.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\aspnet\\\\_regiis\\\\\\.exe$\") OR process_original_file_name = \"aspnet\\_regiis\\.exe\") AND (process_command_line = RGX(\".*connectionStrings.*\") AND process_command_line = RGX(\".*\\\\ \\\\-pdf.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "29232297-5d02-421e-b769-e197e5fd7a1e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

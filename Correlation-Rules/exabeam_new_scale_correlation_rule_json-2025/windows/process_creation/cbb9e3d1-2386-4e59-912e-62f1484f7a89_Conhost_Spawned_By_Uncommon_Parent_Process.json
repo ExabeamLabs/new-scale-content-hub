@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Conhost Spawned By Uncommon Parent Process",
+      "description": "Detects when the Console Window Host (conhost.exe) process is spawned by an uncommon parent process, which could be indicative of potential code injection activity.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\conhost\\\\\\.exe$\") AND (parent_process_path = RGX(\"\\\\\\\\explorer\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\lsass\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\services\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\smss\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\spoolsv\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\svchost\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\userinit\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\wininit\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\winlogon\\\\\\.exe$\"))) AND  NOT ((parent_process_command_line = RGX(\".*\\\\-k\\\\ apphost\\\\ \\\\-s\\\\ AppHostSvc.*\") OR parent_process_command_line = RGX(\".*\\\\-k\\\\ imgsvc.*\") OR parent_process_command_line = RGX(\".*\\\\-k\\\\ localService\\\\ \\\\-p\\\\ \\\\-s\\\\ RemoteRegistry.*\") OR parent_process_command_line = RGX(\".*\\\\-k\\\\ LocalSystemNetworkRestricted\\\\ \\\\-p\\\\ \\\\-s\\\\ NgcSvc.*\") OR parent_process_command_line = RGX(\".*\\\\-k\\\\ NetSvcs\\\\ \\\\-p\\\\ \\\\-s\\\\ NcaSvc.*\") OR parent_process_command_line = RGX(\".*\\\\-k\\\\ netsvcs\\\\ \\\\-p\\\\ \\\\-s\\\\ NetSetupSvc.*\") OR parent_process_command_line = RGX(\".*\\\\-k\\\\ netsvcs\\\\ \\\\-p\\\\ \\\\-s\\\\ wlidsvc.*\") OR parent_process_command_line = RGX(\".*\\\\-k\\\\ NetworkService\\\\ \\\\-p\\\\ \\\\-s\\\\ DoSvc.*\") OR parent_process_command_line = RGX(\".*\\\\-k\\\\ wsappx\\\\ \\\\-p\\\\ \\\\-s\\\\ AppXSvc.*\") OR parent_process_command_line = RGX(\".*\\\\-k\\\\ wsappx\\\\ \\\\-p\\\\ \\\\-s\\\\ ClipSVC.*\") OR parent_process_command_line = RGX(\".*\\\\-k\\\\ wusvcs\\\\ \\\\-p\\\\ \\\\-s\\\\ WaaSMedicSvc.*\"))) AND  NOT ((parent_process_command_line = RGX(\".*C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Dropbox\\\\\\\\Client\\\\\\\\.*\") OR parent_process_command_line = RGX(\".*C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Dropbox\\\\\\\\Client\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "53c5a065-a307-4972-a4fe-963e1837edcf"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

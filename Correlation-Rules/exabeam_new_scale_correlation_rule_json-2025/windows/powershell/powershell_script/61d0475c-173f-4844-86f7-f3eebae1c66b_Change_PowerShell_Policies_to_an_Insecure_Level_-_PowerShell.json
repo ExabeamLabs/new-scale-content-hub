@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Change PowerShell Policies to an Insecure Level - PowerShell",
+      "description": "Detects changing the PowerShell script execution policy to a potentially insecure level using the \"Set-ExecutionPolicy\" cmdlet. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Set\\\\-ExecutionPolicy.*\") AND (ScriptBlockText = RGX(\".*Unrestricted.*\") OR ScriptBlockText = RGX(\".*bypass.*\"))) AND  NOT ((ScriptBlockText = RGX(\".*\\\\(New\\\\-Object\\\\ System\\\\\\.Net\\\\\\.WebClient\\\\)\\\\\\.DownloadString\\\\(\\\\'https\\\\:\\\\/\\\\/community\\\\\\.chocolatey\\\\\\.org\\\\/install\\\\\\.ps1\\\\'\\\\).*\") OR ScriptBlockText = RGX(\".*\\\\(New\\\\-Object\\\\ System\\\\\\.Net\\\\\\.WebClient\\\\)\\\\\\.DownloadString\\\\(\\\\'https\\\\:\\\\/\\\\/chocolatey\\\\\\.org\\\\/install\\\\\\.ps1\\\\'\\\\).*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "44ce87cf-4ae6-4145-a674-515a51ff3dda"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

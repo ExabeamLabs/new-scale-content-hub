@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Data Exfiltration Via Audio File",
+      "description": "Detects potential exfiltration attempt via audio file using PowerShell Note: Unmapped fields: ScriptBlockText",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*\\\\[System\\\\\\.Math\\\\]\\\\:\\\\:.*\") AND ScriptBlockText = RGX(\".*\\\\[IO\\\\\\.FileMode\\\\]\\\\:\\\\:.*\") AND ScriptBlockText = RGX(\".*BinaryWriter.*\")) AND ((ScriptBlockText = RGX(\".*0x52.*\") AND ScriptBlockText = RGX(\".*0x49.*\") AND ScriptBlockText = RGX(\".*0x46.*\") AND ScriptBlockText = RGX(\".*0x57.*\") AND ScriptBlockText = RGX(\".*0x41.*\") AND ScriptBlockText = RGX(\".*0x56.*\") AND ScriptBlockText = RGX(\".*0x45.*\") AND ScriptBlockText = RGX(\".*0xAC.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7ab76a1b-a9c4-471c-9ec2-ba31de495377"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

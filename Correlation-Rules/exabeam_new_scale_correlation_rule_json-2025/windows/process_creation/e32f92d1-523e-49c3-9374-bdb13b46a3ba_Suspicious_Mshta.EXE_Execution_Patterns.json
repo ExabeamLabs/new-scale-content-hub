@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Mshta.EXE Execution Patterns",
+      "description": "Detects suspicious mshta process execution patterns",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR process_original_file_name = \"MSHTA\\.EXE\") AND ((parent_process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\")) AND (process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\.*\") OR process_command_line = RGX(\".*C\\\\:\\\\\\\\ProgramData\\\\\\\\.*\") OR process_command_line = RGX(\".*C\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR process_command_line = RGX(\".*C\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\")))) OR ((process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR process_original_file_name = \"MSHTA\\.EXE\") AND  NOT (((process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\\")) OR (process_command_line = RGX(\".*\\\\\\.htm.*\") OR process_command_line = RGX(\".*\\\\\\.hta.*\")) OR (process_command_line = RGX(\"mshta\\\\\\.exe$\") OR process_command_line = RGX(\"mshta$\")))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "70f213b6-f7f9-4d1a-9862-bd84445c2dfd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

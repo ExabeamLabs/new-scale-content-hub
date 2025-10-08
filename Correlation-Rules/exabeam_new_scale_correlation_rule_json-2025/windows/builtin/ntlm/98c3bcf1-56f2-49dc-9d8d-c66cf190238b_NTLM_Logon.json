@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "NTLM Logon",
+      "description": "Detects logons using NTLM, which could be caused by a legacy source or attackers",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "event_id = 8002",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "05838838-60b5-49f0-84c0-36e0b383d489"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

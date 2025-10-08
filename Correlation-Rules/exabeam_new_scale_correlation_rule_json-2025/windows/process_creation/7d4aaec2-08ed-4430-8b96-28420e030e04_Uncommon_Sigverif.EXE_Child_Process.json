@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Uncommon Sigverif.EXE Child Process",
+      "description": "Detects uncommon child processes spawning from \"sigverif.exe\", which could indicate potential abuse of the latter as a living of the land binary in order to proxy execution.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "parent_process_path = RGX(\"\\\\\\\\sigverif\\\\\\.exe$\") AND  NOT ((process_path = \"C\\:\\\\Windows\\\\System32\\\\WerFault\\.exe\" OR process_path = \"C\\:\\\\Windows\\\\SysWOW64\\\\WerFault\\.exe\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "86b9fbcd-2884-47b1-a73c-faa3ccc06fe1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

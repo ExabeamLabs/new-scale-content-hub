@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "A Rule Has Been Deleted From The Windows Firewall Exception List",
+      "description": "Detects when a single rules or all of the rules have been deleted from the Windows Defender Firewall Note: Unmapped fields: ModifyingApplication",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 2006 OR event_id = 2052) AND  NOT ((ModifyingApplication = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\\") OR ModifyingApplication = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\\") OR ModifyingApplication = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\WinSxS\\\\\\\\\")) OR ModifyingApplication = \"C\\:\\\\Windows\\\\System32\\\\svchost\\.exe\" OR ModifyingApplication = \"None\" OR ModifyingApplication = \"\") AND  NOT ((ModifyingApplication = RGX(\"^C\\\\:\\\\\\\\ProgramData\\\\\\\\Microsoft\\\\\\\\Windows\\\\ Defender\\\\\\\\Platform\\\\\\\\\") AND ModifyingApplication = RGX(\"\\\\\\\\MsMpEng\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ee4c20c8-2728-449d-837d-a5629d8352f6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

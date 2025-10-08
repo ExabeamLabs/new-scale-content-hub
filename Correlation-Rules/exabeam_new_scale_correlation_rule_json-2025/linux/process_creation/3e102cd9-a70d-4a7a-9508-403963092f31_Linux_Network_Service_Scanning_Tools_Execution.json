@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Linux Network Service Scanning Tools Execution",
+      "description": "Detects execution of network scanning and reconnaisance tools. These tools can be used for the enumeration of local or remote network services for example.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/nc$\") OR process_path = RGX(\"\\\\/ncat$\") OR process_path = RGX(\"\\\\/netcat$\") OR process_path = RGX(\"\\\\/socat$\")) AND  NOT ((process_command_line = RGX(\".*\\\\ \\\\-\\\\-listen\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-l\\\\ .*\")))) OR (process_path = RGX(\"\\\\/autorecon$\") OR process_path = RGX(\"\\\\/hping$\") OR process_path = RGX(\"\\\\/hping2$\") OR process_path = RGX(\"\\\\/hping3$\") OR process_path = RGX(\"\\\\/naabu$\") OR process_path = RGX(\"\\\\/nmap$\") OR process_path = RGX(\"\\\\/nping$\") OR process_path = RGX(\"\\\\/telnet$\") OR process_path = RGX(\"\\\\/zenmap$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6f62f306-9ea6-490f-8f06-e05520c4954a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

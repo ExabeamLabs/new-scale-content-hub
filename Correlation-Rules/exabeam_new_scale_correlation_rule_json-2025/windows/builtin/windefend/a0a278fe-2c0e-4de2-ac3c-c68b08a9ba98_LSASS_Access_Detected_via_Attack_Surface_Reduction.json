@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "LSASS Access Detected via Attack Surface Reduction",
+      "description": "Detects Access to LSASS Process Note: Unmapped fields: Path, ProcessName",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 1121 AND Path = RGX(\"\\\\\\\\lsass\\\\\\.exe$\")) AND  NOT ((ProcessName = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\asgard2\\\\-agent\\\\\\\\\") AND (ProcessName = RGX(\"\\\\\\\\thor64\\\\\\.exe$\") OR ProcessName = RGX(\"\\\\\\\\thor\\\\\\.exe$\"))) OR (ProcessName = \"C\\:\\\\Windows\\\\System32\\\\atiesrxx\\.exe\" OR ProcessName = \"C\\:\\\\Windows\\\\System32\\\\CompatTelRunner\\.exe\" OR ProcessName = \"C\\:\\\\Windows\\\\System32\\\\msiexec\\.exe\" OR ProcessName = \"C\\:\\\\Windows\\\\System32\\\\nvwmi64\\.exe\" OR ProcessName = \"C\\:\\\\Windows\\\\System32\\\\svchost\\.exe\" OR ProcessName = \"C\\:\\\\Windows\\\\System32\\\\Taskmgr\\.exe\" OR ProcessName = \"C\\:\\\\Windows\\\\System32\\\\wbem\\\\WmiPrvSE\\.exe\" OR ProcessName = \"C\\:\\\\Windows\\\\SysWOW64\\\\msiexec\\.exe\") OR (ProcessName = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\DriverStore\\\\\\\\\") OR ProcessName = RGX(\"^C\\\\:\\\\\\\\WINDOWS\\\\\\\\Installer\\\\\\\\\") OR ProcessName = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\\") OR ProcessName = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "192e3230-df47-4e6d-9bd2-0f58fe1b4988"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "GCP Access Policy Deleted",
+      "description": "Detects when an access policy that is applied to a GCP cloud resource is deleted.\nAn adversary would be able to remove access policies to gain access to a GCP cloud resource.\n Note: Unmapped fields: data.protoPayload.authorizationInfo.permission, data.protoPayload.authorizationInfo.granted, data.protoPayload.serviceName",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((data.protoPayload.authorizationInfo.permission = \"accesscontextmanager\\.accessPolicies\\.delete\" OR data.protoPayload.authorizationInfo.permission = \"accesscontextmanager\\.accessPolicies\\.accessLevels\\.delete\" OR data.protoPayload.authorizationInfo.permission = \"accesscontextmanager\\.accessPolicies\\.accessZones\\.delete\" OR data.protoPayload.authorizationInfo.permission = \"accesscontextmanager\\.accessPolicies\\.authorizedOrgsDescs\\.delete\") AND data.protoPayload.authorizationInfo.granted = \"true\" AND data.protoPayload.serviceName = \"accesscontextmanager\\.googleapis\\.com\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3bb1b9e1-b76f-466e-9d52-8b38381c371c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

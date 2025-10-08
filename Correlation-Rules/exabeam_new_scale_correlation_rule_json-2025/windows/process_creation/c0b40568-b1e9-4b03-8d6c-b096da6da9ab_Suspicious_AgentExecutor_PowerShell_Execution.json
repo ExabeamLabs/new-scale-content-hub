@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious AgentExecutor PowerShell Execution",
+      "description": "Detects execution of the AgentExecutor.exe binary. Which can be abused as a LOLBIN to execute powershell scripts with the ExecutionPolicy \"Bypass\" or any binary named \"powershell.exe\" located in the path provided by 6th positional argument",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\AgentExecutor\\\\\\.exe$\") OR process_original_file_name = \"AgentExecutor\\.exe\") AND (process_command_line = RGX(\".*\\\\ \\\\-powershell.*\") OR process_command_line = RGX(\".*\\\\ \\\\-remediationScript.*\"))) AND  NOT ((process_command_line = RGX(\".*C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\WindowsPowerShell\\\\\\\\v1\\\\\\.0\\\\\\\\.*\") OR process_command_line = RGX(\".*C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\WindowsPowerShell\\\\\\\\v1\\\\\\.0\\\\\\\\.*\")) OR parent_process_path = RGX(\"\\\\\\\\Microsoft\\\\\\.Management\\\\\\.Services\\\\\\.IntuneWindowsAgent\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3ac7a037-1311-45c2-a826-666ea9f6acd2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

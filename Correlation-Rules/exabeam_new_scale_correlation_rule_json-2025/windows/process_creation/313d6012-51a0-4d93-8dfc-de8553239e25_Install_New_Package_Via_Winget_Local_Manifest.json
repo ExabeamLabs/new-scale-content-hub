@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Install New Package Via Winget Local Manifest",
+      "description": "Detects usage of winget to install applications via manifest file. Adversaries can abuse winget to download payloads remotely and execute them.\nThe manifest option enables you to install an application by passing in a YAML file directly to the client.\nWinget can be used to download and install exe, msi or msix files later.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\winget\\\\\\.exe$\") OR process_original_file_name = \"winget\\.exe\") AND (process_command_line = RGX(\".*install.*\") OR process_command_line = RGX(\".*\\\\ add\\\\ .*\")) AND (process_command_line = RGX(\".*\\\\-m\\\\ .*\") OR process_command_line = RGX(\".*\\\\-\\\\-manifest.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "edf555e7-6425-4b35-9213-2ce5a276551c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

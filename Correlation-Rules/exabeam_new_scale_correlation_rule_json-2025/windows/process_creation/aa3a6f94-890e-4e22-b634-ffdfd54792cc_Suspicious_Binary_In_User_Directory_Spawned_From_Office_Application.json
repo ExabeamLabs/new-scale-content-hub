@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Binary In User Directory Spawned From Office Application",
+      "description": "Detects an executable in the users directory started from one of the Microsoft Office suite applications (Word, Excel, PowerPoint, Publisher, Visio)",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((parent_process_path = RGX(\"\\\\\\\\WINWORD\\\\\\.EXE$\") OR parent_process_path = RGX(\"\\\\\\\\EXCEL\\\\\\.EXE$\") OR parent_process_path = RGX(\"\\\\\\\\POWERPNT\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\MSPUB\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\VISIO\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\MSACCESS\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\EQNEDT32\\\\\\.exe$\")) AND process_path = RGX(\"^C\\\\:\\\\\\\\users\\\\\\\\\") AND process_path = RGX(\"\\\\\\.exe$\")) AND  NOT (process_path = RGX(\"\\\\\\\\Teams\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "bf948cac-eead-44da-8116-edbfd7056c6c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

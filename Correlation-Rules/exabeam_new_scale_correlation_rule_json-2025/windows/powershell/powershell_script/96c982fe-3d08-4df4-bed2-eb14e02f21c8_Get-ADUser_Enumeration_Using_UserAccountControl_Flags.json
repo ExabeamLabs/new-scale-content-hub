@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Get-ADUser Enumeration Using UserAccountControl Flags",
+      "description": "Detects AS-REP roasting is an attack that is often-overlooked. It is not very common as you have to explicitly set accounts that do not require pre-authentication. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Get\\\\-ADUser.*\") AND ScriptBlockText = RGX(\".*\\\\-Filter.*\") AND ScriptBlockText = RGX(\".*useraccountcontrol.*\") AND ScriptBlockText = RGX(\".*\\\\-band.*\") AND ScriptBlockText = RGX(\".*4194304.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "327fa51b-191f-43d1-aef3-bc3111068b4c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

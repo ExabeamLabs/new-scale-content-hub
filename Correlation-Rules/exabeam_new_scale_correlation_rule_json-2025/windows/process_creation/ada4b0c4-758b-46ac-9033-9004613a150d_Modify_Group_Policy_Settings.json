@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Modify Group Policy Settings",
+      "description": "Detect malicious GPO modifications can be used to implement many other malicious behaviors.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\reg\\\\\\.exe$\") OR process_original_file_name = \"reg\\.exe\") AND process_command_line = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Policies\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\System.*\") AND (process_command_line = RGX(\".*GroupPolicyRefreshTimeDC.*\") OR process_command_line = RGX(\".*GroupPolicyRefreshTimeOffsetDC.*\") OR process_command_line = RGX(\".*GroupPolicyRefreshTime.*\") OR process_command_line = RGX(\".*GroupPolicyRefreshTimeOffset.*\") OR process_command_line = RGX(\".*EnableSmartScreen.*\") OR process_command_line = RGX(\".*ShellSmartScreenLevel.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "391b1297-dfe7-455e-805f-c16dabb6d68e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

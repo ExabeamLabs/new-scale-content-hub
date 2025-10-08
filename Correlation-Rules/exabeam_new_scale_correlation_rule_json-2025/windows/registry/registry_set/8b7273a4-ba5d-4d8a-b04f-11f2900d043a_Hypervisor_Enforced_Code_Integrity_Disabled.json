@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Hypervisor Enforced Code Integrity Disabled",
+      "description": "Detects changes to the HypervisorEnforcedCodeIntegrity registry key and the \"Enabled\" value being set to 0 in order to disable the Hypervisor Enforced Code Integrity feature. This allows an attacker to load unsigned and untrusted code to be run in the kernel\n Note: Unmapped fields: Details",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((registry_path = RGX(\"\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\DeviceGuard\\\\\\\\HypervisorEnforcedCodeIntegrity$\") OR registry_path = RGX(\"\\\\\\\\Control\\\\\\\\DeviceGuard\\\\\\\\HypervisorEnforcedCodeIntegrity$\") OR registry_path = RGX(\"\\\\\\\\Control\\\\\\\\DeviceGuard\\\\\\\\Scenarios\\\\\\\\HypervisorEnforcedCodeIntegrity\\\\\\\\Enabled$\")) AND Details = \"DWORD\\ \\(0x00000000\\)\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "24ea65fc-8169-4ead-b281-ee6458472c00"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

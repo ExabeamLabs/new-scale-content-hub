@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Signing Bypass Via Windows Developer Features",
+      "description": "Detects when a user enable developer features such as \"Developer Mode\" or \"Application Sideloading\". Which allows the user to install untrusted packages.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\SystemSettingsAdminFlows\\\\\\.exe$\") OR process_original_file_name = \"SystemSettingsAdminFlows\\.EXE\") AND process_command_line = RGX(\".*TurnOnDeveloperFeatures.*\") AND (process_command_line = RGX(\".*DeveloperUnlock.*\") OR process_command_line = RGX(\".*EnableSideloading.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6cfdc115-0382-4051-9f92-b804e33b0656"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

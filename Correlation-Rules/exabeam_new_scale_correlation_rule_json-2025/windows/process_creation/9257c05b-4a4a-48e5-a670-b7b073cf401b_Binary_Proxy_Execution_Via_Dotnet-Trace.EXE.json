@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Binary Proxy Execution Via Dotnet-Trace.EXE",
+      "description": "Detects commandline arguments for executing a child process via dotnet-trace.exe",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\dotnet\\\\-trace\\\\\\.exe$\") OR process_original_file_name = \"dotnet\\-trace\\.dll\") AND (process_command_line = RGX(\".*\\\\-\\\\-\\\\ .*\") AND process_command_line = RGX(\".*collect.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a485cd93-e467-497d-9055-a7a3f6d04925"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

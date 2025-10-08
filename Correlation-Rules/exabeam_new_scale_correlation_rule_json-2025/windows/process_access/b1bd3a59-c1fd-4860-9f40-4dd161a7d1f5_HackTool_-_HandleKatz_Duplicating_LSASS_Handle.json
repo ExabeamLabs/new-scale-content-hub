@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - HandleKatz Duplicating LSASS Handle",
+      "description": "Detects HandleKatz opening LSASS to duplicate its handle to later dump the memory without opening any new handles Note: Unmapped fields: TargetImage, GrantedAccess, CallTrace",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(TargetImage = RGX(\"\\\\\\\\lsass\\\\\\.exe$\") AND GrantedAccess = \"0x1440\" AND CallTrace = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\ntdll\\\\\\.dll\\\\+\") AND CallTrace = RGX(\".*\\\\|UNKNOWN\\\\(.*\") AND CallTrace = RGX(\"\\\\)$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3fb2ce8e-3295-40f1-a184-5cddc4536e3e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential CCleanerReactivator.DLL Sideloading",
+      "description": "Detects potential DLL sideloading of \"CCleanerReactivator.dll\" Note: Unmapped fields: ImageLoaded",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ImageLoaded = RGX(\"\\\\\\\\CCleanerReactivator\\\\\\.dll$\") AND  NOT (((process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\CCleaner\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\CCleaner\\\\\\\\\")) AND process_path = RGX(\"\\\\\\\\CCleanerReactivator\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "04d5e377-b11e-41ea-a179-e8ad15d2bc9d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

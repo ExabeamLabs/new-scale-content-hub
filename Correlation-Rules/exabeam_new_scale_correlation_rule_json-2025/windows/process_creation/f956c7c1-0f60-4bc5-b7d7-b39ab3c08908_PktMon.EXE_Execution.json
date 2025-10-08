@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PktMon.EXE Execution",
+      "description": "Detects execution of PktMon, a tool that captures network packets.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\pktmon\\\\\\.exe$\") OR process_original_file_name = \"PktMon\\.exe\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "93304f27-6f92-4bd5-a7cf-dad4e8ae060d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

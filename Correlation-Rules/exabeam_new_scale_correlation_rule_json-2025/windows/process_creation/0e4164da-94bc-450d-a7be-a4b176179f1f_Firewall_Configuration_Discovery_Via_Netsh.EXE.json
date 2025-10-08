@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Firewall Configuration Discovery Via Netsh.EXE",
+      "description": "Adversaries may look for details about the network configuration and settings of systems they access or through information discovery of remote systems",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\netsh\\\\\\.exe$\") OR process_original_file_name = \"netsh\\.exe\") AND ((process_command_line = RGX(\".*netsh\\\\ .*\") AND process_command_line = RGX(\".*show\\\\ .*\") AND process_command_line = RGX(\".*firewall\\\\ .*\")) AND (process_command_line = RGX(\".*config\\\\ .*\") OR process_command_line = RGX(\".*state\\\\ .*\") OR process_command_line = RGX(\".*rule\\\\ .*\") OR process_command_line = RGX(\".*name\\\\=all.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a0f425e9-617e-4d65-aed6-fc5d72385299"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

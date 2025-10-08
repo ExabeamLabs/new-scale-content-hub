@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Changes To PIM Settings",
+      "description": "Detects when changes are made to PIM roles Note: Unmapped fields: properties.message",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "properties.message = \"Update\\ role\\ setting\\ in\\ PIM\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f2362114-a4dc-4589-8478-92783e19a47b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "DNS HybridConnectionManager Service Bus",
+      "description": "Detects Azure Hybrid Connection Manager services querying the Azure service bus service Note: Unmapped fields: QueryName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(QueryName = RGX(\".*servicebus\\\\\\.windows\\\\\\.net.*\") AND process_path = RGX(\".*HybridConnectionManager.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f9cd1f48-8f10-42bc-bc5e-f85ef2ff34ca"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

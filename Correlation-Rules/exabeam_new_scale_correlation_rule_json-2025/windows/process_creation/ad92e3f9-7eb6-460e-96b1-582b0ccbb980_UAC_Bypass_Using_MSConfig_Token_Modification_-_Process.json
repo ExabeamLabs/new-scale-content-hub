@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "UAC Bypass Using MSConfig Token Modification - Process",
+      "description": "Detects the pattern of UAC Bypass using a msconfig GUI hack (UACMe 55)",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_integrity_level = \"High\" OR process_integrity_level = \"System\" OR process_integrity_level = \"S\\-1\\-16\\-16384\" OR process_integrity_level = \"S\\-1\\-16\\-12288\") AND parent_process_path = RGX(\"\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\pkgmgr\\\\\\.exe$\") AND process_command_line = \"\\\"C\\:\\\\Windows\\\\system32\\\\msconfig\\.exe\\\"\\ \\-5\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "75be8886-9a1a-408e-b7e1-dad2a8d3b5ca"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Persistence Via App Paths Default Property",
+      "description": "Detects changes to the \"Default\" property for keys located in the \\Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\ registry. Which might be used as a method of persistence\nThe entries found under App Paths are used primarily for the following purposes.\nFirst, to map an application's executable file name to that file's fully qualified path.\nSecond, to prepend information to the PATH environment variable on a per-application, per-process basis.\n Note: Unmapped fields: Details",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\App\\\\ Paths.*\") AND (registry_path = RGX(\"\\\\(Default\\\\)$\") OR registry_path = RGX(\"Path$\")) AND (Details = RGX(\".*\\\\\\\\Users\\\\\\\\Public.*\") OR Details = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") OR Details = RGX(\".*\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\") OR Details = RGX(\".*\\\\\\\\Desktop\\\\\\\\.*\") OR Details = RGX(\".*\\\\\\\\Downloads\\\\\\\\.*\") OR Details = RGX(\".*\\\\%temp\\\\%.*\") OR Details = RGX(\".*\\\\%tmp\\\\%.*\") OR Details = RGX(\".*iex.*\") OR Details = RGX(\".*Invoke\\\\-.*\") OR Details = RGX(\".*rundll32.*\") OR Details = RGX(\".*regsvr32.*\") OR Details = RGX(\".*mshta.*\") OR Details = RGX(\".*cscript.*\") OR Details = RGX(\".*wscript.*\") OR Details = RGX(\".*\\\\\\.bat.*\") OR Details = RGX(\".*\\\\\\.hta.*\") OR Details = RGX(\".*\\\\\\.dll.*\") OR Details = RGX(\".*\\\\\\.ps1.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4c8ed065-1a19-4f3f-8bf1-02eba6eb7c39"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

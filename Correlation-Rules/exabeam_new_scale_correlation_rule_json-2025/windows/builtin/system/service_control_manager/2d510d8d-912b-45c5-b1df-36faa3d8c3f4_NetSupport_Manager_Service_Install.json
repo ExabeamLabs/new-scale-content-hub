@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "NetSupport Manager Service Install",
+      "description": "Detects NetSupport Manager service installation on the target system. Note: Unmapped fields: Provider_Name, ImagePath, ServiceName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((Provider_Name = \"Service\\ Control\\ Manager\" AND event_id = 7045) AND (ImagePath = RGX(\".*\\\\\\\\NetSupport\\\\ Manager\\\\\\\\client32\\\\\\.exe.*\") OR ServiceName = \"Client32\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d22ab75f-0150-404f-83ee-23f90d00bc18"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

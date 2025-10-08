@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - CrackMapExec Process Patterns",
+      "description": "Detects suspicious process patterns found in logs when CrackMapExec is used",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_command_line = RGX(\".*tasklist\\\\ \\\\/fi\\\\ .*\") AND process_command_line = RGX(\".*Imagename\\\\ eq\\\\ lsass\\\\\\.exe.*\")) AND (process_command_line = RGX(\".*cmd\\\\\\.exe\\\\ \\\\/c\\\\ .*\") OR process_command_line = RGX(\".*cmd\\\\\\.exe\\\\ \\\\/r\\\\ .*\") OR process_command_line = RGX(\".*cmd\\\\\\.exe\\\\ \\\\/k\\\\ .*\") OR process_command_line = RGX(\".*cmd\\\\ \\\\/c\\\\ .*\") OR process_command_line = RGX(\".*cmd\\\\ \\\\/r\\\\ .*\") OR process_command_line = RGX(\".*cmd\\\\ \\\\/k\\\\ .*\")) AND (user = RGX(\".*AUTHORI.*\") OR user = RGX(\".*AUTORI.*\"))) OR (process_command_line = RGX(\".*do\\\\ rundll32\\\\\\.exe\\\\ C\\\\:\\\\\\\\windows\\\\\\\\System32\\\\\\\\comsvcs\\\\\\.dll\\\\,\\\\ MiniDump.*\") AND process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\ full.*\") AND process_command_line = RGX(\".*\\\\%\\\\%B.*\")) OR (process_command_line = RGX(\".*tasklist\\\\ \\\\/v\\\\ \\\\/fo\\\\ csv.*\") AND process_command_line = RGX(\".*findstr\\\\ \\\\/i\\\\ \\\\\"lsass\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d181380f-96b8-4e96-bfb9-2862d48fc21e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

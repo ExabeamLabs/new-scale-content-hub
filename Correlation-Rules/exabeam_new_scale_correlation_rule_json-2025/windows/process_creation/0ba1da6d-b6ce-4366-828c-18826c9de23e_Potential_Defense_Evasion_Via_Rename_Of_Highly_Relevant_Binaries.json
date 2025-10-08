@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Defense Evasion Via Rename Of Highly Relevant Binaries",
+      "description": "Detects the execution of a renamed binary often used by attackers or malware leveraging new Sysmon OriginalFileName datapoint.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_description = \"Execute\\ processes\\ remotely\" OR process_product = \"Sysinternals\\ PsExec\" OR (process_description = RGX(\"^Windows\\\\ PowerShell\") OR process_description = RGX(\"^pwsh\")) OR (process_original_file_name = \"certutil\\.exe\" OR process_original_file_name = \"cmstp\\.exe\" OR process_original_file_name = \"cscript\\.exe\" OR process_original_file_name = \"IE4UINIT\\.EXE\" OR process_original_file_name = \"mshta\\.exe\" OR process_original_file_name = \"msiexec\\.exe\" OR process_original_file_name = \"msxsl\\.exe\" OR process_original_file_name = \"powershell\\_ise\\.exe\" OR process_original_file_name = \"powershell\\.exe\" OR process_original_file_name = \"psexec\\.c\" OR process_original_file_name = \"psexec\\.exe\" OR process_original_file_name = \"psexesvc\\.exe\" OR process_original_file_name = \"pwsh\\.dll\" OR process_original_file_name = \"reg\\.exe\" OR process_original_file_name = \"regsvr32\\.exe\" OR process_original_file_name = \"rundll32\\.exe\" OR process_original_file_name = \"WerMgr\" OR process_original_file_name = \"wmic\\.exe\" OR process_original_file_name = \"wscript\\.exe\")) AND  NOT ((process_path = RGX(\"\\\\\\\\certutil\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cmstp\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\ie4uinit\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msiexec\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msxsl\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\_ise\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\psexec\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\psexec64\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\PSEXESVC\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\reg\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wermgr\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wmic\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "059e7af5-e7fb-4288-883b-ac259c9c520d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

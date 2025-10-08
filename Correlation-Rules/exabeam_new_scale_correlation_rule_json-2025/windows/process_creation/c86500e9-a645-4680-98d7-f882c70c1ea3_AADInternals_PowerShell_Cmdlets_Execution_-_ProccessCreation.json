@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "AADInternals PowerShell Cmdlets Execution - ProccessCreation",
+      "description": "Detects ADDInternals Cmdlet execution. A tool for administering Azure AD and Office 365. Which can be abused by threat actors to attack Azure AD or Office 365.",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\_ise\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\")) OR (process_original_file_name = \"PowerShell\\.Exe\" OR process_original_file_name = \"pwsh\\.dll\")) AND (process_command_line = RGX(\".*Add\\\\-AADInt.*\") OR process_command_line = RGX(\".*ConvertTo\\\\-AADInt.*\") OR process_command_line = RGX(\".*Disable\\\\-AADInt.*\") OR process_command_line = RGX(\".*Enable\\\\-AADInt.*\") OR process_command_line = RGX(\".*Export\\\\-AADInt.*\") OR process_command_line = RGX(\".*Find\\\\-AADInt.*\") OR process_command_line = RGX(\".*Get\\\\-AADInt.*\") OR process_command_line = RGX(\".*Grant\\\\-AADInt.*\") OR process_command_line = RGX(\".*Initialize\\\\-AADInt.*\") OR process_command_line = RGX(\".*Install\\\\-AADInt.*\") OR process_command_line = RGX(\".*Invoke\\\\-AADInt.*\") OR process_command_line = RGX(\".*Join\\\\-AADInt.*\") OR process_command_line = RGX(\".*New\\\\-AADInt.*\") OR process_command_line = RGX(\".*Open\\\\-AADInt.*\") OR process_command_line = RGX(\".*Read\\\\-AADInt.*\") OR process_command_line = RGX(\".*Register\\\\-AADInt.*\") OR process_command_line = RGX(\".*Remove\\\\-AADInt.*\") OR process_command_line = RGX(\".*Reset\\\\-AADInt.*\") OR process_command_line = RGX(\".*Resolve\\\\-AADInt.*\") OR process_command_line = RGX(\".*Restore\\\\-AADInt.*\") OR process_command_line = RGX(\".*Save\\\\-AADInt.*\") OR process_command_line = RGX(\".*Search\\\\-AADInt.*\") OR process_command_line = RGX(\".*Send\\\\-AADInt.*\") OR process_command_line = RGX(\".*Set\\\\-AADInt.*\") OR process_command_line = RGX(\".*Start\\\\-AADInt.*\") OR process_command_line = RGX(\".*Unprotect\\\\-AADInt.*\") OR process_command_line = RGX(\".*Update\\\\-AADInt.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "cc1d9dab-f160-4d84-84f9-b65df0ab9847"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

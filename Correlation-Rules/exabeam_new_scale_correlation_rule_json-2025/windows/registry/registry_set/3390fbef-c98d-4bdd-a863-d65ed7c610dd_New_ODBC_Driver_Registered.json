@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New ODBC Driver Registered",
+      "description": "Detects the registration of a new ODBC driver. Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\ODBC\\\\\\\\ODBCINST\\\\\\.INI\\\\\\\\.*\") AND registry_path = RGX(\"\\\\\\\\Driver$\")) AND  NOT ((registry_path = RGX(\".*\\\\\\\\SQL\\\\ Server\\\\\\\\.*\") AND Details = \"\\%WINDIR\\%\\\\System32\\\\SQLSRV32\\.dll\")) AND  NOT ((registry_path = RGX(\".*\\\\\\\\Microsoft\\\\ Access\\\\ .*\") AND Details = RGX(\"^C\\\\:\\\\\\\\Progra\") AND Details = RGX(\"\\\\\\\\ACEODBC\\\\\\.DLL$\")) OR (registry_path = RGX(\".*\\\\\\\\Microsoft\\\\ Excel\\\\ Driver.*\") AND Details = RGX(\"^C\\\\:\\\\\\\\Progra\") AND Details = RGX(\"\\\\\\\\ACEODBC\\\\\\.DLL$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "fa78af73-ccb3-44c0-9551-e3ab8838c8a4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

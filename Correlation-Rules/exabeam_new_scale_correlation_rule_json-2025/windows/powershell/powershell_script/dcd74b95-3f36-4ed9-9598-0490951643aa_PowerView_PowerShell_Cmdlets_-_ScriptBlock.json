@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PowerView PowerShell Cmdlets - ScriptBlock",
+      "description": "Detects Cmdlet names from PowerView of the PowerSploit exploitation framework. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Export\\\\-PowerViewCSV.*\") OR ScriptBlockText = RGX(\".*Find\\\\-DomainLocalGroupMember.*\") OR ScriptBlockText = RGX(\".*Find\\\\-DomainObjectPropertyOutlier.*\") OR ScriptBlockText = RGX(\".*Find\\\\-DomainProcess.*\") OR ScriptBlockText = RGX(\".*Find\\\\-DomainShare.*\") OR ScriptBlockText = RGX(\".*Find\\\\-DomainUserEvent.*\") OR ScriptBlockText = RGX(\".*Find\\\\-DomainUserLocation.*\") OR ScriptBlockText = RGX(\".*Find\\\\-ForeignGroup.*\") OR ScriptBlockText = RGX(\".*Find\\\\-ForeignUser.*\") OR ScriptBlockText = RGX(\".*Find\\\\-GPOComputerAdmin.*\") OR ScriptBlockText = RGX(\".*Find\\\\-GPOLocation.*\") OR ScriptBlockText = RGX(\".*Find\\\\-InterestingDomain.*\") OR ScriptBlockText = RGX(\".*Find\\\\-InterestingFile.*\") OR ScriptBlockText = RGX(\".*Find\\\\-LocalAdminAccess.*\") OR ScriptBlockText = RGX(\".*Find\\\\-ManagedSecurityGroups.*\") OR ScriptBlockText = RGX(\".*Get\\\\-CachedRDPConnection.*\") OR ScriptBlockText = RGX(\".*Get\\\\-DFSshare.*\") OR ScriptBlockText = RGX(\".*Get\\\\-DomainDFSShare.*\") OR ScriptBlockText = RGX(\".*Get\\\\-DomainDNSRecord.*\") OR ScriptBlockText = RGX(\".*Get\\\\-DomainDNSZone.*\") OR ScriptBlockText = RGX(\".*Get\\\\-DomainFileServer.*\") OR ScriptBlockText = RGX(\".*Get\\\\-DomainGPOComputerLocalGroupMapping.*\") OR ScriptBlockText = RGX(\".*Get\\\\-DomainGPOLocalGroup.*\") OR ScriptBlockText = RGX(\".*Get\\\\-DomainGPOUserLocalGroupMapping.*\") OR ScriptBlockText = RGX(\".*Get\\\\-LastLoggedOn.*\") OR ScriptBlockText = RGX(\".*Get\\\\-LoggedOnLocal.*\") OR ScriptBlockText = RGX(\".*Get\\\\-NetFileServer.*\") OR ScriptBlockText = RGX(\".*Get\\\\-NetForest.*\") OR ScriptBlockText = RGX(\".*Get\\\\-NetGPOGroup.*\") OR ScriptBlockText = RGX(\".*Get\\\\-NetProcess.*\") OR ScriptBlockText = RGX(\".*Get\\\\-NetRDPSession.*\") OR ScriptBlockText = RGX(\".*Get\\\\-RegistryMountedDrive.*\") OR ScriptBlockText = RGX(\".*Get\\\\-RegLoggedOn.*\") OR ScriptBlockText = RGX(\".*Get\\\\-WMIRegCachedRDPConnection.*\") OR ScriptBlockText = RGX(\".*Get\\\\-WMIRegLastLoggedOn.*\") OR ScriptBlockText = RGX(\".*Get\\\\-WMIRegMountedDrive.*\") OR ScriptBlockText = RGX(\".*Get\\\\-WMIRegProxy.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-ACLScanner.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-CheckLocalAdminAccess.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-EnumerateLocalAdmin.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-EventHunter.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-FileFinder.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-Kerberoast.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-MapDomainTrust.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-ProcessHunter.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-RevertToSelf.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-ShareFinder.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-UserHunter.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-UserImpersonation.*\") OR ScriptBlockText = RGX(\".*Remove\\\\-RemoteConnection.*\") OR ScriptBlockText = RGX(\".*Request\\\\-SPNTicket.*\") OR ScriptBlockText = RGX(\".*Resolve\\\\-IPAddress.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "cc2e4c1f-8e5b-4bc3-8ff1-24db94c305ed"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

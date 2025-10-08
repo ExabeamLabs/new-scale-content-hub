@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Powershell Add Name Resolution Policy Table Rule",
+      "description": "Detects powershell scripts that adds a Name Resolution Policy Table (NRPT) rule for the specified namespace.\nThis will bypass the default DNS server and uses a specified server for answering the query.\n Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Add\\\\-DnsClientNrptRule.*\") AND ScriptBlockText = RGX(\".*\\\\-Namesp.*\") AND ScriptBlockText = RGX(\".*\\\\-NameSe.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "67ff86ce-7681-4380-adad-7b5a241d86d8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

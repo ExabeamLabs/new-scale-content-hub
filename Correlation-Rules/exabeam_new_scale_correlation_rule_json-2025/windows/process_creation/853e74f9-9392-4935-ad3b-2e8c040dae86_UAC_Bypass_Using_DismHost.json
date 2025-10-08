@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "UAC Bypass Using DismHost",
+      "description": "Detects the pattern of UAC Bypass using DismHost DLL hijacking (UACMe 63)",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((parent_process_path = RGX(\".*C\\\\:\\\\\\\\Users\\\\\\\\.*\") AND parent_process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") AND parent_process_path = RGX(\".*\\\\\\\\DismHost\\\\\\.exe.*\")) AND (process_integrity_level = \"High\" OR process_integrity_level = \"System\" OR process_integrity_level = \"S\\-1\\-16\\-16384\" OR process_integrity_level = \"S\\-1\\-16\\-12288\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b24ea56e-f7ef-4b99-a343-feb894a83729"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

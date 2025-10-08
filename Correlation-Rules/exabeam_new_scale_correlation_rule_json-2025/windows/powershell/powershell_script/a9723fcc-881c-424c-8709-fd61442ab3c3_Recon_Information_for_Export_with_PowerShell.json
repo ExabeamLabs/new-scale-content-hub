@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Recon Information for Export with PowerShell",
+      "description": "Once established within a system or network, an adversary may use automated techniques for collecting internal data Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ScriptBlockText = RGX(\".*Get\\\\-Service\\\\ .*\") OR ScriptBlockText = RGX(\".*Get\\\\-ChildItem\\\\ .*\") OR ScriptBlockText = RGX(\".*Get\\\\-Process\\\\ .*\")) AND ScriptBlockText = RGX(\".*\\\\>\\\\ \\\\$env\\\\:TEMP\\\\\\\\.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c5715c44-d56b-4548-96c6-a91920bef3f6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

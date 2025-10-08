@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "LOLBAS Data Exfiltration by DataSvcUtil.exe",
+      "description": "Detects when a user performs data exfiltration by using DataSvcUtil.exe",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*\\\\/in\\\\:.*\") OR process_command_line = RGX(\".*\\\\/out\\\\:.*\") OR process_command_line = RGX(\".*\\\\/uri\\\\:.*\")) AND (process_path = RGX(\"\\\\\\\\DataSvcUtil\\\\\\.exe$\") OR process_original_file_name = \"DataSvcUtil\\.exe\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4a538ad1-96bd-414b-9e9e-9751691b2146"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

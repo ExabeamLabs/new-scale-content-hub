@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "AWS EC2 VM Export Failure",
+      "description": "An attempt to export an AWS EC2 instance has been detected. A VM Export might indicate an attempt to extract information from an instance. Note: Unmapped fields: eventName, eventSource, errorMessage, errorCode, responseElements",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(eventName = \"CreateInstanceExportTask\" AND eventSource = \"ec2\\.amazonaws\\.com\") AND  NOT (errorMessage = RGX(\".**.*\") OR errorCode = RGX(\".**.*\") OR responseElements = RGX(\".*Failure.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4a741767-e238-41c8-9708-bb45eb2129bc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

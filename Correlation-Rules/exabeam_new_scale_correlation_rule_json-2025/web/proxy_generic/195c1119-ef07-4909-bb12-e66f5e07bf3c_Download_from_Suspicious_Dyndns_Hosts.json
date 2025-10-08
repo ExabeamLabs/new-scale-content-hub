@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Download from Suspicious Dyndns Hosts",
+      "description": "Detects download of certain file types from hosts with dynamic DNS names (selected list) Note: Unmapped fields: c-uri-extension, cs-host",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((c-uri-extension = \"exe\" OR c-uri-extension = \"vbs\" OR c-uri-extension = \"bat\" OR c-uri-extension = \"rar\" OR c-uri-extension = \"ps1\" OR c-uri-extension = \"doc\" OR c-uri-extension = \"docm\" OR c-uri-extension = \"xls\" OR c-uri-extension = \"xlsm\" OR c-uri-extension = \"pptm\" OR c-uri-extension = \"rtf\" OR c-uri-extension = \"hta\" OR c-uri-extension = \"dll\" OR c-uri-extension = \"ws\" OR c-uri-extension = \"wsf\" OR c-uri-extension = \"sct\" OR c-uri-extension = \"zip\") AND (cs-host = RGX(\"\\\\\\.hopto\\\\\\.org$\") OR cs-host = RGX(\"\\\\\\.no\\\\-ip\\\\\\.org$\") OR cs-host = RGX(\"\\\\\\.no\\\\-ip\\\\\\.info$\") OR cs-host = RGX(\"\\\\\\.no\\\\-ip\\\\\\.biz$\") OR cs-host = RGX(\"\\\\\\.no\\\\-ip\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.noip\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.ddns\\\\\\.name$\") OR cs-host = RGX(\"\\\\\\.myftp\\\\\\.org$\") OR cs-host = RGX(\"\\\\\\.myftp\\\\\\.biz$\") OR cs-host = RGX(\"\\\\\\.serveblog\\\\\\.net$\") OR cs-host = RGX(\"\\\\\\.servebeer\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.servemp3\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.serveftp\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.servequake\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.servehalflife\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.servehttp\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.servegame\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.servepics\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.myvnc\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.ignorelist\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.jkub\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.dlinkddns\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.jumpingcrab\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.ddns\\\\\\.info$\") OR cs-host = RGX(\"\\\\\\.mooo\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.dns\\\\-dns\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.strangled\\\\\\.net$\") OR cs-host = RGX(\"\\\\\\.adultdns\\\\\\.net$\") OR cs-host = RGX(\"\\\\\\.craftx\\\\\\.biz$\") OR cs-host = RGX(\"\\\\\\.ddns01\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.dns53\\\\\\.biz$\") OR cs-host = RGX(\"\\\\\\.dnsapi\\\\\\.info$\") OR cs-host = RGX(\"\\\\\\.dnsd\\\\\\.info$\") OR cs-host = RGX(\"\\\\\\.dnsdynamic\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.dnsdynamic\\\\\\.net$\") OR cs-host = RGX(\"\\\\\\.dnsget\\\\\\.org$\") OR cs-host = RGX(\"\\\\\\.fe100\\\\\\.net$\") OR cs-host = RGX(\"\\\\\\.flashserv\\\\\\.net$\") OR cs-host = RGX(\"\\\\\\.ftp21\\\\\\.net$\") OR cs-host = RGX(\"\\\\\\.http01\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.http80\\\\\\.info$\") OR cs-host = RGX(\"\\\\\\.https443\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.imap01\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.kadm5\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.mysq1\\\\\\.net$\") OR cs-host = RGX(\"\\\\\\.ns360\\\\\\.info$\") OR cs-host = RGX(\"\\\\\\.ntdll\\\\\\.net$\") OR cs-host = RGX(\"\\\\\\.ole32\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.proxy8080\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.sql01\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.ssh01\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.ssh22\\\\\\.net$\") OR cs-host = RGX(\"\\\\\\.tempors\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.tftpd\\\\\\.net$\") OR cs-host = RGX(\"\\\\\\.ttl60\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.ttl60\\\\\\.org$\") OR cs-host = RGX(\"\\\\\\.user32\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.voip01\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.wow64\\\\\\.net$\") OR cs-host = RGX(\"\\\\\\.x64\\\\\\.me$\") OR cs-host = RGX(\"\\\\\\.xns01\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.dyndns\\\\\\.org$\") OR cs-host = RGX(\"\\\\\\.dyndns\\\\\\.info$\") OR cs-host = RGX(\"\\\\\\.dyndns\\\\\\.tv$\") OR cs-host = RGX(\"\\\\\\.dyndns\\\\-at\\\\-home\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.dnsomatic\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.zapto\\\\\\.org$\") OR cs-host = RGX(\"\\\\\\.webhop\\\\\\.net$\") OR cs-host = RGX(\"\\\\\\.25u\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.slyip\\\\\\.net$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d1bb2d03-2e14-4018-87a0-085271f37abc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

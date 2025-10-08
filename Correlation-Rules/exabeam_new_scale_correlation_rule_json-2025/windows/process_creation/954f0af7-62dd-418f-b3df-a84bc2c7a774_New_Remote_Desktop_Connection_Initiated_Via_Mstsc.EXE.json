@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New Remote Desktop Connection Initiated Via Mstsc.EXE",
+      "description": "Detects the usage of \"mstsc.exe\" with the \"/v\" flag to initiate a connection to a remote server.\nAdversaries may use valid accounts to log into a computer using the Remote Desktop Protocol (RDP). The adversary may then perform actions as the logged-on user.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\mstsc\\\\\\.exe$\") OR process_original_file_name = \"mstsc\\.exe\") AND process_command_line = RGX(\".*\\\\ \\\\/v\\\\:.*\")) AND  NOT ((parent_process_path = \"C\\:\\\\Windows\\\\System32\\\\lxss\\\\wslhost\\.exe\" AND process_command_line = RGX(\".*C\\\\:\\\\\\\\ProgramData\\\\\\\\Microsoft\\\\\\\\WSL\\\\\\\\wslg\\\\\\.rdp.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "889f13eb-a04f-4cd2-b678-eb898609b3a4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

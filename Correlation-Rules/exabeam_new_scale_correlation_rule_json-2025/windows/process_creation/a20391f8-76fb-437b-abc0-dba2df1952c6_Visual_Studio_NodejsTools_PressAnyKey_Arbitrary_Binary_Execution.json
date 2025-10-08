@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Visual Studio NodejsTools PressAnyKey Arbitrary Binary Execution",
+      "description": "Detects child processes of Microsoft.NodejsTools.PressAnyKey.exe that can be used to execute any other binary",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "parent_process_path = RGX(\"\\\\\\\\Microsoft\\\\\\.NodejsTools\\\\\\.PressAnyKey\\\\\\.exe$\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8f71b3ad-d4d3-46bc-82bc-13617f626a0d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

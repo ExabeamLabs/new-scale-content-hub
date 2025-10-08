@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Operator Bloopers Cobalt Strike Modules",
+      "description": "Detects Cobalt Strike module/commands accidentally entered in CMD shell",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_original_file_name = \"Cmd\\.Exe\" OR process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\")) AND (process_command_line = RGX(\".*Invoke\\\\-UserHunter.*\") OR process_command_line = RGX(\".*Invoke\\\\-ShareFinder.*\") OR process_command_line = RGX(\".*Invoke\\\\-Kerberoast.*\") OR process_command_line = RGX(\".*Invoke\\\\-SMBAutoBrute.*\") OR process_command_line = RGX(\".*Invoke\\\\-Nightmare.*\") OR process_command_line = RGX(\".*zerologon.*\") OR process_command_line = RGX(\".*av\\\\_query.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "61e1d808-8055-4adb-8766-51f6b8026695"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

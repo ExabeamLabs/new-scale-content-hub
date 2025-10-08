@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Local Groups Discovery - Linux",
+      "description": "Detects enumeration of local system groups. Adversaries may attempt to find local system groups and permission settings",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/groups$\") OR ((process_path = RGX(\"\\\\/cat$\") OR process_path = RGX(\"\\\\/ed$\") OR process_path = RGX(\"\\\\/head$\") OR process_path = RGX(\"\\\\/less$\") OR process_path = RGX(\"\\\\/more$\") OR process_path = RGX(\"\\\\/nano$\") OR process_path = RGX(\"\\\\/tail$\") OR process_path = RGX(\"\\\\/vi$\") OR process_path = RGX(\"\\\\/vim$\")) AND process_command_line = RGX(\".*\\\\/etc\\\\/group.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "75657a78-24f4-4da2-9de3-ea5804f35ecc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

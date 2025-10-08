@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PAExec Service Installation",
+      "description": "Detects PAExec service installation Note: Unmapped fields: Provider_Name, ServiceName, ImagePath",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((Provider_Name = \"Service\\ Control\\ Manager\" AND event_id = 7045) AND (ServiceName = RGX(\"^PAExec\\\\-\") OR ImagePath = RGX(\"^C\\\\:\\\\\\\\WINDOWS\\\\\\\\PAExec\\\\-\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6fa48fe2-e7fd-4e2b-884e-8dd538391509"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

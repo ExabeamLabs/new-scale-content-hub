@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Function Call From Undocumented COM Interface EditionUpgradeManager",
+      "description": "Detects function calls from the EditionUpgradeManager COM interface. Which is an interface that is not used by standard executables. Note: Unmapped fields: CallTrace",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "CallTrace = RGX(\".*editionupgrademanagerobj\\\\\\.dll.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "39cc22cd-36a4-40c8-bfb5-0650bbe8b94b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

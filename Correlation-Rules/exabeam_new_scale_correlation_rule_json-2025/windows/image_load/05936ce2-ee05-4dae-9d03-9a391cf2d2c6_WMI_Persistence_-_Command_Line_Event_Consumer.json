@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "WMI Persistence - Command Line Event Consumer",
+      "description": "Detects WMI command line event consumers Note: Unmapped fields: ImageLoaded",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = \"C\\:\\\\Windows\\\\System32\\\\wbem\\\\WmiPrvSE\\.exe\" AND ImageLoaded = RGX(\"\\\\\\\\wbemcons\\\\\\.dll$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b7e3b981-a95e-4748-b02a-6c3903df8334"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

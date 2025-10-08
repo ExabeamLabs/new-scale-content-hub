@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation CLIP+ Launcher",
+      "description": "Detects Obfuscated use of Clip.exe to execute PowerShell",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*cmd.*\") AND process_command_line = RGX(\".*\\\\&\\\\&.*\") AND process_command_line = RGX(\".*clipboard\\\\]\\\\:\\\\:.*\") AND process_command_line = RGX(\".*\\\\-f.*\")) AND (process_command_line = RGX(\".*\\\\/c.*\") OR process_command_line = RGX(\".*\\\\/r.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4e653632-ed68-4cff-abe6-764279ed165e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

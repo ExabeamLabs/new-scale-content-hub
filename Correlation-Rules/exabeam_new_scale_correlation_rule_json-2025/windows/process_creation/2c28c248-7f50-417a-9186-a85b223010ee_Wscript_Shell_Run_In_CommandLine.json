@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Wscript Shell Run In CommandLine",
+      "description": "Detects the presence of the keywords \"Wscript\", \"Shell\" and \"Run\" in the command, which could indicate a suspicious activity",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*Wscript\\\\\\..*\") AND process_command_line = RGX(\".*\\\\\\.Shell.*\") AND process_command_line = RGX(\".*\\\\\\.Run.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6c903439-c4c0-41aa-a494-bc811a9091ef"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

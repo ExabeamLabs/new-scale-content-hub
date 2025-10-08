@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Startup Folder File Write",
+      "description": "A General detection for files being created in the Windows startup directory. This could be an indicator of persistence.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "file_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\Start\\\\ Menu\\\\\\\\Programs\\\\\\\\StartUp.*\") AND  NOT ((process_path = \"C\\:\\\\Windows\\\\System32\\\\wuauclt\\.exe\" OR file_path = RGX(\"^C\\\\:\\\\\\\\\\\\$WINDOWS\\\\\\.\\\\~BT\\\\\\\\NewOS\\\\\\\\\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d0616f85-8cca-4e38-8b94-f8e2ad92afd6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

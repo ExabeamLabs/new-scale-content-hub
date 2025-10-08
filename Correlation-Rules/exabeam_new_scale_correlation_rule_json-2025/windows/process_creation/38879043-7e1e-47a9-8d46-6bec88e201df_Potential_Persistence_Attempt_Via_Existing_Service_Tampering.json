@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Persistence Attempt Via Existing Service Tampering",
+      "description": "Detects the modification of an existing service in order to execute an arbitrary payload when the service is started or killed as a potential method for persistence.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*sc\\\\ .*\") AND process_command_line = RGX(\".*config\\\\ .*\") AND process_command_line = RGX(\".*binpath\\\\=.*\")) OR (process_command_line = RGX(\".*sc\\\\ .*\") AND process_command_line = RGX(\".*failure.*\") AND process_command_line = RGX(\".*command\\\\=.*\"))) OR (((process_command_line = RGX(\".*reg\\\\ .*\") AND process_command_line = RGX(\".*add\\\\ .*\") AND process_command_line = RGX(\".*FailureCommand.*\")) OR (process_command_line = RGX(\".*reg\\\\ .*\") AND process_command_line = RGX(\".*add\\\\ .*\") AND process_command_line = RGX(\".*ImagePath.*\"))) AND (process_command_line = RGX(\".*\\\\\\.sh.*\") OR process_command_line = RGX(\".*\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\\\.dll.*\") OR process_command_line = RGX(\".*\\\\\\.bin\\\\$.*\") OR process_command_line = RGX(\".*\\\\\\.bat.*\") OR process_command_line = RGX(\".*\\\\\\.cmd.*\") OR process_command_line = RGX(\".*\\\\\\.js.*\") OR process_command_line = RGX(\".*\\\\\\.msh\\\\$.*\") OR process_command_line = RGX(\".*\\\\\\.reg\\\\$.*\") OR process_command_line = RGX(\".*\\\\\\.scr.*\") OR process_command_line = RGX(\".*\\\\\\.ps.*\") OR process_command_line = RGX(\".*\\\\\\.vb.*\") OR process_command_line = RGX(\".*\\\\\\.jar.*\") OR process_command_line = RGX(\".*\\\\\\.pl.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "93de2413-9875-471d-9ced-d71e2d4be489"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

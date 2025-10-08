@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "NTDS.DIT Creation By Uncommon Parent Process",
+      "description": "Detects creation of a file named \"ntds.dit\" (Active Directory Database) by an uncommon parent process or directory",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "file_path = RGX(\"\\\\\\\\ntds\\\\\\.dit$\") AND ((parent_process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\httpd\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\nginx\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\php\\\\-cgi\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\w3wp\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\")) OR (parent_process_path = RGX(\".*\\\\\\\\apache.*\") OR parent_process_path = RGX(\".*\\\\\\\\tomcat.*\") OR parent_process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\.*\") OR parent_process_path = RGX(\".*\\\\\\\\Temp\\\\\\\\.*\") OR parent_process_path = RGX(\".*\\\\\\\\Public\\\\\\\\.*\") OR parent_process_path = RGX(\".*\\\\\\\\PerfLogs\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7b98f00a-f10f-4a56-8652-36205ece476c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows Spooler Service Suspicious Binary Load",
+      "description": "Detect DLL Load from Spooler Service backup folder Note: Unmapped fields: ImageLoaded",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\spoolsv\\\\\\.exe$\") AND (ImageLoaded = RGX(\".*\\\\\\\\Windows\\\\\\\\System32\\\\\\\\spool\\\\\\\\drivers\\\\\\\\x64\\\\\\\\3\\\\\\\\.*\") OR ImageLoaded = RGX(\".*\\\\\\\\Windows\\\\\\\\System32\\\\\\\\spool\\\\\\\\drivers\\\\\\\\x64\\\\\\\\4\\\\\\\\.*\")) AND ImageLoaded = RGX(\"\\\\\\.dll$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "54de1014-ee6b-4667-b0bf-d4a3278050b3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

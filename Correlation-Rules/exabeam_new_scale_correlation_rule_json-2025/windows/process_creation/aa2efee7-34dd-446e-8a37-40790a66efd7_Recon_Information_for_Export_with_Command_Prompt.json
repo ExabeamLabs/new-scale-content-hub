@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Recon Information for Export with Command Prompt",
+      "description": "Once established within a system or network, an adversary may use automated techniques for collecting internal data.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\tree\\\\\\.com$\") OR process_path = RGX(\"\\\\\\\\WMIC\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\doskey\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\sc\\\\\\.exe$\")) OR (process_original_file_name = \"wmic\\.exe\" OR process_original_file_name = \"DOSKEY\\.EXE\" OR process_original_file_name = \"sc\\.exe\")) AND (parent_process_command_line = RGX(\".*\\\\ \\\\>\\\\ \\\\%TEMP\\\\%\\\\\\\\.*\") OR parent_process_command_line = RGX(\".*\\\\ \\\\>\\\\ \\\\%TMP\\\\%\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a65b6c45-fb1e-42c9-b5b1-ec0af8b38b95"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New CA Policy by Non-approved Actor",
+      "description": "Monitor and alert on conditional access changes. Note: Unmapped fields: properties.message",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "properties.message = \"Add\\ conditional\\ access\\ policy\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6f0ca977-b778-4009-8fe8-ae64217ab42a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

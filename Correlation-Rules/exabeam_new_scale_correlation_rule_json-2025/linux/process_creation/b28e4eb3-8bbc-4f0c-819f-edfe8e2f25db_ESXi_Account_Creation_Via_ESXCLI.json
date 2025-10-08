@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "ESXi Account Creation Via ESXCLI",
+      "description": "Detects user account creation on ESXi system via esxcli",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/esxcli$\") AND (process_command_line = RGX(\".*system\\\\ .*\") AND process_command_line = RGX(\".*account\\\\ .*\") AND process_command_line = RGX(\".*add\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "afb9e995-fde5-4a3a-ad43-b7cb6f399ac4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

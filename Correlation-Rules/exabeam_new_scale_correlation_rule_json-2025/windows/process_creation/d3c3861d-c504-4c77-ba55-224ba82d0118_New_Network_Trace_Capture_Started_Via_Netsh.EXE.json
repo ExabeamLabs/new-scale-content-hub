@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New Network Trace Capture Started Via Netsh.EXE",
+      "description": "Detects the execution of netsh with the \"trace\" flag in order to start a network capture",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\netsh\\\\\\.exe$\") OR process_original_file_name = \"netsh\\.exe\") AND (process_command_line = RGX(\".*trace.*\") AND process_command_line = RGX(\".*start.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d87871f9-f04b-4813-bbad-24cf790914dc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "User Access Blocked by Azure Conditional Access",
+      "description": "Detect access has been blocked by Conditional Access policies.\nThe access policy does not allow token issuance which might be sights\u2248 of unauthorizeed login to valid accounts.\n Note: Unmapped fields: ResultType",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ResultType = 53003",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4f95b672-89ac-4873-8f44-0c7856d16f19"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious High IntegrityLevel Conhost Legacy Option",
+      "description": "ForceV1 asks for information directly from the kernel space. Conhost connects to the console application. High IntegrityLevel means the process is running with elevated privileges, such as an Administrator context.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_integrity_level = \"High\" OR process_integrity_level = \"S\\-1\\-16\\-12288\") AND (process_command_line = RGX(\".*conhost\\\\\\.exe.*\") AND process_command_line = RGX(\".*0xffffffff.*\") AND process_command_line = RGX(\".*\\\\-ForceV1.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "77823294-5c0a-41f8-ad46-d0c8cb9f20fe"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

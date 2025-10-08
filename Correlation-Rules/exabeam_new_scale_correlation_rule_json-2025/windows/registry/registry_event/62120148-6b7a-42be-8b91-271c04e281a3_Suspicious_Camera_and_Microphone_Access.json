@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Camera and Microphone Access",
+      "description": "Detects Processes accessing the camera and microphone from suspicious folder",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((registry_path = RGX(\".*\\\\\\\\Software\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\CapabilityAccessManager\\\\\\\\ConsentStore\\\\\\\\.*\") AND registry_path = RGX(\".*\\\\\\\\NonPackaged.*\")) AND (registry_path = RGX(\".*microphone.*\") OR registry_path = RGX(\".*webcam.*\")) AND (registry_path = RGX(\".*\\\\:\\\\#Windows\\\\#Temp\\\\#.*\") OR registry_path = RGX(\".*\\\\:\\\\#\\\\$Recycle\\\\\\.bin\\\\#.*\") OR registry_path = RGX(\".*\\\\:\\\\#Temp\\\\#.*\") OR registry_path = RGX(\".*\\\\:\\\\#Users\\\\#Public\\\\#.*\") OR registry_path = RGX(\".*\\\\:\\\\#Users\\\\#Default\\\\#.*\") OR registry_path = RGX(\".*\\\\:\\\\#Users\\\\#Desktop\\\\#.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7c82dc47-21ad-4fb5-9c1f-06c88acdc3ac"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential SMB Relay Attack Tool Execution",
+      "description": "Detects different hacktools used for relay attacks on Windows for privilege escalation",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\".*PetitPotam.*\") OR process_path = RGX(\".*RottenPotato.*\") OR process_path = RGX(\".*HotPotato.*\") OR process_path = RGX(\".*JuicyPotato.*\") OR process_path = RGX(\".*\\\\\\\\just\\\\_dce\\\\_.*\") OR process_path = RGX(\".*Juicy\\\\ Potato.*\") OR process_path = RGX(\".*\\\\\\\\temp\\\\\\\\rot\\\\\\.exe.*\") OR process_path = RGX(\".*\\\\\\\\Potato\\\\\\.exe.*\") OR process_path = RGX(\".*\\\\\\\\SpoolSample\\\\\\.exe.*\") OR process_path = RGX(\".*\\\\\\\\Responder\\\\\\.exe.*\") OR process_path = RGX(\".*\\\\\\\\smbrelayx.*\") OR process_path = RGX(\".*\\\\\\\\ntlmrelayx.*\") OR process_path = RGX(\".*\\\\\\\\LocalPotato.*\")) OR (process_command_line = RGX(\".*Invoke\\\\-Tater.*\") OR process_command_line = RGX(\".*\\\\ smbrelay.*\") OR process_command_line = RGX(\".*\\\\ ntlmrelay.*\") OR process_command_line = RGX(\".*cme\\\\ smb\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\/ntlm\\\\:NTLMhash\\\\ .*\") OR process_command_line = RGX(\".*Invoke\\\\-PetitPotam.*\") OR process_command_line = RGX(\".*\\\\\\.exe\\\\ \\\\-t\\\\ *\\\\ \\\\-p\\\\ .*\")) OR (process_command_line = RGX(\".*\\\\\\.exe\\\\ \\\\-c\\\\ \\\\\"\\\\{.*\") AND process_command_line = RGX(\"\\\\}\\\\\"\\\\ \\\\-z$\"))) AND  NOT ((process_path = RGX(\".*HotPotatoes6.*\") OR process_path = RGX(\".*HotPotatoes7.*\") OR process_path = RGX(\".*HotPotatoes\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4c3de853-2cd4-4f1c-9d62-9f946c3f704e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

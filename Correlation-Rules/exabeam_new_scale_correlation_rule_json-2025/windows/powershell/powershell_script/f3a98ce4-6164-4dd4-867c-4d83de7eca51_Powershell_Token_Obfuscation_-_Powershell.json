@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Powershell Token Obfuscation - Powershell",
+      "description": "Detects TOKEN OBFUSCATION technique from Invoke-Obfuscation Note: Unmapped fields: ScriptBlockText, Path",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\"\\w+`(\\w+|-|.)`[\\w+|\\s]\") OR ScriptBlockText = RGX(\"({\\d}){2,}\"\\s*-f\") OR ScriptBlockText = RGX(\"(?i)${`?e`?n`?v`?:`?p`?a`?t`?h`?}\")) AND  NOT (ScriptBlockText = RGX(\".*\\\\$\\\\{env\\\\:path\\\\}.*\") OR (ScriptBlockText = RGX(\".*it\\\\ will\\\\ return\\\\ true\\\\ or\\\\ false\\\\ instead.*\") OR ScriptBlockText = RGX(\".*The\\\\ function\\\\ also\\\\ prevents\\\\ \\\\`Get\\\\-ItemProperty\\\\`\\\\ from\\\\ failing.*\")) OR (Path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Microsoft\\\\\\\\Exchange\\\\ Server\\\\\\\\\") AND Path = RGX(\"\\\\\\\\bin\\\\\\\\servicecontrol\\\\\\.ps1$\") AND ScriptBlockText = RGX(\".*\\\\`r\\\\`n.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "957f2fdb-f9a8-4e01-a9c9-e8375a308ee0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

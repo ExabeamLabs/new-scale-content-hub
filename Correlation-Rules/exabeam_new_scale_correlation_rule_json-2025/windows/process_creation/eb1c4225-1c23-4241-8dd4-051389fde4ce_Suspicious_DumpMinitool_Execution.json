@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious DumpMinitool Execution",
+      "description": "Detects suspicious ways to use the \"DumpMinitool.exe\" binary",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\DumpMinitool\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\DumpMinitool\\\\\\.x86\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\DumpMinitool\\\\\\.arm64\\\\\\.exe$\")) OR (process_original_file_name = \"DumpMinitool\\.exe\" OR process_original_file_name = \"DumpMinitool\\.x86\\.exe\" OR process_original_file_name = \"DumpMinitool\\.arm64\\.exe\")) AND (( NOT ((process_path = RGX(\".*\\\\\\\\Microsoft\\\\ Visual\\\\ Studio\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\Extensions\\\\\\\\.*\")))) OR process_command_line = RGX(\".*\\\\\\.txt.*\") OR ((process_command_line = RGX(\".*\\\\ Full.*\") OR process_command_line = RGX(\".*\\\\ Mini.*\") OR process_command_line = RGX(\".*\\\\ WithHeap.*\")) AND  NOT (process_command_line = RGX(\".*\\\\-\\\\-dumpType.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "fa94867f-dfba-4ae2-af66-a7d53030dde5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

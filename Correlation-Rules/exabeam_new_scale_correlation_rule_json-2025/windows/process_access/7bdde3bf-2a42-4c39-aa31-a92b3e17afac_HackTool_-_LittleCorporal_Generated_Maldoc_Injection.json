@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - LittleCorporal Generated Maldoc Injection",
+      "description": "Detects the process injection of a LittleCorporal generated Maldoc. Note: Unmapped fields: SourceImage, CallTrace",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(SourceImage = RGX(\"\\\\\\\\winword\\\\\\.exe$\") AND (CallTrace = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Microsoft\\\\\\.NET\\\\\\\\Framework64\\\\\\\\v2\\\\\\..*\") AND CallTrace = RGX(\".*UNKNOWN.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2f4f672c-3c9f-44ff-b67c-462c6cea696b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

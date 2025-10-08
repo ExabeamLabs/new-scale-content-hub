@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "UAC Bypass With Fake DLL",
+      "description": "Attempts to load dismcore.dll after dropping it Note: Unmapped fields: ImageLoaded",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\dism\\\\\\.exe$\") AND ImageLoaded = RGX(\"\\\\\\\\dismcore\\\\\\.dll$\")) AND  NOT (ImageLoaded = \"C\\:\\\\Windows\\\\System32\\\\Dism\\\\dismcore\\.dll\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "abef64d5-2a5b-4363-8363-8a7ec664c518"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

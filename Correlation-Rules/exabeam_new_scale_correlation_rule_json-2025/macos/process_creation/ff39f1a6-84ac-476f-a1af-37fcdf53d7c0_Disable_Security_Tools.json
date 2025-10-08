@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Disable Security Tools",
+      "description": "Detects disabling security tools",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = \"\\/bin\\/launchctl\" AND process_command_line = RGX(\".*unload.*\")) AND (process_command_line = RGX(\".*com\\\\\\.objective\\\\-see\\\\\\.lulu\\\\\\.plist.*\") OR process_command_line = RGX(\".*com\\\\\\.objective\\\\-see\\\\\\.blockblock\\\\\\.plist.*\") OR process_command_line = RGX(\".*com\\\\\\.google\\\\\\.santad\\\\\\.plist.*\") OR process_command_line = RGX(\".*com\\\\\\.carbonblack\\\\\\.defense\\\\\\.daemon\\\\\\.plist.*\") OR process_command_line = RGX(\".*com\\\\\\.carbonblack\\\\\\.daemon\\\\\\.plist.*\") OR process_command_line = RGX(\".*at\\\\\\.obdev\\\\\\.littlesnitchd\\\\\\.plist.*\") OR process_command_line = RGX(\".*com\\\\\\.tenablesecurity\\\\\\.nessusagent\\\\\\.plist.*\") OR process_command_line = RGX(\".*com\\\\\\.opendns\\\\\\.osx\\\\\\.RoamingClientConfigUpdater\\\\\\.plist.*\") OR process_command_line = RGX(\".*com\\\\\\.crowdstrike\\\\\\.falcond\\\\\\.plist.*\") OR process_command_line = RGX(\".*com\\\\\\.crowdstrike\\\\\\.userdaemon\\\\\\.plist.*\") OR process_command_line = RGX(\".*osquery.*\") OR process_command_line = RGX(\".*filebeat.*\") OR process_command_line = RGX(\".*auditbeat.*\") OR process_command_line = RGX(\".*packetbeat.*\") OR process_command_line = RGX(\".*td\\\\-agent.*\"))) OR (process_path = \"\\/usr\\/sbin\\/spctl\" AND process_command_line = RGX(\".*disable.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "fce9d82d-e463-4abf-9b0d-d8a3a62c776c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

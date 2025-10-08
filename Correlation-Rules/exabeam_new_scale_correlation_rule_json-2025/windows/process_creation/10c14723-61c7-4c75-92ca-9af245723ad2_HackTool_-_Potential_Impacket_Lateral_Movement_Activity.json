@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - Potential Impacket Lateral Movement Activity",
+      "description": "Detects wmiexec/dcomexec/atexec/smbexec from Impacket framework",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((parent_process_path = RGX(\"\\\\\\\\wmiprvse\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\mmc\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\explorer\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\services\\\\\\.exe$\")) AND (process_command_line = RGX(\".*cmd\\\\\\.exe.*\") AND process_command_line = RGX(\".*\\\\/Q.*\") AND process_command_line = RGX(\".*\\\\/c.*\") AND process_command_line = RGX(\".*\\\\\\\\\\\\\\\\127\\\\\\.0\\\\\\.0\\\\\\.1\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\&1.*\"))) OR ((parent_process_command_line = RGX(\".*svchost\\\\\\.exe\\\\ \\\\-k\\\\ netsvcs.*\") OR parent_process_command_line = RGX(\".*taskeng\\\\\\.exe.*\")) AND (process_command_line = RGX(\".*cmd\\\\\\.exe.*\") AND process_command_line = RGX(\".*\\\\/C.*\") AND process_command_line = RGX(\".*Windows\\\\\\\\Temp\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\&1.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9417f179-15ac-495f-bcda-01da8e5f5d21"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

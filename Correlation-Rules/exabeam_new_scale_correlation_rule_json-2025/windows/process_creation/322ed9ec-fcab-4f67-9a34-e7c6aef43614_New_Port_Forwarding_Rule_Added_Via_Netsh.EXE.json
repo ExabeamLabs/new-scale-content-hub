@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New Port Forwarding Rule Added Via Netsh.EXE",
+      "description": "Detects the execution of netsh commands that configure a new port forwarding (PortProxy) rule",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\netsh\\\\\\.exe$\") OR process_original_file_name = \"netsh\\.exe\") AND ((process_command_line = RGX(\".*interface.*\") AND process_command_line = RGX(\".*portproxy.*\") AND process_command_line = RGX(\".*add.*\") AND process_command_line = RGX(\".*v4tov4.*\")) OR (process_command_line = RGX(\".*i\\\\ .*\") AND process_command_line = RGX(\".*p\\\\ .*\") AND process_command_line = RGX(\".*a\\\\ .*\") AND process_command_line = RGX(\".*v\\\\ .*\")) OR (process_command_line = RGX(\".*connectp.*\") AND process_command_line = RGX(\".*listena.*\") AND process_command_line = RGX(\".*c\\\\=.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "22013a18-847f-4eb7-b3fc-fdcee6c3af8a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

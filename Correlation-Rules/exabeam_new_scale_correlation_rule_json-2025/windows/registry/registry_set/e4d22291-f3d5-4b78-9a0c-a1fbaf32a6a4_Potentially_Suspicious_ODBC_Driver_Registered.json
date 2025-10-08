@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Suspicious ODBC Driver Registered",
+      "description": "Detects the registration of a new ODBC driver where the driver is located in a potentially suspicious location Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\ODBC\\\\\\\\ODBCINST\\\\\\.INI\\\\\\\\.*\") AND (registry_path = RGX(\"\\\\\\\\Driver$\") OR registry_path = RGX(\"\\\\\\\\Setup$\")) AND (Details = RGX(\".*\\\\:\\\\\\\\PerfLogs\\\\\\\\.*\") OR Details = RGX(\".*\\\\:\\\\\\\\ProgramData\\\\\\\\.*\") OR Details = RGX(\".*\\\\:\\\\\\\\Temp\\\\\\\\.*\") OR Details = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR Details = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Registration\\\\\\\\CRMLog.*\") OR Details = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\com\\\\\\\\dmp\\\\\\\\.*\") OR Details = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\FxsTmp\\\\\\\\.*\") OR Details = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\Microsoft\\\\\\\\Crypto\\\\\\\\RSA\\\\\\\\MachineKeys\\\\\\\\.*\") OR Details = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\spool\\\\\\\\drivers\\\\\\\\color\\\\\\\\.*\") OR Details = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\spool\\\\\\\\PRINTERS\\\\\\\\.*\") OR Details = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\spool\\\\\\\\SERVERS\\\\\\\\.*\") OR Details = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\Tasks\\\\_Migrated\\\\\\\\.*\") OR Details = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\Tasks\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\SyncCenter\\\\\\\\.*\") OR Details = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\com\\\\\\\\dmp\\\\\\\\.*\") OR Details = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\FxsTmp\\\\\\\\.*\") OR Details = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\Tasks\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\PLA\\\\\\\\System\\\\\\\\.*\") OR Details = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\Tasks\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\SyncCenter\\\\\\\\.*\") OR Details = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Tasks\\\\\\\\.*\") OR Details = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\") OR Details = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Tracing\\\\\\\\.*\") OR Details = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") OR Details = RGX(\".*\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "702fde70-1560-4a13-8bde-7337edb15fdf"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "AADInternals PowerShell Cmdlets Execution - PsScript",
+      "description": "Detects ADDInternals Cmdlet execution. A tool for administering Azure AD and Office 365. Which can be abused by threat actors to attack Azure AD or Office 365. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Add\\\\-AADInt.*\") OR ScriptBlockText = RGX(\".*ConvertTo\\\\-AADInt.*\") OR ScriptBlockText = RGX(\".*Disable\\\\-AADInt.*\") OR ScriptBlockText = RGX(\".*Enable\\\\-AADInt.*\") OR ScriptBlockText = RGX(\".*Export\\\\-AADInt.*\") OR ScriptBlockText = RGX(\".*Find\\\\-AADInt.*\") OR ScriptBlockText = RGX(\".*Get\\\\-AADInt.*\") OR ScriptBlockText = RGX(\".*Grant\\\\-AADInt.*\") OR ScriptBlockText = RGX(\".*Initialize\\\\-AADInt.*\") OR ScriptBlockText = RGX(\".*Install\\\\-AADInt.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-AADInt.*\") OR ScriptBlockText = RGX(\".*Join\\\\-AADInt.*\") OR ScriptBlockText = RGX(\".*New\\\\-AADInt.*\") OR ScriptBlockText = RGX(\".*Open\\\\-AADInt.*\") OR ScriptBlockText = RGX(\".*Read\\\\-AADInt.*\") OR ScriptBlockText = RGX(\".*Register\\\\-AADInt.*\") OR ScriptBlockText = RGX(\".*Remove\\\\-AADInt.*\") OR ScriptBlockText = RGX(\".*Reset\\\\-AADInt.*\") OR ScriptBlockText = RGX(\".*Resolve\\\\-AADInt.*\") OR ScriptBlockText = RGX(\".*Restore\\\\-AADInt.*\") OR ScriptBlockText = RGX(\".*Save\\\\-AADInt.*\") OR ScriptBlockText = RGX(\".*Search\\\\-AADInt.*\") OR ScriptBlockText = RGX(\".*Send\\\\-AADInt.*\") OR ScriptBlockText = RGX(\".*Set\\\\-AADInt.*\") OR ScriptBlockText = RGX(\".*Start\\\\-AADInt.*\") OR ScriptBlockText = RGX(\".*Unprotect\\\\-AADInt.*\") OR ScriptBlockText = RGX(\".*Update\\\\-AADInt.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "00e04962-983e-4a1c-bdf4-570cc6d7e785"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

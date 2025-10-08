@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Download Via Certutil.EXE",
+      "description": "Detects the execution of certutil with certain flags that allow the utility to download files.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\certutil\\\\\\.exe$\") OR process_original_file_name = \"CertUtil\\.exe\") AND (process_command_line = RGX(\".*urlcache\\\\ .*\") OR process_command_line = RGX(\".*verifyctl\\\\ .*\")) AND process_command_line = RGX(\".*http.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2dbcfdb6-c139-4cb5-a678-cf41684cdf79"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

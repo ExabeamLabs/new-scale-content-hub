@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows Shell/Scripting Processes Spawning Suspicious Programs",
+      "description": "Detects suspicious child processes of a Windows shell and scripting processes such as wscript, rundll32, powershell, mshta...etc.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((parent_process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\wmiprvse\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\")) AND (process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\nslookup\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\certutil\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\bitsadmin\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\"))) AND  NOT (process_working_directory = RGX(\".*\\\\\\\\ccmcache\\\\\\\\.*\") OR (parent_process_command_line = RGX(\".*\\\\\\\\Program\\\\ Files\\\\\\\\Amazon\\\\\\\\WorkSpacesConfig\\\\\\\\Scripts\\\\\\\\setup\\\\-scheduledtask\\\\\\.ps1.*\") OR parent_process_command_line = RGX(\".*\\\\\\\\Program\\\\ Files\\\\\\\\Amazon\\\\\\\\WorkSpacesConfig\\\\\\\\Scripts\\\\\\\\set\\\\-selfhealing\\\\\\.ps1.*\") OR parent_process_command_line = RGX(\".*\\\\\\\\Program\\\\ Files\\\\\\\\Amazon\\\\\\\\WorkSpacesConfig\\\\\\\\Scripts\\\\\\\\check\\\\-workspacehealth\\\\\\.ps1.*\") OR parent_process_command_line = RGX(\".*\\\\\\\\nessus\\\\_.*\")) OR process_command_line = RGX(\".*\\\\\\\\nessus\\\\_.*\") OR (parent_process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") AND process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") AND (parent_process_command_line = RGX(\".*C\\\\:\\\\\\\\MEM\\\\_Configmgr\\\\_.*\") AND parent_process_command_line = RGX(\".*\\\\\\\\splash\\\\\\.hta.*\") AND parent_process_command_line = RGX(\".*\\\\{1E460BD7\\\\-F1C3\\\\-4B2E\\\\-88BF\\\\-4E770A288AF5\\\\}.*\")) AND (process_command_line = RGX(\".*C\\\\:\\\\\\\\MEM\\\\_Configmgr\\\\_.*\") AND process_command_line = RGX(\".*\\\\\\\\SMSSETUP\\\\\\\\BIN\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\\\\\autorun\\\\\\.hta.*\") AND process_command_line = RGX(\".*\\\\{1E460BD7\\\\-F1C3\\\\-4B2E\\\\-88BF\\\\-4E770A288AF5\\\\}.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "474fd7c9-db90-406b-9d61-1b3a89121a12"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Shell Open Registry Keys Manipulation",
+      "description": "Detects the shell open key manipulation (exefile and ms-settings) used for persistence and the pattern of UAC Bypass using fodhelper.exe, computerdefaults.exe, slui.exe via registry keys (e.g. UACMe 33 or 62) Note: Unmapped fields: EventType, Details",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(EventType = \"SetValue\" AND registry_path = RGX(\"Classes\\\\\\\\ms\\\\-settings\\\\\\\\shell\\\\\\\\open\\\\\\\\command\\\\\\\\SymbolicLinkValue$\") AND Details = RGX(\".*\\\\\\\\Software\\\\\\\\Classes\\\\\\\\\\\\{.*\")) OR registry_path = RGX(\"Classes\\\\\\\\ms\\\\-settings\\\\\\\\shell\\\\\\\\open\\\\\\\\command\\\\\\\\DelegateExecute$\") OR ((EventType = \"SetValue\" AND (registry_path = RGX(\"Classes\\\\\\\\ms\\\\-settings\\\\\\\\shell\\\\\\\\open\\\\\\\\command\\\\\\\\\\\\(Default\\\\)$\") OR registry_path = RGX(\"Classes\\\\\\\\exefile\\\\\\\\shell\\\\\\\\open\\\\\\\\command\\\\\\\\\\\\(Default\\\\)$\"))) AND  NOT (Details = \"\\(Empty\\)\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4071f1b5-2182-4da4-9db2-c15919442afd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

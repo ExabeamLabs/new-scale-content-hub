@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious DNS Query for IP Lookup Service APIs",
+      "description": "Detects DNS queries for IP lookup services such as \"api.ipify.org\" originating from a non browser process. Note: Unmapped fields: QueryName",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((QueryName = \"www\\.ip\\.cn\" OR QueryName = \"l2\\.io\") OR (QueryName = RGX(\".*api\\\\\\.2ip\\\\\\.ua.*\") OR QueryName = RGX(\".*api\\\\\\.bigdatacloud\\\\\\.net.*\") OR QueryName = RGX(\".*api\\\\\\.ipify\\\\\\.org.*\") OR QueryName = RGX(\".*bot\\\\\\.whatismyipaddress\\\\\\.com.*\") OR QueryName = RGX(\".*canireachthe\\\\\\.net.*\") OR QueryName = RGX(\".*checkip\\\\\\.amazonaws\\\\\\.com.*\") OR QueryName = RGX(\".*checkip\\\\\\.dyndns\\\\\\.org.*\") OR QueryName = RGX(\".*curlmyip\\\\\\.com.*\") OR QueryName = RGX(\".*db\\\\-ip\\\\\\.com.*\") OR QueryName = RGX(\".*edns\\\\\\.ip\\\\-api\\\\\\.com.*\") OR QueryName = RGX(\".*eth0\\\\\\.me.*\") OR QueryName = RGX(\".*freegeoip\\\\\\.app.*\") OR QueryName = RGX(\".*geoipy\\\\\\.com.*\") OR QueryName = RGX(\".*getip\\\\\\.pro.*\") OR QueryName = RGX(\".*icanhazip\\\\\\.com.*\") OR QueryName = RGX(\".*ident\\\\\\.me.*\") OR QueryName = RGX(\".*ifconfig\\\\\\.io.*\") OR QueryName = RGX(\".*ifconfig\\\\\\.me.*\") OR QueryName = RGX(\".*ip\\\\-api\\\\\\.com.*\") OR QueryName = RGX(\".*ip\\\\\\.360\\\\\\.cn.*\") OR QueryName = RGX(\".*ip\\\\\\.anysrc\\\\\\.net.*\") OR QueryName = RGX(\".*ip\\\\\\.taobao\\\\\\.com.*\") OR QueryName = RGX(\".*ip\\\\\\.tyk\\\\\\.nu.*\") OR QueryName = RGX(\".*ipaddressworld\\\\\\.com.*\") OR QueryName = RGX(\".*ipapi\\\\\\.co.*\") OR QueryName = RGX(\".*ipconfig\\\\\\.io.*\") OR QueryName = RGX(\".*ipecho\\\\\\.net.*\") OR QueryName = RGX(\".*ipinfo\\\\\\.io.*\") OR QueryName = RGX(\".*ipip\\\\\\.net.*\") OR QueryName = RGX(\".*ipof\\\\\\.in.*\") OR QueryName = RGX(\".*ipv4\\\\\\.icanhazip\\\\\\.com.*\") OR QueryName = RGX(\".*ipv4bot\\\\\\.whatismyipaddress\\\\\\.com.*\") OR QueryName = RGX(\".*ipv6\\\\-test\\\\\\.com.*\") OR QueryName = RGX(\".*ipwho\\\\\\.is.*\") OR QueryName = RGX(\".*jsonip\\\\\\.com.*\") OR QueryName = RGX(\".*myexternalip\\\\\\.com.*\") OR QueryName = RGX(\".*seeip\\\\\\.org.*\") OR QueryName = RGX(\".*wgetip\\\\\\.com.*\") OR QueryName = RGX(\".*whatismyip\\\\\\.akamai\\\\\\.com.*\") OR QueryName = RGX(\".*whois\\\\\\.pconline\\\\\\.com\\\\\\.cn.*\") OR QueryName = RGX(\".*wtfismyip\\\\\\.com.*\"))) AND  NOT (process_path = RGX(\"\\\\\\\\brave\\\\\\.exe$\") OR (process_path = \"C\\:\\\\Program\\ Files\\\\Google\\\\Chrome\\\\Application\\\\chrome\\.exe\" OR process_path = \"C\\:\\\\Program\\ Files\\ \\(x86\\)\\\\Google\\\\Chrome\\\\Application\\\\chrome\\.exe\") OR (process_path = \"C\\:\\\\Program\\ Files\\\\Mozilla\\ Firefox\\\\firefox\\.exe\" OR process_path = \"C\\:\\\\Program\\ Files\\ \\(x86\\)\\\\Mozilla\\ Firefox\\\\firefox\\.exe\") OR (process_path = \"C\\:\\\\Program\\ Files\\ \\(x86\\)\\\\Internet\\ Explorer\\\\iexplore\\.exe\" OR process_path = \"C\\:\\\\Program\\ Files\\\\Internet\\ Explorer\\\\iexplore\\.exe\") OR process_path = RGX(\"\\\\\\\\maxthon\\\\\\.exe$\") OR (process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Microsoft\\\\\\\\EdgeWebView\\\\\\\\Application\\\\\\\\\") OR process_path = RGX(\"\\\\\\\\WindowsApps\\\\\\\\MicrosoftEdge\\\\\\.exe$\") OR (process_path = \"C\\:\\\\Program\\ Files\\ \\(x86\\)\\\\Microsoft\\\\Edge\\\\Application\\\\msedge\\.exe\" OR process_path = \"C\\:\\\\Program\\ Files\\\\Microsoft\\\\Edge\\\\Application\\\\msedge\\.exe\")) OR ((process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Microsoft\\\\\\\\EdgeCore\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Microsoft\\\\\\\\EdgeCore\\\\\\\\\")) AND (process_path = RGX(\"\\\\\\\\msedge\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msedgewebview2\\\\\\.exe$\"))) OR process_path = RGX(\"\\\\\\\\opera\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\safari\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\seamonkey\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\vivaldi\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\whale\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3586ae0b-ed72-43a1-9860-8240f3fb0106"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

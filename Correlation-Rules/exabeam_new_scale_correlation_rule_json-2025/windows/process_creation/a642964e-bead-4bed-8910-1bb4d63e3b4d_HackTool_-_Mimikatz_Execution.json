@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - Mimikatz Execution",
+      "description": "Detection well-known mimikatz command line arguments",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*DumpCreds.*\") OR process_command_line = RGX(\".*mimikatz.*\")) OR (process_command_line = RGX(\".*\\\\:\\\\:aadcookie.*\") OR process_command_line = RGX(\".*\\\\:\\\\:detours.*\") OR process_command_line = RGX(\".*\\\\:\\\\:memssp.*\") OR process_command_line = RGX(\".*\\\\:\\\\:mflt.*\") OR process_command_line = RGX(\".*\\\\:\\\\:ncroutemon.*\") OR process_command_line = RGX(\".*\\\\:\\\\:ngcsign.*\") OR process_command_line = RGX(\".*\\\\:\\\\:printnightmare.*\") OR process_command_line = RGX(\".*\\\\:\\\\:skeleton.*\") OR process_command_line = RGX(\".*\\\\:\\\\:preshutdown.*\") OR process_command_line = RGX(\".*\\\\:\\\\:mstsc.*\") OR process_command_line = RGX(\".*\\\\:\\\\:multirdp.*\")) OR (process_command_line = RGX(\".*rpc\\\\:\\\\:.*\") OR process_command_line = RGX(\".*token\\\\:\\\\:.*\") OR process_command_line = RGX(\".*crypto\\\\:\\\\:.*\") OR process_command_line = RGX(\".*dpapi\\\\:\\\\:.*\") OR process_command_line = RGX(\".*sekurlsa\\\\:\\\\:.*\") OR process_command_line = RGX(\".*kerberos\\\\:\\\\:.*\") OR process_command_line = RGX(\".*lsadump\\\\:\\\\:.*\") OR process_command_line = RGX(\".*privilege\\\\:\\\\:.*\") OR process_command_line = RGX(\".*process\\\\:\\\\:.*\") OR process_command_line = RGX(\".*vault\\\\:\\\\:.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8799956b-5ca2-48ba-b124-0e3dcdd27a15"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

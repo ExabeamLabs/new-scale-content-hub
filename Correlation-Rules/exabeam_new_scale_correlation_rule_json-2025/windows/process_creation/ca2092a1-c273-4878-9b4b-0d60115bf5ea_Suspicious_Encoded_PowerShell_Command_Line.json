@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Encoded PowerShell Command Line",
+      "description": "Detects suspicious powershell process starts with base64 encoded commands (e.g. Emotet)",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\")) OR (process_original_file_name = \"PowerShell\\.EXE\" OR process_original_file_name = \"pwsh\\.dll\")) AND ((process_command_line = RGX(\".*\\\\ \\\\-e.*\") AND (process_command_line = RGX(\".*\\\\ JAB.*\") OR process_command_line = RGX(\".*\\\\ SUVYI.*\") OR process_command_line = RGX(\".*\\\\ SQBFAFgA.*\") OR process_command_line = RGX(\".*\\\\ aQBlAHgA.*\") OR process_command_line = RGX(\".*\\\\ aWV4I.*\") OR process_command_line = RGX(\".*\\\\ IAA.*\") OR process_command_line = RGX(\".*\\\\ IAB.*\") OR process_command_line = RGX(\".*\\\\ UwB.*\") OR process_command_line = RGX(\".*\\\\ cwB.*\"))) OR (process_command_line = RGX(\".*\\\\\\.exe\\\\ \\\\-ENCOD\\\\ .*\") OR process_command_line = RGX(\".*\\\\ BA\\\\^J\\\\ e\\\\-.*\"))) AND  NOT (process_command_line = RGX(\".*\\\\ \\\\-ExecutionPolicy\\\\ remotesigned\\\\ .*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4255af3a-1211-4d1a-aafc-d601c4669cd8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

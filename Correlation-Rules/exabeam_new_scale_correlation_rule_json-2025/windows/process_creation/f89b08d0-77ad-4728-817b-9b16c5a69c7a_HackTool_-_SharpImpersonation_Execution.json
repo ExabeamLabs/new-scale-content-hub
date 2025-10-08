@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - SharpImpersonation Execution",
+      "description": "Detects execution of the SharpImpersonation tool. Which can be used to manipulate tokens on a Windows computers remotely (PsExec/WmiExec) or interactively",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\SharpImpersonation\\\\\\.exe$\") OR process_original_file_name = \"SharpImpersonation\\.exe\") OR ((process_command_line = RGX(\".*\\\\ user\\\\:.*\") AND process_command_line = RGX(\".*\\\\ binary\\\\:.*\")) OR (process_command_line = RGX(\".*\\\\ user\\\\:.*\") AND process_command_line = RGX(\".*\\\\ shellcode\\\\:.*\")) OR (process_command_line = RGX(\".*\\\\ technique\\\\:CreateProcessAsUserW.*\") OR process_command_line = RGX(\".*\\\\ technique\\\\:ImpersonateLoggedOnuser.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "40028e25-97aa-4fd4-a585-e27f4fcd8886"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious File Creation Activity From Fake Recycle.Bin Folder",
+      "description": "Detects file write event from/to a fake recycle bin folder that is often used as a staging directory for malware",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\".*RECYCLERS\\\\\\.BIN\\\\\\\\.*\") OR process_path = RGX(\".*RECYCLER\\\\\\.BIN\\\\\\\\.*\")) OR (file_path = RGX(\".*RECYCLERS\\\\\\.BIN\\\\\\\\.*\") OR file_path = RGX(\".*RECYCLER\\\\\\.BIN\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e88e3b3d-2b55-4f18-8b6f-9a46676985e2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

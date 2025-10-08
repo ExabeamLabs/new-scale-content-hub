@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Data Stealing Via Chromium Headless Debugging",
+      "description": "Detects chromium based browsers starting in headless and debugging mode and pointing to a user profile. This could be a sign of data stealing or remote control",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\-\\\\-remote\\\\-debugging\\\\-.*\") AND process_command_line = RGX(\".*\\\\-\\\\-user\\\\-data\\\\-dir.*\") AND process_command_line = RGX(\".*\\\\-\\\\-headless.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b4f6eb61-a81a-4cb5-bb07-a65bf6e86039"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

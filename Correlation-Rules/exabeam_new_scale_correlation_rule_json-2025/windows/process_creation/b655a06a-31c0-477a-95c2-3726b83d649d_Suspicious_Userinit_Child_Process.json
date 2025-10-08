@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Userinit Child Process",
+      "description": "Detects a suspicious child process of userinit",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "parent_process_path = RGX(\"\\\\\\\\userinit\\\\\\.exe$\") AND  NOT (process_command_line = RGX(\".*\\\\\\\\netlogon\\\\\\\\.*\") OR (process_path = RGX(\"\\\\\\\\explorer\\\\\\.exe$\") OR process_original_file_name = \"explorer\\.exe\") OR process_path = \"None\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9254a30b-20e7-4431-b291-3d1058bd7b77"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

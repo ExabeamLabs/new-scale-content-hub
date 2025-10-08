@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Security Support Provider (SSP) Added to LSA Configuration",
+      "description": "Detects the addition of a SSP to the registry. Upon a reboot or API call, SSP DLLs gain access to encrypted and plaintext passwords stored in Windows.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\"\\\\\\\\Control\\\\\\\\Lsa\\\\\\\\Security\\\\ Packages$\") OR registry_path = RGX(\"\\\\\\\\Control\\\\\\\\Lsa\\\\\\\\OSConfig\\\\\\\\Security\\\\ Packages$\")) AND  NOT ((process_path = \"C\\:\\\\Windows\\\\system32\\\\msiexec\\.exe\" OR process_path = \"C\\:\\\\Windows\\\\syswow64\\\\MsiExec\\.exe\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "acaa750f-8a3f-4ea0-b25b-7a0a1af8377a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

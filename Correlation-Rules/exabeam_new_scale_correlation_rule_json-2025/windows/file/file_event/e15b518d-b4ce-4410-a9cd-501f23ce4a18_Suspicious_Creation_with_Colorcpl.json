@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Creation with Colorcpl",
+      "description": "Once executed, colorcpl.exe will copy the arbitrary file to c:\\windows\\system32\\spool\\drivers\\color\\",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_path = RGX(\"\\\\\\\\colorcpl\\\\\\.exe$\") AND  NOT ((file_path = RGX(\"\\\\\\.icm$\") OR file_path = RGX(\"\\\\\\.gmmp$\") OR file_path = RGX(\"\\\\\\.cdmp$\") OR file_path = RGX(\"\\\\\\.camp$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a35b0681-73a8-4324-84e3-75a2e15366fd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

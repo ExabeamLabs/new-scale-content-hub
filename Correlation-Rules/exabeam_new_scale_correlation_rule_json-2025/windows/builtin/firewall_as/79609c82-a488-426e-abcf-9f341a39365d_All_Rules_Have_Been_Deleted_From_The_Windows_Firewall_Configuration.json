@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "All Rules Have Been Deleted From The Windows Firewall Configuration",
+      "description": "Detects when a all the rules have been deleted from the Windows Defender Firewall configuration Note: Unmapped fields: ModifyingApplication",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 2033 OR event_id = 2059) AND  NOT (ModifyingApplication = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\svchost\\\\\\.exe$\")) AND  NOT ((ModifyingApplication = RGX(\".*\\\\:\\\\\\\\ProgramData\\\\\\\\Microsoft\\\\\\\\Windows\\\\ Defender\\\\\\\\Platform\\\\\\\\.*\") AND ModifyingApplication = RGX(\".*\\\\\\\\MsMpEng\\\\\\.exe.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "008f753a-96e2-4f84-b8ed-c1e2ee1e7899"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

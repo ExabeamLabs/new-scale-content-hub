@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows Defender Virus Scanning Feature Disabled",
+      "description": "Detects disabling of the Windows Defender virus scanning feature",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "event_id = 5012",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8ed629d3-19e1-41ce-833f-75166072aa0e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

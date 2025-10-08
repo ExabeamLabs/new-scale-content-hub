@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Linux Capabilities Discovery",
+      "description": "Detects attempts to discover the files with setuid/setgid capability on them. That would allow adversary to escalate their privileges. Note: Unmapped fields: type, a0, a1, a2",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(type = \"EXECVE\" AND a0 = \"getcap\" AND a1 = \"\\-r\" AND a2 = \"\\/\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0ecbd83e-0270-45a3-bbdd-fcd0081f6e28"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

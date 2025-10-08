@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "UAC Bypass Using Disk Cleanup",
+      "description": "Detects the pattern of UAC Bypass using scheduled tasks and variable expansion of cleanmgr.exe (UACMe 34)",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\"\\\\\"\\\\\\\\system32\\\\\\\\cleanmgr\\\\\\.exe\\\\ \\\\/autoclean\\\\ \\\\/d\\\\ C\\\\:$\") AND parent_process_command_line = \"C\\:\\\\Windows\\\\system32\\\\svchost\\.exe\\ \\-k\\ netsvcs\\ \\-p\\ \\-s\\ Schedule\" AND (process_integrity_level = \"High\" OR process_integrity_level = \"System\" OR process_integrity_level = \"S\\-1\\-16\\-16384\" OR process_integrity_level = \"S\\-1\\-16\\-12288\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0cae18e2-e0c1-49b6-bfdc-08800d363e82"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

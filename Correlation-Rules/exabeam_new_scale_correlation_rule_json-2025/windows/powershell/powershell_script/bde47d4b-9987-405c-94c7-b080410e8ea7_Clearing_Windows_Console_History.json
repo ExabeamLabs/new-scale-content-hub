@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Clearing Windows Console History",
+      "description": "Identifies when a user attempts to clear console history. An adversary may clear the command history of a compromised account to conceal the actions undertaken during an intrusion. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ScriptBlockText = RGX(\".*Clear\\\\-History.*\") OR (ScriptBlockText = RGX(\".*Remove\\\\-Item.*\") OR ScriptBlockText = RGX(\".*rm.*\")) AND (ScriptBlockText = RGX(\".*ConsoleHost\\\\_history\\\\\\.txt.*\") OR ScriptBlockText = RGX(\".*\\\\(Get\\\\-PSReadlineOption\\\\)\\\\\\.HistorySavePath.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "be077d0d-0794-4dde-b64a-0e94a6bd9490"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

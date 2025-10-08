@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious File Download From File Sharing Domain Via Curl.EXE",
+      "description": "Detects potentially suspicious file download from file sharing domains using curl.exe",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\curl\\\\\\.exe$\") OR process_original_file_name = \"curl\\.exe\") AND (process_command_line = RGX(\".*\\\\\\.githubusercontent\\\\\\.com.*\") OR process_command_line = RGX(\".*anonfiles\\\\\\.com.*\") OR process_command_line = RGX(\".*cdn\\\\\\.discordapp\\\\\\.com.*\") OR process_command_line = RGX(\".*ddns\\\\\\.net.*\") OR process_command_line = RGX(\".*dl\\\\\\.dropboxusercontent\\\\\\.com.*\") OR process_command_line = RGX(\".*ghostbin\\\\\\.co.*\") OR process_command_line = RGX(\".*glitch\\\\\\.me.*\") OR process_command_line = RGX(\".*gofile\\\\\\.io.*\") OR process_command_line = RGX(\".*hastebin\\\\\\.com.*\") OR process_command_line = RGX(\".*mediafire\\\\\\.com.*\") OR process_command_line = RGX(\".*mega\\\\\\.nz.*\") OR process_command_line = RGX(\".*onrender\\\\\\.com.*\") OR process_command_line = RGX(\".*pages\\\\\\.dev.*\") OR process_command_line = RGX(\".*paste\\\\\\.ee.*\") OR process_command_line = RGX(\".*pastebin\\\\\\.com.*\") OR process_command_line = RGX(\".*pastebin\\\\\\.pl.*\") OR process_command_line = RGX(\".*pastetext\\\\\\.net.*\") OR process_command_line = RGX(\".*pixeldrain\\\\\\.com.*\") OR process_command_line = RGX(\".*privatlab\\\\\\.com.*\") OR process_command_line = RGX(\".*privatlab\\\\\\.net.*\") OR process_command_line = RGX(\".*send\\\\\\.exploit\\\\\\.in.*\") OR process_command_line = RGX(\".*sendspace\\\\\\.com.*\") OR process_command_line = RGX(\".*storage\\\\\\.googleapis\\\\\\.com.*\") OR process_command_line = RGX(\".*storjshare\\\\\\.io.*\") OR process_command_line = RGX(\".*supabase\\\\\\.co.*\") OR process_command_line = RGX(\".*temp\\\\\\.sh.*\") OR process_command_line = RGX(\".*transfer\\\\\\.sh.*\") OR process_command_line = RGX(\".*trycloudflare\\\\\\.com.*\") OR process_command_line = RGX(\".*ufile\\\\\\.io.*\") OR process_command_line = RGX(\".*w3spaces\\\\\\.com.*\") OR process_command_line = RGX(\".*workers\\\\\\.dev.*\")) AND process_command_line = RGX(\".*http.*\") AND (process_command_line = RGX(\".*\\\\ \\\\-O.*\") OR process_command_line = RGX(\".*\\\\-\\\\-remote\\\\-name.*\") OR process_command_line = RGX(\".*\\\\-\\\\-output.*\")) AND (process_command_line = RGX(\"\\\\\\.ps1$\") OR process_command_line = RGX(\"\\\\\\.ps1\\\\$\") OR process_command_line = RGX(\"\\\\\\.ps1\\\\$\") OR process_command_line = RGX(\"\\\\\\.dat$\") OR process_command_line = RGX(\"\\\\\\.dat\\\\$\") OR process_command_line = RGX(\"\\\\\\.dat\\\\$\") OR process_command_line = RGX(\"\\\\\\.msi$\") OR process_command_line = RGX(\"\\\\\\.msi\\\\$\") OR process_command_line = RGX(\"\\\\\\.msi\\\\$\") OR process_command_line = RGX(\"\\\\\\.bat$\") OR process_command_line = RGX(\"\\\\\\.bat\\\\$\") OR process_command_line = RGX(\"\\\\\\.bat\\\\$\") OR process_command_line = RGX(\"\\\\\\.exe$\") OR process_command_line = RGX(\"\\\\\\.exe\\\\$\") OR process_command_line = RGX(\"\\\\\\.exe\\\\$\") OR process_command_line = RGX(\"\\\\\\.vbs$\") OR process_command_line = RGX(\"\\\\\\.vbs\\\\$\") OR process_command_line = RGX(\"\\\\\\.vbs\\\\$\") OR process_command_line = RGX(\"\\\\\\.vbe$\") OR process_command_line = RGX(\"\\\\\\.vbe\\\\$\") OR process_command_line = RGX(\"\\\\\\.vbe\\\\$\") OR process_command_line = RGX(\"\\\\\\.hta$\") OR process_command_line = RGX(\"\\\\\\.hta\\\\$\") OR process_command_line = RGX(\"\\\\\\.hta\\\\$\") OR process_command_line = RGX(\"\\\\\\.dll$\") OR process_command_line = RGX(\"\\\\\\.dll\\\\$\") OR process_command_line = RGX(\"\\\\\\.dll\\\\$\") OR process_command_line = RGX(\"\\\\\\.psm1$\") OR process_command_line = RGX(\"\\\\\\.psm1\\\\$\") OR process_command_line = RGX(\"\\\\\\.psm1\\\\$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "913e8e38-b0f6-4a5d-9755-8de06a0a4376"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - SharpLDAPmonitor Execution",
+      "description": "Detects execution of the SharpLDAPmonitor. Which can monitor the creation, deletion and changes to LDAP objects.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\SharpLDAPmonitor\\\\\\.exe$\") OR process_original_file_name = \"SharpLDAPmonitor\\.exe\") OR (process_command_line = RGX(\".*\\\\/user\\\\:.*\") AND process_command_line = RGX(\".*\\\\/pass\\\\:.*\") AND process_command_line = RGX(\".*\\\\/dcip\\\\:.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c110ee49-907a-4554-9c93-66e44d1bb479"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

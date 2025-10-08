@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Root Certificate Installed - PowerShell",
+      "description": "Adversaries may install a root certificate on a compromised system to avoid warnings when connecting to adversary controlled web servers. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ScriptBlockText = RGX(\".*Move\\\\-Item.*\") AND ScriptBlockText = RGX(\".*Cert\\\\:\\\\\\\\LocalMachine\\\\\\\\Root.*\")) OR (ScriptBlockText = RGX(\".*Import\\\\-Certificate.*\") AND ScriptBlockText = RGX(\".*Cert\\\\:\\\\\\\\LocalMachine\\\\\\\\Root.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "601edc21-4a64-45a5-8aa6-cd4e81a91fc0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

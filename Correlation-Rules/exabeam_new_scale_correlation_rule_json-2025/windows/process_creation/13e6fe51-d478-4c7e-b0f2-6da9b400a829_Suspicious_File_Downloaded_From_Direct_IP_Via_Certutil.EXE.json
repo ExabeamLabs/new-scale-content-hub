@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious File Downloaded From Direct IP Via Certutil.EXE",
+      "description": "Detects the execution of certutil with certain flags that allow the utility to download files from direct IPs.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\certutil\\\\\\.exe$\") OR process_original_file_name = \"CertUtil\\.exe\") AND (process_command_line = RGX(\".*urlcache\\\\ .*\") OR process_command_line = RGX(\".*verifyctl\\\\ .*\")) AND (process_command_line = RGX(\".*\\\\:\\\\/\\\\/1.*\") OR process_command_line = RGX(\".*\\\\:\\\\/\\\\/2.*\") OR process_command_line = RGX(\".*\\\\:\\\\/\\\\/3.*\") OR process_command_line = RGX(\".*\\\\:\\\\/\\\\/4.*\") OR process_command_line = RGX(\".*\\\\:\\\\/\\\\/5.*\") OR process_command_line = RGX(\".*\\\\:\\\\/\\\\/6.*\") OR process_command_line = RGX(\".*\\\\:\\\\/\\\\/7.*\") OR process_command_line = RGX(\".*\\\\:\\\\/\\\\/8.*\") OR process_command_line = RGX(\".*\\\\:\\\\/\\\\/9.*\"))) AND  NOT (process_command_line = RGX(\".*\\\\:\\\\/\\\\/7\\\\-.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "cf8fe2a6-419e-4c39-8b7f-da429b995f3d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

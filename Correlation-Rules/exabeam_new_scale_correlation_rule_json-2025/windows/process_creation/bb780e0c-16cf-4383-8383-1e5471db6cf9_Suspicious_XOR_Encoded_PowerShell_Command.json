@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious XOR Encoded PowerShell Command",
+      "description": "Detects presence of a potentially xor encoded powershell command",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\")) OR (process_original_file_name = \"PowerShell\\.EXE\" OR process_original_file_name = \"pwsh\\.dll\") OR process_description = \"Windows\\ PowerShell\" OR process_product = \"PowerShell\\ Core\\ 6\") AND process_command_line = RGX(\".*bxor.*\") AND (process_command_line = RGX(\".*ForEach.*\") OR process_command_line = RGX(\".*for\\\\(.*\") OR process_command_line = RGX(\".*for\\\\ .*\") OR process_command_line = RGX(\".*\\\\-join\\\\ .*\") OR process_command_line = RGX(\".*\\\\-join\\\\.*\") OR process_command_line = RGX(\".*\\\\-join\\\\.*\") OR process_command_line = RGX(\".*\\\\-join\\\\`.*\") OR process_command_line = RGX(\".*\\\\:\\\\:Join.*\") OR process_command_line = RGX(\".*\\\\[char\\\\].*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2061c8a1-ca77-48a4-b1fe-8efb5e436e83"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Loaded Module Enumeration Via Tasklist.EXE",
+      "description": "Detects the enumeration of a specific DLL or EXE being used by a binary via \"tasklist.exe\".\nThis is often used by attackers in order to find the specific process identifier (PID) that is using the DLL in question.\nIn order to dump the process memory or perform other nefarious actions.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\tasklist\\\\\\.exe$\") OR process_original_file_name = \"tasklist\\.exe\") AND (process_command_line = RGX(\".*\\\\-m.*\") OR process_command_line = RGX(\".*\\\\/m.*\")) AND process_command_line = RGX(\".*rdpcorets\\\\\\.dll.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "86710325-ee70-4dd9-87db-6c858295f3ca"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

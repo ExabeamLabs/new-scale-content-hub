@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PowerShell ADRecon Execution",
+      "description": "Detects execution of ADRecon.ps1 for AD reconnaissance which has been reported to be actively used by FIN7 Note: Unmapped fields: ScriptBlockText",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Function\\\\ Get\\\\-ADRExcelComOb.*\") OR ScriptBlockText = RGX(\".*Get\\\\-ADRGPO.*\") OR ScriptBlockText = RGX(\".*Get\\\\-ADRDomainController.*\") OR ScriptBlockText = RGX(\".*ADRecon\\\\-Report\\\\\\.xlsx.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3e823f8a-afd8-4b6b-9a74-4f2b62a346ac"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

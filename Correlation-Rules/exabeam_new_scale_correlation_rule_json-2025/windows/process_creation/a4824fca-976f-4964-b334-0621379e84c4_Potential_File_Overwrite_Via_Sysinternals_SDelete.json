@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential File Overwrite Via Sysinternals SDelete",
+      "description": "Detects the use of SDelete to erase a file not the free space",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_original_file_name = \"sdelete\\.exe\" AND  NOT ((process_command_line = RGX(\".*\\\\ \\\\-h.*\") OR process_command_line = RGX(\".*\\\\ \\\\-c.*\") OR process_command_line = RGX(\".*\\\\ \\\\-z.*\") OR process_command_line = RGX(\".*\\\\ \\\\/\\\\?.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d734d6ec-03fd-48c4-933a-afebee0fff8e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

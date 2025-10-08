@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Powershell Local Email Collection",
+      "description": "Adversaries may target user email on local systems to collect sensitive information.\nFiles containing email data can be acquired from a users local system, such as Outlook storage or cache files.\n Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Get\\\\-Inbox\\\\\\.ps1.*\") OR ScriptBlockText = RGX(\".*Microsoft\\\\\\.Office\\\\\\.Interop\\\\\\.Outlook.*\") OR ScriptBlockText = RGX(\".*Microsoft\\\\\\.Office\\\\\\.Interop\\\\\\.Outlook\\\\\\.olDefaultFolders.*\") OR ScriptBlockText = RGX(\".*\\\\-comobject\\\\ outlook\\\\\\.application.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e5b0b3d3-5f67-472a-b51e-d2f33ede1e0b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

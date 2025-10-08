@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "File Download Via Nscurl - MacOS",
+      "description": "Detects the execution of the nscurl utility in order to download files.",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/nscurl$\") AND (process_command_line = RGX(\".*\\\\-\\\\-download\\\\ .*\") OR process_command_line = RGX(\".*\\\\-\\\\-download\\\\-directory\\\\ .*\") OR process_command_line = RGX(\".*\\\\-\\\\-output\\\\ .*\") OR process_command_line = RGX(\".*\\\\-dir\\\\ .*\") OR process_command_line = RGX(\".*\\\\-dl\\\\ .*\") OR process_command_line = RGX(\".*\\\\-ld.*\") OR process_command_line = RGX(\".*\\\\-o\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2d2c8e33-caf7-4169-b0ad-d0823ec30a77"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

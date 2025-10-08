@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Troubleshooting Pack Cmdlet Execution",
+      "description": "Detects execution of \"TroubleshootingPack\" cmdlets to leverage CVE-2022-30190 or action similar to \"msdt\" lolbin (as described in LOLBAS) Note: Unmapped fields: ScriptBlockText",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Invoke\\\\-TroubleshootingPack.*\") AND ScriptBlockText = RGX(\".*C\\\\:\\\\\\\\Windows\\\\\\\\Diagnostics\\\\\\\\System\\\\\\\\PCW.*\") AND ScriptBlockText = RGX(\".*\\\\-AnswerFile.*\") AND ScriptBlockText = RGX(\".*\\\\-Unattended.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "804b1a2a-ead7-4a3b-95f1-c265679791b0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

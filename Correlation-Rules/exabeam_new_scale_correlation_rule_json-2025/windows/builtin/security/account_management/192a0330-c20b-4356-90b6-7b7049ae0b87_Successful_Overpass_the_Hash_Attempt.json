@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Successful Overpass the Hash Attempt",
+      "description": "Detects successful logon with logon type 9 (NewCredentials) which matches the Overpass the Hash behavior of e.g Mimikatz's sekurlsa::pth module. Note: Unmapped fields: LogonType, LogonProcessName, AuthenticationPackageName",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4624 AND LogonType = 9 AND LogonProcessName = \"seclogo\" AND AuthenticationPackageName = \"Negotiate\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7f6305db-508e-40d6-be10-c3abfed018e9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

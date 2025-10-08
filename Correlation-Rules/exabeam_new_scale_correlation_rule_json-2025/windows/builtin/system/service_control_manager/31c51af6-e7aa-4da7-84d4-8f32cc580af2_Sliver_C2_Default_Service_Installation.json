@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Sliver C2 Default Service Installation",
+      "description": "Detects known malicious service installation that appear in cases in which a Sliver implants execute the PsExec commands Note: Unmapped fields: Provider_Name, ImagePath, ServiceName",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Provider_Name = \"Service\\ Control\\ Manager\" AND event_id = 7045) AND (ImagePath = RGX(\"^[a-zA-Z]:\\windows\\temp\\[a-zA-Z0-9]{10}.exe\") OR (ServiceName = \"Sliver\" OR ServiceName = \"Sliver\\ implant\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f4524859-2db0-4f52-9e4e-61c81c71758e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

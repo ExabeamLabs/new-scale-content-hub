@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PowerShell Scripts Installed as Services",
+      "description": "Detects powershell script installed as a Service Note: Unmapped fields: Provider_Name, ImagePath",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Provider_Name = \"Service\\ Control\\ Manager\" AND event_id = 7045 AND (ImagePath = RGX(\".*powershell.*\") OR ImagePath = RGX(\".*pwsh.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d7f19d7d-19dd-4668-80ab-543e9b600f52"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

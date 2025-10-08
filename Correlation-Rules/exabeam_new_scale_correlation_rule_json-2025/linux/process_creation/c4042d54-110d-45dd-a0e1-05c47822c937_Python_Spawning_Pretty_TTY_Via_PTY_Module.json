@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Python Spawning Pretty TTY Via PTY Module",
+      "description": "Detects a python process calling to the PTY module in order to spawn a pretty tty which could be indicative of potential reverse shell activity.\n",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\/python$\") OR process_path = RGX(\"\\\\/python2$\") OR process_path = RGX(\"\\\\/python3$\")) OR (process_path = RGX(\".*\\\\/python2\\\\\\..*\") OR process_path = RGX(\".*\\\\/python3\\\\\\..*\"))) AND (process_command_line = RGX(\".*import\\\\ pty.*\") OR process_command_line = RGX(\".*from\\\\ pty\\\\ .*\")) AND process_command_line = RGX(\".*spawn.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "14158622-31e8-49e6-b527-93406f104f6d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

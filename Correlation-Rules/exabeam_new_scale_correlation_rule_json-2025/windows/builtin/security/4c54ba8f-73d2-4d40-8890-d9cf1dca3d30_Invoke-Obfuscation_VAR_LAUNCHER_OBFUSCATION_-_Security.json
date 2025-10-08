@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation VAR++ LAUNCHER OBFUSCATION - Security",
+      "description": "Detects Obfuscated Powershell via VAR++ LAUNCHER Note: Unmapped fields: ServiceFileName",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4697 AND (ServiceFileName = RGX(\".*\\\\&\\\\&set.*\") AND ServiceFileName = RGX(\".*cmd.*\") AND ServiceFileName = RGX(\".*\\\\/c.*\") AND ServiceFileName = RGX(\".*\\\\-f.*\")) AND (ServiceFileName = RGX(\".*\\\\{0\\\\}.*\") OR ServiceFileName = RGX(\".*\\\\{1\\\\}.*\") OR ServiceFileName = RGX(\".*\\\\{2\\\\}.*\") OR ServiceFileName = RGX(\".*\\\\{3\\\\}.*\") OR ServiceFileName = RGX(\".*\\\\{4\\\\}.*\") OR ServiceFileName = RGX(\".*\\\\{5\\\\}.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ecd4c9ef-42d6-4b0e-bb01-62e1cb504520"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

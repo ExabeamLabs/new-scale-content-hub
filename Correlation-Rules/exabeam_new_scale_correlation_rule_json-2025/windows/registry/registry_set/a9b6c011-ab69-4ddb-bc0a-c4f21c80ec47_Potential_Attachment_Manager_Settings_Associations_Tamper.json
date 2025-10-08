@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Attachment Manager Settings Associations Tamper",
+      "description": "Detects tampering with attachment manager settings policies associations to lower the default file type risks (See reference for more information) Note: Unmapped fields: Details",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\Associations\\\\\\\\.*\") AND ((registry_path = RGX(\"\\\\\\\\DefaultFileTypeRisk$\") AND Details = \"DWORD\\ \\(0x00006152\\)\") OR (registry_path = RGX(\"\\\\\\\\LowRiskFileTypes$\") AND (Details = RGX(\".*\\\\\\.zip\\\\;.*\") OR Details = RGX(\".*\\\\\\.rar\\\\;.*\") OR Details = RGX(\".*\\\\\\.exe\\\\;.*\") OR Details = RGX(\".*\\\\\\.bat\\\\;.*\") OR Details = RGX(\".*\\\\\\.com\\\\;.*\") OR Details = RGX(\".*\\\\\\.cmd\\\\;.*\") OR Details = RGX(\".*\\\\\\.reg\\\\;.*\") OR Details = RGX(\".*\\\\\\.msi\\\\;.*\") OR Details = RGX(\".*\\\\\\.htm\\\\;.*\") OR Details = RGX(\".*\\\\\\.html\\\\;.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a7a8886f-a408-48b7-9b04-cd2dc4adf062"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious File Execution From Internet Hosted WebDav Share",
+      "description": "Detects the execution of the \"net use\" command to mount a WebDAV server and then immediately execute some content in it. As seen being used in malicious LNK files",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\".*\\\\\\\\cmd\\\\\\.exe.*\") OR process_original_file_name = \"Cmd\\.EXE\") AND (process_command_line = RGX(\".*\\\\ net\\\\ use\\\\ http.*\") AND process_command_line = RGX(\".*\\\\&\\\\ start\\\\ \\\\/b\\\\ .*\") AND process_command_line = RGX(\".*\\\\\\\\DavWWWRoot\\\\\\\\.*\")) AND (process_command_line = RGX(\".*\\\\\\.exe\\\\ .*\") OR process_command_line = RGX(\".*\\\\\\.dll\\\\ .*\") OR process_command_line = RGX(\".*\\\\\\.bat\\\\ .*\") OR process_command_line = RGX(\".*\\\\\\.vbs\\\\ .*\") OR process_command_line = RGX(\".*\\\\\\.ps1\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6b457db8-e7ca-47c6-a2ee-134e968880fe"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

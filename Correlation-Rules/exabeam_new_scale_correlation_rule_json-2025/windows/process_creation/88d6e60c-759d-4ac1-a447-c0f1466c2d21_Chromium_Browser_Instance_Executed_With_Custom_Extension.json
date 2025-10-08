@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Chromium Browser Instance Executed With Custom Extension",
+      "description": "Detects a Chromium based browser process with the 'load-extension' flag to start a instance with a custom extension",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\brave\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\chrome\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msedge\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\opera\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\vivaldi\\\\\\.exe$\")) AND process_command_line = RGX(\".*\\\\-\\\\-load\\\\-extension\\\\=.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ee43fa59-e94d-4388-a4a0-9930c843df53"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

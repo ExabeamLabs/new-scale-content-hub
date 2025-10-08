@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Discovery Using AzureHound",
+      "description": "Detects AzureHound (A BloodHound data collector for Microsoft Azure) activity via the default User-Agent that is used during its operation after successful authentication. Note: Unmapped fields: userAgent, ResultType",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(userAgent = RGX(\".*azurehound.*\") AND ResultType = 0)",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d2472cef-2618-4ab6-87d6-dfe13e05fb1d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

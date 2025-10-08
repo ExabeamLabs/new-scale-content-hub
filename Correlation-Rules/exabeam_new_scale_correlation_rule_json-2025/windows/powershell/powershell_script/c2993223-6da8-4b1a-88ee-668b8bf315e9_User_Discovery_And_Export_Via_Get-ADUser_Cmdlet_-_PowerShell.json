@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "User Discovery And Export Via Get-ADUser Cmdlet - PowerShell",
+      "description": "Detects usage of the Get-ADUser cmdlet to collect user information and output it to a file Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ScriptBlockText = RGX(\".*Get\\\\-ADUser\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\ \\\\-Filter\\\\ \\\\*.*\")) AND (ScriptBlockText = RGX(\".*\\\\ \\\\>\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\ \\\\|\\\\ Select\\\\ .*\") OR ScriptBlockText = RGX(\".*Out\\\\-File.*\") OR ScriptBlockText = RGX(\".*Set\\\\-Content.*\") OR ScriptBlockText = RGX(\".*Add\\\\-Content.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5fc212f9-5505-42ec-94dd-ad99919ecf64"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

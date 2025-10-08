@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential DLL Sideloading Via comctl32.dll",
+      "description": "Detects potential DLL sideloading using comctl32.dll to obtain system privileges Note: Unmapped fields: ImageLoaded",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\logonUI\\\\\\.exe\\\\\\.local\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\werFault\\\\\\.exe\\\\\\.local\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\consent\\\\\\.exe\\\\\\.local\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\narrator\\\\\\.exe\\\\\\.local\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\windows\\\\\\\\system32\\\\\\\\wermgr\\\\\\.exe\\\\\\.local\\\\\\\\\")) AND ImageLoaded = RGX(\"\\\\\\\\comctl32\\\\\\.dll$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "954349fd-ea53-4db6-9a4c-f9b7592888fd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

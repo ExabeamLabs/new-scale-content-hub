@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Unsigned AppX Installation Attempt Using Add-AppxPackage - PsScript",
+      "description": "Detects usage of the \"Add-AppxPackage\" or it's alias \"Add-AppPackage\" to install unsigned AppX packages Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ScriptBlockText = RGX(\".*Add\\\\-AppPackage\\\\ .*\") OR ScriptBlockText = RGX(\".*Add\\\\-AppxPackage\\\\ .*\")) AND ScriptBlockText = RGX(\".*\\\\ \\\\-AllowUnsigned.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "84214acf-1546-4a4a-99e3-5830de5532be"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

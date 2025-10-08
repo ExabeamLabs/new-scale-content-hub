@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "UAC Bypass Using PkgMgr and DISM",
+      "description": "Detects the pattern of UAC Bypass using pkgmgr.exe and dism.exe (UACMe 23)",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\pkgmgr\\\\\\.exe$\") AND process_path = RGX(\"\\\\\\\\dism\\\\\\.exe$\") AND (process_integrity_level = \"High\" OR process_integrity_level = \"System\" OR process_integrity_level = \"S\\-1\\-16\\-16384\" OR process_integrity_level = \"S\\-1\\-16\\-12288\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "15ef58fa-a3cc-456e-b0e2-9a3a9499d351"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

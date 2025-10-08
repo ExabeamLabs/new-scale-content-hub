@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Delete All Scheduled Tasks",
+      "description": "Detects the usage of schtasks with the delete flag and the asterisk symbol to delete all tasks from the schedule of the local computer, including tasks scheduled by other users.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\ \\\\/delete\\\\ .*\") AND process_command_line = RGX(\".*\\\\/tn\\\\ \\\\*.*\") AND process_command_line = RGX(\".*\\\\ \\\\/f.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b72fb7f8-ddb9-49d8-ba90-277ffed2fcf8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

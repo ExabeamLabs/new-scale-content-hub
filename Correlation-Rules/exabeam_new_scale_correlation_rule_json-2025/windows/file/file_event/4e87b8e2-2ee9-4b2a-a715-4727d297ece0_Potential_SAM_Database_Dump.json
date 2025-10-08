@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential SAM Database Dump",
+      "description": "Detects the creation of files that look like exports of the local SAM (Security Account Manager)",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((file_path = RGX(\"\\\\\\\\Temp\\\\\\\\sam$\") OR file_path = RGX(\"\\\\\\\\sam\\\\\\.sav$\") OR file_path = RGX(\"\\\\\\\\Intel\\\\\\\\sam$\") OR file_path = RGX(\"\\\\\\\\sam\\\\\\.hive$\") OR file_path = RGX(\"\\\\\\\\Perflogs\\\\\\\\sam$\") OR file_path = RGX(\"\\\\\\\\ProgramData\\\\\\\\sam$\") OR file_path = RGX(\"\\\\\\\\Users\\\\\\\\Public\\\\\\\\sam$\") OR file_path = RGX(\"\\\\\\\\AppData\\\\\\\\Local\\\\\\\\sam$\") OR file_path = RGX(\"\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\sam$\") OR file_path = RGX(\"\\\\_ShadowSteal\\\\\\.zip$\") OR file_path = RGX(\"\\\\\\\\Documents\\\\\\\\SAM\\\\\\.export$\") OR file_path = RGX(\"\\\\:\\\\\\\\sam$\")) OR (file_path = RGX(\".*\\\\\\\\hive\\\\_sam\\\\_.*\") OR file_path = RGX(\".*\\\\\\\\sam\\\\\\.save.*\") OR file_path = RGX(\".*\\\\\\\\sam\\\\\\.export.*\") OR file_path = RGX(\".*\\\\\\\\\\\\~reg\\\\_sam\\\\\\.save.*\") OR file_path = RGX(\".*\\\\\\\\sam\\\\_backup.*\") OR file_path = RGX(\".*\\\\\\\\sam\\\\\\.bck.*\") OR file_path = RGX(\".*\\\\\\\\sam\\\\\\.backup.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b2e6d5d9-b3c3-47c9-a17b-d9043df8a6ef"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

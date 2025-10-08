@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Disable Tamper Protection on Windows Defender",
+      "description": "Detects disabling Windows Defender Tamper Protection Note: Unmapped fields: Details",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\ Defender\\\\\\\\Features\\\\\\\\TamperProtection.*\") AND Details = \"DWORD\\ \\(0x00000000\\)\") AND  NOT ((process_path = RGX(\"^C\\\\:\\\\\\\\ProgramData\\\\\\\\Microsoft\\\\\\\\Windows\\\\ Defender\\\\\\\\Platform\\\\\\\\\") AND process_path = RGX(\"\\\\\\\\MsMpEng\\\\\\.exe$\")) OR process_path = \"C\\:\\\\Program\\ Files\\\\Windows\\ Defender\\\\MsMpEng\\.exe\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ed099d89-a14e-4f61-9477-f4a6cdc35f35"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

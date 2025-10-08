@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Moriya Rootkit - System",
+      "description": "Detects the use of Moriya rootkit as described in the securelist's Operation TunnelSnake report Note: Unmapped fields: Provider_Name, ServiceName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Provider_Name = \"Service\\ Control\\ Manager\" AND event_id = 7045 AND ServiceName = \"ZzNetSvc\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "fbd12f00-64f7-4e3b-8f42-58e161c53baa"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

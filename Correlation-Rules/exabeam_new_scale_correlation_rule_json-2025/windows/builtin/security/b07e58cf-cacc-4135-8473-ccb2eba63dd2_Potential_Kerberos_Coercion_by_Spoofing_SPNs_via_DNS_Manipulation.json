@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Kerberos Coercion by Spoofing SPNs via DNS Manipulation",
+      "description": "Detects modifications to DNS records in Active Directory where the Distinguished Name (DN) contains a base64-encoded blob\nmatching the pattern \"1UWhRCAAAAA...BAAAA\". This pattern corresponds to a marshaled CREDENTIAL_TARGET_INFORMATION structure,\ncommonly used in Kerberos coercion attacks. Adversaries may exploit this to coerce victim systems into authenticating to\nattacker-controlled hosts by spoofing SPNs via DNS. It is one of the strong indicators of a Kerberos coercion attack,.\nwhere adversaries manipulate DNS records to spoof Service Principal Names (SPNs) and redirect authentication requests like CVE-2025-33073.\nPlease investigate the user account that made the changes, as it is likely a low-privileged account that has been compromised.\n Note: Unmapped fields: ObjectClass, ObjectDN, AdditionalInfo",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((event_id = 5136 OR event_id = 5137) AND ObjectClass = \"dnsNode\" AND (ObjectDN = RGX(\".*UWhRCA.*\") AND ObjectDN = RGX(\".*BAAAA.*\") AND ObjectDN = RGX(\".*CN\\\\=MicrosoftDNS.*\"))) OR (event_id = 4662 AND (AdditionalInfo = RGX(\".*UWhRCA.*\") AND AdditionalInfo = RGX(\".*BAAAA.*\") AND AdditionalInfo = RGX(\".*CN\\\\=MicrosoftDNS.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a04e4d9e-3df1-445f-904b-458daaeee54e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

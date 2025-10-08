@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Child Process Of Wermgr.EXE",
+      "description": "Detects suspicious Windows Error Reporting manager (wermgr.exe) child process",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\wermgr\\\\\\.exe$\") AND (process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\ipconfig\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\net\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\net1\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\netstat\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\nslookup\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\_ise\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\systeminfo\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\whoami\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\"))) AND  NOT ((process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") AND (process_command_line = RGX(\".*C\\\\:\\\\\\\\Windows\\\\\\\\system32\\\\\\\\WerConCpl\\\\\\.dll.*\") AND process_command_line = RGX(\".*LaunchErcApp\\\\ .*\")) AND (process_command_line = RGX(\".*\\\\-queuereporting.*\") OR process_command_line = RGX(\".*\\\\-responsepester.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d5922779-c5f9-497a-b4bc-efb1bebe61d2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

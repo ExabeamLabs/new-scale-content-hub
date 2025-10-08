@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "AMSI Bypass Pattern Assembly GetType",
+      "description": "Detects code fragments found in small and obfuscated AMSI bypass PowerShell scripts Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*\\\\[Ref\\\\]\\\\\\.Assembly\\\\\\.GetType.*\") AND ScriptBlockText = RGX(\".*SetValue\\\\(\\\\$null\\\\,\\\\$true\\\\).*\") AND ScriptBlockText = RGX(\".*NonPublic\\\\,Static.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "62eb7b72-6568-4141-9d2d-472ac0398b43"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

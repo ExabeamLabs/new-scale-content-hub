@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Live Memory Dump Using Powershell",
+      "description": "Detects usage of a PowerShell command to dump the live memory of a Windows machine Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Get\\\\-StorageDiagnosticInfo.*\") AND ScriptBlockText = RGX(\".*\\\\-IncludeLiveDump.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c34aa6cb-cc6d-4068-9bfc-f2501e393ae6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - Bloodhound/Sharphound Execution",
+      "description": "Detects command line parameters used by Bloodhound and Sharphound hack tools",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_product = RGX(\".*SharpHound.*\") OR process_description = RGX(\".*SharpHound.*\") OR (process_company = RGX(\".*SpecterOps.*\") OR process_company = RGX(\".*evil\\\\ corp.*\")) OR (process_path = RGX(\".*\\\\\\\\Bloodhound\\\\\\.exe.*\") OR process_path = RGX(\".*\\\\\\\\SharpHound\\\\\\.exe.*\"))) OR (process_command_line = RGX(\".*\\\\ \\\\-CollectionMethod\\\\ All\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-\\\\-CollectionMethods\\\\ Session\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-\\\\-Loop\\\\ \\\\-\\\\-Loopduration\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-\\\\-PortScanTimeout\\\\ .*\") OR process_command_line = RGX(\".*\\\\\\.exe\\\\ \\\\-c\\\\ All\\\\ \\\\-d\\\\ .*\") OR process_command_line = RGX(\".*Invoke\\\\-Bloodhound.*\") OR process_command_line = RGX(\".*Get\\\\-BloodHoundData.*\")) OR (process_command_line = RGX(\".*\\\\ \\\\-JsonFolder\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-ZipFileName\\\\ .*\")) OR (process_command_line = RGX(\".*\\\\ DCOnly\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-\\\\-NoSaveCache\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "11b49424-3c3b-4b4f-a96a-3595f19a2d73"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

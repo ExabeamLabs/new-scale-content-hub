@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Windows Defender Folder Exclusion Added Via Reg.EXE",
+      "description": "Detects the usage of \"reg.exe\" to add Defender folder exclusions. Qbot has been seen using this technique to add exclusions for folders within AppData and ProgramData.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\reg\\\\\\.exe$\") AND (process_command_line = RGX(\".*SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\ Defender\\\\\\\\Exclusions\\\\\\\\Paths.*\") OR process_command_line = RGX(\".*SOFTWARE\\\\\\\\Microsoft\\\\\\\\Microsoft\\\\ Antimalware\\\\\\\\Exclusions\\\\\\\\Paths.*\")) AND (process_command_line = RGX(\".*ADD\\\\ .*\") AND process_command_line = RGX(\".*\\\\/t\\\\ .*\") AND process_command_line = RGX(\".*REG\\\\_DWORD\\\\ .*\") AND process_command_line = RGX(\".*\\\\/v\\\\ .*\") AND process_command_line = RGX(\".*\\\\/d\\\\ .*\") AND process_command_line = RGX(\".*0.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "94c7147b-5c0b-4279-842c-8b1612146826"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

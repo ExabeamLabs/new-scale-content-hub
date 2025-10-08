@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Process Proxy Execution Via Squirrel.EXE",
+      "description": "Detects the usage of the \"Squirrel.exe\" binary to execute arbitrary processes. This binary is part of multiple Electron based software installations (Slack, Teams, Discord, etc.)\n",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\squirrel\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\update\\\\\\.exe$\")) AND (process_command_line = RGX(\".*\\\\-\\\\-processStart.*\") OR process_command_line = RGX(\".*\\\\-\\\\-processStartAndWait.*\") OR process_command_line = RGX(\".*\\\\-\\\\-createShortcut.*\"))) AND  NOT ((process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Discord\\\\\\\\Update\\\\\\.exe.*\") AND process_command_line = RGX(\".*\\\\ \\\\-\\\\-processStart.*\") AND process_command_line = RGX(\".*Discord\\\\\\.exe.*\")) OR ((process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\GitHubDesktop\\\\\\\\Update\\\\\\.exe.*\") AND process_command_line = RGX(\".*GitHubDesktop\\\\\\.exe.*\")) AND (process_command_line = RGX(\".*\\\\-\\\\-createShortcut.*\") OR process_command_line = RGX(\".*\\\\-\\\\-processStartAndWait.*\"))) OR ((process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Microsoft\\\\\\\\Teams\\\\\\\\Update\\\\\\.exe.*\") AND process_command_line = RGX(\".*Teams\\\\\\.exe.*\")) AND (process_command_line = RGX(\".*\\\\-\\\\-processStart.*\") OR process_command_line = RGX(\".*\\\\-\\\\-createShortcut.*\"))) OR ((process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\yammerdesktop\\\\\\\\Update\\\\\\.exe.*\") AND process_command_line = RGX(\".*Yammer\\\\\\.exe.*\")) AND (process_command_line = RGX(\".*\\\\-\\\\-processStart.*\") OR process_command_line = RGX(\".*\\\\-\\\\-createShortcut.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2d37121e-2dac-4c1e-a4c3-7924e47a42e4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

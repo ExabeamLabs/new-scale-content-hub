@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Measurable Increase Of Successful Authentications",
+      "description": "Detects when successful sign-ins increased by 10% or greater. Note: Unmapped fields: Status, Count",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Status = \"Success\" AND Count = \"\\<10\\%\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2d2be9a2-03b1-4aca-b2f6-19cb98033188"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

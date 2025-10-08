@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Writing Of Malicious Files To The Fonts Folder",
+      "description": "Monitors for the hiding possible malicious files in the C:\\Windows\\Fonts\\ location. This folder doesn't require admin privillege to be written and executed from.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*echo.*\") OR process_command_line = RGX(\".*copy.*\") OR process_command_line = RGX(\".*type.*\") OR process_command_line = RGX(\".*file\\\\ createnew.*\") OR process_command_line = RGX(\".*cacls.*\")) AND process_command_line = RGX(\".*C\\\\:\\\\\\\\Windows\\\\\\\\Fonts\\\\\\\\.*\") AND (process_command_line = RGX(\".*\\\\\\.sh.*\") OR process_command_line = RGX(\".*\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\\\.dll.*\") OR process_command_line = RGX(\".*\\\\\\.bin.*\") OR process_command_line = RGX(\".*\\\\\\.bat.*\") OR process_command_line = RGX(\".*\\\\\\.cmd.*\") OR process_command_line = RGX(\".*\\\\\\.js.*\") OR process_command_line = RGX(\".*\\\\\\.msh.*\") OR process_command_line = RGX(\".*\\\\\\.reg.*\") OR process_command_line = RGX(\".*\\\\\\.scr.*\") OR process_command_line = RGX(\".*\\\\\\.ps.*\") OR process_command_line = RGX(\".*\\\\\\.vb.*\") OR process_command_line = RGX(\".*\\\\\\.jar.*\") OR process_command_line = RGX(\".*\\\\\\.pl.*\") OR process_command_line = RGX(\".*\\\\\\.inf.*\") OR process_command_line = RGX(\".*\\\\\\.cpl.*\") OR process_command_line = RGX(\".*\\\\\\.hta.*\") OR process_command_line = RGX(\".*\\\\\\.msi.*\") OR process_command_line = RGX(\".*\\\\\\.vbs.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "33eb6e38-45e7-4094-b990-560ccbdcf70b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

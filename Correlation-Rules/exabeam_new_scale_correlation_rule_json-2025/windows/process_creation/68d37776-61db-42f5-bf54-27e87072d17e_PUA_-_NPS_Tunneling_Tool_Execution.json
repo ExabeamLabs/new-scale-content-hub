@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - NPS Tunneling Tool Execution",
+      "description": "Detects the use of NPS, a port forwarding and intranet penetration proxy server",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\npc\\\\\\.exe$\") OR (process_command_line = RGX(\".*\\\\ \\\\-server\\\\=.*\") AND process_command_line = RGX(\".*\\\\ \\\\-vkey\\\\=.*\") AND process_command_line = RGX(\".*\\\\ \\\\-password\\\\=.*\")) OR process_command_line = RGX(\".*\\\\ \\\\-config\\\\=npc.*\") OR (process_hash = RGX(\".*MD5\\\\=AE8ACF66BFE3A44148964048B826D005.*\") OR process_hash = RGX(\".*SHA1\\\\=CEA49E9B9B67F3A13AD0BE1C2655293EA3C18181.*\") OR process_hash = RGX(\".*SHA256\\\\=5A456283392FFCEEEACA3D3426C306EB470304637520D72FED1CC1FEBBBD6856.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "59b4f57e-d251-4f05-9be4-73793639ff6a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

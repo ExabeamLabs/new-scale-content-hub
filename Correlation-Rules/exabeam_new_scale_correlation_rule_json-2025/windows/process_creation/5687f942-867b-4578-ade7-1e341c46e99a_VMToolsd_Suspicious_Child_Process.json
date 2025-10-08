@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "VMToolsd Suspicious Child Process",
+      "description": "Detects suspicious child process creations of VMware Tools process which may indicate persistence setup",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\vmtoolsd\\\\\\.exe$\") AND ((process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\")) OR (process_original_file_name = \"Cmd\\.Exe\" OR process_original_file_name = \"cscript\\.exe\" OR process_original_file_name = \"MSHTA\\.EXE\" OR process_original_file_name = \"PowerShell\\.EXE\" OR process_original_file_name = \"pwsh\\.dll\" OR process_original_file_name = \"REGSVR32\\.EXE\" OR process_original_file_name = \"RUNDLL32\\.EXE\" OR process_original_file_name = \"wscript\\.exe\"))) AND  NOT ((process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\\\\\VMware\\\\\\\\VMware\\\\ Tools\\\\\\\\poweron\\\\-vm\\\\-default\\\\\\.bat.*\") OR process_command_line = RGX(\".*\\\\\\\\VMware\\\\\\\\VMware\\\\ Tools\\\\\\\\poweroff\\\\-vm\\\\-default\\\\\\.bat.*\") OR process_command_line = RGX(\".*\\\\\\\\VMware\\\\\\\\VMware\\\\ Tools\\\\\\\\resume\\\\-vm\\\\-default\\\\\\.bat.*\") OR process_command_line = RGX(\".*\\\\\\\\VMware\\\\\\\\VMware\\\\ Tools\\\\\\\\suspend\\\\-vm\\\\-default\\\\\\.bat.*\"))) OR (process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") AND process_command_line = \"\") OR (process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") AND process_command_line = \"None\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9aa91c2a-98ac-41a6-a2b4-623ea0d7f1c2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

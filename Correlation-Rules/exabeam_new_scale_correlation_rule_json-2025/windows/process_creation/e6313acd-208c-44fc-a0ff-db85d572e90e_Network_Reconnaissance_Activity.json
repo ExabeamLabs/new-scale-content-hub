@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Network Reconnaissance Activity",
+      "description": "Detects a set of suspicious network related commands often used in recon stages",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*nslookup.*\") AND process_command_line = RGX(\".*\\\\_ldap\\\\\\.\\\\_tcp\\\\\\.dc\\\\\\.\\\\_msdcs\\\\\\..*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d375f0fb-d367-4cbf-9bc8-d0601644f83a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

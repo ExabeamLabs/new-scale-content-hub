@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Clipboard Data Collection Via OSAScript",
+      "description": "Detects possible collection of data from the clipboard via execution of the osascript binary",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*osascript.*\") AND process_command_line = RGX(\".*\\\\ \\\\-e\\\\ .*\") AND process_command_line = RGX(\".*clipboard.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "faa35115-82fe-4c6a-9bcb-a49e25eb76db"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

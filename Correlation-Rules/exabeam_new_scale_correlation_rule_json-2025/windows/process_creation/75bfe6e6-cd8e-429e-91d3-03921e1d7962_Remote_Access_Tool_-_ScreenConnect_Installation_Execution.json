@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remote Access Tool - ScreenConnect Installation Execution",
+      "description": "Detects ScreenConnect program starts that establish a remote access to a system.",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*e\\\\=Access\\\\&.*\") AND process_command_line = RGX(\".*y\\\\=Guest\\\\&.*\") AND process_command_line = RGX(\".*\\\\&p\\\\=.*\") AND process_command_line = RGX(\".*\\\\&c\\\\=.*\") AND process_command_line = RGX(\".*\\\\&k\\\\=.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1fef4eca-fe40-4fa9-8c09-4c15a6ea0596"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

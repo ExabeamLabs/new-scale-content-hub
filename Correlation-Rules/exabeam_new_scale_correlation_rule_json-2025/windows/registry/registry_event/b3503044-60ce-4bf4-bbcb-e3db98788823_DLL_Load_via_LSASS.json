@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "DLL Load via LSASS",
+      "description": "Detects a method to load DLL via LSASS process using an undocumented Registry key Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\CurrentControlSet\\\\\\\\Services\\\\\\\\NTDS\\\\\\\\DirectoryServiceExtPt.*\") OR registry_path = RGX(\".*\\\\\\\\CurrentControlSet\\\\\\\\Services\\\\\\\\NTDS\\\\\\\\LsaDbExtPt.*\")) AND  NOT ((process_path = \"C\\:\\\\Windows\\\\system32\\\\lsass\\.exe\" AND (Details = \"\\%\\%systemroot\\%\\%\\\\system32\\\\ntdsa\\.dll\" OR Details = \"\\%\\%systemroot\\%\\%\\\\system32\\\\lsadb\\.dll\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f1af0761-7486-4a49-8edc-cf9cce8bddf1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Local Accounts Discovery",
+      "description": "Local accounts, System Owner/User discovery using operating systems utilities",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\ \\\\/c.*\") AND process_command_line = RGX(\".*dir\\\\ .*\") AND process_command_line = RGX(\".*\\\\\\\\Users\\\\\\\\.*\"))) AND  NOT (process_command_line = RGX(\".*\\\\ rmdir\\\\ .*\"))) OR (((process_path = RGX(\"\\\\\\\\net\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\net1\\\\\\.exe$\")) AND process_command_line = RGX(\".*user.*\")) AND  NOT ((process_command_line = RGX(\".*\\\\/domain.*\") OR process_command_line = RGX(\".*\\\\/add.*\") OR process_command_line = RGX(\".*\\\\/delete.*\") OR process_command_line = RGX(\".*\\\\/active.*\") OR process_command_line = RGX(\".*\\\\/expires.*\") OR process_command_line = RGX(\".*\\\\/passwordreq.*\") OR process_command_line = RGX(\".*\\\\/scriptpath.*\") OR process_command_line = RGX(\".*\\\\/times.*\") OR process_command_line = RGX(\".*\\\\/workstations.*\")))) OR ((process_path = RGX(\"\\\\\\\\whoami\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\quser\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\qwinsta\\\\\\.exe$\")) OR (process_path = RGX(\"\\\\\\\\wmic\\\\\\.exe$\") AND (process_command_line = RGX(\".*useraccount.*\") AND process_command_line = RGX(\".*get.*\"))) OR (process_path = RGX(\"\\\\\\\\cmdkey\\\\\\.exe$\") AND process_command_line = RGX(\".*\\\\ \\\\/l.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b1e712c0-80d3-4834-bb1a-7b44d9fe8deb"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

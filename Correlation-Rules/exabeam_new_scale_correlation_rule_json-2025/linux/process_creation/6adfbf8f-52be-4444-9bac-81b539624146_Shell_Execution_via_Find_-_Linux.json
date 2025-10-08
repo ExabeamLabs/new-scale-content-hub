@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Shell Execution via Find - Linux",
+      "description": "Detects the use of the find command to execute a shell. Such behavior may be associated with privilege escalation, unauthorized command execution, or exploitation attempt.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/find$\") AND (process_command_line = RGX(\".*\\\\ \\\\\\.\\\\ .*\") AND process_command_line = RGX(\".*\\\\-exec.*\"))) AND (process_command_line = RGX(\".*\\\\/bin\\\\/bash.*\") OR process_command_line = RGX(\".*\\\\/bin\\\\/dash.*\") OR process_command_line = RGX(\".*\\\\/bin\\\\/fish.*\") OR process_command_line = RGX(\".*\\\\/bin\\\\/sh.*\") OR process_command_line = RGX(\".*\\\\/bin\\\\/zsh.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8e2dff63-7952-4394-b6a5-92f60a20836a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

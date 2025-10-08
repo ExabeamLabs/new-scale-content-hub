@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - Rclone Execution",
+      "description": "Detects execution of RClone utility for exfiltration as used by various ransomwares strains like REvil, Conti, FiveHands, etc",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\-\\\\-config\\\\ .*\") AND process_command_line = RGX(\".*\\\\-\\\\-no\\\\-check\\\\-certificate\\\\ .*\") AND process_command_line = RGX(\".*\\\\ copy\\\\ .*\")) OR ((process_path = RGX(\"\\\\\\\\rclone\\\\\\.exe$\") OR process_description = \"Rsync\\ for\\ cloud\\ storage\") AND (process_command_line = RGX(\".*pass.*\") OR process_command_line = RGX(\".*user.*\") OR process_command_line = RGX(\".*copy.*\") OR process_command_line = RGX(\".*sync.*\") OR process_command_line = RGX(\".*config.*\") OR process_command_line = RGX(\".*lsd.*\") OR process_command_line = RGX(\".*remote.*\") OR process_command_line = RGX(\".*ls.*\") OR process_command_line = RGX(\".*mega.*\") OR process_command_line = RGX(\".*pcloud.*\") OR process_command_line = RGX(\".*ftp.*\") OR process_command_line = RGX(\".*ignore\\\\-existing.*\") OR process_command_line = RGX(\".*auto\\\\-confirm.*\") OR process_command_line = RGX(\".*transfers.*\") OR process_command_line = RGX(\".*multi\\\\-thread\\\\-streams.*\") OR process_command_line = RGX(\".*no\\\\-check\\\\-certificate\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6f733b53-045b-4513-8d73-46da42a3ffa2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

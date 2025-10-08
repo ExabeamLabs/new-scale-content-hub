@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "NodeJS Execution of JavaScript File",
+      "description": "Detects execution of JavaScript or JSC files using NodeJs binary node.exe, that could be potentially suspicious.\nNode.js is a popular open-source JavaScript runtime that runs code outside browsers and is widely used for both frontend and backend development.\nAdversaries have been observed abusing Node.js to disguise malware as legitimate processes, evade security defenses, and maintain persistence within target systems.\nBecause Node.js is commonly used, this rule may generate false positives in some environments. However, if such activity is unusual in your environment, it is highly suspicious and warrants immediate investigation.\n",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\node\\\\\\.exe$\") OR process_original_file_name = \"node\\.exe\" OR process_product = \"Node\\.js\") AND process_command_line = RGX(\".*\\\\\\.js.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "28a23cea-1ea3-49a9-b384-33f46339e6b3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

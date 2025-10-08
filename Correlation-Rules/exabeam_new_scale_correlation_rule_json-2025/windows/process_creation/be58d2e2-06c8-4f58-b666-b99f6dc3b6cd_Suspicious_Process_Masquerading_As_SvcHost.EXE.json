@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Process Masquerading As SvcHost.EXE",
+      "description": "Detects a suspicious process that is masquerading as the legitimate \"svchost.exe\" by naming its binary \"svchost.exe\" and executing from an uncommon location.\nAdversaries often disguise their malicious binaries by naming them after legitimate system processes like \"svchost.exe\" to evade detection.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_path = RGX(\"\\\\\\\\svchost\\\\\\.exe$\") AND  NOT ((process_path = \"C\\:\\\\Windows\\\\System32\\\\svchost\\.exe\" OR process_path = \"C\\:\\\\Windows\\\\SysWOW64\\\\svchost\\.exe\") OR process_original_file_name = \"svchost\\.exe\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "eed6c650-8c95-4ba2-86b8-6b40961ec1e9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

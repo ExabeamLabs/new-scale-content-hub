@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious JavaScript Execution Via Mshta.EXE",
+      "description": "Detects execution of javascript code using \"mshta.exe\".",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR process_original_file_name = \"MSHTA\\.EXE\") AND process_command_line = RGX(\".*javascript.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "67d0203b-6a2e-4d79-857b-3a0cdb8642a0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

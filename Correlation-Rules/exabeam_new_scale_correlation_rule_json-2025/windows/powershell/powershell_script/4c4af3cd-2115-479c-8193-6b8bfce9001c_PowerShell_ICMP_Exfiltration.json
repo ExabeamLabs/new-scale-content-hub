@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PowerShell ICMP Exfiltration",
+      "description": "Detects Exfiltration Over Alternative Protocol - ICMP. Adversaries may steal data by exfiltrating it over an un-encrypted network protocol other than that of the existing command and control channel. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*New\\\\-Object.*\") AND ScriptBlockText = RGX(\".*System\\\\\\.Net\\\\\\.NetworkInformation\\\\\\.Ping.*\") AND ScriptBlockText = RGX(\".*\\\\\\.Send\\\\(.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7a33f3b0-1b09-411f-86de-4635d8cde53b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

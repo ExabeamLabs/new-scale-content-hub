@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Macro Enabled In A Potentially Suspicious Document",
+      "description": "Detects registry changes to Office trust records where the path is located in a potentially suspicious location",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\Security\\\\\\\\Trusted\\\\ Documents\\\\\\\\TrustRecords.*\") AND (registry_path = RGX(\".*\\\\/AppData\\\\/Local\\\\/Microsoft\\\\/Windows\\\\/INetCache\\\\/.*\") OR registry_path = RGX(\".*\\\\/AppData\\\\/Local\\\\/Temp\\\\/.*\") OR registry_path = RGX(\".*\\\\/PerfLogs\\\\/.*\") OR registry_path = RGX(\".*C\\\\:\\\\/Users\\\\/Public\\\\/.*\") OR registry_path = RGX(\".*file\\\\:\\\\/\\\\/\\\\/D\\\\:\\\\/.*\") OR registry_path = RGX(\".*file\\\\:\\\\/\\\\/\\\\/E\\\\:\\\\/.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "bc9b19e9-6a5e-4374-abdc-ffbce2600d30"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

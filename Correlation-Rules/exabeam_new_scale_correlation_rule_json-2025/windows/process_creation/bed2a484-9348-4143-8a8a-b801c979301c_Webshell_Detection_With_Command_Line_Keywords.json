@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Webshell Detection With Command Line Keywords",
+      "description": "Detects certain command line parameters often used during reconnaissance activity via web shells",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((parent_process_path = RGX(\"\\\\\\\\w3wp\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\php\\\\-cgi\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\nginx\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\httpd\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\caddy\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\ws\\\\_tomcatservice\\\\\\.exe$\")) OR ((parent_process_path = RGX(\"\\\\\\\\java\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\javaw\\\\\\.exe$\")) AND (parent_process_path = RGX(\".*\\\\-tomcat\\\\-.*\") OR parent_process_path = RGX(\".*\\\\\\\\tomcat.*\"))) OR ((parent_process_path = RGX(\"\\\\\\\\java\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\javaw\\\\\\.exe$\")) AND (process_command_line = RGX(\".*catalina\\\\\\.jar.*\") OR process_command_line = RGX(\".*CATALINA\\\\_HOME.*\")))) AND (((process_original_file_name = \"net\\.exe\" OR process_original_file_name = \"net1\\.exe\") AND (process_command_line = RGX(\".*\\\\ user\\\\ .*\") OR process_command_line = RGX(\".*\\\\ use\\\\ .*\") OR process_command_line = RGX(\".*\\\\ group\\\\ .*\"))) OR (process_original_file_name = \"ping\\.exe\" AND process_command_line = RGX(\".*\\\\ \\\\-n\\\\ .*\")) OR (process_command_line = RGX(\".*\\\\&cd\\\\&echo.*\") OR process_command_line = RGX(\".*cd\\\\ \\\\/d\\\\ .*\")) OR (process_original_file_name = \"wmic\\.exe\" AND process_command_line = RGX(\".*\\\\ \\\\/node\\\\:.*\")) OR ((process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\")) AND (process_command_line = RGX(\".*\\\\ \\\\-enc\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-EncodedCommand\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-w\\\\ hidden\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-windowstyle\\\\ hidden.*\") OR process_command_line = RGX(\".*\\\\\\.WebClient\\\\)\\\\\\.Download.*\"))) OR ((process_path = RGX(\"\\\\\\\\dsquery\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\find\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\findstr\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\ipconfig\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\netstat\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\nslookup\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pathping\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\quser\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\systeminfo\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\tasklist\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\tracert\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\ver\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wevtutil\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\whoami\\\\\\.exe$\")) OR (process_original_file_name = \"dsquery\\.exe\" OR process_original_file_name = \"find\\.exe\" OR process_original_file_name = \"findstr\\.exe\" OR process_original_file_name = \"ipconfig\\.exe\" OR process_original_file_name = \"netstat\\.exe\" OR process_original_file_name = \"nslookup\\.exe\" OR process_original_file_name = \"pathping\\.exe\" OR process_original_file_name = \"quser\\.exe\" OR process_original_file_name = \"schtasks\\.exe\" OR process_original_file_name = \"sysinfo\\.exe\" OR process_original_file_name = \"tasklist\\.exe\" OR process_original_file_name = \"tracert\\.exe\" OR process_original_file_name = \"ver\\.exe\" OR process_original_file_name = \"VSSADMIN\\.EXE\" OR process_original_file_name = \"wevtutil\\.exe\" OR process_original_file_name = \"whoami\\.exe\")) OR (process_command_line = RGX(\".*\\\\ Test\\\\-NetConnection\\\\ .*\") OR process_command_line = RGX(\".*dir\\\\ \\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f405fc90-07fd-4623-bdf5-d5d362bc76f0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

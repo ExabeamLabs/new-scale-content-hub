@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Azure Owner Removed From Application or Service Principal",
+      "description": "Identifies when a owner is was removed from a application or service principal in Azure. Note: Unmapped fields: properties.message",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(properties.message = \"Remove\\ owner\\ from\\ service\\ principal\" OR properties.message = \"Remove\\ owner\\ from\\ application\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f64beccb-b0fd-48d9-acca-ac63b5849ba7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

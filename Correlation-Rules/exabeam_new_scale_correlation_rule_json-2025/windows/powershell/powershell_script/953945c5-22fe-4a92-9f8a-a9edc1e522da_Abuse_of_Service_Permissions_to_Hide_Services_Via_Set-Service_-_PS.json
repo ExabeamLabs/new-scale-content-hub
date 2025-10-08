@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Abuse of Service Permissions to Hide Services Via Set-Service - PS",
+      "description": "Detects usage of the \"Set-Service\" powershell cmdlet to configure a new SecurityDescriptor that allows a service to be hidden from other utilities such as \"sc.exe\", \"Get-Service\"...etc. (Works only in powershell 7) Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ScriptBlockText = RGX(\".*Set\\\\-Service\\\\ .*\") AND ScriptBlockText = RGX(\".*DCLCWPDTSD.*\")) AND (ScriptBlockText = RGX(\".*\\\\-SecurityDescriptorSddl\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\-sd\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "577021db-7115-4249-af0a-925ca97c988a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

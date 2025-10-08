@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation Via Use MSHTA - PowerShell Module",
+      "description": "Detects Obfuscated Powershell via use MSHTA in Scripts Note: Unmapped fields: Payload",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Payload = RGX(\".*set.*\") AND Payload = RGX(\".*\\\\&\\\\&.*\") AND Payload = RGX(\".*mshta.*\") AND Payload = RGX(\".*vbscript\\\\:createobject.*\") AND Payload = RGX(\".*\\\\\\.run.*\") AND Payload = RGX(\".*\\\\(window\\\\\\.close\\\\).*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f32c778c-f06e-49b9-9c62-eb7eaf6d816f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

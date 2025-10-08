@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Communication To LocaltoNet Tunneling Service Initiated - Linux",
+      "description": "Detects an executable initiating a network connection to \"LocaltoNet\" tunneling sub-domains.\nLocaltoNet is a reverse proxy that enables localhost services to be exposed to the Internet.\nAttackers have been seen to use this service for command-and-control activities to bypass MFA and perimeter controls.\n Note: Unmapped fields: DestinationHostname",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((DestinationHostname = RGX(\"\\\\\\.localto\\\\\\.net$\") OR DestinationHostname = RGX(\"\\\\\\.localtonet\\\\\\.com$\")) AND network_initiated = \"true\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "44a9e50c-91e9-40c2-a6c9-d2aa4b52561a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "ClickOnce Trust Prompt Tampering",
+      "description": "Detects changes to the ClickOnce trust prompt registry key in order to enable an installation from different locations such as the Internet. Note: Unmapped fields: Details",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\MICROSOFT\\\\\\\\\\\\\\.NETFramework\\\\\\\\Security\\\\\\\\TrustManager\\\\\\\\PromptingLevel\\\\\\\\.*\") AND (registry_path = RGX(\"\\\\\\\\Internet$\") OR registry_path = RGX(\"\\\\\\\\LocalIntranet$\") OR registry_path = RGX(\"\\\\\\\\MyComputer$\") OR registry_path = RGX(\"\\\\\\\\TrustedSites$\") OR registry_path = RGX(\"\\\\\\\\UntrustedSites$\")) AND Details = \"Enabled\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2a99adb7-992e-4f9c-9651-26b332d79a0e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

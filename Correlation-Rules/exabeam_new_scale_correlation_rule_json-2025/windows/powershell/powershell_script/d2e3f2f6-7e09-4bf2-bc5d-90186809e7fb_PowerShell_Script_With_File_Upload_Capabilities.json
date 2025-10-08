@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PowerShell Script With File Upload Capabilities",
+      "description": "Detects PowerShell scripts leveraging the \"Invoke-WebRequest\" cmdlet to send data via either \"PUT\" or \"POST\" method. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ScriptBlockText = RGX(\".*Invoke\\\\-RestMethod.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-WebRequest.*\") OR ScriptBlockText = RGX(\".*irm\\\\ .*\") OR ScriptBlockText = RGX(\".*iwr\\\\ .*\")) AND (ScriptBlockText = RGX(\".*\\\\-Method\\\\ \\\\\"POST\\\\.*\") OR ScriptBlockText = RGX(\".*\\\\-Method\\\\ \\\\\"PUT\\\\.*\") OR ScriptBlockText = RGX(\".*\\\\-Method\\\\ POST.*\") OR ScriptBlockText = RGX(\".*\\\\-Method\\\\ PUT.*\") OR ScriptBlockText = RGX(\".*\\\\-Method\\\\ \\\\'POST\\\\.*\") OR ScriptBlockText = RGX(\".*\\\\-Method\\\\ \\\\'PUT\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e3c23fde-8846-4a42-8f46-87a185cd3aff"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

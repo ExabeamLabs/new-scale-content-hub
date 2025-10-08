@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Audio Capture via SoundRecorder",
+      "description": "Detect attacker collecting audio via SoundRecorder application.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\SoundRecorder\\\\\\.exe$\") AND process_command_line = RGX(\".*\\\\/FILE.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9e1227b2-f4a3-434a-a3b3-a66004d16c5f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

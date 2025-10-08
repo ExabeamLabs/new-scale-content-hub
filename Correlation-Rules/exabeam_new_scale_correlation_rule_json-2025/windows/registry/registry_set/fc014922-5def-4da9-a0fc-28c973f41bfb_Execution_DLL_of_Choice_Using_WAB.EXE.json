@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Execution DLL of Choice Using WAB.EXE",
+      "description": "This rule detects that the path to the DLL written in the registry is different from the default one. Launched WAB.exe tries to load the DLL from Registry. Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\"\\\\\\\\Software\\\\\\\\Microsoft\\\\\\\\WAB\\\\\\\\DLLPath$\") AND  NOT (Details = \"\\%CommonProgramFiles\\%\\\\System\\\\wab32\\.dll\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1051db7f-3efd-4068-b5a7-96d647312e7f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

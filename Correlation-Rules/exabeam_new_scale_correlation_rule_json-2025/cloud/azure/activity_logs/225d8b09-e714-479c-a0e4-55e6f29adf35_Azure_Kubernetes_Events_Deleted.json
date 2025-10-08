@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Azure Kubernetes Events Deleted",
+      "description": "Detects when Events are deleted in Azure Kubernetes. An adversary may delete events in Azure Kubernetes in an attempt to evade detection. Note: Unmapped fields: operationName",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "operationName = \"MICROSOFT\\.KUBERNETES\\/CONNECTEDCLUSTERS\\/EVENTS\\.K8S\\.IO\\/EVENTS\\/DELETE\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "aa504e08-ee3c-4c5c-9b21-ac9463fb46ab"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

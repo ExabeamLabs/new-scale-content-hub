@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious GPO Discovery With Get-GPO",
+      "description": "Detect use of Get-GPO to get one GPO or all the GPOs in a domain. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ScriptBlockText = RGX(\".*Get\\\\-GPO.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7e007af4-6c60-460f-8451-ebebd9087dd9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

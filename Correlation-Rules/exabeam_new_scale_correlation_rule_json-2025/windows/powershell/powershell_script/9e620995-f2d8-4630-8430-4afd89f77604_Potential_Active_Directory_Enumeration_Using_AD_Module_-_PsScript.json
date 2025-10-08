@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Active Directory Enumeration Using AD Module - PsScript",
+      "description": "Detects usage of the \"Import-Module\" cmdlet to load the \"Microsoft.ActiveDirectory.Management.dl\" DLL. Which is often used by attackers to perform AD enumeration. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ScriptBlockText = RGX(\".*Import\\\\-Module\\\\ .*\") AND ScriptBlockText = RGX(\".*Microsoft\\\\\\.ActiveDirectory\\\\\\.Management\\\\\\.dll.*\")) OR ScriptBlockText = RGX(\".*ipmo\\\\ Microsoft\\\\\\.ActiveDirectory\\\\\\.Management\\\\\\.dll.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "04b52f3b-6d42-4daa-b4f2-1a0ffd7bd214"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

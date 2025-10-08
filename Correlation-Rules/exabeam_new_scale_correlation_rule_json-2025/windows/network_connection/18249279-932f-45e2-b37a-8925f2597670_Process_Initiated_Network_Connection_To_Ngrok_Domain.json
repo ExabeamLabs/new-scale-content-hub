@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Process Initiated Network Connection To Ngrok Domain",
+      "description": "Detects an executable initiating a network connection to \"ngrok\" domains.\nAttackers were seen using this \"ngrok\" in order to store their second stage payloads and malware.\nWhile communication with such domains can be legitimate, often times is a sign of either data exfiltration by malicious actors or additional download.\n Note: Unmapped fields: DestinationHostname",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(network_initiated = \"true\" AND (DestinationHostname = RGX(\"\\\\\\.ngrok\\\\-free\\\\\\.app$\") OR DestinationHostname = RGX(\"\\\\\\.ngrok\\\\-free\\\\\\.dev$\") OR DestinationHostname = RGX(\"\\\\\\.ngrok\\\\\\.app$\") OR DestinationHostname = RGX(\"\\\\\\.ngrok\\\\\\.dev$\") OR DestinationHostname = RGX(\"\\\\\\.ngrok\\\\\\.io$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "fc98125a-2ce4-4802-ab70-4cbdbb1d6118"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

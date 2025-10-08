@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Direct Syscall of NtOpenProcess",
+      "description": "Detects potential calls to NtOpenProcess directly from NTDLL. Note: Unmapped fields: CallTrace, TargetImage, SourceImage, Provider_Name, GrantedAccess",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "CallTrace = RGX(\"^UNKNOWN\") AND  NOT ((TargetImage = RGX(\"vcredist\\\\_x64\\\\\\.exe$\") AND SourceImage = RGX(\"vcredist\\\\_x64\\\\\\.exe$\")) OR ((SourceImage = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\.*\") OR SourceImage = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\.*\") OR SourceImage = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\.*\") OR SourceImage = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\.*\") OR SourceImage = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\WinSxS\\\\\\\\.*\")) AND (TargetImage = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\.*\") OR TargetImage = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\.*\") OR TargetImage = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\.*\") OR TargetImage = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\.*\") OR TargetImage = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\WinSxS\\\\\\\\.*\"))) OR Provider_Name = \"Microsoft\\-Windows\\-Kernel\\-Audit\\-API\\-Calls\") AND  NOT ((TargetImage = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\system32\\\\\\\\systeminfo\\\\\\.exe$\") AND SourceImage = RGX(\"setup64\\\\\\.exe$\")) OR (SourceImage = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\Explorer\\\\\\.EXE$\") AND TargetImage = RGX(\"\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Cylance\\\\\\\\Desktop\\\\\\\\CylanceUI\\\\\\.exe$\")) OR (SourceImage = RGX(\"AmazonSSMAgentSetup\\\\\\.exe$\") AND TargetImage = RGX(\"AmazonSSMAgentSetup\\\\\\.exe$\")) OR (SourceImage = RGX(\"\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Programs\\\\\\\\Microsoft\\\\ VS\\\\ Code\\\\\\\\Code\\\\\\.exe$\") AND TargetImage = RGX(\"\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Programs\\\\\\\\Microsoft\\\\ VS\\\\ Code\\\\\\\\Code\\\\\\.exe$\")) OR (TargetImage = RGX(\"\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Microsoft\\\\\\\\Teams\\\\\\\\current\\\\\\\\Teams\\\\\\.exe$\") AND SourceImage = RGX(\"\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Microsoft\\\\\\\\Teams\\\\\\\\current\\\\\\\\Teams\\\\\\.exe$\")) OR (TargetImage = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Discord\\\\\\\\.*\") AND TargetImage = RGX(\"\\\\\\\\Discord\\\\\\.exe$\")) OR (SourceImage = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\yammerdesktop\\\\\\\\app\\\\-.*\") AND SourceImage = RGX(\"\\\\\\\\Yammer\\\\\\.exe$\") AND TargetImage = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\yammerdesktop\\\\\\\\app\\\\-.*\") AND TargetImage = RGX(\"\\\\\\\\Yammer\\\\\\.exe$\") AND GrantedAccess = \"0x1000\") OR TargetImage = RGX(\"\\\\\\\\Evernote\\\\\\\\Evernote\\\\\\.exe$\") OR (SourceImage = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Adobe\\\\\\\\Acrobat\\\\ DC\\\\\\\\Acrobat\\\\\\\\.*\") AND SourceImage = RGX(\"\\\\\\\\AcroCEF\\\\\\.exe$\") AND TargetImage = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Adobe\\\\\\\\Acrobat\\\\ DC\\\\\\\\Acrobat\\\\\\\\.*\") AND TargetImage = RGX(\"\\\\\\\\AcroCEF\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f3855f53-96d1-4bd0-89e7-728a06f51282"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

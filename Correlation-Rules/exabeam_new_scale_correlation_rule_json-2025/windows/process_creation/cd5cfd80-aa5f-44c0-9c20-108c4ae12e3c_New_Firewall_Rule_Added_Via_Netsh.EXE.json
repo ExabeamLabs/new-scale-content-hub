@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New Firewall Rule Added Via Netsh.EXE",
+      "description": "Detects the addition of a new rule to the Windows firewall via netsh",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\netsh\\\\\\.exe$\") OR process_original_file_name = \"netsh\\.exe\") AND (process_command_line = RGX(\".*\\\\ firewall\\\\ .*\") AND process_command_line = RGX(\".*\\\\ add\\\\ .*\"))) AND  NOT ((process_command_line = RGX(\".*advfirewall\\\\ firewall\\\\ add\\\\ rule\\\\ name\\\\=Dropbox\\\\ dir\\\\=in\\\\ action\\\\=allow\\\\ \\\\\"program\\\\=?\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Dropbox\\\\\\\\Client\\\\\\\\Dropbox\\\\\\.exe\\\\\"\\\\ enable\\\\=yes\\\\ profile\\\\=Any.*\") OR process_command_line = RGX(\".*advfirewall\\\\ firewall\\\\ add\\\\ rule\\\\ name\\\\=Dropbox\\\\ dir\\\\=in\\\\ action\\\\=allow\\\\ \\\\\"program\\\\=?\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Dropbox\\\\\\\\Client\\\\\\\\Dropbox\\\\\\.exe\\\\\"\\\\ enable\\\\=yes\\\\ profile\\\\=Any.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e6caf124-911b-47b1-8f1e-7eb7391e59e4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

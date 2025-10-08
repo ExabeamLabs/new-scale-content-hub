@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential DLL Sideloading Of KeyScramblerIE.DLL Via KeyScrambler.EXE",
+      "description": "Detects potential DLL side loading of \"KeyScramblerIE.dll\" by \"KeyScrambler.exe\".\nVarious threat actors and malware have been found side loading a masqueraded \"KeyScramblerIE.dll\" through \"KeyScrambler.exe\".\n Note: Unmapped fields: ImageLoaded, Signature, SignatureStatus",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\KeyScrambler\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\KeyScramblerLogon\\\\\\.exe$\")) AND ImageLoaded = RGX(\"\\\\\\\\KeyScramblerIE\\\\\\.dll$\")) AND  NOT (((process_path = RGX(\".*C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\KeyScrambler\\\\\\\\.*\") OR process_path = RGX(\".*C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\KeyScrambler\\\\\\\\.*\")) AND (ImageLoaded = RGX(\".*C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\KeyScrambler\\\\\\\\.*\") OR ImageLoaded = RGX(\".*C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\KeyScrambler\\\\\\\\.*\"))) OR (Signature = \"QFX\\ Software\\ Corporation\" AND SignatureStatus = \"Valid\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "319603df-ee1b-4bd3-8d8d-b70c67bd2084"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

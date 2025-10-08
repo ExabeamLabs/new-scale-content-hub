@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Outlook Macro Execution Without Warning Setting Enabled",
+      "description": "Detects the modification of Outlook security setting to allow unprompted execution of macros. Note: Unmapped fields: Details",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\"\\\\\\\\Outlook\\\\\\\\Security\\\\\\\\Level$\") AND Details = RGX(\".*0x00000001.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "985f2fe1-521c-4631-a7db-c9ef1cdd2e8d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

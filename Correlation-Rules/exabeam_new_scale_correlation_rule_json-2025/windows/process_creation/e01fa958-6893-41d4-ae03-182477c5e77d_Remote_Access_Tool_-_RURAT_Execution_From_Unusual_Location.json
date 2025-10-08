@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remote Access Tool - RURAT Execution From Unusual Location",
+      "description": "Detects execution of Remote Utilities RAT (RURAT) from an unusual location (outside of 'C:\\Program Files')",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\rutserv\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\rfusclient\\\\\\.exe$\")) OR process_product = \"Remote\\ Utilities\") AND  NOT ((process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Remote\\\\ Utilities\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Remote\\\\ Utilities\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "071fac16-0132-4bc3-b2d0-9647c26a2bf8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

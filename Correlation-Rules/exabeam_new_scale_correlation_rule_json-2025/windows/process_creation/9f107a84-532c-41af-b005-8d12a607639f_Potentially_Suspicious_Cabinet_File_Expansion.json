@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Suspicious Cabinet File Expansion",
+      "description": "Detects the expansion or decompression of cabinet files from potentially suspicious or uncommon locations, e.g. seen in Iranian MeteorExpress related attacks",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\expand\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\-F\\\\:.*\") OR process_command_line = RGX(\".*\\\\/F\\\\:.*\"))) AND ((process_command_line = RGX(\".*\\\\:\\\\\\\\Perflogs\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\ProgramData.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Admin\\\\$\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\C\\\\$\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Temporary\\\\ Internet.*\")) OR ((process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\\\\\Favorites\\\\\\\\.*\")) OR (process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\\\\\Favourites\\\\\\\\.*\")) OR (process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\\\\\Contacts\\\\\\\\.*\")))) AND  NOT ((parent_process_path = \"C\\:\\\\Program\\ Files\\ \\(x86\\)\\\\Dell\\\\UpdateService\\\\ServiceShell\\.exe\" AND process_command_line = RGX(\".*C\\\\:\\\\\\\\ProgramData\\\\\\\\Dell\\\\\\\\UpdateService\\\\\\\\Temp\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e9c3d7a8-277b-4d94-b41e-9fa2b2ed8111"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

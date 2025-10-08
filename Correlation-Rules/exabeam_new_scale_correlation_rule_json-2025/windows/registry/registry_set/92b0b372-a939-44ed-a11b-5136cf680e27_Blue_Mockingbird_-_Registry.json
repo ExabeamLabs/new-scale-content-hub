@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Blue Mockingbird - Registry",
+      "description": "Attempts to detect system changes made by Blue Mockingbird",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\"\\\\\\\\CurrentControlSet\\\\\\\\Services\\\\\\\\wercplsupport\\\\\\\\Parameters\\\\\\\\ServiceDll$\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d0b57275-e044-4a32-892e-53d38c0e12f6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

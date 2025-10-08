@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Disabled Volume Snapshots",
+      "description": "Detects commands that temporarily turn off Volume Snapshots",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\\\\\Services\\\\\\\\VSS\\\\\\\\Diag.*\") AND process_command_line = RGX(\".*\\\\/d\\\\ Disabled.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "36fa291e-29c6-4a23-9ffc-4fdfb267dad2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "InfDefaultInstall.exe .inf Execution",
+      "description": "Executes SCT script using scrobj.dll from a command in entered into a specially prepared INF file.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*InfDefaultInstall\\\\\\.exe\\\\ .*\") AND process_command_line = RGX(\".*\\\\\\.inf.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8a7fee61-85cb-45a1-bf19-0144e0389ea5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Execution Of Script Located In Potentially Suspicious Directory",
+      "description": "Detects executions of scripts located in potentially suspicious locations such as \"/tmp\" via a shell such as \"bash\", \"sh\", etc.",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/bash$\") OR process_path = RGX(\"\\\\/csh$\") OR process_path = RGX(\"\\\\/dash$\") OR process_path = RGX(\"\\\\/fish$\") OR process_path = RGX(\"\\\\/ksh$\") OR process_path = RGX(\"\\\\/sh$\") OR process_path = RGX(\"\\\\/zsh$\")) AND process_command_line = RGX(\".*\\\\ \\\\-c\\\\ .*\") AND process_command_line = RGX(\".*\\\\/tmp\\\\/.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "de4f49d0-bd7f-416e-8f17-7296aa47046b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

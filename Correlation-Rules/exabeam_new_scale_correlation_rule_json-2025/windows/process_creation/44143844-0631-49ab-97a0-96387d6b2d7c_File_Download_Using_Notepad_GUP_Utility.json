@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "File Download Using Notepad++ GUP Utility",
+      "description": "Detects execution of the Notepad++ updater (gup) from a process other than Notepad++ to download files.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\GUP\\\\\\.exe$\") OR process_original_file_name = \"gup\\.exe\") AND (process_command_line = RGX(\".*\\\\ \\\\-unzipTo\\\\ .*\") AND process_command_line = RGX(\".*http.*\"))) AND  NOT (parent_process_path = RGX(\"\\\\\\\\notepad\\\\+\\\\+\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e88c61b8-546e-440a-98ce-5353853c48f0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

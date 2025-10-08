@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Environment Variable Has Been Registered",
+      "description": "Detects the creation of user-specific or system-wide environment variables via the registry. Which contains suspicious commands and strings Note: Unmapped fields: Details",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\Environment\\\\\\\\.*\") AND ((Details = \"powershell\" OR Details = \"pwsh\") OR (Details = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") OR Details = RGX(\".*C\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR Details = RGX(\".*TVqQAAMAAAAEAAAA.*\") OR Details = RGX(\".*TVpQAAIAAAAEAA8A.*\") OR Details = RGX(\".*TVqAAAEAAAAEABAA.*\") OR Details = RGX(\".*TVoAAAAAAAAAAAAA.*\") OR Details = RGX(\".*TVpTAQEAAAAEAAAA.*\") OR Details = RGX(\".*SW52b2tlL.*\") OR Details = RGX(\".*ludm9rZS.*\") OR Details = RGX(\".*JbnZva2Ut.*\") OR Details = RGX(\".*SQBuAHYAbwBrAGUALQ.*\") OR Details = RGX(\".*kAbgB2AG8AawBlAC0A.*\") OR Details = RGX(\".*JAG4AdgBvAGsAZQAtA.*\")) OR (Details = RGX(\"^SUVY\") OR Details = RGX(\"^SQBFAF\") OR Details = RGX(\"^SQBuAH\") OR Details = RGX(\"^cwBhA\") OR Details = RGX(\"^aWV4\") OR Details = RGX(\"^aQBlA\") OR Details = RGX(\"^R2V0\") OR Details = RGX(\"^dmFy\") OR Details = RGX(\"^dgBhA\") OR Details = RGX(\"^dXNpbm\") OR Details = RGX(\"^H4sIA\") OR Details = RGX(\"^Y21k\") OR Details = RGX(\"^cABhAH\") OR Details = RGX(\"^Qzpc\") OR Details = RGX(\"^Yzpc\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a060d32e-eed4-4716-b76e-3c3b8d4c433a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

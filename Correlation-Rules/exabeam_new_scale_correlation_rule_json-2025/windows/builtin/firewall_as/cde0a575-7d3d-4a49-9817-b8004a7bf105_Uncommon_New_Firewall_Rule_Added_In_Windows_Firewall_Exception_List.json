@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Uncommon New Firewall Rule Added In Windows Firewall Exception List",
+      "description": "Detects when a rule has been added to the Windows Firewall exception list Note: Unmapped fields: Action, ApplicationPath, ModifyingApplication",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 2004 OR event_id = 2071 OR event_id = 2097) AND  NOT (Action = 2 OR (ApplicationPath = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\\") OR ApplicationPath = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\\") OR ApplicationPath = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\\") OR ApplicationPath = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\\") OR ApplicationPath = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\WinSxS\\\\\\\\\")) OR (ApplicationPath = RGX(\".*C\\\\:\\\\\\\\PerfLogs\\\\\\\\.*\") OR ApplicationPath = RGX(\".*C\\\\:\\\\\\\\Temp\\\\\\\\.*\") OR ApplicationPath = RGX(\".*C\\\\:\\\\\\\\Tmp\\\\\\\\.*\") OR ApplicationPath = RGX(\".*C\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR ApplicationPath = RGX(\".*C\\\\:\\\\\\\\Windows\\\\\\\\Tasks\\\\\\\\.*\") OR ApplicationPath = RGX(\".*C\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\") OR ApplicationPath = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\")) OR ApplicationPath = \"None\") AND  NOT ((ModifyingApplication = RGX(\"^C\\\\:\\\\\\\\ProgramData\\\\\\\\Microsoft\\\\\\\\Windows\\\\ Defender\\\\\\\\Platform\\\\\\\\\") AND ModifyingApplication = RGX(\"\\\\\\\\MsMpEng\\\\\\.exe$\")) OR ((ModifyingApplication = \"C\\:\\\\Windows\\\\System32\\\\svchost\\.exe\" OR ModifyingApplication = \"C\\:\\\\Windows\\\\System32\\\\dllhost\\.exe\") AND ApplicationPath = \"\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d5adfa96-ec4b-42d1-9901-d99684a45197"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

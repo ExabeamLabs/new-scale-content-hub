@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Child Process Of Veeam Dabatase",
+      "description": "Detects suspicious child processes of the Veeam service process. This could indicate potential RCE or SQL Injection.",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\sqlservr\\\\\\.exe$\") AND parent_process_command_line = RGX(\".*VEEAMSQL.*\")) AND (((process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wsl\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wt\\\\\\.exe$\")) AND (process_command_line = RGX(\".*\\\\-ex\\\\ .*\") OR process_command_line = RGX(\".*bypass.*\") OR process_command_line = RGX(\".*cscript.*\") OR process_command_line = RGX(\".*DownloadString.*\") OR process_command_line = RGX(\".*http\\\\:\\\\/\\\\/.*\") OR process_command_line = RGX(\".*https\\\\:\\\\/\\\\/.*\") OR process_command_line = RGX(\".*mshta.*\") OR process_command_line = RGX(\".*regsvr32.*\") OR process_command_line = RGX(\".*rundll32.*\") OR process_command_line = RGX(\".*wscript.*\") OR process_command_line = RGX(\".*copy\\\\ .*\"))) OR (process_path = RGX(\"\\\\\\\\net\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\net1\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\netstat\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\nltest\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\ping\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\tasklist\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\whoami\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7f191ac9-1563-4c4b-8c96-295f4f855fd2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

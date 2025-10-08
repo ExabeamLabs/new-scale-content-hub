@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Host Without Firewall",
+      "description": "Host Without Firewall. Alert means not complied. Sigma for Qualys vulnerability scanner. Scan type - Vulnerability Management. Note: Unmapped fields: event.category, host.scan.vuln_name",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event.category = \"Security\\ Policy\" AND host.scan.vuln_name = RGX(\".*Firewall\\\\ Product\\\\ Not\\\\ Detected.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "bdaa7e45-b7bf-4031-8b91-4187b196f199"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

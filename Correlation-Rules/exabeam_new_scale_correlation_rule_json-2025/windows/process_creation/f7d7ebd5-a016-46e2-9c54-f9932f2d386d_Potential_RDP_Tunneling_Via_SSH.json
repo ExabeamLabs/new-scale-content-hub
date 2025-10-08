@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential RDP Tunneling Via SSH",
+      "description": "Execution of ssh.exe to perform data exfiltration and tunneling through RDP",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\ssh\\\\\\.exe$\") AND process_command_line = RGX(\".*\\\\:3389.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ec7d536b-5692-4dac-b48e-85c55b1e8250"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

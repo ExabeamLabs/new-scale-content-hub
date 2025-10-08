@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential UAC Bypass Via Sdclt.EXE",
+      "description": "A General detection for sdclt being spawned as an elevated process. This could be an indicator of sdclt being used for bypass UAC techniques.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"sdclt\\\\\\.exe$\") AND (process_integrity_level = \"High\" OR process_integrity_level = \"S\\-1\\-16\\-12288\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "db797575-aa47-467c-b4d4-299e18167b46"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

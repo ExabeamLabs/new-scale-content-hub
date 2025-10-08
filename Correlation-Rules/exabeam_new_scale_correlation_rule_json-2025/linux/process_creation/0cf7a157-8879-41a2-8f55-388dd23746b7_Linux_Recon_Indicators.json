@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Linux Recon Indicators",
+      "description": "Detects events with patterns found in commands used for reconnaissance on linux systems",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\ \\\\-name\\\\ \\\\\\.htpasswd.*\") OR process_command_line = RGX(\".*\\\\ \\\\-perm\\\\ \\\\-4000\\\\ .*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "45836647-b4a5-4a0d-9885-ce92cf114250"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

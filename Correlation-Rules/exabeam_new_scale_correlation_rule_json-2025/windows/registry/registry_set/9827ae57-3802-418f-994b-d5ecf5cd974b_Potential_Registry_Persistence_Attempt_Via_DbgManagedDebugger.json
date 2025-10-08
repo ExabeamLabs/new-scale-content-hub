@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Registry Persistence Attempt Via DbgManagedDebugger",
+      "description": "Detects the addition of the \"Debugger\" value to the \"DbgManagedDebugger\" key in order to achieve persistence. Which will get invoked when an application crashes Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\"\\\\\\\\Microsoft\\\\\\\\\\\\\\.NETFramework\\\\\\\\DbgManagedDebugger$\") AND  NOT (Details = \"\\\"C\\:\\\\Windows\\\\system32\\\\vsjitdebugger\\.exe\\\"\\ PID\\ \\%d\\ APPDOM\\ \\%d\\ EXTEXT\\ \\\"\\%s\\\"\\ EVTHDL\\ \\%d\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2b107a4b-8e36-4561-9277-01869a94f563"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Microsoft Defender Tamper Protection Trigger",
+      "description": "Detects blocked attempts to change any of Defender's settings such as \"Real Time Monitoring\" and \"Behavior Monitoring\" Note: Unmapped fields: Value",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 5013 AND (Value = RGX(\"\\\\\\\\Windows\\\\ Defender\\\\\\\\DisableAntiSpyware$\") OR Value = RGX(\"\\\\\\\\Windows\\\\ Defender\\\\\\\\DisableAntiVirus$\") OR Value = RGX(\"\\\\\\\\Windows\\\\ Defender\\\\\\\\Scan\\\\\\\\DisableArchiveScanning$\") OR Value = RGX(\"\\\\\\\\Windows\\\\ Defender\\\\\\\\Scan\\\\\\\\DisableScanningNetworkFiles$\") OR Value = RGX(\"\\\\\\\\Real\\\\-Time\\\\ Protection\\\\\\\\DisableRealtimeMonitoring$\") OR Value = RGX(\"\\\\\\\\Real\\\\-Time\\\\ Protection\\\\\\\\DisableBehaviorMonitoring$\") OR Value = RGX(\"\\\\\\\\Real\\\\-Time\\\\ Protection\\\\\\\\DisableIOAVProtection$\") OR Value = RGX(\"\\\\\\\\Real\\\\-Time\\\\ Protection\\\\\\\\DisableScriptScanning$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "14648aaf-efb6-4be9-9c92-9d326460009a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

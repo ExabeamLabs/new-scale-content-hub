@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Control Panel Items",
+      "description": "Detects the malicious use of a control panel item",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\reg\\\\\\.exe$\") OR process_original_file_name = \"reg\\.exe\") AND (process_command_line = RGX(\".*add.*\") AND process_command_line = RGX(\".*CurrentVersion\\\\\\\\Control\\\\ Panel\\\\\\\\CPLs.*\"))) OR (process_command_line = RGX(\"\\\\\\.cpl$\") AND  NOT ((process_command_line = RGX(\".*\\\\\\\\System32\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\%System\\\\%.*\") OR process_command_line = RGX(\".*\\\\|C\\\\:\\\\\\\\Windows\\\\\\\\system32\\\\|.*\")) OR (process_command_line = RGX(\".*regsvr32\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\/s\\\\ .*\") AND process_command_line = RGX(\".*igfxCPL\\\\\\.cpl.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "487ca687-8f26-46e1-b445-ae310432035d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

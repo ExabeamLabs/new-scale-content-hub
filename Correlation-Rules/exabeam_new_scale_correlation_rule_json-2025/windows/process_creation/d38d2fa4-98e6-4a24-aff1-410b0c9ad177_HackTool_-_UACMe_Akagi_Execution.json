@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - UACMe Akagi Execution",
+      "description": "Detects the execution of UACMe, a tool used for UAC bypasses, via default PE metadata",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_product = \"UACMe\" OR (process_company = \"REvol\\ Corp\" OR process_company = \"APT\\ 92\" OR process_company = \"UG\\ North\" OR process_company = \"Hazardous\\ Environments\" OR process_company = \"CD\\ Project\\ Rekt\") OR (process_description = \"UACMe\\ main\\ module\" OR process_description = \"Pentesting\\ utility\") OR (process_original_file_name = \"Akagi\\.exe\" OR process_original_file_name = \"Akagi64\\.exe\")) OR (process_path = RGX(\"\\\\\\\\Akagi64\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\Akagi\\\\\\.exe$\")) OR (process_hash = RGX(\".*IMPHASH\\\\=767637C23BB42CD5D7397CF58B0BE688.*\") OR process_hash = RGX(\".*IMPHASH\\\\=14C4E4C72BA075E9069EE67F39188AD8.*\") OR process_hash = RGX(\".*IMPHASH\\\\=3C782813D4AFCE07BBFC5A9772ACDBDC.*\") OR process_hash = RGX(\".*IMPHASH\\\\=7D010C6BB6A3726F327F7E239166D127.*\") OR process_hash = RGX(\".*IMPHASH\\\\=89159BA4DD04E4CE5559F132A9964EB3.*\") OR process_hash = RGX(\".*IMPHASH\\\\=6F33F4A5FC42B8CEC7314947BD13F30F.*\") OR process_hash = RGX(\".*IMPHASH\\\\=5834ED4291BDEB928270428EBBAF7604.*\") OR process_hash = RGX(\".*IMPHASH\\\\=5A8A8A43F25485E7EE1B201EDCBC7A38.*\") OR process_hash = RGX(\".*IMPHASH\\\\=DC7D30B90B2D8ABF664FBED2B1B59894.*\") OR process_hash = RGX(\".*IMPHASH\\\\=41923EA1F824FE63EA5BEB84DB7A3E74.*\") OR process_hash = RGX(\".*IMPHASH\\\\=3DE09703C8E79ED2CA3F01074719906B.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "68ccd840-03b0-4337-9450-b2c88c8df468"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

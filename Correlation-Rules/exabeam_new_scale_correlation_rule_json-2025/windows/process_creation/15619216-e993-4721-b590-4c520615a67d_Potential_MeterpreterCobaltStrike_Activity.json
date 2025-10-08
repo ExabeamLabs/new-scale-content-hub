@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Meterpreter/CobaltStrike Activity",
+      "description": "Detects the use of getsystem Meterpreter/Cobalt Strike command by detecting a specific service starting",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "parent_process_path = RGX(\"\\\\\\\\services\\\\\\.exe$\") AND (((process_command_line = RGX(\".*\\\\/c.*\") AND process_command_line = RGX(\".*echo.*\") AND process_command_line = RGX(\".*\\\\\\\\pipe\\\\\\\\.*\")) AND (process_command_line = RGX(\".*cmd.*\") OR process_command_line = RGX(\".*\\\\%COMSPEC\\\\%.*\"))) OR (process_command_line = RGX(\".*rundll32.*\") AND process_command_line = RGX(\".*\\\\\\.dll\\\\,a.*\") AND process_command_line = RGX(\".*\\\\/p\\\\:.*\"))) AND  NOT (process_command_line = RGX(\".*MpCmdRun.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f8da8bfb-443f-4922-a157-bc4cea985d1a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

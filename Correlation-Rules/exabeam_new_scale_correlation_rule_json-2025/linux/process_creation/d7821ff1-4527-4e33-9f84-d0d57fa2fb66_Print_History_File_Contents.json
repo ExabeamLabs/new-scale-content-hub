@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Print History File Contents",
+      "description": "Detects events in which someone prints the contents of history files to the commandline or redirects it to a file for reconnaissance",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/cat$\") OR process_path = RGX(\"\\\\/head$\") OR process_path = RGX(\"\\\\/tail$\") OR process_path = RGX(\"\\\\/more$\")) AND ((process_command_line = RGX(\".*\\\\/\\\\\\.bash\\\\_history.*\") OR process_command_line = RGX(\".*\\\\/\\\\\\.zsh\\\\_history.*\")) OR (process_command_line = RGX(\"\\\\_history$\") OR process_command_line = RGX(\"\\\\\\.history$\") OR process_command_line = RGX(\"zhistory$\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5bca5d7d-1122-4b15-aa95-4ab04c8922af"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

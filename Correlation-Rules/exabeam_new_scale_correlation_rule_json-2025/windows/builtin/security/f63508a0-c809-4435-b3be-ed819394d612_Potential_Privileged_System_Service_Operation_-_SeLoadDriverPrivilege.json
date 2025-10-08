@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Privileged System Service Operation - SeLoadDriverPrivilege",
+      "description": "Detects the usage of the 'SeLoadDriverPrivilege' privilege. This privilege is required to load or unload a device driver.\nWith this privilege, the user can dynamically load and unload device drivers or other code in to kernel mode.\nThis user right does not apply to Plug and Play device drivers.\nIf you exclude privileged users/admins and processes, which are allowed to do so, you are maybe left with bad programs trying to load malicious kernel drivers.\nThis will detect Ghost-In-The-Logs (https://github.com/bats3c/Ghost-In-The-Logs) and the usage of Sysinternals and various other tools. So you have to work with a whitelist to find the bad stuff.\n Note: Unmapped fields: PrivilegeList, Service, ProcessName",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4673 AND PrivilegeList = \"SeLoadDriverPrivilege\" AND Service = \"\\-\") AND  NOT ((ProcessName = \"C\\:\\\\Windows\\\\System32\\\\Dism\\.exe\" OR ProcessName = \"C\\:\\\\Windows\\\\System32\\\\rundll32\\.exe\" OR ProcessName = \"C\\:\\\\Windows\\\\System32\\\\fltMC\\.exe\" OR ProcessName = \"C\\:\\\\Windows\\\\HelpPane\\.exe\" OR ProcessName = \"C\\:\\\\Windows\\\\System32\\\\mmc\\.exe\" OR ProcessName = \"C\\:\\\\Windows\\\\System32\\\\svchost\\.exe\" OR ProcessName = \"C\\:\\\\Windows\\\\System32\\\\wimserv\\.exe\" OR ProcessName = \"C\\:\\\\Windows\\\\System32\\\\RuntimeBroker\\.exe\" OR ProcessName = \"C\\:\\\\Windows\\\\System32\\\\SystemSettingsBroker\\.exe\" OR ProcessName = \"C\\:\\\\Windows\\\\explorer\\.exe\") OR (ProcessName = RGX(\"\\\\\\\\procexp64\\\\\\.exe$\") OR ProcessName = RGX(\"\\\\\\\\procexp\\\\\\.exe$\") OR ProcessName = RGX(\"\\\\\\\\procmon64\\\\\\.exe$\") OR ProcessName = RGX(\"\\\\\\\\procmon\\\\\\.exe$\") OR ProcessName = RGX(\"\\\\\\\\Google\\\\\\\\Chrome\\\\\\\\Application\\\\\\\\chrome\\\\\\.exe$\") OR ProcessName = RGX(\"\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Microsoft\\\\\\\\Teams\\\\\\\\current\\\\\\\\Teams\\\\\\.exe$\")) OR ProcessName = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\WindowsApps\\\\\\\\Microsoft\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4c7221b0-7037-48cd-8a7a-2de2d97c559f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

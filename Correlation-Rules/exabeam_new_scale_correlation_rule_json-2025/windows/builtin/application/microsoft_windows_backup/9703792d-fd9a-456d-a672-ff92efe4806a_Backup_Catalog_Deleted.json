@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Backup Catalog Deleted",
+      "description": "Detects backup catalog deletions Note: Unmapped fields: Provider_Name",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 524 AND Provider_Name = \"Microsoft\\-Windows\\-Backup\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "36772051-0546-4a76-84b9-e7127c795c8c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

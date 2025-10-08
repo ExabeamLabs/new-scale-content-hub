@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Add Port Monitor Persistence in Registry",
+      "description": "Adversaries may use port monitors to run an attacker supplied DLL during system boot for persistence or privilege escalation.\nA port monitor can be set through the AddMonitor API call to set a DLL to be loaded at startup.\n Note: Unmapped fields: Details",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\Control\\\\\\\\Print\\\\\\\\Monitors\\\\\\\\.*\") AND Details = RGX(\"\\\\\\.dll$\")) AND  NOT ((process_path = \"C\\:\\\\Windows\\\\System32\\\\spoolsv\\.exe\" AND registry_path = RGX(\".*\\\\\\\\Control\\\\\\\\Print\\\\\\\\Monitors\\\\\\\\CutePDF\\\\ Writer\\\\ Monitor\\\\ v4\\\\\\.0\\\\\\\\Driver.*\") AND Details = \"cpwmon64\\_v40\\.dll\" AND (user = RGX(\".*AUTHORI.*\") OR user = RGX(\".*AUTORI.*\"))) OR registry_path = RGX(\".*\\\\\\\\Control\\\\\\\\Print\\\\\\\\Monitors\\\\\\\\MONVNC\\\\\\\\Driver.*\") OR (registry_path = RGX(\".*Control\\\\\\\\Print\\\\\\\\Environments\\\\\\\\.*\") AND registry_path = RGX(\".*\\\\\\\\Drivers\\\\\\\\.*\") AND registry_path = RGX(\".*\\\\\\\\VNC\\\\ Printer.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f6383ec4-7e7f-483a-b1d8-ca5bea7f1a3f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

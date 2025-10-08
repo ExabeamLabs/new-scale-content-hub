@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Visual Basic Command Line Compiler Usage",
+      "description": "Detects successful code compilation via Visual Basic Command Line Compiler that utilizes Windows Resource to Object Converter.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\vbc\\\\\\.exe$\") AND process_path = RGX(\"\\\\\\\\cvtres\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d47862e9-c627-4d9d-9f4e-5d06c4b05c31"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

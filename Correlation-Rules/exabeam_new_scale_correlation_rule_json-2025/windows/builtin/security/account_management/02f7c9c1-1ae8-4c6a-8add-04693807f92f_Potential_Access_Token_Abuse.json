@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Access Token Abuse",
+      "description": "Detects potential token impersonation and theft. Example, when using \"DuplicateToken(Ex)\" and \"ImpersonateLoggedOnUser\" with the \"LOGON32_LOGON_NEW_CREDENTIALS flag\". Note: Unmapped fields: LogonType, LogonProcessName, AuthenticationPackageName, ImpersonationLevel",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4624 AND LogonType = 9 AND LogonProcessName = \"Advapi\" AND AuthenticationPackageName = \"Negotiate\" AND ImpersonationLevel = \"\\%\\%1833\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4f392668-f566-4523-bc64-4da1c0636bea"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Rundll32 Execution Without CommandLine Parameters",
+      "description": "Detects suspicious start of rundll32.exe without any parameters as found in CobaltStrike beacon activity",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_command_line = RGX(\"\\\\\\\\rundll32\\\\\\.exe\\\\$\") OR process_command_line = RGX(\"\\\\\\\\rundll32$\")) AND  NOT ((parent_process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\.*\") OR parent_process_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Edge\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "37c4f796-1aae-4f81-9505-be7843d49716"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "System Scripts Autorun Keys Modification",
+      "description": "Detects modification of autostart extensibility point (ASEP) in registry. Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\".*\\\\\\\\Software\\\\\\\\Policies\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\System\\\\\\\\Scripts.*\") AND (registry_path = RGX(\".*\\\\\\\\Startup.*\") OR registry_path = RGX(\".*\\\\\\\\Shutdown.*\") OR registry_path = RGX(\".*\\\\\\\\Logon.*\") OR registry_path = RGX(\".*\\\\\\\\Logoff.*\")) AND  NOT (Details = \"\\(Empty\\)\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "88ed29a0-edf1-40aa-8387-793043e9062f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

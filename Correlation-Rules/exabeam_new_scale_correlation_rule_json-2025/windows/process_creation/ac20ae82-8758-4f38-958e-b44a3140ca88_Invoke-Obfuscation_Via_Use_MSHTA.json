@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation Via Use MSHTA",
+      "description": "Detects Obfuscated Powershell via use MSHTA in Scripts",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*set.*\") AND process_command_line = RGX(\".*\\\\&\\\\&.*\") AND process_command_line = RGX(\".*mshta.*\") AND process_command_line = RGX(\".*vbscript\\\\:createobject.*\") AND process_command_line = RGX(\".*\\\\\\.run.*\") AND process_command_line = RGX(\".*\\\\(window\\\\\\.close\\\\).*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f78057de-d653-4c1d-8a09-ec94abe274ab"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

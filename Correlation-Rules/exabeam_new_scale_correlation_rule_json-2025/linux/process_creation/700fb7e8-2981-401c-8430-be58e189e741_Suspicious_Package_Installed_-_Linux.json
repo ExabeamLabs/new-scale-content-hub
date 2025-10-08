@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Package Installed - Linux",
+      "description": "Detects installation of suspicious packages using system installation utilities",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\/apt$\") OR process_path = RGX(\"\\\\/apt\\\\-get$\")) AND process_command_line = RGX(\".*install.*\")) OR (process_path = RGX(\"\\\\/yum$\") AND (process_command_line = RGX(\".*localinstall.*\") OR process_command_line = RGX(\".*install.*\"))) OR (process_path = RGX(\"\\\\/rpm$\") AND process_command_line = RGX(\".*\\\\-i.*\")) OR (process_path = RGX(\"\\\\/dpkg$\") AND (process_command_line = RGX(\".*\\\\-\\\\-install.*\") OR process_command_line = RGX(\".*\\\\-i.*\")))) AND (process_command_line = RGX(\".*nmap.*\") OR process_command_line = RGX(\".*\\\\ nc.*\") OR process_command_line = RGX(\".*netcat.*\") OR process_command_line = RGX(\".*wireshark.*\") OR process_command_line = RGX(\".*tshark.*\") OR process_command_line = RGX(\".*openconnect.*\") OR process_command_line = RGX(\".*proxychains.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "df7b85ab-c409-4237-8c4e-86c519ab397e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

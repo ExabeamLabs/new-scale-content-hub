@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential PowerShell Execution Policy Tampering - ProcCreation",
+      "description": "Detects changes to the PowerShell execution policy registry key in order to bypass signing requirements for script execution from the CommandLine",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*\\\\\\\\ShellIds\\\\\\\\Microsoft\\\\\\.PowerShell\\\\\\\\ExecutionPolicy.*\") OR process_command_line = RGX(\".*\\\\\\\\Policies\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\PowerShell\\\\\\\\ExecutionPolicy.*\")) AND (process_command_line = RGX(\".*Bypass.*\") OR process_command_line = RGX(\".*RemoteSigned.*\") OR process_command_line = RGX(\".*Unrestricted.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "67824124-4b31-480c-a471-9ee75f8ef9b3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

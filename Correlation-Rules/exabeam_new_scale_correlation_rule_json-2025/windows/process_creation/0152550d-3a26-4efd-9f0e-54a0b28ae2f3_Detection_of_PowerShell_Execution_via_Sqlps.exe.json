@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Detection of PowerShell Execution via Sqlps.exe",
+      "description": "This rule detects execution of a PowerShell code through the sqlps.exe utility, which is included in the standard set of utilities supplied with the MSSQL Server.\nScript blocks are not logged in this case, so this utility helps to bypass protection mechanisms based on the analysis of these logs.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "parent_process_path = RGX(\"\\\\\\\\sqlps\\\\\\.exe$\") OR ((process_path = RGX(\"\\\\\\\\sqlps\\\\\\.exe$\") OR process_original_file_name = \"sqlps\\.exe\") AND  NOT (parent_process_path = RGX(\"\\\\\\\\sqlagent\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0501763b-16d1-4cac-a0b7-5ea5621c4816"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

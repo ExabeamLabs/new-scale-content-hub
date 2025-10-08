@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Arbitrary DLL Load Using Winword",
+      "description": "Detects potential DLL sideloading using the Microsoft Office winword process via the '/l' flag.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\WINWORD\\\\\\.exe$\") OR process_original_file_name = \"WinWord\\.exe\") AND (process_command_line = RGX(\".*\\\\/l\\\\ .*\") AND process_command_line = RGX(\".*\\\\\\.dll.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e1f37bd0-969b-42a1-99b0-ed8ef4916d2c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

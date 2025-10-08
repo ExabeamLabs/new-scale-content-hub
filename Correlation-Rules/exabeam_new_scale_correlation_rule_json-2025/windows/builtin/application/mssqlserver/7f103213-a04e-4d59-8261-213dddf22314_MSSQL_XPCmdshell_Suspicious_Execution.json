@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "MSSQL XPCmdshell Suspicious Execution",
+      "description": "Detects when the MSSQL \"xp_cmdshell\" stored procedure is used to execute commands Note: Unmapped fields: Provider_Name, Data",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Provider_Name = RGX(\".*MSSQL.*\") AND event_id = 33205 AND (Data = RGX(\".*object\\\\_name\\\\:xp\\\\_cmdshell.*\") AND Data = RGX(\".*statement\\\\:EXEC.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "63f57d09-6e61-4f32-a870-7c2ea671044a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

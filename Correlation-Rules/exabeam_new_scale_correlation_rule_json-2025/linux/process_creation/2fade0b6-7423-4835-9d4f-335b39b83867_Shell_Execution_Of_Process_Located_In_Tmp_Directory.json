@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Shell Execution Of Process Located In Tmp Directory",
+      "description": "Detects execution of shells from a parent process located in a temporary (/tmp) directory",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"^\\\\/tmp\\\\/\") AND (process_path = RGX(\"\\\\/bash$\") OR process_path = RGX(\"\\\\/csh$\") OR process_path = RGX(\"\\\\/dash$\") OR process_path = RGX(\"\\\\/fish$\") OR process_path = RGX(\"\\\\/ksh$\") OR process_path = RGX(\"\\\\/sh$\") OR process_path = RGX(\"\\\\/zsh$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "060d7a24-a942-4206-bdf7-d169d8a408ce"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

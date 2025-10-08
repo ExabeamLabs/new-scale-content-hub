@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Exports Registry Key To a File",
+      "description": "Detects the export of the target Registry key to a file.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\regedit\\\\\\.exe$\") OR process_original_file_name = \"REGEDIT\\.EXE\") AND process_command_line = RGX(\".*\\\\ \\\\-E\\\\ .*\")) AND  NOT ((process_command_line = RGX(\".*hklm.*\") OR process_command_line = RGX(\".*hkey\\\\_local\\\\_machine.*\")) AND (process_command_line = RGX(\"\\\\\\\\system$\") OR process_command_line = RGX(\"\\\\\\\\sam$\") OR process_command_line = RGX(\"\\\\\\\\security$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "77058b46-96b9-4394-b140-3fee0b442612"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

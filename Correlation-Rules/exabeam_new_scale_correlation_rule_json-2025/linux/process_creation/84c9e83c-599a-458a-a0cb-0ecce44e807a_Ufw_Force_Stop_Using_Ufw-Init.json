@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Ufw Force Stop Using Ufw-Init",
+      "description": "Detects attempts to force stop the ufw using ufw-init",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*\\\\-ufw\\\\-init.*\") AND process_command_line = RGX(\".*force\\\\-stop.*\")) OR (process_command_line = RGX(\".*ufw.*\") AND process_command_line = RGX(\".*disable.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0f837d08-6e6e-41a1-9738-2eac8ce625b4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

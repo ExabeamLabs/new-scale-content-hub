@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Use of TTDInject.exe",
+      "description": "Detects the executiob of TTDInject.exe, which is used by Windows 10 v1809 and newer to debug time travel (underlying call of tttracer.exe)",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"ttdinject\\\\\\.exe$\") OR process_original_file_name = \"TTDInject\\.EXE\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2ec42a5d-ae1f-4847-a5ad-6b77d4ed2787"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

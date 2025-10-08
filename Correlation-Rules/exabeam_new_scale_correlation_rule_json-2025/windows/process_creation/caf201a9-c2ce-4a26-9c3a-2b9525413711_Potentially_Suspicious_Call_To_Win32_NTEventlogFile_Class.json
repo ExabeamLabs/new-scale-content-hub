@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Suspicious Call To Win32_NTEventlogFile Class",
+      "description": "Detects usage of the WMI class \"Win32_NTEventlogFile\" in a potentially suspicious way (delete, backup, change permissions, etc.) from a PowerShell script",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*Win32\\\\_NTEventlogFile.*\") AND (process_command_line = RGX(\".*\\\\\\.BackupEventlog\\\\(.*\") OR process_command_line = RGX(\".*\\\\\\.ChangeSecurityPermissions\\\\(.*\") OR process_command_line = RGX(\".*\\\\\\.ChangeSecurityPermissionsEx\\\\(.*\") OR process_command_line = RGX(\".*\\\\\\.ClearEventLog\\\\(.*\") OR process_command_line = RGX(\".*\\\\\\.Delete\\\\(.*\") OR process_command_line = RGX(\".*\\\\\\.DeleteEx\\\\(.*\") OR process_command_line = RGX(\".*\\\\\\.Rename\\\\(.*\") OR process_command_line = RGX(\".*\\\\\\.TakeOwnerShip\\\\(.*\") OR process_command_line = RGX(\".*\\\\\\.TakeOwnerShipEx\\\\(.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b122dd8d-ee95-470f-8aa3-19b9a87b9cb5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Disabling Security Tools",
+      "description": "Detects disabling security tools",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/service$\") AND (process_command_line = RGX(\".*iptables.*\") AND process_command_line = RGX(\".*stop.*\"))) OR (process_path = RGX(\"\\\\/service$\") AND (process_command_line = RGX(\".*ip6tables.*\") AND process_command_line = RGX(\".*stop.*\"))) OR (process_path = RGX(\"\\\\/chkconfig$\") AND (process_command_line = RGX(\".*iptables.*\") AND process_command_line = RGX(\".*stop.*\"))) OR (process_path = RGX(\"\\\\/chkconfig$\") AND (process_command_line = RGX(\".*ip6tables.*\") AND process_command_line = RGX(\".*stop.*\"))) OR (process_path = RGX(\"\\\\/systemctl$\") AND (process_command_line = RGX(\".*firewalld.*\") AND process_command_line = RGX(\".*stop.*\"))) OR (process_path = RGX(\"\\\\/systemctl$\") AND (process_command_line = RGX(\".*firewalld.*\") AND process_command_line = RGX(\".*disable.*\"))) OR (process_path = RGX(\"\\\\/service$\") AND (process_command_line = RGX(\".*cbdaemon.*\") AND process_command_line = RGX(\".*stop.*\"))) OR (process_path = RGX(\"\\\\/chkconfig$\") AND (process_command_line = RGX(\".*cbdaemon.*\") AND process_command_line = RGX(\".*off.*\"))) OR (process_path = RGX(\"\\\\/systemctl$\") AND (process_command_line = RGX(\".*cbdaemon.*\") AND process_command_line = RGX(\".*stop.*\"))) OR (process_path = RGX(\"\\\\/systemctl$\") AND (process_command_line = RGX(\".*cbdaemon.*\") AND process_command_line = RGX(\".*disable.*\"))) OR (process_path = RGX(\"\\\\/setenforce$\") AND process_command_line = RGX(\".*0.*\")) OR (process_path = RGX(\"\\\\/systemctl$\") AND (process_command_line = RGX(\".*stop.*\") AND process_command_line = RGX(\".*falcon\\\\-sensor.*\"))) OR (process_path = RGX(\"\\\\/systemctl$\") AND (process_command_line = RGX(\".*disable.*\") AND process_command_line = RGX(\".*falcon\\\\-sensor.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9d76eaf7-86f6-4ccc-af76-e4cc99161596"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Microsoft Office Child Process - MacOS",
+      "description": "Detects suspicious child processes spawning from microsoft office suite applications such as word or excel. This could indicates malicious macro execution",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((parent_process_path = RGX(\".*Microsoft\\\\ Word.*\") OR parent_process_path = RGX(\".*Microsoft\\\\ Excel.*\") OR parent_process_path = RGX(\".*Microsoft\\\\ PowerPoint.*\") OR parent_process_path = RGX(\".*Microsoft\\\\ OneNote.*\")) AND (process_path = RGX(\"\\\\/bash$\") OR process_path = RGX(\"\\\\/curl$\") OR process_path = RGX(\"\\\\/dash$\") OR process_path = RGX(\"\\\\/fish$\") OR process_path = RGX(\"\\\\/osacompile$\") OR process_path = RGX(\"\\\\/osascript$\") OR process_path = RGX(\"\\\\/sh$\") OR process_path = RGX(\"\\\\/zsh$\") OR process_path = RGX(\"\\\\/python$\") OR process_path = RGX(\"\\\\/python3$\") OR process_path = RGX(\"\\\\/wget$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "121f9c5f-bfd1-48e7-af00-a1c83769f230"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

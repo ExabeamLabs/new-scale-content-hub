@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Conhost.exe CommandLine Path Traversal",
+      "description": "detects the usage of path traversal in conhost.exe indicating possible command/argument confusion/hijacking",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_command_line = RGX(\".*conhost.*\") AND process_command_line = RGX(\".*\\\\/\\\\\\.\\\\\\.\\\\/\\\\\\.\\\\\\.\\\\/.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b42e30a4-73c3-4cf2-b260-3b28651d4a42"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

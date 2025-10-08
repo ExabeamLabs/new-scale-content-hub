@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Invoke-Mimikatz PowerShell Script",
+      "description": "Detects Invoke-Mimikatz PowerShell script and alike. Mimikatz is a credential dumper capable of obtaining plaintext Windows account logins and passwords. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ScriptBlockText = RGX(\".*DumpCreds.*\") AND ScriptBlockText = RGX(\".*DumpCerts.*\")) OR ScriptBlockText = RGX(\".*sekurlsa\\\\:\\\\:logonpasswords.*\") OR (ScriptBlockText = RGX(\".*crypto\\\\:\\\\:certificates.*\") AND ScriptBlockText = RGX(\".*CERT\\\\_SYSTEM\\\\_STORE\\\\_LOCAL\\\\_MACHINE.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "624bcf5c-0ca8-4fda-9d6a-759d1970890f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Suspicious Call To Win32_NTEventlogFile Class - PSScript",
+      "description": "Detects usage of the WMI class \"Win32_NTEventlogFile\" in a potentially suspicious way (delete, backup, change permissions, etc.) from a PowerShell script Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Win32\\\\_NTEventlogFile.*\") AND (ScriptBlockText = RGX(\".*\\\\\\.BackupEventlog\\\\(.*\") OR ScriptBlockText = RGX(\".*\\\\\\.ChangeSecurityPermissions\\\\(.*\") OR ScriptBlockText = RGX(\".*\\\\\\.ChangeSecurityPermissionsEx\\\\(.*\") OR ScriptBlockText = RGX(\".*\\\\\\.ClearEventLog\\\\(.*\") OR ScriptBlockText = RGX(\".*\\\\\\.Delete\\\\(.*\") OR ScriptBlockText = RGX(\".*\\\\\\.DeleteEx\\\\(.*\") OR ScriptBlockText = RGX(\".*\\\\\\.Rename\\\\(.*\") OR ScriptBlockText = RGX(\".*\\\\\\.TakeOwnerShip\\\\(.*\") OR ScriptBlockText = RGX(\".*\\\\\\.TakeOwnerShipEx\\\\(.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3ff5b13f-1ccb-473e-84fc-afe57ab48bdc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

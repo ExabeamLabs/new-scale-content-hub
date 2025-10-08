@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Goopdate.DLL Sideloading",
+      "description": "Detects potential DLL sideloading of \"goopdate.dll\", a DLL used by googleupdate.exe Note: Unmapped fields: ImageLoaded",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ImageLoaded = RGX(\"\\\\\\\\goopdate\\\\\\.dll$\") AND  NOT ((ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\\"))) AND  NOT (((process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\GUM.*\") AND process_path = RGX(\".*\\\\\\.tmp\\\\\\\\Dropbox.*\")) AND (ImageLoaded = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\GUM.*\") AND ImageLoaded = RGX(\".*\\\\\\.tmp\\\\\\\\goopdate\\\\\\.dll.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c7647f66-5776-4553-9734-90b7a3efd0e9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

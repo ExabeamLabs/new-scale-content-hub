@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Keylogger Activity",
+      "description": "Detects PowerShell scripts that contains reference to keystroke capturing functions Note: Unmapped fields: ScriptBlockText",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ScriptBlockText = RGX(\".*\\\\[Windows\\\\\\.Input\\\\\\.Keyboard\\\\]\\\\:\\\\:IsKeyDown\\\\(\\\\[System\\\\\\.Windows\\\\\\.Input\\\\\\.Key\\\\]\\\\:\\\\:.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "bb574a85-7658-4768-99dd-343ed1701c32"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

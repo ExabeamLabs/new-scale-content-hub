@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation COMPRESS OBFUSCATION - PowerShell",
+      "description": "Detects Obfuscated Powershell via COMPRESS OBFUSCATION Note: Unmapped fields: ScriptBlockText",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ScriptBlockText = RGX(\".*new\\\\-object.*\") AND ScriptBlockText = RGX(\".*text\\\\\\.encoding\\\\]\\\\:\\\\:ascii.*\")) AND (ScriptBlockText = RGX(\".*system\\\\\\.io\\\\\\.compression\\\\\\.deflatestream.*\") OR ScriptBlockText = RGX(\".*system\\\\\\.io\\\\\\.streamreader.*\")) AND ScriptBlockText = RGX(\"readtoend$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "be752a51-b24a-4682-8008-663f1bf9382f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

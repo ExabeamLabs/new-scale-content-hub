@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New AWS Lambda Function URL Configuration Created",
+      "description": "Detects when a user creates a Lambda function URL configuration, which could be used to expose the function to the internet and potentially allow unauthorized access to the function's IAM role for AWS API calls.\nThis could give an adversary access to the privileges associated with the Lambda service role that is attached to that function.\n Note: Unmapped fields: eventSource, eventName",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(eventSource = \"lambda\\.amazonaws\\.com\" AND eventName = \"CreateFunctionUrlConfig\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "46f3582b-cec6-4df6-8cf0-54b2bc10f6ff"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Use of W32tm as Timer",
+      "description": "When configured with suitable command line arguments, w32tm can act as a delay mechanism",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\w32tm\\\\\\.exe$\") OR process_original_file_name = \"w32time\\.dll\") AND (process_command_line = RGX(\".*\\\\/stripchart.*\") AND process_command_line = RGX(\".*\\\\/computer\\\\:.*\") AND process_command_line = RGX(\".*\\\\/period\\\\:.*\") AND process_command_line = RGX(\".*\\\\/dataonly.*\") AND process_command_line = RGX(\".*\\\\/samples\\\\:.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b5afca3c-65e9-4ef4-a997-3bc6dc25b0b8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

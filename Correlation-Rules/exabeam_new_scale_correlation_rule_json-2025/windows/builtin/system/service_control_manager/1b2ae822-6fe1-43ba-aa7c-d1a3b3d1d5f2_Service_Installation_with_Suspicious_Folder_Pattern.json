@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Service Installation with Suspicious Folder Pattern",
+      "description": "Detects service installation with suspicious folder patterns Note: Unmapped fields: Provider_Name, ImagePath",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((Provider_Name = \"Service\\ Control\\ Manager\" AND event_id = 7045) AND (ImagePath = RGX(\"^[Cc]:\\[Pp]rogram[Dd]ata\\.{1,9}.exe\") OR ImagePath = RGX(\"^[Cc]:\\.{1,9}.exe\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "717a7633-1bd1-4f5e-9fa9-c97f87676a17"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New Module Module Added To IIS Server",
+      "description": "Detects the addition of a new module to an IIS server. Note: Unmapped fields: Configuration, NewValue",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 29 AND Configuration = RGX(\".*\\\\/system\\\\\\.webServer\\\\/modules\\\\/add.*\")) AND  NOT ((NewValue = \"AnonymousAuthenticationModule\" OR NewValue = \"CustomErrorModule\" OR NewValue = \"DefaultDocumentModule\" OR NewValue = \"DirectoryListingModule\" OR NewValue = \"FileCacheModule\" OR NewValue = \"HttpCacheModule\" OR NewValue = \"HttpLoggingModule\" OR NewValue = \"ProtocolSupportModule\" OR NewValue = \"RequestFilteringModule\" OR NewValue = \"StaticCompressionModule\" OR NewValue = \"StaticFileModule\" OR NewValue = \"TokenCacheModule\" OR NewValue = \"UriCacheModule\") OR NewValue = \"\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4342aaf3-7ebe-4a79-9666-02243013239e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

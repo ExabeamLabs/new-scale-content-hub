@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Azure Unusual Authentication Interruption",
+      "description": "Detects when there is a interruption in the authentication process. Note: Unmapped fields: ResultType, ResultDescription",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ResultType = 50097 AND ResultDescription = \"Device\\ authentication\\ is\\ required\") OR (ResultType = 50155 AND ResultDescription = \"DeviceAuthenticationFailed\") OR (ResultType = 50158 AND ResultDescription = \"ExternalSecurityChallenge\\ \\-\\ External\\ security\\ challenge\\ was\\ not\\ satisfied\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b16b516f-527e-4f17-8cd5-e2c6b0b88484"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

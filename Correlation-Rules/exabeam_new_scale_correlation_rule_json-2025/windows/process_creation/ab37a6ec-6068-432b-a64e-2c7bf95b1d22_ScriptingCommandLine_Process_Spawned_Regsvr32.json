@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Scripting/CommandLine Process Spawned Regsvr32",
+      "description": "Detects various command line and scripting engines/processes such as \"PowerShell\", \"Wscript\", \"Cmd\", etc. spawning a \"regsvr32\" instance.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((parent_process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\powershell\\\\_ise\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\")) AND process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\")) AND  NOT ((parent_process_path = \"C\\:\\\\Windows\\\\System32\\\\cmd\\.exe\" AND process_command_line = RGX(\"\\\\ \\\\/s\\\\ C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\RpcProxy\\\\\\\\RpcProxy\\\\\\.dll$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "677a0528-2280-4a9d-9bf7-edb79dab55c0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

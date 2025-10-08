@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows Defender Submit Sample Feature Disabled",
+      "description": "Detects disabling of the \"Automatic Sample Submission\" feature of Windows Defender. Note: Unmapped fields: NewValue",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 5007 AND NewValue = RGX(\".*\\\\\\\\Real\\\\-Time\\\\ Protection\\\\\\\\SubmitSamplesConsent\\\\ \\\\=\\\\ 0x0.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e92eac06-1bee-469a-b9c2-4c53627b1ee1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

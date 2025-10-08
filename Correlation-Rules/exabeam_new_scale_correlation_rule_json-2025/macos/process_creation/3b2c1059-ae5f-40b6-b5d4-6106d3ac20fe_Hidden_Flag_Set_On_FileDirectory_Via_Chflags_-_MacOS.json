@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Hidden Flag Set On File/Directory Via Chflags - MacOS",
+      "description": "Detects the execution of the \"chflags\" utility with the \"hidden\" flag, in order to hide files on MacOS.\nWhen a file or directory has this hidden flag set, it becomes invisible to the default file listing commands and in graphical file browsers.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/chflags$\") AND process_command_line = RGX(\".*hidden\\\\ .*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "fcd72419-cd84-4603-89a9-4720436c34e3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

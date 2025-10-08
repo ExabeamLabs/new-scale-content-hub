@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - Netcat Suspicious Execution",
+      "description": "Detects execution of Netcat. Adversaries may use a non-application layer protocol for communication between host and C2 server or among infected hosts within a network",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\nc\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\ncat\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\netcat\\\\\\.exe$\")) OR (process_command_line = RGX(\".*\\\\ \\\\-lvp\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-lvnp.*\") OR process_command_line = RGX(\".*\\\\ \\\\-l\\\\ \\\\-v\\\\ \\\\-p\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-lv\\\\ \\\\-p\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-l\\\\ \\\\-\\\\-proxy\\\\-type\\\\ http\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-vnl\\\\ \\\\-\\\\-exec\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-vnl\\\\ \\\\-e\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-\\\\-lua\\\\-exec\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-\\\\-sh\\\\-exec\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8cb5e0d6-87fe-4593-b89e-8bfd2386dfdd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

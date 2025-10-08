@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "AWS EFS Fileshare Mount Modified or Deleted",
+      "description": "Detects when a EFS Fileshare Mount is modified or deleted. An adversary breaking any file system using the mount target that is being deleted, which might disrupt instances or applications using those mounts. Note: Unmapped fields: eventSource, eventName",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(eventSource = \"elasticfilesystem\\.amazonaws\\.com\" AND eventName = \"DeleteMountTarget\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b3185e2c-f0e2-42e2-8257-571b652fd344"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

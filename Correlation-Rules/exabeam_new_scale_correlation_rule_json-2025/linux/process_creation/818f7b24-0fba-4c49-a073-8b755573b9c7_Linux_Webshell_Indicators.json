@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Linux Webshell Indicators",
+      "description": "Detects suspicious sub processes of web server processes",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((parent_process_path = RGX(\"\\\\/httpd$\") OR parent_process_path = RGX(\"\\\\/lighttpd$\") OR parent_process_path = RGX(\"\\\\/nginx$\") OR parent_process_path = RGX(\"\\\\/apache2$\") OR parent_process_path = RGX(\"\\\\/node$\") OR parent_process_path = RGX(\"\\\\/caddy$\")) OR (parent_process_command_line = RGX(\".*\\\\/bin\\\\/java.*\") AND parent_process_command_line = RGX(\".*tomcat.*\")) OR (parent_process_command_line = RGX(\".*\\\\/bin\\\\/java.*\") AND parent_process_command_line = RGX(\".*websphere.*\"))) AND (process_path = RGX(\"\\\\/whoami$\") OR process_path = RGX(\"\\\\/ifconfig$\") OR process_path = RGX(\"\\\\/ip$\") OR process_path = RGX(\"\\\\/bin\\\\/uname$\") OR process_path = RGX(\"\\\\/bin\\\\/cat$\") OR process_path = RGX(\"\\\\/bin\\\\/crontab$\") OR process_path = RGX(\"\\\\/hostname$\") OR process_path = RGX(\"\\\\/iptables$\") OR process_path = RGX(\"\\\\/netstat$\") OR process_path = RGX(\"\\\\/pwd$\") OR process_path = RGX(\"\\\\/route$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "dc32f35f-6812-459b-9c9c-1059eedfdc29"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

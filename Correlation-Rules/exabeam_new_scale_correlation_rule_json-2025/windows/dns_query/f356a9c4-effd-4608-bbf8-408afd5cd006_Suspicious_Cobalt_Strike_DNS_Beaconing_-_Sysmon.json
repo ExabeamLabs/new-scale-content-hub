@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Cobalt Strike DNS Beaconing - Sysmon",
+      "description": "Detects a program that invoked suspicious DNS queries known from Cobalt Strike beacons Note: Unmapped fields: QueryName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((QueryName = RGX(\"^aaa\\\\\\.stage\\\\\\.\") OR QueryName = RGX(\"^post\\\\\\.1\")) OR QueryName = RGX(\".*\\\\\\.stage\\\\\\.123456\\\\\\..*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7c5d117c-005b-4f8a-ae21-7580f53a2d87"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

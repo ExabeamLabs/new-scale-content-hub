@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Tamper With Sophos AV Registry Keys",
+      "description": "Detects tamper attempts to sophos av functionality via registry key modification Note: Unmapped fields: Details",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((registry_path = RGX(\".*\\\\\\\\Sophos\\\\ Endpoint\\\\ Defense\\\\\\\\TamperProtection\\\\\\\\Config\\\\\\\\SAVEnabled.*\") OR registry_path = RGX(\".*\\\\\\\\Sophos\\\\ Endpoint\\\\ Defense\\\\\\\\TamperProtection\\\\\\\\Config\\\\\\\\SEDEnabled.*\") OR registry_path = RGX(\".*\\\\\\\\Sophos\\\\\\\\SAVService\\\\\\\\TamperProtection\\\\\\\\Enabled.*\")) AND Details = \"DWORD\\ \\(0x00000000\\)\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "64d1b187-7fda-4276-89e8-112698a5ce5d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

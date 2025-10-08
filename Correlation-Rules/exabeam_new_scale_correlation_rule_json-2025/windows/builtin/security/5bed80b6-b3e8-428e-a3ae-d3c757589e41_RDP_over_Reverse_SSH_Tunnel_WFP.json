@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "RDP over Reverse SSH Tunnel WFP",
+      "description": "Detects svchost hosting RDP termsvcs communicating with the loopback address Note: Unmapped fields: DestAddress, DestPort, FilterOrigin, Application",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "event_id = 5156 AND ((src_port = 3389 AND (DestAddress = \"127\\.*\" OR DestAddress = \"\\:\\:1\")) OR (DestPort = 3389 AND (src_ip = \"127\\.*\" OR src_ip = \"\\:\\:1\"))) AND  NOT (FilterOrigin = \"AppContainer\\ Loopback\" OR (Application = RGX(\"\\\\\\\\thor\\\\\\.exe$\") OR Application = RGX(\"\\\\\\\\thor64\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7a290380-d325-4ff9-ad89-12618f70bfd5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "VBA DLL Loaded Via Office Application",
+      "description": "Detects VB DLL's loaded by an office application. Which could indicate the presence of VBA Macros. Note: Unmapped fields: ImageLoaded",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\excel\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mspub\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\onenote\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\onenoteim\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\outlook\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powerpnt\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\winword\\\\\\.exe$\")) AND (ImageLoaded = RGX(\"\\\\\\\\VBE7\\\\\\.DLL$\") OR ImageLoaded = RGX(\"\\\\\\\\VBEUI\\\\\\.DLL$\") OR ImageLoaded = RGX(\"\\\\\\\\VBE7INTL\\\\\\.DLL$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "51d79964-d35d-450c-b0ba-4a460af66240"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

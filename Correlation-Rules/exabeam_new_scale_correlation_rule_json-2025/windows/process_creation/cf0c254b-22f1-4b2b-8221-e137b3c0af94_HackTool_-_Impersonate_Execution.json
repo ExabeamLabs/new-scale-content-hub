@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - Impersonate Execution",
+      "description": "Detects execution of the Impersonate tool. Which can be used to manipulate tokens on a Windows computers remotely (PsExec/WmiExec) or interactively",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*impersonate\\\\\\.exe.*\") AND (process_command_line = RGX(\".*\\\\ list\\\\ .*\") OR process_command_line = RGX(\".*\\\\ exec\\\\ .*\") OR process_command_line = RGX(\".*\\\\ adduser\\\\ .*\"))) OR (process_hash = RGX(\".*MD5\\\\=9520714AB576B0ED01D1513691377D01.*\") OR process_hash = RGX(\".*SHA256\\\\=E81CC96E2118DC4FBFE5BAD1604E0AC7681960143E2101E1A024D52264BB0A8A.*\") OR process_hash = RGX(\".*IMPHASH\\\\=0A358FFC1697B7A07D0E817AC740DF62.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "33e21297-3c5f-43f8-81da-4d269c03e0c0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

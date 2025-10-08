@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Secure Deletion with SDelete",
+      "description": "Detects files that have extensions commonly seen while SDelete is used to wipe files. Note: Unmapped fields: ObjectName",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((event_id = 4656 OR event_id = 4663 OR event_id = 4658) AND (ObjectName = RGX(\"\\\\\\.AAA$\") OR ObjectName = RGX(\"\\\\\\.ZZZ$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "dc73bc0a-2ec4-4aa8-8ede-278fcc2c3cdc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

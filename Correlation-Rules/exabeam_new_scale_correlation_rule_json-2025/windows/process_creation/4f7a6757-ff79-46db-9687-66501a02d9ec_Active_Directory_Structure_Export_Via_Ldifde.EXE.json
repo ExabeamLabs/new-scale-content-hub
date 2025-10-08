@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Active Directory Structure Export Via Ldifde.EXE",
+      "description": "Detects the execution of \"ldifde.exe\" in order to export organizational Active Directory structure.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\ldifde\\\\\\.exe$\") OR process_original_file_name = \"ldifde\\.exe\") AND process_command_line = RGX(\".*\\\\-f.*\")) AND  NOT (process_command_line = RGX(\".*\\\\ \\\\-i.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ce59336d-317e-41fb-a059-07466e8eb620"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

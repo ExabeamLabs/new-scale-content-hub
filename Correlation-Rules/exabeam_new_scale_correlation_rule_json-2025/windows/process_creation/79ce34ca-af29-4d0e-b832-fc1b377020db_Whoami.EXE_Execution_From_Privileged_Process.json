@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Whoami.EXE Execution From Privileged Process",
+      "description": "Detects the execution of \"whoami.exe\" by privileged accounts that are often abused by threat actors",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_original_file_name = \"whoami\\.exe\" OR process_path = RGX(\"\\\\\\\\whoami\\\\\\.exe$\")) AND (user = RGX(\".*AUTHORI.*\") OR user = RGX(\".*AUTORI.*\") OR user = RGX(\".*TrustedInstaller.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5a51d5fc-1e2a-494a-9f0b-72546e566782"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

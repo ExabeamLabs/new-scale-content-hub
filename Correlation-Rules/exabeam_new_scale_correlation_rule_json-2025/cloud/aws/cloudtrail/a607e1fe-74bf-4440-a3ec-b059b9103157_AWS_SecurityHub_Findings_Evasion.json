@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "AWS SecurityHub Findings Evasion",
+      "description": "Detects the modification of the findings on SecurityHub. Note: Unmapped fields: eventSource, eventName",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(eventSource = \"securityhub\\.amazonaws\\.com\" AND (eventName = \"BatchUpdateFindings\" OR eventName = \"DeleteInsight\" OR eventName = \"UpdateFindings\" OR eventName = \"UpdateInsight\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e07b0ef6-005f-4b54-87d4-3fb4c1a125f5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

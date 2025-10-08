@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Persistence Via Excel Add-in - Registry",
+      "description": "Detect potential persistence via the creation of an excel add-in (XLL) file to make it run automatically when Excel is started. Note: Unmapped fields: Details",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*Software\\\\\\\\Microsoft\\\\\\\\Office\\\\\\\\.*\") AND registry_path = RGX(\"\\\\\\\\Excel\\\\\\\\Options$\") AND Details = RGX(\"^\\\\/R\\\\ \") AND Details = RGX(\"\\\\\\.xll$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2694c34b-9923-4099-84b1-d7d7b725cce4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

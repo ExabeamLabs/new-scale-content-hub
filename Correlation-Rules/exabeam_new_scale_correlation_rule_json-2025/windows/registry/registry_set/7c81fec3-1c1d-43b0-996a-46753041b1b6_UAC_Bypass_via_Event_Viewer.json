@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "UAC Bypass via Event Viewer",
+      "description": "Detects UAC bypass method using Windows event viewer",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\"\\\\\\\\mscfile\\\\\\\\shell\\\\\\\\open\\\\\\\\command$\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9c6938c3-63e5-417c-8e03-53760bcca4ec"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

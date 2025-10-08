@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Registry Persistence Mechanisms in Recycle Bin",
+      "description": "Detects persistence registry keys for Recycle Bin Note: Unmapped fields: EventType, NewName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((EventType = \"RenameKey\" AND NewName = RGX(\".*\\\\\\\\CLSID\\\\\\\\\\\\{645FF040\\\\-5081\\\\-101B\\\\-9F08\\\\-00AA002F954E\\\\}\\\\\\\\shell\\\\\\\\open.*\")) OR (EventType = \"SetValue\" AND registry_path = RGX(\".*\\\\\\\\CLSID\\\\\\\\\\\\{645FF040\\\\-5081\\\\-101B\\\\-9F08\\\\-00AA002F954E\\\\}\\\\\\\\shell\\\\\\\\open\\\\\\\\command\\\\\\\\\\\\(Default\\\\).*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5206720f-a8e0-4d25-9f46-5bbbd38450b1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

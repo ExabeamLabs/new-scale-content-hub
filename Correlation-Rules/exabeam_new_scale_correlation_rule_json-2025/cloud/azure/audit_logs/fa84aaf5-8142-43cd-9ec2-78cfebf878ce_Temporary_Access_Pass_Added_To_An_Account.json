@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Temporary Access Pass Added To An Account",
+      "description": "Detects when a temporary access pass (TAP) is added to an account. TAPs added to priv accounts should be investigated Note: Unmapped fields: properties.message, Status",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(properties.message = \"Admin\\ registered\\ security\\ info\" AND Status = \"Admin\\ registered\\ temporary\\ access\\ pass\\ method\\ for\\ user\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ed5b7f25-b104-4381-9ffb-22c53f5c2178"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

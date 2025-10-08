@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - 3Proxy Execution",
+      "description": "Detects the use of 3proxy, a tiny free proxy server",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\3proxy\\\\\\.exe$\") OR process_description = \"3proxy\\ \\-\\ tiny\\ proxy\\ server\" OR process_command_line = RGX(\".*\\\\\\.exe\\\\ \\\\-i127\\\\\\.0\\\\\\.0\\\\\\.1\\\\ \\\\-p.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0613830b-ab17-4a47-96cb-ace7a0a5d2fe"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

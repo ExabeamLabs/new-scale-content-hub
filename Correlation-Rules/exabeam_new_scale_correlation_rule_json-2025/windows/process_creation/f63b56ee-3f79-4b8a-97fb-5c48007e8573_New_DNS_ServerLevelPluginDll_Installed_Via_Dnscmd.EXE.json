@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New DNS ServerLevelPluginDll Installed Via Dnscmd.EXE",
+      "description": "Detects the installation of a DNS plugin DLL via ServerLevelPluginDll parameter in registry, which can be used to execute code in context of the DNS server (restart required)",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\dnscmd\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\/config.*\") AND process_command_line = RGX(\".*\\\\/serverlevelplugindll.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "422b3925-0626-4322-b49a-f3885f9240e8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

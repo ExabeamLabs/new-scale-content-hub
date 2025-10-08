@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PowerShell Script Run in AppData",
+      "description": "Detects a suspicious command line execution that invokes PowerShell with reference to an AppData folder",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*powershell\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\\\\\powershell.*\") OR process_command_line = RGX(\".*\\\\\\\\pwsh.*\") OR process_command_line = RGX(\".*pwsh\\\\\\.exe.*\")) AND ((process_command_line = RGX(\".*\\\\/c\\\\ .*\") AND process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\.*\")) AND (process_command_line = RGX(\".*Local\\\\\\\\.*\") OR process_command_line = RGX(\".*Roaming\\\\\\\\.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3cfba93a-9839-43bf-a449-257e7adefab4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

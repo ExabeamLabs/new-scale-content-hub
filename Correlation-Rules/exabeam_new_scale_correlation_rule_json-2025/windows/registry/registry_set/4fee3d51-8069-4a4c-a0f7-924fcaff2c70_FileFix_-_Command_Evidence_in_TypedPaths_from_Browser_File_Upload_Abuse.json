@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "FileFix - Command Evidence in TypedPaths from Browser File Upload Abuse",
+      "description": "Detects commonly-used chained commands and strings in the most recent 'url' value of the 'TypedPaths' key, which could be indicative of a user being targeted by the FileFix technique. Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((registry_path = RGX(\"\\\\\\\\Software\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Explorer\\\\\\\\TypedPaths\\\\\\\\url1$\") AND Details = RGX(\".*\\\\#.*\") AND (process_path = RGX(\"\\\\\\\\brave\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\chrome\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\firefox\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msedge\\\\\\.exe$\"))) AND (Details = RGX(\".*cmd.*\") OR Details = RGX(\".*curl.*\") OR Details = RGX(\".*powershell.*\") OR Details = RGX(\".*bitsadmin.*\") OR Details = RGX(\".*certutil.*\") OR Details = RGX(\".*mshta.*\") OR Details = RGX(\".*regsvr32.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a5799110-afb7-469e-988c-4a4a9e188119"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

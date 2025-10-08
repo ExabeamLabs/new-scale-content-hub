@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New User Created Via Net.EXE",
+      "description": "Identifies the creation of local users via the net.exe command.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\net\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\net1\\\\\\.exe$\")) OR (process_original_file_name = \"net\\.exe\" OR process_original_file_name = \"net1\\.exe\")) AND (process_command_line = RGX(\".*user.*\") AND process_command_line = RGX(\".*add.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6f5d7d8d-6c80-485f-90de-e59a9b1eedf9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

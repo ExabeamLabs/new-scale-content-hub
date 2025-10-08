@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Bitbucket Unauthorized Access To A Resource",
+      "description": "Detects unauthorized access attempts to a resource. Note: Unmapped fields: auditType.category, auditType.action",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(auditType.category = \"Security\" AND auditType.action = \"Unauthorized\\ access\\ to\\ a\\ resource\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "320c1df5-2369-4bbc-8e09-b13c405ad093"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Java Running with Remote Debugging",
+      "description": "Detects a JAVA process running with remote debugging allowing more than just localhost to connect",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*transport\\\\=dt\\\\_socket\\\\,address\\\\=.*\") AND (process_command_line = RGX(\".*jre1\\\\\\..*\") OR process_command_line = RGX(\".*jdk1\\\\\\..*\"))) AND  NOT ((process_command_line = RGX(\".*address\\\\=127\\\\\\.0\\\\\\.0\\\\\\.1.*\") OR process_command_line = RGX(\".*address\\\\=localhost.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "22f6a3d9-c650-46f8-8738-df370e098d29"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

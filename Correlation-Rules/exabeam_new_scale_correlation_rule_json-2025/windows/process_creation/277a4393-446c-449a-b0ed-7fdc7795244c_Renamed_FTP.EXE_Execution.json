@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Renamed FTP.EXE Execution",
+      "description": "Detects the execution of a renamed \"ftp.exe\" binary based on the PE metadata fields",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_original_file_name = \"ftp\\.exe\" AND  NOT (process_path = RGX(\"\\\\\\\\ftp\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1c011cd2-36a7-4d8d-b029-7ecbb9dfa0c1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

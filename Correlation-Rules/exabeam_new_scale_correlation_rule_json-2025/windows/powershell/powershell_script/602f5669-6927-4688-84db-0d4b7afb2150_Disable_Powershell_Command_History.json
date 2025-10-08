@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Disable Powershell Command History",
+      "description": "Detects scripts or commands that disabled the Powershell command history by removing psreadline module Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Remove\\\\-Module.*\") AND ScriptBlockText = RGX(\".*psreadline.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0d7d7dd3-4ef0-47cb-a13e-945a89a59d6c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

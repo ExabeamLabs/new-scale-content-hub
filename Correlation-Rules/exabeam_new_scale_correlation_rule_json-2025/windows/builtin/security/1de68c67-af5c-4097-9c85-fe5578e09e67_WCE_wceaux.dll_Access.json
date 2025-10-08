@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "WCE wceaux.dll Access",
+      "description": "Detects wceaux.dll access while WCE pass-the-hash remote command execution on source host Note: Unmapped fields: ObjectName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((event_id = 4656 OR event_id = 4663) AND ObjectName = RGX(\"\\\\\\\\wceaux\\\\\\.dll$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "476dbdb1-be81-4f53-a0c7-e5bf5a8dc7ac"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

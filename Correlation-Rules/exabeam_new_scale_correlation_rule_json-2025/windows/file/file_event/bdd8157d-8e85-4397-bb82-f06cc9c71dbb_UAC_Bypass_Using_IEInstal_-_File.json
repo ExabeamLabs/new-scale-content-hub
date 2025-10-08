@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "UAC Bypass Using IEInstal - File",
+      "description": "Detects the pattern of UAC Bypass using IEInstal.exe (UACMe 64)",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = \"C\\:\\\\Program\\ Files\\\\Internet\\ Explorer\\\\IEInstal\\.exe\" AND file_path = RGX(\"^C\\\\:\\\\\\\\Users\\\\\\\\\") AND file_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") AND file_path = RGX(\"consent\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5e4834ab-5f3e-46f6-b5c1-9ac33a6f4d22"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

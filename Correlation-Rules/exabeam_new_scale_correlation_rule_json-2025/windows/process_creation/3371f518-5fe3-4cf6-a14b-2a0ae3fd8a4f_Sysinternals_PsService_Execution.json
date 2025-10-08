@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Sysinternals PsService Execution",
+      "description": "Detects usage of Sysinternals PsService which can be abused for service reconnaissance and tampering",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_original_file_name = \"psservice\\.exe\" OR (process_path = RGX(\"\\\\\\\\PsService\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\PsService64\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "21f7b6a3-90c2-43e4-a1a1-ac3eb9bcb6bd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

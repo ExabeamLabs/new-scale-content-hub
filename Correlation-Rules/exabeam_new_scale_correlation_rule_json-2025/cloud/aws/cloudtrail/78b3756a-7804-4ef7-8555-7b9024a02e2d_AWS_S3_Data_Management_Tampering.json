@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "AWS S3 Data Management Tampering",
+      "description": "Detects when a user tampers with S3 data management in Amazon Web Services. Note: Unmapped fields: eventSource, eventName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(eventSource = \"s3\\.amazonaws\\.com\" AND (eventName = \"PutBucketLogging\" OR eventName = \"PutBucketWebsite\" OR eventName = \"PutEncryptionConfiguration\" OR eventName = \"PutLifecycleConfiguration\" OR eventName = \"PutReplicationConfiguration\" OR eventName = \"ReplicateObject\" OR eventName = \"RestoreObject\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "fe20f1f1-5ea9-48b1-8b9c-939d1f866336"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

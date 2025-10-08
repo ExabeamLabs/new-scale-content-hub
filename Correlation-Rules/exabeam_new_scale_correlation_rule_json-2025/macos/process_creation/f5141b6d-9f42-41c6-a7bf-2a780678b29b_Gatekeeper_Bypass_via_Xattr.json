@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Gatekeeper Bypass via Xattr",
+      "description": "Detects macOS Gatekeeper bypass via xattr utility",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/xattr$\") AND (process_command_line = RGX(\".*\\\\-d.*\") AND process_command_line = RGX(\".*com\\\\\\.apple\\\\\\.quarantine.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f2e51003-08cd-46d1-95b5-333c9c9c11eb"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

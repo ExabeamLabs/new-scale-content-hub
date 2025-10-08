@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "AWS IAM S3Browser Templated S3 Bucket Policy Creation",
+      "description": "Detects S3 browser utility creating Inline IAM policy containing default S3 bucket name placeholder value of \"<YOUR-BUCKET-NAME>\". Note: Unmapped fields: eventSource, eventName, userAgent, requestParameters",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(eventSource = \"iam\\.amazonaws\\.com\" AND eventName = \"PutUserPolicy\" AND userAgent = RGX(\".*S3\\\\ Browser.*\") AND (requestParameters = RGX(\".*\\\\\"arn\\\\:aws\\\\:s3\\\\:\\\\:\\\\:\\\\<YOUR\\\\-BUCKET\\\\-NAME\\\\>\\\\/*\\\\.*\") AND requestParameters = RGX(\".*\\\\\"s3\\\\:GetObject\\\\.*\") AND requestParameters = RGX(\".*\\\\\"Allow\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "cd619e28-8cb4-43d4-ba0d-5deed84235e1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

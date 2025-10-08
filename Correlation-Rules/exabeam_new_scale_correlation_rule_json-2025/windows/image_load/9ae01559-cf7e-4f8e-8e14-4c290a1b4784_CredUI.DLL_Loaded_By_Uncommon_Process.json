@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "CredUI.DLL Loaded By Uncommon Process",
+      "description": "Detects loading of \"credui.dll\" and related DLLs by an uncommon process. Attackers might leverage this DLL for potential use of \"CredUIPromptForCredentials\" or \"CredUnPackAuthenticationBufferW\". Note: Unmapped fields: ImageLoaded",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ImageLoaded = RGX(\"\\\\\\\\credui\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\wincredui\\\\\\.dll$\")) OR (process_original_file_name = \"credui\\.dll\" OR process_original_file_name = \"wincredui\\.dll\")) AND  NOT ((process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\\")) OR (process_path = \"C\\:\\\\Windows\\\\explorer\\.exe\" OR process_path = \"C\\:\\\\Windows\\\\ImmersiveControlPanel\\\\SystemSettings\\.exe\" OR process_path = \"C\\:\\\\Windows\\\\regedit\\.exe\")) AND  NOT (process_path = RGX(\"\\\\\\\\opera\\\\_autoupdate\\\\\\.exe$\") OR (process_path = RGX(\"\\\\\\\\procexp64\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\procexp\\\\\\.exe$\")) OR (process_path = RGX(\"^C\\\\:\\\\\\\\Users\\\\\\\\\") AND process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Microsoft\\\\\\\\Teams\\\\\\\\.*\") AND process_path = RGX(\"\\\\\\\\Teams\\\\\\.exe$\")) OR (process_path = RGX(\"^C\\\\:\\\\\\\\Users\\\\\\\\\") AND process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Microsoft\\\\\\\\OneDrive\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "41aff4ca-5c07-4bb1-9798-8e21b1d01c08"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

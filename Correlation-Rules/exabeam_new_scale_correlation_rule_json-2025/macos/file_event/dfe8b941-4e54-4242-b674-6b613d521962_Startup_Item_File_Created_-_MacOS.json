@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Startup Item File Created - MacOS",
+      "description": "Detects the creation of a startup item plist file, that automatically get executed at boot initialization to establish persistence.\nAdversaries may use startup items automatically executed at boot initialization to establish persistence.\nStartup items execute during the final phase of the boot process and contain shell scripts or other executable files along with configuration information used by the system to determine the execution order for all startup items.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((file_path = RGX(\"^\\\\/Library\\\\/StartupItems\\\\/\") OR file_path = RGX(\"^\\\\/System\\\\/Library\\\\/StartupItems\")) AND file_path = RGX(\"\\\\\\.plist$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a905e414-03e6-48df-b73b-f612d5f22fc3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

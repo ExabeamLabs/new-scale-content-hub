@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Verclsid.exe Runs COM Object",
+      "description": "Detects when verclsid.exe is used to run COM object via GUID",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\verclsid\\\\\\.exe$\") OR process_original_file_name = \"verclsid\\.exe\") AND (process_command_line = RGX(\".*\\\\/S.*\") AND process_command_line = RGX(\".*\\\\/C.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e1cdf685-cc04-403c-a296-07237853b8a2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

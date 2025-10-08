@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Inline Python Execution - Spawn Shell Via OS System Library",
+      "description": "Detects execution of inline Python code via the \"-c\" in order to call the \"system\" function from the \"os\" library, and spawn a shell.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\/python$\") OR process_path = RGX(\"\\\\/python2$\") OR process_path = RGX(\"\\\\/python3$\")) OR (process_path = RGX(\".*\\\\/python2\\\\\\..*\") OR process_path = RGX(\".*\\\\/python3\\\\\\..*\"))) AND ((process_command_line = RGX(\".*\\\\ \\\\-c\\\\ .*\") AND process_command_line = RGX(\".*os\\\\\\.system\\\\(.*\")) AND (process_command_line = RGX(\".*\\\\/bin\\\\/bash.*\") OR process_command_line = RGX(\".*\\\\/bin\\\\/dash.*\") OR process_command_line = RGX(\".*\\\\/bin\\\\/fish.*\") OR process_command_line = RGX(\".*\\\\/bin\\\\/sh.*\") OR process_command_line = RGX(\".*\\\\/bin\\\\/zsh.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4b9f6440-5dd1-48d2-9260-c5ef3381bb66"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

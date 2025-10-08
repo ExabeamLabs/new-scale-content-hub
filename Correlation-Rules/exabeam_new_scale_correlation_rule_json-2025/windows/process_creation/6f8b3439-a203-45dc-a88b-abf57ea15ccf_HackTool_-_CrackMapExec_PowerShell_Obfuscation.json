@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - CrackMapExec PowerShell Obfuscation",
+      "description": "The CrachMapExec pentesting framework implements a PowerShell obfuscation with some static strings detected by this rule.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\")) OR (process_original_file_name = \"PowerShell\\.EXE\" OR process_original_file_name = \"pwsh\\.dll\")) AND (process_command_line = RGX(\".*join*split.*\") OR process_command_line = RGX(\".*\\\\(\\\\ \\\\$ShellId\\\\[1\\\\]\\\\+\\\\$ShellId\\\\[13\\\\]\\\\+\\\\'x\\\\'\\\\).*\") OR process_command_line = RGX(\".*\\\\(\\\\ \\\\$PSHome\\\\[*\\\\]\\\\+\\\\$PSHOME\\\\[*\\\\]\\\\+.*\") OR process_command_line = RGX(\".*\\\\(\\\\ \\\\$env\\\\:Public\\\\[13\\\\]\\\\+\\\\$env\\\\:Public\\\\[5\\\\]\\\\+\\\\'x\\\\'\\\\).*\") OR process_command_line = RGX(\".*\\\\(\\\\ \\\\$env\\\\:ComSpec\\\\[4\\\\,*\\\\,25\\\\]\\\\-Join\\\\'\\\\'\\\\).*\") OR process_command_line = RGX(\".*\\\\[1\\\\,3\\\\]\\\\+\\\\'x\\\\'\\\\-Join\\\\'\\\\'\\\\).*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "84dab525-64b6-4956-988c-2773c1262407"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

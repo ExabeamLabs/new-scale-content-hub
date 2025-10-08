@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PowerShell Web Access Feature Enabled Via DISM",
+      "description": "Detects the use of DISM to enable the PowerShell Web Access feature, which could be used for remote access and potential abuse",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\dism\\\\\\.exe$\") OR process_original_file_name = \"DISM\\.EXE\") AND (process_command_line = RGX(\".*WindowsPowerShellWebAccess.*\") AND process_command_line = RGX(\".*\\\\/online.*\") AND process_command_line = RGX(\".*\\\\/enable\\\\-feature.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "79e67f3b-e646-4688-ab61-d22fd33afc3f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

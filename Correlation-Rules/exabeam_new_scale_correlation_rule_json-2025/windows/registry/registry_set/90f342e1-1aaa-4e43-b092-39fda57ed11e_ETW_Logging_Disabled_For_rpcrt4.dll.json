@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "ETW Logging Disabled For rpcrt4.dll",
+      "description": "Detects changes to the \"ExtErrorInformation\" key in order to disable ETW logging for rpcrt4.dll Note: Unmapped fields: Details",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\"\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\Rpc\\\\\\\\ExtErrorInformation$\") AND (Details = \"DWORD\\ \\(0x00000000\\)\" OR Details = \"DWORD\\ \\(0x00000002\\)\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9af55035-491c-4cd0-8cdd-75459a1ef2a7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

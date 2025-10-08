@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - CsExec Execution",
+      "description": "Detects the use of the lesser known remote execution tool named CsExec a PsExec alternative",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\csexec\\\\\\.exe$\") OR process_description = \"csexec\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "42233749-1dcf-4115-ab00-f7b989797f3a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

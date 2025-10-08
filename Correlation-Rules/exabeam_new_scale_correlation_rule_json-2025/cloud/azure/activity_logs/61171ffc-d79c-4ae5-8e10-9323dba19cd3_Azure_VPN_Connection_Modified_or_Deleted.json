@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Azure VPN Connection Modified or Deleted",
+      "description": "Identifies when a VPN connection is modified or deleted. Note: Unmapped fields: operationName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(operationName = \"MICROSOFT\\.NETWORK\\/VPNGATEWAYS\\/VPNCONNECTIONS\\/WRITE\" OR operationName = \"MICROSOFT\\.NETWORK\\/VPNGATEWAYS\\/VPNCONNECTIONS\\/DELETE\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ff1f4cc3-cb90-44e1-b82f-b3686aa0d463"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

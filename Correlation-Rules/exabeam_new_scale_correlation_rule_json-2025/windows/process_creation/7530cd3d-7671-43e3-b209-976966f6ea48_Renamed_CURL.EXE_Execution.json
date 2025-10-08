@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Renamed CURL.EXE Execution",
+      "description": "Detects the execution of a renamed \"CURL.exe\" binary based on the PE metadata fields",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_original_file_name = \"curl\\.exe\" OR process_description = \"The\\ curl\\ executable\") AND  NOT (process_path = RGX(\".*\\\\\\\\curl.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a9d3ba8d-d5f7-4e55-887d-7105dc645ded"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - SysmonEnte Execution",
+      "description": "Detects the use of SysmonEnte, a tool to attack the integrity of Sysmon Note: Unmapped fields: TargetImage, GrantedAccess, SourceImage, CallTrace",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((TargetImage = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Sysmon\\\\\\.exe.*\") OR TargetImage = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Sysmon64\\\\\\.exe.*\")) AND GrantedAccess = \"0x1400\") AND  NOT ((SourceImage = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\.*\") OR SourceImage = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\.*\") OR SourceImage = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\.*\") OR SourceImage = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\.*\")) OR (SourceImage = RGX(\".*\\\\:\\\\\\\\ProgramData\\\\\\\\Microsoft\\\\\\\\Windows\\\\ Defender\\\\\\\\Platform\\\\\\\\.*\") AND SourceImage = RGX(\"\\\\\\\\MsMpEng\\\\\\.exe$\")))) OR CallTrace = \"Ente\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "361bf163-ee09-4ea5-8683-3d054b316a3d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

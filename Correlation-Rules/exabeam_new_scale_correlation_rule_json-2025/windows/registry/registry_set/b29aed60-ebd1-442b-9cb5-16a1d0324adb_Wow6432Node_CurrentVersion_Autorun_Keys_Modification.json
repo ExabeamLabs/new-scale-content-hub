@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Wow6432Node CurrentVersion Autorun Keys Modification",
+      "description": "Detects modification of autostart extensibility point (ASEP) in registry. Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Wow6432Node\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion.*\") AND (registry_path = RGX(\".*\\\\\\\\ShellServiceObjectDelayLoad.*\") OR registry_path = RGX(\".*\\\\\\\\Run\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\RunOnce\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\RunOnceEx\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\RunServices\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\RunServicesOnce\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\Explorer\\\\\\\\ShellServiceObjects.*\") OR registry_path = RGX(\".*\\\\\\\\Explorer\\\\\\\\ShellIconOverlayIdentifiers.*\") OR registry_path = RGX(\".*\\\\\\\\Explorer\\\\\\\\ShellExecuteHooks.*\") OR registry_path = RGX(\".*\\\\\\\\Explorer\\\\\\\\SharedTaskScheduler.*\") OR registry_path = RGX(\".*\\\\\\\\Explorer\\\\\\\\Browser\\\\ Helper\\\\ Objects.*\"))) AND  NOT (Details = \"\\(Empty\\)\" OR (process_path = RGX(\".*C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Microsoft\\\\\\\\EdgeUpdate\\\\\\\\Install\\\\\\\\\\\\{.*\") AND process_path = RGX(\".*\\\\\\\\setup\\\\\\.exe.*\")) OR (process_path = \"C\\:\\\\Program\\ Files\\\\Common\\ Files\\\\Microsoft\\ Shared\\\\ClickToRun\\\\OfficeClickToRun\\.exe\" AND registry_path = RGX(\".*\\\\\\\\Office\\\\\\\\ClickToRun\\\\\\\\REGISTRY\\\\\\\\MACHINE\\\\\\\\Software\\\\\\\\Wow6432Node\\\\\\\\.*\")) OR ((process_path = \"C\\:\\\\Program\\ Files\\\\Microsoft\\ Office\\\\root\\\\integration\\\\integrator\\.exe\" OR process_path = \"C\\:\\\\Program\\ Files\\ \\(x86\\)\\\\Microsoft\\ Office\\\\root\\\\integration\\\\integrator\\.exe\") AND registry_path = RGX(\".*\\\\\\\\Explorer\\\\\\\\Browser\\\\ Helper\\\\ Objects\\\\\\\\\\\\{31D09BA0\\\\-12F5\\\\-4CCE\\\\-BE8A\\\\-2923E76605DA\\\\}\\\\\\\\.*\")) OR (Details = RGX(\"\\\\-A251\\\\-47B7\\\\-93E1\\\\-CDD82E34AF8B\\\\}$\") OR Details = \"grpconv\\ \\-o\" OR (Details = RGX(\".*C\\\\:\\\\\\\\Program\\\\ Files.*\") AND Details = RGX(\".*\\\\\\\\Dropbox\\\\\\\\Client\\\\\\\\Dropbox\\\\\\.exe.*\") AND Details = RGX(\".*\\\\ \\\\/systemstartup.*\"))) OR registry_path = RGX(\"\\\\\\\\Explorer\\\\\\\\Browser\\\\ Helper\\\\ Objects\\\\\\\\\\\\{92EF2EAD\\\\-A7CE\\\\-4424\\\\-B0DB\\\\-499CF856608E\\\\}\\\\\\\\NoExplorer$\") OR (process_path = RGX(\".*\\\\\\\\windowsdesktop\\\\-runtime\\\\-.*\") AND (registry_path = RGX(\"\\\\\\\\WOW6432Node\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\RunOnce\\\\\\\\\\\\{e2d1ae32\\\\-dd1d\\\\-4ad7\\\\-a298\\\\-10e42e7840fc\\\\}$\") OR registry_path = RGX(\"\\\\\\\\WOW6432Node\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\RunOnce\\\\\\\\\\\\{7037b699\\\\-7382\\\\-448c\\\\-89a7\\\\-4765961d2537\\\\}$\")) AND Details = RGX(\"^\\\\\"C\\\\:\\\\\\\\ProgramData\\\\\\\\Package\\\\ Cache\\\\\\\\\") AND Details = RGX(\"\\\\\\.exe\\\\\"\\\\ \\\\/burn\\\\\\.runonce$\")) OR ((process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Common\\\\ Files\\\\\\\\Microsoft\\\\ Shared\\\\\\\\ClickToRun\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Common\\\\ Files\\\\\\\\Microsoft\\\\ Shared\\\\\\\\ClickToRun\\\\\\\\Updates\\\\\\\\\")) AND process_path = RGX(\"\\\\\\\\OfficeClickToRun\\\\\\.exe$\")) OR Details = RGX(\"^\\\\\"C\\\\:\\\\\\\\ProgramData\\\\\\\\Package\\\\ Cache\\\\\\\\\\\\{d21a4f20\\\\-968a\\\\-4b0c\\\\-bf04\\\\-a38da5f06e41\\\\}\\\\\\\\windowsdesktop\\\\-runtime\\\\-\") OR (process_path = RGX(\"\\\\\\\\VC\\\\_redist\\\\\\.x64\\\\\\.exe$\") AND Details = RGX(\"\\\\}\\\\\\\\VC\\\\_redist\\\\\\.x64\\\\\\.exe\\\\\"\\\\ \\\\/burn\\\\\\.runonce$\")) OR ((process_path = RGX(\"^C\\\\:\\\\\\\\ProgramData\\\\\\\\Package\\\\ Cache\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\\")) AND (process_path = RGX(\".*\\\\\\\\winsdksetup\\\\\\.exe.*\") OR process_path = RGX(\".*\\\\\\\\windowsdesktop\\\\-runtime\\\\-.*\") OR process_path = RGX(\".*\\\\\\\\AspNetCoreSharedFrameworkBundle\\\\-.*\")) AND Details = RGX(\"\\\\ \\\\/burn\\\\\\.runonce$\")) OR (process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\Installer\\\\\\\\MSI\") AND registry_path = RGX(\".*\\\\\\\\Explorer\\\\\\\\Browser\\\\ Helper\\\\ Objects.*\")) OR (process_path = \"C\\:\\\\WINDOWS\\\\system32\\\\msiexec\\.exe\" AND registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Wow6432Node\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Run\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5271bff2-1049-484f-b3bd-d3a5d23a850a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

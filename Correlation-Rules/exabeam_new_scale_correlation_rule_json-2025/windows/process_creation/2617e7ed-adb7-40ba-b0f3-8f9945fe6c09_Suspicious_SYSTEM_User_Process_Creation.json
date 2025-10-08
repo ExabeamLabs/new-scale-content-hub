@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious SYSTEM User Process Creation",
+      "description": "Detects a suspicious process creation as SYSTEM user (suspicious program or command line parameter)",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_integrity_level = \"System\" OR process_integrity_level = \"S\\-1\\-16\\-16384\") AND (user = RGX(\".*AUTHORI.*\") OR user = RGX(\".*AUTORI.*\"))) AND ((process_path = RGX(\"\\\\\\\\calc\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\forfiles\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\hh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\ping\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\")) OR (process_command_line = RGX(\".*\\\\ \\\\-NoP\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-W\\\\ Hidden\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-decode\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\/decode\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\/urlcache\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-urlcache\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-e*\\\\ JAB.*\") OR process_command_line = RGX(\".*\\\\ \\\\-e*\\\\ SUVYI.*\") OR process_command_line = RGX(\".*\\\\ \\\\-e*\\\\ SQBFAFgA.*\") OR process_command_line = RGX(\".*\\\\ \\\\-e*\\\\ aWV4I.*\") OR process_command_line = RGX(\".*\\\\ \\\\-e*\\\\ IAB.*\") OR process_command_line = RGX(\".*\\\\ \\\\-e*\\\\ PAA.*\") OR process_command_line = RGX(\".*\\\\ \\\\-e*\\\\ aQBlAHgA.*\") OR process_command_line = RGX(\".*vssadmin\\\\ delete\\\\ shadows.*\") OR process_command_line = RGX(\".*reg\\\\ SAVE\\\\ HKLM.*\") OR process_command_line = RGX(\".*\\\\ \\\\-ma\\\\ .*\") OR process_command_line = RGX(\".*Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Run.*\") OR process_command_line = RGX(\".*\\\\\\.downloadstring\\\\(.*\") OR process_command_line = RGX(\".*\\\\\\.downloadfile\\\\(.*\") OR process_command_line = RGX(\".*\\\\ \\\\/ticket\\\\:.*\") OR process_command_line = RGX(\".*dpapi\\\\:\\\\:.*\") OR process_command_line = RGX(\".*event\\\\:\\\\:clear.*\") OR process_command_line = RGX(\".*event\\\\:\\\\:drop.*\") OR process_command_line = RGX(\".*id\\\\:\\\\:modify.*\") OR process_command_line = RGX(\".*kerberos\\\\:\\\\:.*\") OR process_command_line = RGX(\".*lsadump\\\\:\\\\:.*\") OR process_command_line = RGX(\".*misc\\\\:\\\\:.*\") OR process_command_line = RGX(\".*privilege\\\\:\\\\:.*\") OR process_command_line = RGX(\".*rpc\\\\:\\\\:.*\") OR process_command_line = RGX(\".*sekurlsa\\\\:\\\\:.*\") OR process_command_line = RGX(\".*sid\\\\:\\\\:.*\") OR process_command_line = RGX(\".*token\\\\:\\\\:.*\") OR process_command_line = RGX(\".*vault\\\\:\\\\:cred.*\") OR process_command_line = RGX(\".*vault\\\\:\\\\:list.*\") OR process_command_line = RGX(\".*\\\\ p\\\\:\\\\:d\\\\ .*\") OR process_command_line = RGX(\".*\\\\;iex\\\\(.*\") OR process_command_line = RGX(\".*MiniDump.*\") OR process_command_line = RGX(\".*net\\\\ user\\\\ .*\")))) AND  NOT ((process_command_line = RGX(\".*ping.*\") AND process_command_line = RGX(\".*127\\\\\\.0\\\\\\.0\\\\\\.1.*\") AND process_command_line = RGX(\".*\\\\ \\\\-n\\\\ .*\")) OR (process_path = RGX(\"\\\\\\\\PING\\\\\\.EXE$\") AND parent_process_command_line = RGX(\".*\\\\\\\\DismFoDInstall\\\\\\.cmd.*\")) OR parent_process_path = RGX(\".*\\\\:\\\\\\\\Packages\\\\\\\\Plugins\\\\\\\\Microsoft\\\\\\.GuestConfiguration\\\\\\.ConfigurationforWindows\\\\\\\\.*\") OR ((parent_process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Java\\\\\\\\.*\") OR parent_process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Java\\\\\\\\.*\")) AND parent_process_path = RGX(\"\\\\\\\\bin\\\\\\\\javaws\\\\\\.exe$\") AND (process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Java\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Java\\\\\\\\.*\")) AND process_path = RGX(\"\\\\\\\\bin\\\\\\\\jp2launcher\\\\\\.exe$\") AND process_command_line = RGX(\".*\\\\ \\\\-ma\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "73bfd5af-8314-48c8-acb5-2ca8403aa46f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

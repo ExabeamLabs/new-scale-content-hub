@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Users Authenticating To Other Azure AD Tenants",
+      "description": "Detect when users in your Azure AD tenant are authenticating to other Azure AD Tenants. Note: Unmapped fields: Status, HomeTenantId, ResourceTenantId",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Status = \"Success\" AND HomeTenantId = \"HomeTenantID\") AND  NOT (ResourceTenantId = RGX(\".*HomeTenantID.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a518587e-714c-48fb-bd5e-272abbc10fbf"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

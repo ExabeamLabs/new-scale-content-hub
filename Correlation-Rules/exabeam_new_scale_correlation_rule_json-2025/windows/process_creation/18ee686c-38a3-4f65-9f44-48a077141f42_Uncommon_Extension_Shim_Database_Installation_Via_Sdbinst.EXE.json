@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Uncommon Extension Shim Database Installation Via Sdbinst.EXE",
+      "description": "Detects installation of a potentially suspicious new shim with an uncommon extension using sdbinst.exe.\nAdversaries may establish persistence and/or elevate privileges by executing malicious content triggered by application shims\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\sdbinst\\\\\\.exe$\") OR process_original_file_name = \"sdbinst\\.exe\") AND  NOT (process_command_line = RGX(\".*\\\\\\.sdb.*\") OR ((process_command_line = RGX(\"\\\\ \\\\-c$\") OR process_command_line = RGX(\"\\\\ \\\\-f$\") OR process_command_line = RGX(\"\\\\ \\\\-mm$\") OR process_command_line = RGX(\"\\\\ \\\\-t$\")) OR process_command_line = RGX(\".*\\\\ \\\\-m\\\\ \\\\-bg.*\")) OR process_command_line = \"None\" OR process_command_line = \"\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "48aa53e8-c218-43f7-b429-70bde1ce0564"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

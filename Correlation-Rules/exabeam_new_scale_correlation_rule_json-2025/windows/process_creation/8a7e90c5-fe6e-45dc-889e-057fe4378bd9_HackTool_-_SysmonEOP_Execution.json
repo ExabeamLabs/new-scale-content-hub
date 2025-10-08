@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - SysmonEOP Execution",
+      "description": "Detects the execution of the PoC that can be used to exploit Sysmon CVE-2022-41120",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\SysmonEOP\\\\\\.exe$\") OR (process_hash = RGX(\".*IMPHASH\\\\=22F4089EB8ABA31E1BB162C6D9BF72E5.*\") OR process_hash = RGX(\".*IMPHASH\\\\=5123FA4C4384D431CD0D893EEB49BBEC.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7dec4a9a-2256-4bf4-a50f-fe01a29691f7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New Firewall Rule Added In Windows Firewall Exception List For Potential Suspicious Application",
+      "description": "Detects the addition of a new rule to the Windows Firewall exception list for an application located in a potentially suspicious location. Note: Unmapped fields: ApplicationPath, Action",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((event_id = 2004 OR event_id = 2071 OR event_id = 2097) AND (ApplicationPath = RGX(\".*\\\\:\\\\\\\\PerfLogs\\\\\\\\.*\") OR ApplicationPath = RGX(\".*\\\\:\\\\\\\\Temp\\\\\\\\.*\") OR ApplicationPath = RGX(\".*\\\\:\\\\\\\\Tmp\\\\\\\\.*\") OR ApplicationPath = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR ApplicationPath = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Tasks\\\\\\\\.*\") OR ApplicationPath = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\") OR ApplicationPath = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\"))) AND  NOT (Action = 2)",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2ac6eb99-dbcf-49dc-a55c-12af700439be"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

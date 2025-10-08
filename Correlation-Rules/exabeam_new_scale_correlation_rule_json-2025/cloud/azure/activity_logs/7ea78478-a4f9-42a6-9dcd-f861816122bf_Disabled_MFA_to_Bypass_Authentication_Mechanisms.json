@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Disabled MFA to Bypass Authentication Mechanisms",
+      "description": "Detection for when multi factor authentication has been disabled, which might indicate a malicious activity to bypass authentication mechanisms. Note: Unmapped fields: eventSource, eventName, status",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(eventSource = \"AzureActiveDirectory\" AND eventName = \"Disable\\ Strong\\ Authentication\\.\" AND status = \"success\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "612743a5-d064-4d2f-a888-6d6d23647ae7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

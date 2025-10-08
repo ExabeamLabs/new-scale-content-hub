@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Rundll32 Execution With Uncommon DLL Extension",
+      "description": "Detects the execution of rundll32 with a command line that doesn't contain a common extension",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_original_file_name = \"RUNDLL32\\.EXE\") AND  NOT (process_command_line = \"None\" OR process_command_line = \"\" OR ((process_command_line = RGX(\".*\\\\\\.cpl\\\\ .*\") OR process_command_line = RGX(\".*\\\\\\.cpl\\\\,.*\") OR process_command_line = RGX(\".*\\\\\\.cpl\\\\.*\") OR process_command_line = RGX(\".*\\\\\\.cpl\\\\.*\") OR process_command_line = RGX(\".*\\\\\\.dll\\\\ .*\") OR process_command_line = RGX(\".*\\\\\\.dll\\\\,.*\") OR process_command_line = RGX(\".*\\\\\\.dll\\\\.*\") OR process_command_line = RGX(\".*\\\\\\.dll\\\\.*\") OR process_command_line = RGX(\".*\\\\\\.inf\\\\ .*\") OR process_command_line = RGX(\".*\\\\\\.inf\\\\,.*\") OR process_command_line = RGX(\".*\\\\\\.inf\\\\.*\") OR process_command_line = RGX(\".*\\\\\\.inf\\\\.*\")) OR (process_command_line = RGX(\"\\\\\\.cpl$\") OR process_command_line = RGX(\"\\\\\\.dll$\") OR process_command_line = RGX(\"\\\\\\.inf$\"))) OR process_command_line = RGX(\".*\\\\ \\\\-localserver\\\\ .*\") OR (parent_process_path = RGX(\"\\\\\\\\msiexec\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Installer\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\\\.tmp.*\") AND process_command_line = RGX(\".*zzzzInvokeManagedCustomActionOutOfProc.*\")))) AND  NOT ((parent_process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND parent_process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Microsoft\\\\\\\\EdgeUpdate\\\\\\\\Install\\\\\\\\\\\\{.*\") AND parent_process_command_line = RGX(\".*\\\\\\\\EDGEMITMP\\\\_.*\") AND parent_process_command_line = RGX(\".*\\\\\\.tmp\\\\\\\\setup\\\\\\.exe.*\") AND parent_process_command_line = RGX(\".*\\\\-\\\\-install\\\\-archive\\\\=.*\") AND parent_process_command_line = RGX(\".*\\\\-\\\\-previous\\\\-version\\\\=.*\") AND parent_process_command_line = RGX(\".*\\\\-\\\\-msedgewebview\\\\ \\\\-\\\\-verbose\\\\-logging\\\\ \\\\-\\\\-do\\\\-not\\\\-launch\\\\-msedge\\\\ \\\\-\\\\-user\\\\-level.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "580aaf1e-4af3-4f78-bd31-2bd8c58d8e8d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

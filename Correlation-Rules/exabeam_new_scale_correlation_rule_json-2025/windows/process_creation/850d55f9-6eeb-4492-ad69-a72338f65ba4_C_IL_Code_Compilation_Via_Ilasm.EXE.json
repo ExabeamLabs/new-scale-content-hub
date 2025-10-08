@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "C# IL Code Compilation Via Ilasm.EXE",
+      "description": "Detects the use of \"Ilasm.EXE\" in order to compile C# intermediate (IL) code to EXE or DLL.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\ilasm\\\\\\.exe$\") OR process_original_file_name = \"ilasm\\.exe\") AND (process_command_line = RGX(\".*\\\\ \\\\/dll.*\") OR process_command_line = RGX(\".*\\\\ \\\\/exe.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e8a94cbd-b441-4322-bbe6-e1a7503e769a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

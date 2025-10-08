@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential SPN Enumeration Via Setspn.EXE",
+      "description": "Detects service principal name (SPN) enumeration used for Kerberoasting",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\setspn\\\\\\.exe$\") OR process_original_file_name = \"setspn\\.exe\" OR (process_description = RGX(\".*Query\\\\ or\\\\ reset\\\\ the\\\\ computer.*\") AND process_description = RGX(\".*SPN\\\\ attribute.*\"))) AND (process_command_line = RGX(\".*\\\\ \\\\-q\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\/q\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b6fb3608-80b3-4016-825a-8c99b940fc41"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

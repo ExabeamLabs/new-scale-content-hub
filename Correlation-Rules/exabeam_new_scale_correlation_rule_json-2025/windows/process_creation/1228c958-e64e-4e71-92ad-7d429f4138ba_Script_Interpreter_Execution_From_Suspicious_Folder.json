@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Script Interpreter Execution From Suspicious Folder",
+      "description": "Detects a suspicious script execution in temporary folders or folders accessible by environment variables",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\")) OR (process_command_line = RGX(\".*\\\\ \\\\-ep\\\\ bypass\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-ExecutionPolicy\\\\ bypass\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-w\\\\ hidden\\\\ .*\") OR process_command_line = RGX(\".*\\\\/e\\\\:javascript\\\\ .*\") OR process_command_line = RGX(\".*\\\\/e\\\\:Jscript\\\\ .*\") OR process_command_line = RGX(\".*\\\\/e\\\\:vbscript\\\\ .*\")) OR (process_original_file_name = \"cscript\\.exe\" OR process_original_file_name = \"mshta\\.exe\" OR process_original_file_name = \"wscript\\.exe\")) AND ((process_command_line = RGX(\".*\\\\:\\\\\\\\Perflogs\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp.*\") OR process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\Temp.*\") OR process_command_line = RGX(\".*\\\\\\\\Temporary\\\\ Internet.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\Temp.*\")) OR ((process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\\\\\Favorites\\\\\\\\.*\")) OR (process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\\\\\Favourites\\\\\\\\.*\")) OR (process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\\\\\Contacts\\\\\\\\.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ef808d30-ec3b-4626-9374-e53cace0e7cd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

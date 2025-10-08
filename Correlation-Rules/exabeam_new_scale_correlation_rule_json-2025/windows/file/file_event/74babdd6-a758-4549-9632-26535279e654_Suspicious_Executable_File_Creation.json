@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Executable File Creation",
+      "description": "Detect creation of suspicious executable file names.\nSome strings look for suspicious file extensions, others look for filenames that exploit unquoted service paths.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(file_path = RGX(\"\\\\:\\\\\\\\\\\\$Recycle\\\\\\.Bin\\\\\\.exe$\") OR file_path = RGX(\"\\\\:\\\\\\\\Documents\\\\ and\\\\ Settings\\\\\\.exe$\") OR file_path = RGX(\"\\\\:\\\\\\\\MSOCache\\\\\\.exe$\") OR file_path = RGX(\"\\\\:\\\\\\\\PerfLogs\\\\\\.exe$\") OR file_path = RGX(\"\\\\:\\\\\\\\Recovery\\\\\\.exe$\") OR file_path = RGX(\"\\\\\\.bat\\\\\\.exe$\") OR file_path = RGX(\"\\\\\\.sys\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c563d76a-25da-4dfd-9da1-14c3a1dc0bf8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "File With Suspicious Extension Downloaded Via Bitsadmin",
+      "description": "Detects usage of bitsadmin downloading a file with a suspicious extension",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\bitsadmin\\\\\\.exe$\") OR process_original_file_name = \"bitsadmin\\.exe\") AND (process_command_line = RGX(\".*\\\\ \\\\/transfer\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\/create\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\/addfile\\\\ .*\")) AND (process_command_line = RGX(\".*\\\\\\.7z.*\") OR process_command_line = RGX(\".*\\\\\\.asax.*\") OR process_command_line = RGX(\".*\\\\\\.ashx.*\") OR process_command_line = RGX(\".*\\\\\\.asmx.*\") OR process_command_line = RGX(\".*\\\\\\.asp.*\") OR process_command_line = RGX(\".*\\\\\\.aspx.*\") OR process_command_line = RGX(\".*\\\\\\.bat.*\") OR process_command_line = RGX(\".*\\\\\\.cfm.*\") OR process_command_line = RGX(\".*\\\\\\.cgi.*\") OR process_command_line = RGX(\".*\\\\\\.chm.*\") OR process_command_line = RGX(\".*\\\\\\.cmd.*\") OR process_command_line = RGX(\".*\\\\\\.dll.*\") OR process_command_line = RGX(\".*\\\\\\.gif.*\") OR process_command_line = RGX(\".*\\\\\\.jpeg.*\") OR process_command_line = RGX(\".*\\\\\\.jpg.*\") OR process_command_line = RGX(\".*\\\\\\.jsp.*\") OR process_command_line = RGX(\".*\\\\\\.jspx.*\") OR process_command_line = RGX(\".*\\\\\\.log.*\") OR process_command_line = RGX(\".*\\\\\\.png.*\") OR process_command_line = RGX(\".*\\\\\\.ps1.*\") OR process_command_line = RGX(\".*\\\\\\.psm1.*\") OR process_command_line = RGX(\".*\\\\\\.rar.*\") OR process_command_line = RGX(\".*\\\\\\.scf.*\") OR process_command_line = RGX(\".*\\\\\\.sct.*\") OR process_command_line = RGX(\".*\\\\\\.txt.*\") OR process_command_line = RGX(\".*\\\\\\.vbe.*\") OR process_command_line = RGX(\".*\\\\\\.vbs.*\") OR process_command_line = RGX(\".*\\\\\\.war.*\") OR process_command_line = RGX(\".*\\\\\\.wsf.*\") OR process_command_line = RGX(\".*\\\\\\.wsh.*\") OR process_command_line = RGX(\".*\\\\\\.xll.*\") OR process_command_line = RGX(\".*\\\\\\.zip.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "42d3c504-f793-4e94-9104-78a2809b15c7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

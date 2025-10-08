@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Network Communication Initiated To Portmap.IO Domain",
+      "description": "Detects an executable accessing the portmap.io domain, which could be a sign of forbidden C2 traffic or data exfiltration by malicious actors Note: Unmapped fields: DestinationHostname",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(network_initiated = \"true\" AND DestinationHostname = RGX(\"\\\\\\.portmap\\\\\\.io$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3df51daa-75b0-4bfb-9e86-f77c9ff6af34"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

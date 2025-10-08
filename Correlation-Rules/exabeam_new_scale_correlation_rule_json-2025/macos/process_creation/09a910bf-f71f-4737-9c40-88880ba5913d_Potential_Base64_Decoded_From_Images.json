@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Base64 Decoded From Images",
+      "description": "Detects the use of tail to extract bytes at an offset from an image and then decode the base64 value to create a new file with the decoded content. The detected execution is a bash one-liner.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/bash$\") AND (process_command_line = RGX(\".*tail.*\") AND process_command_line = RGX(\".*\\\\-c.*\")) AND (process_command_line = RGX(\".*base64.*\") AND process_command_line = RGX(\".*\\\\-d.*\") AND process_command_line = RGX(\".*\\\\>.*\")) AND (process_command_line = RGX(\".*\\\\\\.avif.*\") OR process_command_line = RGX(\".*\\\\\\.gif.*\") OR process_command_line = RGX(\".*\\\\\\.jfif.*\") OR process_command_line = RGX(\".*\\\\\\.jpeg.*\") OR process_command_line = RGX(\".*\\\\\\.jpg.*\") OR process_command_line = RGX(\".*\\\\\\.pjp.*\") OR process_command_line = RGX(\".*\\\\\\.pjpeg.*\") OR process_command_line = RGX(\".*\\\\\\.png.*\") OR process_command_line = RGX(\".*\\\\\\.svg.*\") OR process_command_line = RGX(\".*\\\\\\.webp.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f705dd7f-bb3c-4ec7-9224-e54f601ca9c3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

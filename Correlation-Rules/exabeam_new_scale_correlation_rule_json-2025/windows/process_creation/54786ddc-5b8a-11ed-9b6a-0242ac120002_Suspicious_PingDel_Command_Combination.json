@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Ping/Del Command Combination",
+      "description": "Detects a method often used by ransomware. Which combines the \"ping\" to wait a couple of seconds and then \"del\" to delete the file in question. Its used to hide the file responsible for the initial infection for example",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\ \\\\-n\\\\ .*\") AND process_command_line = RGX(\".*Nul.*\") AND (process_command_line = RGX(\".*\\\\ \\\\-f\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-q\\\\ .*\")) AND (process_command_line = RGX(\".*ping.*\") AND process_command_line = RGX(\".*del\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a418ac26-eea7-4148-8079-97cdf91cfd9d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

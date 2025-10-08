@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New Kernel Driver Via SC.EXE",
+      "description": "Detects creation of a new service (kernel driver) with the type \"kernel\"",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\sc\\\\\\.exe$\") AND (process_command_line = RGX(\".*create.*\") OR process_command_line = RGX(\".*config.*\")) AND (process_command_line = RGX(\".*binPath.*\") AND process_command_line = RGX(\".*type.*\") AND process_command_line = RGX(\".*kernel.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6db24936-5791-4ab5-b6dc-1c58c7f18728"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

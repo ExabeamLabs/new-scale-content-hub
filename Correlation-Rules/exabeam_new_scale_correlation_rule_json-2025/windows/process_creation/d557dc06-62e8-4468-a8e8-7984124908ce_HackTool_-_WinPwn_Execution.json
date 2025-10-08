@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - WinPwn Execution",
+      "description": "Detects commandline keywords indicative of potential usge of the tool WinPwn. A tool for Windows and Active Directory reconnaissance and exploitation.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*Offline\\\\_Winpwn.*\") OR process_command_line = RGX(\".*WinPwn\\\\ .*\") OR process_command_line = RGX(\".*WinPwn\\\\\\.exe.*\") OR process_command_line = RGX(\".*WinPwn\\\\\\.ps1.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7a546740-fcea-4996-97c3-63c8f66000ff"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

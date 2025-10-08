@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Shell Execution GCC  - Linux",
+      "description": "Detects the use of the \"gcc\" utility to execute a shell. Such behavior may be associated with privilege escalation, unauthorized command execution, or to break out from restricted environments.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\/c89$\") OR process_path = RGX(\"\\\\/c99$\") OR process_path = RGX(\"\\\\/gcc$\")) AND process_command_line = RGX(\".*\\\\-wrapper.*\")) AND (process_command_line = RGX(\".*\\\\/bin\\\\/bash\\\\,\\\\-s.*\") OR process_command_line = RGX(\".*\\\\/bin\\\\/dash\\\\,\\\\-s.*\") OR process_command_line = RGX(\".*\\\\/bin\\\\/fish\\\\,\\\\-s.*\") OR process_command_line = RGX(\".*\\\\/bin\\\\/sh\\\\,\\\\-s.*\") OR process_command_line = RGX(\".*\\\\/bin\\\\/zsh\\\\,\\\\-s.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "143b6e16-31d6-4821-a7bb-ec9dbb282941"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

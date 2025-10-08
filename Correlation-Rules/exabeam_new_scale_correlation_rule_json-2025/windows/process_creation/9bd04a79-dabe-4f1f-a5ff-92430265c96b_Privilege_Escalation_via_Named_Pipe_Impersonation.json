@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Privilege Escalation via Named Pipe Impersonation",
+      "description": "Detects a remote file copy attempt to a hidden network share. This may indicate lateral movement or data staging activity.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\")) OR (process_original_file_name = \"Cmd\\.Exe\" OR process_original_file_name = \"PowerShell\\.EXE\")) AND (process_command_line = RGX(\".*echo.*\") AND process_command_line = RGX(\".*\\\\>.*\") AND process_command_line = RGX(\".*\\\\\\\\\\\\\\\\\\\\\\.\\\\\\\\pipe\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "599d088d-5220-480f-b88f-9f80192a4761"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

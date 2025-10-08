@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation RUNDLL LAUNCHER - PowerShell",
+      "description": "Detects Obfuscated Powershell via RUNDLL LAUNCHER Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*rundll32\\\\\\.exe.*\") AND ScriptBlockText = RGX(\".*shell32\\\\\\.dll.*\") AND ScriptBlockText = RGX(\".*shellexec\\\\_rundll.*\") AND ScriptBlockText = RGX(\".*powershell.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "53e7d02e-5fb4-4ae0-bea2-9e87fcf517aa"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

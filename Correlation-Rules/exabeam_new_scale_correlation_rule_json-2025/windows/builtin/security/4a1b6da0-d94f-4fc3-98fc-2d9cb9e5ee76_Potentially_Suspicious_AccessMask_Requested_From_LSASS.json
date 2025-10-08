@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Suspicious AccessMask Requested From LSASS",
+      "description": "Detects process handle on LSASS process with certain access mask Note: Unmapped fields: ObjectName, AccessMask, AccessList, ProcessName",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((event_id = 4656 AND ObjectName = RGX(\"\\\\\\\\lsass\\\\\\.exe$\") AND (AccessMask = RGX(\".*0x40.*\") OR AccessMask = RGX(\".*0x1400.*\") OR AccessMask = RGX(\".*0x100000.*\") OR AccessMask = RGX(\".*0x1410.*\") OR AccessMask = RGX(\".*0x1010.*\") OR AccessMask = RGX(\".*0x1438.*\") OR AccessMask = RGX(\".*0x143a.*\") OR AccessMask = RGX(\".*0x1418.*\") OR AccessMask = RGX(\".*0x1f0fff.*\") OR AccessMask = RGX(\".*0x1f1fff.*\") OR AccessMask = RGX(\".*0x1f2fff.*\") OR AccessMask = RGX(\".*0x1f3fff.*\"))) OR (event_id = 4663 AND ObjectName = RGX(\"\\\\\\\\lsass\\\\\\.exe$\") AND (AccessList = RGX(\".*4484.*\") OR AccessList = RGX(\".*4416.*\")))) AND  NOT (((ProcessName = RGX(\"\\\\\\\\csrss\\\\\\.exe$\") OR ProcessName = RGX(\"\\\\\\\\GamingServices\\\\\\.exe$\") OR ProcessName = RGX(\"\\\\\\\\lsm\\\\\\.exe$\") OR ProcessName = RGX(\"\\\\\\\\MicrosoftEdgeUpdate\\\\\\.exe$\") OR ProcessName = RGX(\"\\\\\\\\minionhost\\\\\\.exe$\") OR ProcessName = RGX(\"\\\\\\\\MRT\\\\\\.exe$\") OR ProcessName = RGX(\"\\\\\\\\MsMpEng\\\\\\.exe$\") OR ProcessName = RGX(\"\\\\\\\\perfmon\\\\\\.exe$\") OR ProcessName = RGX(\"\\\\\\\\procexp\\\\\\.exe$\") OR ProcessName = RGX(\"\\\\\\\\procexp64\\\\\\.exe$\") OR ProcessName = RGX(\"\\\\\\\\svchost\\\\\\.exe$\") OR ProcessName = RGX(\"\\\\\\\\taskmgr\\\\\\.exe$\") OR ProcessName = RGX(\"\\\\\\\\thor\\\\\\.exe$\") OR ProcessName = RGX(\"\\\\\\\\thor64\\\\\\.exe$\") OR ProcessName = RGX(\"\\\\\\\\vmtoolsd\\\\\\.exe$\") OR ProcessName = RGX(\"\\\\\\\\VsTskMgr\\\\\\.exe$\") OR ProcessName = RGX(\"\\\\\\\\wininit\\\\\\.exe$\") OR ProcessName = RGX(\"\\\\\\\\wmiprvse\\\\\\.exe$\") OR ProcessName = RGX(\"RtkAudUService64$\")) AND (ProcessName = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\.*\") OR ProcessName = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\.*\") OR ProcessName = RGX(\".*\\\\:\\\\\\\\ProgramData\\\\\\\\Microsoft\\\\\\\\Windows\\\\ Defender\\\\\\\\Platform\\\\\\\\.*\") OR ProcessName = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\SysNative\\\\\\\\.*\") OR ProcessName = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\.*\") OR ProcessName = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\SysWow64\\\\\\\\.*\") OR ProcessName = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\asgard2\\\\-agent\\\\\\\\.*\"))) OR ProcessName = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files.*\") OR (ProcessName = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\taskhostw\\\\\\.exe$\") OR ProcessName = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\msiexec\\\\\\.exe$\") OR ProcessName = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\CCM\\\\\\\\CcmExec\\\\\\.exe$\")) OR (ProcessName = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\Sysmon64\\\\\\.exe$\") AND AccessList = RGX(\".*\\\\%\\\\%4484.*\")) OR (ProcessName = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\asgard2\\\\-agent\\\\-sc\\\\\\\\aurora\\\\\\\\.*\") AND ProcessName = RGX(\"\\\\\\\\aurora\\\\-agent\\\\-64\\\\\\.exe$\") AND AccessList = RGX(\".*\\\\%\\\\%4484.*\")) OR (ProcessName = RGX(\"\\\\\\\\x64\\\\\\\\SCENARIOENGINE\\\\\\.EXE$\") AND AccessList = RGX(\".*\\\\%\\\\%4484.*\")) OR ((ProcessName = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND ProcessName = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\is\\\\-.*\")) AND ProcessName = RGX(\"\\\\\\\\avira\\\\_system\\\\_speedup\\\\\\.tmp$\") AND AccessList = RGX(\".*\\\\%\\\\%4484.*\")) OR (ProcessName = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\") AND ProcessName = RGX(\"\\\\\\\\avira\\\\_speedup\\\\_setup\\\\_update\\\\\\.tmp$\") AND AccessList = RGX(\".*\\\\%\\\\%4484.*\")) OR (ProcessName = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\snmp\\\\\\.exe$\") AND AccessList = RGX(\".*\\\\%\\\\%4484.*\")) OR (ProcessName = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\SystemTemp\\\\\\\\.*\") AND ProcessName = RGX(\"\\\\\\\\GoogleUpdate\\\\\\.exe$\") AND AccessList = RGX(\".*\\\\%\\\\%4484.*\"))) AND  NOT (((ProcessName = RGX(\"\\\\\\\\procmon64\\\\\\.exe$\") OR ProcessName = RGX(\"\\\\\\\\procmon\\\\\\.exe$\")) AND AccessList = RGX(\".*\\\\%\\\\%4484.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "38f8bdf6-10c7-4360-aed7-ea29982e192f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

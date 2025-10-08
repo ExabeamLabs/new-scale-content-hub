@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Node Process Executions",
+      "description": "Detects the execution of other scripts using the Node executable packaged with Adobe Creative Cloud",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_path = RGX(\"\\\\\\\\Adobe\\\\ Creative\\\\ Cloud\\\\ Experience\\\\\\\\libs\\\\\\\\node\\\\\\.exe$\") AND  NOT (process_command_line = RGX(\".*Adobe\\\\ Creative\\\\ Cloud\\\\ Experience\\\\\\\\js.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c42408eb-118a-49b3-96d0-a5084cfa6d7e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Use of Scriptrunner.exe",
+      "description": "The \"ScriptRunner.exe\" binary can be abused to proxy execution through it and bypass possible whitelisting",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\ScriptRunner\\\\\\.exe$\") OR process_original_file_name = \"ScriptRunner\\.exe\") AND process_command_line = RGX(\".*\\\\ \\\\-appvscript\\\\ .*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f374b94c-2f09-4de9-a0a1-e61bb1dfdc3f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

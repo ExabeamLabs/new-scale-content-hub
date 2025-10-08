@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Disable Internal Tools or Feature in Registry",
+      "description": "Detects registry modifications that change features of internal Windows tools (malware like Agent Tesla uses this technique) Note: Unmapped fields: Details",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((registry_path = RGX(\"SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\Explorer\\\\\\\\DisableCMD$\") OR registry_path = RGX(\"SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\Explorer\\\\\\\\NoControlPanel$\") OR registry_path = RGX(\"SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\Explorer\\\\\\\\NoRun$\") OR registry_path = RGX(\"SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\Explorer\\\\\\\\StartMenuLogOff$\") OR registry_path = RGX(\"SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\System\\\\\\\\DisableChangePassword$\") OR registry_path = RGX(\"SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\System\\\\\\\\DisableLockWorkstation$\") OR registry_path = RGX(\"SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\System\\\\\\\\DisableRegistryTools$\") OR registry_path = RGX(\"SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\System\\\\\\\\DisableTaskmgr$\") OR registry_path = RGX(\"SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\System\\\\\\\\NoDispBackgroundPage$\") OR registry_path = RGX(\"SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\System\\\\\\\\NoDispCPL$\") OR registry_path = RGX(\"SOFTWARE\\\\\\\\Policies\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\Explorer\\\\\\\\DisableNotificationCenter$\") OR registry_path = RGX(\"SOFTWARE\\\\\\\\Policies\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\System\\\\\\\\DisableCMD$\")) AND Details = \"DWORD\\ \\(0x00000001\\)\") OR ((registry_path = RGX(\"SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\System\\\\\\\\ConsentPromptBehaviorAdmin$\") OR registry_path = RGX(\"Software\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\System\\\\\\\\InactivityTimeoutSecs$\") OR registry_path = RGX(\"SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\System\\\\\\\\shutdownwithoutlogon$\") OR registry_path = RGX(\"SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\PushNotifications\\\\\\\\ToastEnabled$\") OR registry_path = RGX(\"SYSTEM\\\\\\\\CurrentControlSet\\\\\\\\Control\\\\\\\\Storage\\\\\\\\Write\\\\ Protection$\") OR registry_path = RGX(\"SYSTEM\\\\\\\\CurrentControlSet\\\\\\\\Control\\\\\\\\StorageDevicePolicies\\\\\\\\WriteProtect$\")) AND Details = \"DWORD\\ \\(0x00000000\\)\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7ca03365-2a52-4ca9-b640-7fa6e87fc031"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

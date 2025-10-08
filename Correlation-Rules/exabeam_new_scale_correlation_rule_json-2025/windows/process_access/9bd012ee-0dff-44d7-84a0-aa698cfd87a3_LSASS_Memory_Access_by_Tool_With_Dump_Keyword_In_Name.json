@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "LSASS Memory Access by Tool With Dump Keyword In Name",
+      "description": "Detects LSASS process access requests from a source process with the \"dump\" keyword in its image name. Note: Unmapped fields: TargetImage, SourceImage, GrantedAccess",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(TargetImage = RGX(\"\\\\\\\\lsass\\\\\\.exe$\") AND SourceImage = RGX(\".*dump.*\") AND (GrantedAccess = RGX(\"10$\") OR GrantedAccess = RGX(\"30$\") OR GrantedAccess = RGX(\"50$\") OR GrantedAccess = RGX(\"70$\") OR GrantedAccess = RGX(\"90$\") OR GrantedAccess = RGX(\"B0$\") OR GrantedAccess = RGX(\"D0$\") OR GrantedAccess = RGX(\"F0$\") OR GrantedAccess = RGX(\"18$\") OR GrantedAccess = RGX(\"38$\") OR GrantedAccess = RGX(\"58$\") OR GrantedAccess = RGX(\"78$\") OR GrantedAccess = RGX(\"98$\") OR GrantedAccess = RGX(\"B8$\") OR GrantedAccess = RGX(\"D8$\") OR GrantedAccess = RGX(\"F8$\") OR GrantedAccess = RGX(\"1A$\") OR GrantedAccess = RGX(\"3A$\") OR GrantedAccess = RGX(\"5A$\") OR GrantedAccess = RGX(\"7A$\") OR GrantedAccess = RGX(\"9A$\") OR GrantedAccess = RGX(\"BA$\") OR GrantedAccess = RGX(\"DA$\") OR GrantedAccess = RGX(\"FA$\") OR GrantedAccess = RGX(\"0x14C2$\") OR GrantedAccess = RGX(\"FF$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c79077c7-e35f-4f45-b267-08820464bb8f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

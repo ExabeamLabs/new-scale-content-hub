@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Xterm Reverse Shell",
+      "description": "Detects usage of \"xterm\" as a potential reverse shell tunnel",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\".*xterm.*\") AND process_command_line = RGX(\".*\\\\-display.*\") AND process_command_line = RGX(\"\\\\:1$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "aad4fc71-393b-419b-a11d-378a1cbdeb2a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

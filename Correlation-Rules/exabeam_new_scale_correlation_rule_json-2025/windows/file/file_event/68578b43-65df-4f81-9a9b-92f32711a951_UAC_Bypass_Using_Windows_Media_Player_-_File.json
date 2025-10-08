@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "UAC Bypass Using Windows Media Player - File",
+      "description": "Detects the pattern of UAC Bypass using Windows Media Player osksupport.dll (UACMe 32)",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((file_path = RGX(\"^C\\\\:\\\\\\\\Users\\\\\\\\\") AND file_path = RGX(\"\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\OskSupport\\\\\\.dll$\")) OR (process_path = \"C\\:\\\\Windows\\\\system32\\\\DllHost\\.exe\" AND file_path = \"C\\:\\\\Program\\ Files\\\\Windows\\ Media\\ Player\\\\osk\\.exe\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "cbdeb066-a50d-45ab-abd0-4dfd3454c74b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

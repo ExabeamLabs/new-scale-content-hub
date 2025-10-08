@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "CMSTP UAC Bypass via COM Object Access",
+      "description": "Detects UAC Bypass Attempt Using Microsoft Connection Manager Profile Installer Autoelevate-capable COM Objects (e.g. UACMe ID of 41, 43, 58 or 65)",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\DllHost\\\\\\.exe$\") AND (parent_process_command_line = RGX(\".*\\\\ \\\\/Processid\\\\:\\\\{3E5FC7F9\\\\-9A51\\\\-4367\\\\-9063\\\\-A120244FBEC7\\\\}.*\") OR parent_process_command_line = RGX(\".*\\\\ \\\\/Processid\\\\:\\\\{3E000D72\\\\-A845\\\\-4CD9\\\\-BD83\\\\-80C07C3B881F\\\\}.*\") OR parent_process_command_line = RGX(\".*\\\\ \\\\/Processid\\\\:\\\\{BD54C901\\\\-076B\\\\-434E\\\\-B6C7\\\\-17C531F4AB41\\\\}.*\") OR parent_process_command_line = RGX(\".*\\\\ \\\\/Processid\\\\:\\\\{D2E7041B\\\\-2927\\\\-42FB\\\\-8E9F\\\\-7CE93B6DC937\\\\}.*\") OR parent_process_command_line = RGX(\".*\\\\ \\\\/Processid\\\\:\\\\{E9495B87\\\\-D950\\\\-4AB5\\\\-87A5\\\\-FF6D70BF3E90\\\\}.*\")) AND (process_integrity_level = \"High\" OR process_integrity_level = \"System\" OR process_integrity_level = \"S\\-1\\-16\\-16384\" OR process_integrity_level = \"S\\-1\\-16\\-12288\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "06335610-67a5-41ca-b5f7-f22103c552ad"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Windows ANONYMOUS LOGON Local Account Created",
+      "description": "Detects the creation of suspicious accounts similar to ANONYMOUS LOGON, such as using additional spaces. Created as an covering detection for exclusion of Logon Type 3 from ANONYMOUS LOGON accounts. Note: Unmapped fields: SamAccountName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4720 AND (SamAccountName = RGX(\".*ANONYMOUS.*\") AND SamAccountName = RGX(\".*LOGON.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b14cb2de-5fc3-488f-811b-7dcebe984354"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

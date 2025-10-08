@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Execution of Sysinternals Tools",
+      "description": "Detects command lines that contain the 'accepteula' flag which could be a sign of execution of one of the Sysinternals tools",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_command_line = RGX(\".*\\\\ \\\\-accepteula.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a65118a6-5f67-48f8-a63a-6f39fe75e919"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

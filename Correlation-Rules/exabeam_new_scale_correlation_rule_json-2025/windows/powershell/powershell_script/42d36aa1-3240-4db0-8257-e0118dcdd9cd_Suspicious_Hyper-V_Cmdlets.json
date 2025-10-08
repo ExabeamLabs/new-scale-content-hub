@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Hyper-V Cmdlets",
+      "description": "Adversaries may carry out malicious operations using a virtual instance to avoid detection Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*New\\\\-VM.*\") OR ScriptBlockText = RGX(\".*Set\\\\-VMFirmware.*\") OR ScriptBlockText = RGX(\".*Start\\\\-VM.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "67cad1f4-7902-4a00-acc8-761bb4cfccd4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

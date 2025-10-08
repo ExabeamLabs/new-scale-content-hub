@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Atera Agent Installation",
+      "description": "Detects successful installation of Atera Remote Monitoring & Management (RMM) agent as recently found to be used by Conti operators Note: Unmapped fields: Provider_Name, Message",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 1033 AND Provider_Name = \"MsiInstaller\" AND Message = RGX(\".*AteraAgent.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "dba782be-00b7-470f-b850-8bd448221a19"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

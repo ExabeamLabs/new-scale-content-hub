@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New Firewall Rule Added In Windows Firewall Exception List Via WmiPrvSE.EXE",
+      "description": "Detects the addition of a new \"Allow\" firewall rule by the WMI process (WmiPrvSE.EXE).\nThis can occur if an attacker leverages PowerShell cmdlets such as \"New-NetFirewallRule\", or directly uses WMI CIM classes such as \"MSFT_NetFirewallRule\".\n Note: Unmapped fields: Action, ModifyingApplication",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((event_id = 2004 OR event_id = 2071 OR event_id = 2097) AND Action = 3 AND ModifyingApplication = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\wbem\\\\\\\\WmiPrvSE\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c7033ffc-55c3-4eed-8254-2b7b76d6184d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

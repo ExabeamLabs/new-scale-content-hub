@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Suspicious Winget Package Installation",
+      "description": "Detects potential suspicious winget package installation from a suspicious source. Note: Unmapped fields: Contents",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Contents = RGX(\"^\\\\[ZoneTransfer\\\\]\\\\ \\\\ ZoneId\\\\=3\") AND (Contents = RGX(\".*\\\\:\\\\/\\\\/1.*\") OR Contents = RGX(\".*\\\\:\\\\/\\\\/2.*\") OR Contents = RGX(\".*\\\\:\\\\/\\\\/3.*\") OR Contents = RGX(\".*\\\\:\\\\/\\\\/4.*\") OR Contents = RGX(\".*\\\\:\\\\/\\\\/5.*\") OR Contents = RGX(\".*\\\\:\\\\/\\\\/6.*\") OR Contents = RGX(\".*\\\\:\\\\/\\\\/7.*\") OR Contents = RGX(\".*\\\\:\\\\/\\\\/8.*\") OR Contents = RGX(\".*\\\\:\\\\/\\\\/9.*\")) AND file_path = RGX(\"\\\\:Zone\\\\\\.Identifier$\") AND file_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\WinGet\\\\\\\\.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "49405f6c-6998-4fe6-a22e-8e27059d7660"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

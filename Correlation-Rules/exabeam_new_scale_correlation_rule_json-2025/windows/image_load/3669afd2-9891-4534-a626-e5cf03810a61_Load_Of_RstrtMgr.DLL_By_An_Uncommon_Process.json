@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Load Of RstrtMgr.DLL By An Uncommon Process",
+      "description": "Detects the load of RstrtMgr DLL (Restart Manager) by an uncommon process.\nThis library has been used during ransomware campaigns to kill processes that would prevent file encryption by locking them (e.g. Conti ransomware, Cactus ransomware). It has also recently been seen used by the BiBi wiper for Windows.\nIt could also be used for anti-analysis purposes by shut downing specific processes.\n Note: Unmapped fields: ImageLoaded",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ImageLoaded = RGX(\"\\\\\\\\RstrtMgr\\\\\\.dll$\") OR process_original_file_name = \"RstrtMgr\\.dll\") AND  NOT ((process_path = RGX(\".*\\\\:\\\\\\\\\\\\$WINDOWS\\\\\\.\\\\~BT\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\\\\\$WinREAgent\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\ProgramData\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\explorer\\\\\\.exe.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\SoftwareDistribution\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\SysNative\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\WinSxS\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\WUDownloadCache\\\\\\\\.*\")) OR ((process_path = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\is\\\\-.*\") AND process_path = RGX(\".*\\\\\\.tmp\\\\\\\\.*\")) AND process_path = RGX(\"\\\\\\.tmp$\")) OR process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "813ea7d0-12cf-4471-9abb-4a97748a00c5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

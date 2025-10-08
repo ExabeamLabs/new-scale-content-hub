@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Execution of Hostname",
+      "description": "Use of hostname to get information",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_path = RGX(\"\\\\\\\\HOSTNAME\\\\\\.EXE$\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7f08d895-e42c-4de8-bafa-fb4f45eb700c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

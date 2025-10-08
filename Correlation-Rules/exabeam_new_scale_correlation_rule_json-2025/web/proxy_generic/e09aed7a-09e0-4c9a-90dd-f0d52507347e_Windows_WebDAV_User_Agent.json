@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows WebDAV User Agent",
+      "description": "Detects WebDav DownloadCradle Note: Unmapped fields: c-useragent, cs-method",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(c-useragent = RGX(\"^Microsoft\\\\-WebDAV\\\\-MiniRedir\\\\/\") AND cs-method = \"GET\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a418ee4d-27e3-4ee1-914a-1fe040d4bd0e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

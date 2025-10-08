@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - Htran/NATBypass Execution",
+      "description": "Detects executable names or flags used by Htran or Htran-like tools (e.g. NATBypass)",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\htran\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\lcx\\\\\\.exe$\")) OR (process_command_line = RGX(\".*\\\\\\.exe\\\\ \\\\-tran\\\\ .*\") OR process_command_line = RGX(\".*\\\\\\.exe\\\\ \\\\-slave\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4a1c3b42-de31-4d4d-97d6-dbe4c1932da5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

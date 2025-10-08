@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Monitoring For Persistence Via BITS",
+      "description": "BITS will allow you to schedule a command to execute after a successful download to notify you that the job is finished.\nWhen the job runs on the system the command specified in the BITS job will be executed.\nThis can be abused by actors to create a backdoor within the system and for persistence.\nIt will be chained in a BITS job to schedule the download of malware/additional binaries and execute the program after being downloaded.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\bitsadmin\\\\\\.exe$\") OR process_original_file_name = \"bitsadmin\\.exe\") AND ((process_command_line = RGX(\".*\\\\/SetNotifyCmdLine.*\") AND (process_command_line = RGX(\".*\\\\%COMSPEC\\\\%.*\") OR process_command_line = RGX(\".*cmd\\\\\\.exe.*\") OR process_command_line = RGX(\".*regsvr32\\\\\\.exe.*\"))) OR (process_command_line = RGX(\".*\\\\/Addfile.*\") AND (process_command_line = RGX(\".*http\\\\:.*\") OR process_command_line = RGX(\".*https\\\\:.*\") OR process_command_line = RGX(\".*ftp\\\\:.*\") OR process_command_line = RGX(\".*ftps\\\\:.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1b1d46d2-f7fa-4821-856f-5036015e165d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

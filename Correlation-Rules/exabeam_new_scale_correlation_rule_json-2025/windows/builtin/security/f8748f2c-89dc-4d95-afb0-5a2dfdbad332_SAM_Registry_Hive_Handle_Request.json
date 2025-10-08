@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "SAM Registry Hive Handle Request",
+      "description": "Detects handles requested to SAM registry hive Note: Unmapped fields: ObjectType, ObjectName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4656 AND ObjectType = \"Key\" AND ObjectName = RGX(\"\\\\\\\\SAM$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a1fc0cbd-20bc-4dde-8804-75a523990845"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

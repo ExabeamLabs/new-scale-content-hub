@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Suspicious WDAC Policy File Creation",
+      "description": "Detects suspicious Windows Defender Application Control (WDAC) policy file creation from abnormal processes that could be abused by attacker to block EDR/AV components while allowing their own malicious code to run on the system.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "file_path = RGX(\".*\\\\\\\\Windows\\\\\\\\System32\\\\\\\\CodeIntegrity\\\\\\\\.*\") AND  NOT ((process_path = RGX(\"\\\\\\\\Microsoft\\\\\\.ConfigurationManagement\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\WDAC\\\\ Wizard\\\\\\.exe$\") OR process_path = RGX(\"C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\PowerShell\\\\\\\\7\\\\-preview\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\PowerShell\\\\\\\\7\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\dllhost\\\\\\.exe$\") OR process_path = RGX(\"C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\WindowsPowerShell\\\\\\\\v1\\\\\\.0\\\\\\\\powershell\\\\_ise\\\\\\.exe$\") OR process_path = RGX(\"C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\WindowsPowerShell\\\\\\\\v1\\\\\\.0\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\dllhost\\\\\\.exe$\") OR process_path = RGX(\"C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\WindowsPowerShell\\\\\\\\v1\\\\\\.0\\\\\\\\powershell\\\\_ise\\\\\\.exe$\") OR process_path = RGX(\"C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\WindowsPowerShell\\\\\\\\v1\\\\\\.0\\\\\\\\powershell\\\\\\.exe$\")) OR ((process_command_line = RGX(\".*ConvertFrom\\\\-CIPolicy\\\\ \\\\-XmlFilePath.*\") AND process_command_line = RGX(\".*\\\\-BinaryFilePath\\\\ .*\")) OR process_command_line = RGX(\".*CiTool\\\\ \\\\-\\\\-update\\\\-policy.*\") OR (process_command_line = RGX(\".*Copy\\\\-Item\\\\ \\\\-Path.*\") AND process_command_line = RGX(\".*\\\\-Destination.*\"))) OR process_path = \"System\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "67aba2eb-27df-481d-84ab-73fae5d509b1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

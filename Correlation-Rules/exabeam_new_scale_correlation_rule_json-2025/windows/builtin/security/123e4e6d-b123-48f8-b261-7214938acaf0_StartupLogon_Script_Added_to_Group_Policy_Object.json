@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Startup/Logon Script Added to Group Policy Object",
+      "description": "Detects the modification of Group Policy Objects (GPO) to add a startup/logon script to users or computer objects.\n Note: Unmapped fields: AttributeLDAPDisplayName, AttributeValue, ShareName, RelativeTargetName, AccessList",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 5136 OR event_id = 5145) AND ((((AttributeLDAPDisplayName = \"gPCMachineExtensionNames\" OR AttributeLDAPDisplayName = \"gPCUserExtensionNames\") AND AttributeValue = RGX(\".*42B5FAAE\\\\-6536\\\\-11D2\\\\-AE5A\\\\-0000F87571E3.*\")) AND (AttributeValue = RGX(\".*40B6664F\\\\-4972\\\\-11D1\\\\-A7CA\\\\-0000F87571E3.*\") OR AttributeValue = RGX(\".*40B66650\\\\-4972\\\\-11D1\\\\-A7CA\\\\-0000F87571E3.*\"))) OR (ShareName = RGX(\"\\\\\\\\SYSVOL$\") AND (RelativeTargetName = RGX(\"\\\\\\\\scripts\\\\\\.ini$\") OR RelativeTargetName = RGX(\"\\\\\\\\psscripts\\\\\\.ini$\")) AND AccessList = RGX(\".*\\\\%\\\\%4417.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5c8e646e-53c5-4ee4-a70c-280cfc453433"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

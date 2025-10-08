@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Bitsadmin to Uncommon TLD",
+      "description": "Detects Bitsadmin connections to domains with uncommon TLDs Note: Unmapped fields: c-useragent, cs-host",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "c-useragent = RGX(\"^Microsoft\\\\ BITS\\\\/\") AND  NOT ((cs-host = RGX(\"\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.net$\") OR cs-host = RGX(\"\\\\\\.org$\") OR cs-host = RGX(\"\\\\\\.scdn\\\\\\.co$\") OR cs-host = RGX(\"\\\\\\.sfx\\\\\\.ms$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "fbd3d9a1-5a01-4d13-8e93-86a84aaa24da"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

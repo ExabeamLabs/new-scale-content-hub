@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "File and Directory Discovery - Linux",
+      "description": "Detects usage of system utilities such as \"find\", \"tree\", \"findmnt\", etc, to discover files, directories and network shares.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/file$\") AND process_command_line = RGX(\"(.){200,}\")) OR (process_path = RGX(\"\\\\/ls$\") AND process_command_line = RGX(\".*\\\\-R.*\")) OR process_path = RGX(\"\\\\/find$\") OR process_path = RGX(\"\\\\/tree$\") OR process_path = RGX(\"\\\\/findmnt$\") OR process_path = RGX(\"\\\\/mlocate$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8e87b53a-bd56-40ec-afbf-83fb96b68202"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

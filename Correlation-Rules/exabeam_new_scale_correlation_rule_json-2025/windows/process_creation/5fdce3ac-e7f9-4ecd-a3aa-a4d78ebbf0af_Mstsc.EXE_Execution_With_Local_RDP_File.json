@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Mstsc.EXE Execution With Local RDP File",
+      "description": "Detects potential RDP connection via Mstsc using a local \".rdp\" file",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\mstsc\\\\\\.exe$\") OR process_original_file_name = \"mstsc\\.exe\") AND (process_command_line = RGX(\"\\\\\\.rdp$\") OR process_command_line = RGX(\"\\\\\\.rdp\\\\$\"))) AND  NOT ((parent_process_path = \"C\\:\\\\Windows\\\\System32\\\\lxss\\\\wslhost\\.exe\" AND process_command_line = RGX(\".*C\\\\:\\\\\\\\ProgramData\\\\\\\\Microsoft\\\\\\\\WSL\\\\\\\\wslg\\\\\\.rdp.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e86c0181-be1c-43e5-ad37-afe610c94860"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

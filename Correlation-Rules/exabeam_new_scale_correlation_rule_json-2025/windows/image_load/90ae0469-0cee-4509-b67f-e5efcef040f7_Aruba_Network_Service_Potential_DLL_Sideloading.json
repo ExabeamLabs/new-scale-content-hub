@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Aruba Network Service Potential DLL Sideloading",
+      "description": "Detects potential DLL sideloading activity via the Aruba Networks Virtual Intranet Access \"arubanetsvc.exe\" process using DLL Search Order Hijacking Note: Unmapped fields: ImageLoaded",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\arubanetsvc\\\\\\.exe$\") AND (ImageLoaded = RGX(\"\\\\\\\\wtsapi32\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\msvcr100\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\msvcp100\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\dbghelp\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\dbgcore\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\wininet\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\iphlpapi\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\version\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\cryptsp\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\cryptbase\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\wldp\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\profapi\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\sspicli\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\winsta\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\dpapi\\\\\\.dll$\"))) AND  NOT ((ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\WinSxS\\\\\\\\\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6b77eaf6-2a99-46a6-9815-5e54bbaad5b2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

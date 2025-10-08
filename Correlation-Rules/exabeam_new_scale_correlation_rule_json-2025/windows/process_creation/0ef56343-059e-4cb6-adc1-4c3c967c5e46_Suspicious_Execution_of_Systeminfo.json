@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Execution of Systeminfo",
+      "description": "Detects usage of the \"systeminfo\" command to retrieve information",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\systeminfo\\\\\\.exe$\") OR process_original_file_name = \"sysinfo\\.exe\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c70dbd3f-c5e6-4513-8451-c4361a717cb1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

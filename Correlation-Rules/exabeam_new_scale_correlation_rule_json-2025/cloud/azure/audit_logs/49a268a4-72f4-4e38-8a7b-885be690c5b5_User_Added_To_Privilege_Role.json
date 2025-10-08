@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "User Added To Privilege Role",
+      "description": "Detects when a user is added to a privileged role. Note: Unmapped fields: properties.message",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(properties.message = \"Add\\ eligible\\ member\\ \\(permanent\\)\" OR properties.message = \"Add\\ eligible\\ member\\ \\(eligible\\)\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "beb53197-3c16-4540-be36-59380edc0eb6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

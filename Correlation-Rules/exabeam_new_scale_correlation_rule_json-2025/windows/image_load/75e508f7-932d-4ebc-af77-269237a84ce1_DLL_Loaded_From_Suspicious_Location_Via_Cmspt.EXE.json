@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "DLL Loaded From Suspicious Location Via Cmspt.EXE",
+      "description": "Detects cmstp loading \"dll\" or \"ocx\" files from suspicious locations Note: Unmapped fields: ImageLoaded",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\cmstp\\\\\\.exe$\") AND (ImageLoaded = RGX(\".*\\\\\\\\PerfLogs\\\\\\\\.*\") OR ImageLoaded = RGX(\".*\\\\\\\\ProgramData\\\\\\\\.*\") OR ImageLoaded = RGX(\".*\\\\\\\\Users\\\\\\\\.*\") OR ImageLoaded = RGX(\".*\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\") OR ImageLoaded = RGX(\".*C\\\\:\\\\\\\\Temp\\\\\\\\.*\")) AND (ImageLoaded = RGX(\"\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\.ocx$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e4a374e9-7f9f-42c1-a1d3-c07431d028cc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

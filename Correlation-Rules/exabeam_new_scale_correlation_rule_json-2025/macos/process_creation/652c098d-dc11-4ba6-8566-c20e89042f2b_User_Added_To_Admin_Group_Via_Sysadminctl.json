@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "User Added To Admin Group Via Sysadminctl",
+      "description": "Detects attempts to create and add an account to the admin group via \"sysadminctl\"",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/sysadminctl$\") AND (process_command_line = RGX(\".*\\\\ \\\\-addUser\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-admin\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1826d3ff-0efd-450c-80f0-c5111740a28a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

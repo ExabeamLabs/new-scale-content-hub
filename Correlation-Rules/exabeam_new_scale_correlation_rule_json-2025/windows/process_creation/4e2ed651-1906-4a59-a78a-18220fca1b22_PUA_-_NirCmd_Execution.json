@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - NirCmd Execution",
+      "description": "Detects the use of NirCmd tool for command execution, which could be the result of legitimate administrative activity",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\NirCmd\\\\\\.exe$\") OR process_original_file_name = \"NirCmd\\.exe\") OR (process_command_line = RGX(\".*\\\\ execmd\\\\ .*\") OR process_command_line = RGX(\".*\\\\\\.exe\\\\ script\\\\ .*\") OR process_command_line = RGX(\".*\\\\\\.exe\\\\ shexec\\\\ .*\") OR process_command_line = RGX(\".*\\\\ runinteractive\\\\ .*\"))) OR ((process_command_line = RGX(\".*\\\\ exec\\\\ .*\") OR process_command_line = RGX(\".*\\\\ exec2\\\\ .*\")) AND (process_command_line = RGX(\".*\\\\ show\\\\ .*\") OR process_command_line = RGX(\".*\\\\ hide\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8702e1fd-75c4-4a29-8826-222618e16da8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

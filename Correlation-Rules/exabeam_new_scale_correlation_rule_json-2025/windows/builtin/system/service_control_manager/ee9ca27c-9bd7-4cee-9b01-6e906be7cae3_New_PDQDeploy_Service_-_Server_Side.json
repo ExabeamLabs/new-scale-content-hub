@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New PDQDeploy Service - Server Side",
+      "description": "Detects a PDQDeploy service installation which indicates that PDQDeploy was installed on the machines.\nPDQDeploy can be abused by attackers to remotely install packages or execute commands on target machines\n Note: Unmapped fields: Provider_Name, ImagePath, ServiceName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((Provider_Name = \"Service\\ Control\\ Manager\" AND event_id = 7045) AND (ImagePath = RGX(\".*PDQDeployService\\\\\\.exe.*\") OR (ServiceName = \"PDQDeploy\" OR ServiceName = \"PDQ\\ Deploy\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "68950d75-1799-4f5e-a614-71c137a686a0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

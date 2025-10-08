@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential DLL Sideloading Of Libcurl.DLL Via GUP.EXE",
+      "description": "Detects potential DLL sideloading of \"libcurl.dll\" by the \"gup.exe\" process from an uncommon location Note: Unmapped fields: ImageLoaded",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\gup\\\\\\.exe$\") AND ImageLoaded = RGX(\"\\\\\\\\libcurl\\\\\\.dll$\")) AND  NOT (process_path = RGX(\"\\\\\\\\Notepad\\\\+\\\\+\\\\\\\\updater\\\\\\\\GUP\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3ea4a284-e92d-48aa-907b-ce57e72a04f3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

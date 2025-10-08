@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Active Directory Reconnaissance/Enumeration Via LDAP",
+      "description": "Detects potential Active Directory enumeration via LDAP Note: Unmapped fields: SearchFilter, DistinguishedName",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((event_id = 30 AND (SearchFilter = RGX(\".*\\\\(groupType\\\\:1\\\\\\.2\\\\\\.840\\\\\\.113556\\\\\\.1\\\\\\.4\\\\\\.803\\\\:\\\\=2147483648\\\\).*\") OR SearchFilter = RGX(\".*\\\\(groupType\\\\:1\\\\\\.2\\\\\\.840\\\\\\.113556\\\\\\.1\\\\\\.4\\\\\\.803\\\\:\\\\=2147483656\\\\).*\") OR SearchFilter = RGX(\".*\\\\(groupType\\\\:1\\\\\\.2\\\\\\.840\\\\\\.113556\\\\\\.1\\\\\\.4\\\\\\.803\\\\:\\\\=2147483652\\\\).*\") OR SearchFilter = RGX(\".*\\\\(groupType\\\\:1\\\\\\.2\\\\\\.840\\\\\\.113556\\\\\\.1\\\\\\.4\\\\\\.803\\\\:\\\\=2147483650\\\\).*\") OR SearchFilter = RGX(\".*\\\\(sAMAccountType\\\\=805306369\\\\).*\") OR SearchFilter = RGX(\".*\\\\(sAMAccountType\\\\=805306368\\\\).*\") OR SearchFilter = RGX(\".*\\\\(sAMAccountType\\\\=536870913\\\\).*\") OR SearchFilter = RGX(\".*\\\\(sAMAccountType\\\\=536870912\\\\).*\") OR SearchFilter = RGX(\".*\\\\(sAMAccountType\\\\=268435457\\\\).*\") OR SearchFilter = RGX(\".*\\\\(sAMAccountType\\\\=268435456\\\\).*\") OR SearchFilter = RGX(\".*\\\\(objectCategory\\\\=groupPolicyContainer\\\\).*\") OR SearchFilter = RGX(\".*\\\\(objectCategory\\\\=organizationalUnit\\\\).*\") OR SearchFilter = RGX(\".*\\\\(objectCategory\\\\=nTDSDSA\\\\).*\") OR SearchFilter = RGX(\".*\\\\(objectCategory\\\\=server\\\\).*\") OR SearchFilter = RGX(\".*\\\\(objectCategory\\\\=domain\\\\).*\") OR SearchFilter = RGX(\".*\\\\(objectCategory\\\\=person\\\\).*\") OR SearchFilter = RGX(\".*\\\\(objectCategory\\\\=group\\\\).*\") OR SearchFilter = RGX(\".*\\\\(objectCategory\\\\=user\\\\).*\") OR SearchFilter = RGX(\".*\\\\(objectClass\\\\=trustedDomain\\\\).*\") OR SearchFilter = RGX(\".*\\\\(objectClass\\\\=computer\\\\).*\") OR SearchFilter = RGX(\".*\\\\(objectClass\\\\=server\\\\).*\") OR SearchFilter = RGX(\".*\\\\(objectClass\\\\=group\\\\).*\") OR SearchFilter = RGX(\".*\\\\(objectClass\\\\=user\\\\).*\") OR SearchFilter = RGX(\".*\\\\(primaryGroupID\\\\=521\\\\).*\") OR SearchFilter = RGX(\".*\\\\(primaryGroupID\\\\=516\\\\).*\") OR SearchFilter = RGX(\".*\\\\(primaryGroupID\\\\=515\\\\).*\") OR SearchFilter = RGX(\".*\\\\(primaryGroupID\\\\=512\\\\).*\") OR SearchFilter = RGX(\".*Domain\\\\ Admins.*\") OR SearchFilter = RGX(\".*objectGUID\\\\=\\\\*.*\") OR SearchFilter = RGX(\".*\\\\(schemaIDGUID\\\\=\\\\*\\\\).*\") OR SearchFilter = RGX(\".*admincount\\\\=1.*\"))) AND  NOT ((event_id = 30 AND (SearchFilter = RGX(\".*\\\\(domainSid\\\\=*\\\\).*\") OR SearchFilter = RGX(\".*\\\\(objectSid\\\\=*\\\\).*\"))))) OR (event_id = 30 AND (SearchFilter = RGX(\".*\\\\(userAccountControl\\\\:1\\\\\\.2\\\\\\.840\\\\\\.113556\\\\\\.1\\\\\\.4\\\\\\.803\\\\:\\\\=4194304\\\\).*\") OR SearchFilter = RGX(\".*\\\\(userAccountControl\\\\:1\\\\\\.2\\\\\\.840\\\\\\.113556\\\\\\.1\\\\\\.4\\\\\\.803\\\\:\\\\=2097152\\\\).*\") OR SearchFilter = RGX(\".*\\\\!\\\\(userAccountControl\\\\:1\\\\\\.2\\\\\\.840\\\\\\.113556\\\\\\.1\\\\\\.4\\\\\\.803\\\\:\\\\=1048574\\\\).*\") OR SearchFilter = RGX(\".*\\\\(userAccountControl\\\\:1\\\\\\.2\\\\\\.840\\\\\\.113556\\\\\\.1\\\\\\.4\\\\\\.803\\\\:\\\\=524288\\\\).*\") OR SearchFilter = RGX(\".*\\\\(userAccountControl\\\\:1\\\\\\.2\\\\\\.840\\\\\\.113556\\\\\\.1\\\\\\.4\\\\\\.803\\\\:\\\\=65536\\\\).*\") OR SearchFilter = RGX(\".*\\\\(userAccountControl\\\\:1\\\\\\.2\\\\\\.840\\\\\\.113556\\\\\\.1\\\\\\.4\\\\\\.803\\\\:\\\\=8192\\\\).*\") OR SearchFilter = RGX(\".*\\\\(userAccountControl\\\\:1\\\\\\.2\\\\\\.840\\\\\\.113556\\\\\\.1\\\\\\.4\\\\\\.803\\\\:\\\\=544\\\\).*\") OR SearchFilter = RGX(\".*\\\\!\\\\(UserAccountControl\\\\:1\\\\\\.2\\\\\\.840\\\\\\.113556\\\\\\.1\\\\\\.4\\\\\\.803\\\\:\\\\=2\\\\).*\") OR SearchFilter = RGX(\".*msDS\\\\-AllowedToActOnBehalfOfOtherIdentity.*\") OR SearchFilter = RGX(\".*msDS\\\\-AllowedToDelegateTo.*\") OR SearchFilter = RGX(\".*msDS\\\\-GroupManagedServiceAccount.*\") OR SearchFilter = RGX(\".*\\\\(accountExpires\\\\=9223372036854775807\\\\).*\") OR SearchFilter = RGX(\".*\\\\(accountExpires\\\\=0\\\\).*\") OR SearchFilter = RGX(\".*\\\\(adminCount\\\\=1\\\\).*\") OR SearchFilter = RGX(\".*ms\\\\-MCS\\\\-AdmPwd.*\"))) OR (event_id = 30 AND SearchFilter = \"\\(objectclass\\=\\*\\)\" AND (DistinguishedName = RGX(\".*CN\\\\=Domain\\\\ Admins.*\") OR DistinguishedName = RGX(\".*CN\\\\=Enterprise\\\\ Admins.*\") OR DistinguishedName = RGX(\".*CN\\\\=Group\\\\ Policy\\\\ Creator\\\\ Owners.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9b907033-ec4e-47d1-b625-de9acdb9cc44"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential SysInternals ProcDump Evasion",
+      "description": "Detects uses of the SysInternals ProcDump utility in which ProcDump or its output get renamed, or a dump file is moved or copied to a different name",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*copy\\\\ procdump.*\") OR process_command_line = RGX(\".*move\\\\ procdump.*\")) OR ((process_command_line = RGX(\".*copy\\\\ .*\") AND process_command_line = RGX(\".*\\\\\\.dmp\\\\ .*\")) AND (process_command_line = RGX(\".*2\\\\\\.dmp.*\") OR process_command_line = RGX(\".*lsass.*\") OR process_command_line = RGX(\".*out\\\\\\.dmp.*\"))) OR (process_command_line = RGX(\".*copy\\\\ lsass\\\\\\.exe\\\\_.*\") OR process_command_line = RGX(\".*move\\\\ lsass\\\\\\.exe\\\\_.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "cd159296-5ef4-49b9-8f94-1e79c4000f0c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

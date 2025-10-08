@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows Internet Hosted WebDav Share Mount Via Net.EXE",
+      "description": "Detects when an internet hosted webdav share is mounted using the \"net.exe\" utility",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\net\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\net1\\\\\\.exe$\")) OR (process_original_file_name = \"net\\.exe\" OR process_original_file_name = \"net1\\.exe\")) AND (process_command_line = RGX(\".*\\\\ use\\\\ .*\") AND process_command_line = RGX(\".*\\\\ http.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "37898d80-eb15-4378-b78d-958e8d7cb5d8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

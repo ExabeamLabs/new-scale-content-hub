@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Service StartupType Change Via Sc.EXE",
+      "description": "Detect the use of \"sc.exe\" to change the startup type of a service to \"disabled\" or \"demand\"",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\sc\\\\\\.exe$\") OR process_original_file_name = \"sc\\.exe\") AND ((process_command_line = RGX(\".*\\\\ config\\\\ .*\") AND process_command_line = RGX(\".*start.*\")) AND (process_command_line = RGX(\".*disabled.*\") OR process_command_line = RGX(\".*demand.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0bb659d1-14ae-45fb-b50e-5ae888b07e05"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

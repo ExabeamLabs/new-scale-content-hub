@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Network Communication With IPFS",
+      "description": "Detects connections to interplanetary file system (IPFS) containing a user's email address which mirrors behaviours observed in recent phishing campaigns leveraging IPFS to host credential harvesting webpages. Note: Unmapped fields: cs-uri",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "cs-uri = RGX(\"(?i)(ipfs.io/|ipfs.io\\s).+..+@.+.[a-z]+\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a9a11167-63c2-4cc9-92f3-ac851c3a73da"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

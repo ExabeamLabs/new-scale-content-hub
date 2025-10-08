@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Persistence Via Powershell Search Order Hijacking - Task",
+      "description": "Detects suspicious powershell execution via a schedule task where the command ends with an suspicious flags to hide the powershell instance instead of executeing scripts or commands. This could be a sign of persistence via PowerShell \"Get-Variable\" technique as seen being used in Colibri Loader",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = \"C\\:\\\\WINDOWS\\\\System32\\\\svchost\\.exe\" AND (parent_process_command_line = RGX(\".*\\\\-k\\\\ netsvcs.*\") AND parent_process_command_line = RGX(\".*\\\\-s\\\\ Schedule.*\")) AND (process_command_line = RGX(\"\\\\ \\\\-windowstyle\\\\ hidden$\") OR process_command_line = RGX(\"\\\\ \\\\-w\\\\ hidden$\") OR process_command_line = RGX(\"\\\\ \\\\-ep\\\\ bypass$\") OR process_command_line = RGX(\"\\\\ \\\\-noni$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "111db906-ceea-49de-952f-8e72fbfd2081"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "F5 BIG-IP iControl Rest API Command Execution - Proxy",
+      "description": "Detects POST requests to the F5 BIG-IP iControl Rest API \"bash\" endpoint, which allows the execution of commands on the BIG-IP Note: Unmapped fields: cs-method, c-uri",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(cs-method = \"POST\" AND c-uri = RGX(\"\\\\/mgmt\\\\/tm\\\\/util\\\\/bash$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "99d3420d-89e6-45c1-b5d4-39d72a76cd91"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Veeam Backup Database Suspicious Query",
+      "description": "Detects potentially suspicious SQL queries using SQLCmd targeting the Veeam backup databases in order to steal information.",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\sqlcmd\\\\\\.exe$\") AND (process_command_line = RGX(\".*VeeamBackup.*\") AND process_command_line = RGX(\".*From\\\\ .*\"))) AND (process_command_line = RGX(\".*BackupRepositories.*\") OR process_command_line = RGX(\".*Backups.*\") OR process_command_line = RGX(\".*Credentials.*\") OR process_command_line = RGX(\".*HostCreds.*\") OR process_command_line = RGX(\".*SmbFileShares.*\") OR process_command_line = RGX(\".*Ssh\\\\_creds.*\") OR process_command_line = RGX(\".*VSphereInfo.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3bedae15-b48b-40ee-a931-0d28685eb314"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

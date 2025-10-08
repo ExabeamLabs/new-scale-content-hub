@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "LiveKD Kernel Memory Dump File Created",
+      "description": "Detects the creation of a file that has the same name as the default LiveKD kernel memory dump.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "file_path = \"C\\:\\\\Windows\\\\livekd\\.dmp\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5c577572-4462-4179-a2ad-112ee57441e5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

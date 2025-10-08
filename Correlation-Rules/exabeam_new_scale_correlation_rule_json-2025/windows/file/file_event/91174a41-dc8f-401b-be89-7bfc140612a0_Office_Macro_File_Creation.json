@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Office Macro File Creation",
+      "description": "Detects the creation of a new office macro files on the systems",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(file_path = RGX(\"\\\\\\.docm$\") OR file_path = RGX(\"\\\\\\.dotm$\") OR file_path = RGX(\"\\\\\\.xlsm$\") OR file_path = RGX(\"\\\\\\.xltm$\") OR file_path = RGX(\"\\\\\\.potm$\") OR file_path = RGX(\"\\\\\\.pptm$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d9e7236d-80c2-43aa-896f-86289b48309a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "UAC Bypass Using IDiagnostic Profile",
+      "description": "Detects the \"IDiagnosticProfileUAC\" UAC bypass technique",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\DllHost\\\\\\.exe$\") AND parent_process_command_line = RGX(\".*\\\\ \\\\/Processid\\\\:\\\\{12C21EA7\\\\-2EB8\\\\-4B55\\\\-9249\\\\-AC243DA8C666\\\\}.*\") AND (process_integrity_level = \"High\" OR process_integrity_level = \"System\" OR process_integrity_level = \"S\\-1\\-16\\-16384\" OR process_integrity_level = \"S\\-1\\-16\\-12288\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "346179d6-48a0-4c3b-9f6e-77e9871fe96f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

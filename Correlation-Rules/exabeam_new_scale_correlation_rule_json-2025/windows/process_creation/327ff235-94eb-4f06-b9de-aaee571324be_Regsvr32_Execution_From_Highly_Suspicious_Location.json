@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Regsvr32 Execution From Highly Suspicious Location",
+      "description": "Detects execution of regsvr32 where the DLL is located in a highly suspicious locations",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR process_original_file_name = \"REGSVR32\\.EXE\") AND ((process_command_line = RGX(\".*\\\\:\\\\\\\\PerfLogs\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\Registration\\\\\\\\CRMLog.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\System32\\\\\\\\com\\\\\\\\dmp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\System32\\\\\\\\FxsTmp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\System32\\\\\\\\Microsoft\\\\\\\\Crypto\\\\\\\\RSA\\\\\\\\MachineKeys\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\System32\\\\\\\\spool\\\\\\\\drivers\\\\\\\\color\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\System32\\\\\\\\spool\\\\\\\\PRINTERS\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\System32\\\\\\\\spool\\\\\\\\SERVERS\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\System32\\\\\\\\Tasks\\\\_Migrated\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\System32\\\\\\\\Tasks\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\SyncCenter\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\com\\\\\\\\dmp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\FxsTmp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\Tasks\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\PLA\\\\\\\\System\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\Tasks\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\SyncCenter\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\Tasks\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\Tracing\\\\\\\\.*\")) OR ((process_command_line = RGX(\".*\\\\ \\\\\"C\\\\:\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\ C\\\\:\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\ \\\\'C\\\\:\\\\\\\\.*\") OR process_command_line = RGX(\".*D\\\\:\\\\\\\\.*\")) AND  NOT ((process_command_line = RGX(\".*C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\.*\") OR process_command_line = RGX(\".*C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\.*\") OR process_command_line = RGX(\".*C\\\\:\\\\\\\\ProgramData\\\\\\\\.*\") OR process_command_line = RGX(\".*C\\\\:\\\\\\\\Users\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\ C\\\\:\\\\\\\\Windows\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\ \\\\\"C\\\\:\\\\\\\\Windows\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\ \\\\'C\\\\:\\\\\\\\Windows\\\\\\\\.*\"))))) AND  NOT (process_command_line = \"\" OR process_command_line = \"None\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7493a5cf-9d74-4f5b-af40-e361fd19db16"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - NirCmd Execution As LOCAL SYSTEM",
+      "description": "Detects the use of NirCmd tool for command execution as SYSTEM user",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_command_line = RGX(\".*\\\\ runassystem\\\\ .*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a0781f70-564e-4465-97b0-1393c7713480"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

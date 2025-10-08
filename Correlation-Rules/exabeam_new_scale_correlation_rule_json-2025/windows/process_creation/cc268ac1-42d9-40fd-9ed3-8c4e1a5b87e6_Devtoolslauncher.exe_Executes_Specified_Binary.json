@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Devtoolslauncher.exe Executes Specified Binary",
+      "description": "The Devtoolslauncher.exe executes other binary",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\devtoolslauncher\\\\\\.exe$\") AND process_command_line = RGX(\".*LaunchForDeploy.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e932cffc-11ad-4031-9536-53ece54b7b8f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

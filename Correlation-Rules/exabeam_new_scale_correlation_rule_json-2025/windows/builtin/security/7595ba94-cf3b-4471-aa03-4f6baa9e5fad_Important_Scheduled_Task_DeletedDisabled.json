@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Important Scheduled Task Deleted/Disabled",
+      "description": "Detects when adversaries stop services or processes by deleting or disabling their respective scheduled tasks in order to conduct data destructive activities Note: Unmapped fields: TaskName",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((event_id = 4699 OR event_id = 4701) AND (TaskName = RGX(\".*\\\\\\\\Windows\\\\\\\\SystemRestore\\\\\\\\SR.*\") OR TaskName = RGX(\".*\\\\\\\\Windows\\\\\\\\Windows\\\\ Defender\\\\\\\\.*\") OR TaskName = RGX(\".*\\\\\\\\Windows\\\\\\\\BitLocker.*\") OR TaskName = RGX(\".*\\\\\\\\Windows\\\\\\\\WindowsBackup\\\\\\\\.*\") OR TaskName = RGX(\".*\\\\\\\\Windows\\\\\\\\WindowsUpdate\\\\\\\\.*\") OR TaskName = RGX(\".*\\\\\\\\Windows\\\\\\\\UpdateOrchestrator\\\\\\\\Schedule.*\") OR TaskName = RGX(\".*\\\\\\\\Windows\\\\\\\\ExploitGuard.*\"))) AND  NOT ((event_id = 4699 AND user = RGX(\"\\\\$$\") AND TaskName = RGX(\".*\\\\\\\\Windows\\\\\\\\Windows\\\\ Defender\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1c3b313f-2f3c-459c-8b91-a36feb9514e6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

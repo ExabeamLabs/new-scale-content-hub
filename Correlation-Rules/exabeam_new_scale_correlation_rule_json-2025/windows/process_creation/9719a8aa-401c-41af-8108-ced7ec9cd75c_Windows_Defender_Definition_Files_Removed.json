@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows Defender Definition Files Removed",
+      "description": "Adversaries may disable security tools to avoid possible detection of their tools and activities by removing Windows Defender Definition Files",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\MpCmdRun\\\\\\.exe$\") OR process_original_file_name = \"MpCmdRun\\.exe\") AND (process_command_line = RGX(\".*\\\\ \\\\-RemoveDefinitions.*\") AND process_command_line = RGX(\".*\\\\ \\\\-All.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8bacce26-f10d-4437-a5a1-16315588ac38"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

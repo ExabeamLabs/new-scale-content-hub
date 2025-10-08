@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Privileged Account Creation",
+      "description": "Detects when a new admin is created. Note: Unmapped fields: properties.message, Status",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((properties.message = RGX(\".*Add\\\\ user.*\") AND properties.message = RGX(\".*Add\\\\ member\\\\ to\\\\ role.*\")) AND Status = \"Success\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "427ace7d-1b37-49ba-b216-9ff01d830cdb"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

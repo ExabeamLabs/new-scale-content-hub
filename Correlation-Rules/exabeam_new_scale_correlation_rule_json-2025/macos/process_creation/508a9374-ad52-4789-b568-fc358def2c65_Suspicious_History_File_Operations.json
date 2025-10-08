@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious History File Operations",
+      "description": "Detects commandline operations on shell history files",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\\\.bash\\\\_history.*\") OR process_command_line = RGX(\".*\\\\\\.zsh\\\\_history.*\") OR process_command_line = RGX(\".*\\\\\\.zhistory.*\") OR process_command_line = RGX(\".*\\\\\\.history.*\") OR process_command_line = RGX(\".*\\\\\\.sh\\\\_history.*\") OR process_command_line = RGX(\".*fish\\\\_history.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1a79126c-945f-4f18-a43d-c9ea32bb1b87"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

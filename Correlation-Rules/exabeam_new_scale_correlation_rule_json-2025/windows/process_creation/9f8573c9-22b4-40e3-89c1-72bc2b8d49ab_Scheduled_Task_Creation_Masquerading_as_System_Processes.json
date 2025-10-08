@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Scheduled Task Creation Masquerading as System Processes",
+      "description": "Detects the creation of scheduled tasks that involve system processes, which may indicate malicious actors masquerading as or abusing these processes to execute payloads or maintain persistence.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") OR process_original_file_name = \"schtasks\\.exe\") AND (process_command_line = RGX(\".*\\\\ \\\\/create\\\\ .*\") AND (process_command_line = RGX(\".*\\\\ audiodg.*\") OR process_command_line = RGX(\".*\\\\ conhost.*\") OR process_command_line = RGX(\".*\\\\ dwm\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\ explorer.*\") OR process_command_line = RGX(\".*\\\\ lsass.*\") OR process_command_line = RGX(\".*\\\\ lsm.*\") OR process_command_line = RGX(\".*\\\\ mmc.*\") OR process_command_line = RGX(\".*\\\\ msiexec.*\") OR process_command_line = RGX(\".*\\\\ regsvr32.*\") OR process_command_line = RGX(\".*\\\\ rundll32.*\") OR process_command_line = RGX(\".*\\\\ services.*\") OR process_command_line = RGX(\".*\\\\ spoolsv.*\") OR process_command_line = RGX(\".*\\\\ svchost.*\") OR process_command_line = RGX(\".*\\\\ taskeng.*\") OR process_command_line = RGX(\".*\\\\ taskhost.*\") OR process_command_line = RGX(\".*\\\\ wininit.*\") OR process_command_line = RGX(\".*\\\\ winlogon.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8ffd5d4f-7dc2-4dfe-a20d-645d46bd884c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

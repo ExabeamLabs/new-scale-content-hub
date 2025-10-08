@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Antivirus Filter Driver Disallowed On Dev Drive - Registry",
+      "description": "Detects activity that indicates a user disabling the ability for Antivirus mini filter to inspect a \"Dev Drive\".\n Note: Unmapped fields: Details",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\"\\\\\\\\FilterManager\\\\\\\\FltmgrDevDriveAllowAntivirusFilter$\") AND Details = \"DWORD\\ \\(0x00000000\\)\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "27c520c7-9ccb-4ead-8047-a0e29d743580"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

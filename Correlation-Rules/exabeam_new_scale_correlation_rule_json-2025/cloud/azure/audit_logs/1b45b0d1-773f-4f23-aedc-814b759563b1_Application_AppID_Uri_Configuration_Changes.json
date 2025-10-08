@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Application AppID Uri Configuration Changes",
+      "description": "Detects when a configuration change is made to an applications AppID URI. Note: Unmapped fields: properties.message",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(properties.message = \"Update\\ Application\" OR properties.message = \"Update\\ Service\\ principal\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3a65dc57-8d84-4959-a979-5540d2ff0506"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

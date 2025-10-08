@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows Defender AMSI Trigger Detected",
+      "description": "Detects triggering of AMSI by Windows Defender. Note: Unmapped fields: SourceName",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 1116 AND SourceName = \"AMSI\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "648d71ca-e1aa-4f55-be45-6613bc65b762"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

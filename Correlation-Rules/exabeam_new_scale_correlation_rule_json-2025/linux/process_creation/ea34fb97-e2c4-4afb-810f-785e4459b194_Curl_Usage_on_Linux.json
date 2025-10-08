@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Curl Usage on Linux",
+      "description": "Detects a curl process start on linux, which indicates a file download from a remote location or a simple web request to a remote server",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_path = RGX(\"\\\\/curl$\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "47b05085-7c08-4c99-a766-7985e890f3bc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

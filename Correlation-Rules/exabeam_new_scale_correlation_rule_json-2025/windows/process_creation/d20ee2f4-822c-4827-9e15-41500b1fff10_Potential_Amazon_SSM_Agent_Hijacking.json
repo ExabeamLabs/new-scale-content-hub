@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Amazon SSM Agent Hijacking",
+      "description": "Detects potential Amazon SSM agent hijack attempts as outlined in the Mitiga research report.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\amazon\\\\-ssm\\\\-agent\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\-register\\\\ .*\") AND process_command_line = RGX(\".*\\\\-code\\\\ .*\") AND process_command_line = RGX(\".*\\\\-id\\\\ .*\") AND process_command_line = RGX(\".*\\\\-region\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "834a34d0-ec37-4068-8b6f-18ecf1376496"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Kernel Dump Using Dtrace",
+      "description": "Detects suspicious way to dump the kernel on Windows systems using dtrace.exe, which is available on Windows systems since Windows 10 19H1",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\dtrace\\\\\\.exe$\") AND process_command_line = RGX(\".*lkd\\\\(0\\\\).*\")) OR (process_command_line = RGX(\".*syscall\\\\:\\\\:\\\\:return.*\") AND process_command_line = RGX(\".*lkd\\\\(.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "dc8aeb20-8ddc-463e-8192-872571b74a23"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

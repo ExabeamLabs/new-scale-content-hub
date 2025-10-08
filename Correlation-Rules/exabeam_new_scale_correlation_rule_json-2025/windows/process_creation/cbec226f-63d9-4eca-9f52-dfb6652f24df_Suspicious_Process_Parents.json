@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Process Parents",
+      "description": "Detects suspicious parent processes that should not have any children or should only have a single possible child program",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\minesweeper\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\winver\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\bitsadmin\\\\\\.exe$\")) OR ((parent_process_path = RGX(\"\\\\\\\\csrss\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\certutil\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\eventvwr\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\calc\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\notepad\\\\\\.exe$\")) AND  NOT ((process_path = RGX(\"\\\\\\\\WerFault\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wermgr\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\conhost\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mmc\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\win32calc\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\notepad\\\\\\.exe$\")) OR process_path = \"None\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4767cc5c-11ea-41c7-a0ae-bbdfc0ab7bd9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

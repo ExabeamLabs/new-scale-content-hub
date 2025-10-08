@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Disable Windows Event Logging Via Registry",
+      "description": "Detects tampering with the \"Enabled\" registry key in order to disable Windows logging of a Windows event channel Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\WINEVT\\\\\\\\Channels\\\\\\\\.*\") AND registry_path = RGX(\"\\\\\\\\Enabled$\") AND Details = \"DWORD\\ \\(0x00000000\\)\") AND  NOT (process_path = \"C\\:\\\\Windows\\\\system32\\\\wevtutil\\.exe\" OR (process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\winsxs\\\\\\\\\") AND process_path = RGX(\"\\\\\\\\TiWorker\\\\\\.exe$\")) OR (process_path = \"C\\:\\\\Windows\\\\System32\\\\svchost\\.exe\" AND (registry_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\WINEVT\\\\\\\\Channels\\\\\\\\Microsoft\\\\-Windows\\\\-FileInfoMinifilter.*\") OR registry_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\WINEVT\\\\\\\\Channels\\\\\\\\Microsoft\\\\-Windows\\\\-ASN1\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\WINEVT\\\\\\\\Channels\\\\\\\\Microsoft\\\\-Windows\\\\-Kernel\\\\-AppCompat\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\WINEVT\\\\\\\\Channels\\\\\\\\Microsoft\\\\-Windows\\\\-Runtime\\\\\\\\Error\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\WINEVT\\\\\\\\Channels\\\\\\\\Microsoft\\\\-Windows\\\\-CAPI2\\\\/Operational\\\\\\\\.*\"))) OR (process_path = \"C\\:\\\\Windows\\\\servicing\\\\TrustedInstaller\\.exe\" AND registry_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\WINEVT\\\\\\\\Channels\\\\\\\\Microsoft\\\\-Windows\\\\-Compat\\\\-Appraiser.*\"))) AND  NOT (process_path = \"\" OR process_path = \"None\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c4393658-3139-4399-9533-eac428425fb9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

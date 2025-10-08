@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Cobalt Strike DNS Beaconing",
+      "description": "Detects suspicious DNS queries known from Cobalt Strike beacons Note: Unmapped fields: query",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((query = RGX(\"^aaa\\\\\\.stage\\\\\\.\") OR query = RGX(\"^post\\\\\\.1\")) OR query = RGX(\".*\\\\\\.stage\\\\\\.123456\\\\\\..*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "25188355-668e-425d-bb49-1a690aab5e09"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

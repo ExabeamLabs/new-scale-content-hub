@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "NtdllPipe Like Activity Execution",
+      "description": "Detects command that type the content of ntdll.dll to a different file or a pipe in order to evade AV / EDR detection. As seen being used in the POC NtdllPipe",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*type\\\\ \\\\%windir\\\\%\\\\\\\\system32\\\\\\\\ntdll\\\\\\.dll.*\") OR process_command_line = RGX(\".*type\\\\ \\\\%systemroot\\\\%\\\\\\\\system32\\\\\\\\ntdll\\\\\\.dll.*\") OR process_command_line = RGX(\".*type\\\\ c\\\\:\\\\\\\\windows\\\\\\\\system32\\\\\\\\ntdll\\\\\\.dll.*\") OR process_command_line = RGX(\".*\\\\\\\\ntdll\\\\\\.dll\\\\ \\\\>\\\\ \\\\\\\\\\\\\\\\\\\\\\.\\\\\\\\pipe\\\\\\\\.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c33cb3fe-25a4-4df2-beb0-d3634419050a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

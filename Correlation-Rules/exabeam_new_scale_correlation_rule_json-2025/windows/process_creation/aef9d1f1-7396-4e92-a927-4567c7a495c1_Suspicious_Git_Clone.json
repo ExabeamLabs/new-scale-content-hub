@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Git Clone",
+      "description": "Detects execution of \"git\" in order to clone a remote repository that contain suspicious keywords which might be suspicious",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\git\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\git\\\\-remote\\\\-https\\\\\\.exe$\")) OR process_original_file_name = \"git\\.exe\") AND (process_command_line = RGX(\".*\\\\ clone\\\\ .*\") OR process_command_line = RGX(\".*git\\\\-remote\\\\-https\\\\ .*\")) AND (process_command_line = RGX(\".*exploit.*\") OR process_command_line = RGX(\".*Vulns.*\") OR process_command_line = RGX(\".*vulnerability.*\") OR process_command_line = RGX(\".*RemoteCodeExecution.*\") OR process_command_line = RGX(\".*Invoke\\\\-.*\") OR process_command_line = RGX(\".*CVE\\\\-.*\") OR process_command_line = RGX(\".*poc\\\\-.*\") OR process_command_line = RGX(\".*ProofOfConcept.*\") OR process_command_line = RGX(\".*proxyshell.*\") OR process_command_line = RGX(\".*log4shell.*\") OR process_command_line = RGX(\".*eternalblue.*\") OR process_command_line = RGX(\".*eternal\\\\-blue.*\") OR process_command_line = RGX(\".*MS17\\\\-.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c54b075c-f326-476a-aa66-3037349bcd0c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

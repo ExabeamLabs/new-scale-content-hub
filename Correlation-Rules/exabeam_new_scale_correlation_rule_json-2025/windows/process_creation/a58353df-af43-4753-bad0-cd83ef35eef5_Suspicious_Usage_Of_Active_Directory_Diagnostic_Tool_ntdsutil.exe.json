@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Usage Of Active Directory Diagnostic Tool (ntdsutil.exe)",
+      "description": "Detects execution of ntdsutil.exe to perform different actions such as restoring snapshots...etc.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\ntdsutil\\\\\\.exe$\") OR process_original_file_name = \"ntdsutil\\.exe\") AND ((process_command_line = RGX(\".*snapshot.*\") AND process_command_line = RGX(\".*mount\\\\ .*\")) OR (process_command_line = RGX(\".*ac.*\") AND process_command_line = RGX(\".*\\\\ i.*\") AND process_command_line = RGX(\".*\\\\ ntds.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f220e913-70c7-4011-b9a9-95d1111bff03"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

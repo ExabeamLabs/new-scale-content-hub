@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Tamper Windows Defender - PSClassic",
+      "description": "Attempting to disable scheduled scanning and other parts of Windows Defender ATP or set default actions to allow. Note: Unmapped fields: Data",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "Data = RGX(\".*Set\\\\-MpPreference.*\") AND ((Data = RGX(\".*\\\\-dbaf\\\\ \\\\$true.*\") OR Data = RGX(\".*\\\\-dbaf\\\\ 1.*\") OR Data = RGX(\".*\\\\-dbm\\\\ \\\\$true.*\") OR Data = RGX(\".*\\\\-dbm\\\\ 1.*\") OR Data = RGX(\".*\\\\-dips\\\\ \\\\$true.*\") OR Data = RGX(\".*\\\\-dips\\\\ 1.*\") OR Data = RGX(\".*\\\\-DisableArchiveScanning\\\\ \\\\$true.*\") OR Data = RGX(\".*\\\\-DisableArchiveScanning\\\\ 1.*\") OR Data = RGX(\".*\\\\-DisableBehaviorMonitoring\\\\ \\\\$true.*\") OR Data = RGX(\".*\\\\-DisableBehaviorMonitoring\\\\ 1.*\") OR Data = RGX(\".*\\\\-DisableBlockAtFirstSeen\\\\ \\\\$true.*\") OR Data = RGX(\".*\\\\-DisableBlockAtFirstSeen\\\\ 1.*\") OR Data = RGX(\".*\\\\-DisableCatchupFullScan\\\\ \\\\$true.*\") OR Data = RGX(\".*\\\\-DisableCatchupFullScan\\\\ 1.*\") OR Data = RGX(\".*\\\\-DisableCatchupQuickScan\\\\ \\\\$true.*\") OR Data = RGX(\".*\\\\-DisableCatchupQuickScan\\\\ 1.*\") OR Data = RGX(\".*\\\\-DisableIntrusionPreventionSystem\\\\ \\\\$true.*\") OR Data = RGX(\".*\\\\-DisableIntrusionPreventionSystem\\\\ 1.*\") OR Data = RGX(\".*\\\\-DisableIOAVProtection\\\\ \\\\$true.*\") OR Data = RGX(\".*\\\\-DisableIOAVProtection\\\\ 1.*\") OR Data = RGX(\".*\\\\-DisableRealtimeMonitoring\\\\ \\\\$true.*\") OR Data = RGX(\".*\\\\-DisableRealtimeMonitoring\\\\ 1.*\") OR Data = RGX(\".*\\\\-DisableRemovableDriveScanning\\\\ \\\\$true.*\") OR Data = RGX(\".*\\\\-DisableRemovableDriveScanning\\\\ 1.*\") OR Data = RGX(\".*\\\\-DisableScanningMappedNetworkDrivesForFullScan\\\\ \\\\$true.*\") OR Data = RGX(\".*\\\\-DisableScanningMappedNetworkDrivesForFullScan\\\\ 1.*\") OR Data = RGX(\".*\\\\-DisableScanningNetworkFiles\\\\ \\\\$true.*\") OR Data = RGX(\".*\\\\-DisableScanningNetworkFiles\\\\ 1.*\") OR Data = RGX(\".*\\\\-DisableScriptScanning\\\\ \\\\$true.*\") OR Data = RGX(\".*\\\\-DisableScriptScanning\\\\ 1.*\") OR Data = RGX(\".*\\\\-MAPSReporting\\\\ \\\\$false.*\") OR Data = RGX(\".*\\\\-MAPSReporting\\\\ 0.*\") OR Data = RGX(\".*\\\\-drdsc\\\\ \\\\$true.*\") OR Data = RGX(\".*\\\\-drdsc\\\\ 1.*\") OR Data = RGX(\".*\\\\-drtm\\\\ \\\\$true.*\") OR Data = RGX(\".*\\\\-drtm\\\\ 1.*\") OR Data = RGX(\".*\\\\-dscrptsc\\\\ \\\\$true.*\") OR Data = RGX(\".*\\\\-dscrptsc\\\\ 1.*\") OR Data = RGX(\".*\\\\-dsmndf\\\\ \\\\$true.*\") OR Data = RGX(\".*\\\\-dsmndf\\\\ 1.*\") OR Data = RGX(\".*\\\\-dsnf\\\\ \\\\$true.*\") OR Data = RGX(\".*\\\\-dsnf\\\\ 1.*\") OR Data = RGX(\".*\\\\-dss\\\\ \\\\$true.*\") OR Data = RGX(\".*\\\\-dss\\\\ 1.*\")) OR (Data = RGX(\".*HighThreatDefaultAction\\\\ Allow.*\") OR Data = RGX(\".*htdefac\\\\ Allow.*\") OR Data = RGX(\".*LowThreatDefaultAction\\\\ Allow.*\") OR Data = RGX(\".*ltdefac\\\\ Allow.*\") OR Data = RGX(\".*ModerateThreatDefaultAction\\\\ Allow.*\") OR Data = RGX(\".*mtdefac\\\\ Allow.*\") OR Data = RGX(\".*SevereThreatDefaultAction\\\\ Allow.*\") OR Data = RGX(\".*stdefac\\\\ Allow.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "09012c93-2849-4ab3-90ba-69bd591d360e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

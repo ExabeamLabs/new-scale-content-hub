@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Azure Virtual Network Modified or Deleted",
+      "description": "Identifies when a Virtual Network is modified or deleted in Azure. Note: Unmapped fields: operationName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((operationName = RGX(\"^MICROSOFT\\\\\\.NETWORK\\\\/VIRTUALNETWORKGATEWAYS\\\\/\") OR operationName = RGX(\"^MICROSOFT\\\\\\.NETWORK\\\\/VIRTUALNETWORKS\\\\/\")) AND (operationName = RGX(\"\\\\/WRITE$\") OR operationName = RGX(\"\\\\/DELETE$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "483a342f-7efe-48c4-85d9-ac4be84da2a1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

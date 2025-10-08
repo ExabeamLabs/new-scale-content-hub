@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Set Suspicious Files as System Files Using Attrib.EXE",
+      "description": "Detects the usage of attrib with the \"+s\" option to set scripts or executables located in suspicious locations as system files to hide them from users and make them unable to be deleted with simple rights. The rule limits the search to specific extensions and directories to avoid FPs\n",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\attrib\\\\\\.exe$\") OR process_original_file_name = \"ATTRIB\\.EXE\") AND process_command_line = RGX(\".*\\\\ \\\\+s.*\") AND (process_command_line = RGX(\".*\\\\ \\\\%.*\") OR process_command_line = RGX(\".*\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\ProgramData\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Downloads\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\")) AND (process_command_line = RGX(\".*\\\\\\.bat.*\") OR process_command_line = RGX(\".*\\\\\\.dll.*\") OR process_command_line = RGX(\".*\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\\\.hta.*\") OR process_command_line = RGX(\".*\\\\\\.ps1.*\") OR process_command_line = RGX(\".*\\\\\\.vbe.*\") OR process_command_line = RGX(\".*\\\\\\.vbs.*\"))) AND  NOT ((process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\TEMP\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\\\.exe.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "976c3f4a-d05e-4381-ae22-82a0a97b46fb"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

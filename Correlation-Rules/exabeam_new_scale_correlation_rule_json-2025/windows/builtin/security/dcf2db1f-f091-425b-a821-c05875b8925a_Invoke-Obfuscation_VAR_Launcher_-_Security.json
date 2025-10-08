@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation VAR+ Launcher - Security",
+      "description": "Detects Obfuscated use of Environment Variables to execute PowerShell Note: Unmapped fields: ServiceFileName",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4697 AND (ServiceFileName = RGX(\".*cmd.*\") AND ServiceFileName = RGX(\".*\\\\\"set.*\") AND ServiceFileName = RGX(\".*\\\\-f.*\")) AND (ServiceFileName = RGX(\".*\\\\/c.*\") OR ServiceFileName = RGX(\".*\\\\/r.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "603c5f54-aee7-4f79-9933-2d635642d112"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

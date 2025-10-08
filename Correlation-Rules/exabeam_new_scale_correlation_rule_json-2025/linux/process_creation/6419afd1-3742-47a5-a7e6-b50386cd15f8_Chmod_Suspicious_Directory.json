@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Chmod Suspicious Directory",
+      "description": "Detects chmod targeting files in abnormal directory paths.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/chmod$\") AND (process_command_line = RGX(\".*\\\\/tmp\\\\/.*\") OR process_command_line = RGX(\".*\\\\/\\\\\\.Library\\\\/.*\") OR process_command_line = RGX(\".*\\\\/etc\\\\/.*\") OR process_command_line = RGX(\".*\\\\/opt\\\\/.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "90489ccb-c54d-450e-972a-f3ac13b29410"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

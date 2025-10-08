@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - Radmin Viewer Utility Execution",
+      "description": "Detects the execution of Radmin which can be abused by an adversary to remotely control Windows machines",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_description = \"Radmin\\ Viewer\" OR process_product = \"Radmin\\ Viewer\" OR process_original_file_name = \"Radmin\\.exe\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c16ff3d8-43df-4686-976c-c9e4685bf8d6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

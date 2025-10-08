@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Cookies Session Hijacking",
+      "description": "Detects execution of \"curl.exe\" with the \"-c\" flag in order to save cookie data.",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\curl\\\\\\.exe$\") OR process_original_file_name = \"curl\\.exe\") AND (process_command_line = RGX(\"\\s-c\\s\") OR process_command_line = RGX(\".*\\\\-\\\\-cookie\\\\-jar.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "bacd7d2c-e1b5-4f80-b3fe-cc71f4931e12"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

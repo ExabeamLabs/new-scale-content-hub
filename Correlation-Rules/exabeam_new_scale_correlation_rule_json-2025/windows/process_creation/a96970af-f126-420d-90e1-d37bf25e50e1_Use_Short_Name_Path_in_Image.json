@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Use Short Name Path in Image",
+      "description": "Detect use of the Windows 8.3 short name. Which could be used as a method to avoid Image detection",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\".*\\\\~1\\\\\\\\.*\") OR process_path = RGX(\".*\\\\~2\\\\\\\\.*\")) AND  NOT (((parent_process_path = \"C\\:\\\\Windows\\\\System32\\\\Dism\\.exe\" OR parent_process_path = \"C\\:\\\\Windows\\\\System32\\\\cleanmgr\\.exe\") OR (parent_process_path = RGX(\"\\\\\\\\WebEx\\\\\\\\WebexHost\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\thor\\\\\\\\thor64\\\\\\.exe$\")) OR process_product = \"InstallShield\\ \\(R\\)\" OR process_description = \"InstallShield\\ \\(R\\)\\ Setup\\ Engine\" OR process_company = \"InstallShield\\ Software\\ Corporation\") OR ((process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\.*\") AND process_path = RGX(\".*\\\\\\\\Temp\\\\\\\\.*\")) OR (process_path = RGX(\"\\\\~1\\\\\\\\unzip\\\\\\.exe$\") OR process_path = RGX(\"\\\\~1\\\\\\\\7zG\\\\\\.exe$\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "87676248-884f-4302-8054-884a5efc5f18"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - AdvancedRun Suspicious Execution",
+      "description": "Detects the execution of AdvancedRun utility in the context of the TrustedInstaller, SYSTEM, Local Service or Network Service accounts",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*\\\\/EXEFilename.*\") OR process_command_line = RGX(\".*\\\\/CommandLine.*\")) AND ((process_command_line = RGX(\".*\\\\ \\\\/RunAs\\\\ 8\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\/RunAs\\\\ 4\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\/RunAs\\\\ 10\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\/RunAs\\\\ 11\\\\ .*\")) OR (process_command_line = RGX(\"\\\\/RunAs\\\\ 8$\") OR process_command_line = RGX(\"\\\\/RunAs\\\\ 4$\") OR process_command_line = RGX(\"\\\\/RunAs\\\\ 10$\") OR process_command_line = RGX(\"\\\\/RunAs\\\\ 11$\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "dc27c5b5-0b7b-44bd-a473-131fc59ad357"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

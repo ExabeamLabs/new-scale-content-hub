@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Binary Proxy Execution Via Cdb.EXE",
+      "description": "Detects usage of \"cdb.exe\" to launch arbitrary processes or commands from a debugger script file",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\cdb\\\\\\.exe$\") OR process_original_file_name = \"CDB\\.Exe\") AND (process_command_line = RGX(\".*\\\\ \\\\-c\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-cf\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "862106d9-cacf-47e7-bfe1-7c77886fcd26"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

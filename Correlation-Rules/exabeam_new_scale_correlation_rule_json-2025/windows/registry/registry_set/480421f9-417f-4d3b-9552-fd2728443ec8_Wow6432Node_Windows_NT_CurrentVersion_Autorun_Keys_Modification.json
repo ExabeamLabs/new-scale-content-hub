@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Wow6432Node Windows NT CurrentVersion Autorun Keys Modification",
+      "description": "Detects modification of autostart extensibility point (ASEP) in registry. Note: Unmapped fields: Details",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Wow6432Node\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion.*\") AND (registry_path = RGX(\".*\\\\\\\\Windows\\\\\\\\Appinit\\\\_Dlls.*\") OR registry_path = RGX(\".*\\\\\\\\Image\\\\ File\\\\ Execution\\\\ Options.*\") OR registry_path = RGX(\".*\\\\\\\\Drivers32.*\")) AND  NOT ((Details = \"\\(Empty\\)\" OR Details = \"\\\\REGISTRY\\\\MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows\\ NT\\\\CurrentVersion\\\\Image\\ File\\ Execution\\ Options\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "fb003e68-2104-4244-9904-1cca7ffcd113"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Admin User Remote Logon",
+      "description": "Detect remote login by Administrator user (depending on internal pattern). Note: Unmapped fields: LogonType, AuthenticationPackageName",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4624 AND LogonType = 10 AND AuthenticationPackageName = \"Negotiate\" AND dest_user = RGX(\"^Admin\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "53cc007d-6aa3-489b-b7a7-e5fbc20f02cb"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

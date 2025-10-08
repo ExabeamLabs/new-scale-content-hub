@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Uncommon Userinit Child Process",
+      "description": "Detects uncommon \"userinit.exe\" child processes, which could be a sign of uncommon shells or login scripts used for persistence.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "parent_process_path = RGX(\"\\\\\\\\userinit\\\\\\.exe$\") AND  NOT (process_path = RGX(\"\\\\:\\\\\\\\WINDOWS\\\\\\\\explorer\\\\\\.exe$\")) AND  NOT ((process_command_line = RGX(\".*netlogon\\\\\\.bat.*\") OR process_command_line = RGX(\".*UsrLogon\\\\\\.cmd.*\")) OR process_command_line = \"PowerShell\\.exe\" OR (process_path = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\proquota\\\\\\.exe$\") OR process_path = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\proquota\\\\\\.exe$\")) OR (process_path = RGX(\"\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Citrix\\\\\\\\HDX\\\\\\\\bin\\\\\\\\cmstart\\\\\\.exe$\") OR process_path = RGX(\"\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Citrix\\\\\\\\HDX\\\\\\\\bin\\\\\\\\icast\\\\\\.exe$\") OR process_path = RGX(\"\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Citrix\\\\\\\\System32\\\\\\\\icast\\\\\\.exe$\") OR process_path = RGX(\"\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Citrix\\\\\\\\HDX\\\\\\\\bin\\\\\\\\cmstart\\\\\\.exe$\") OR process_path = RGX(\"\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Citrix\\\\\\\\HDX\\\\\\\\bin\\\\\\\\icast\\\\\\.exe$\") OR process_path = RGX(\"\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Citrix\\\\\\\\System32\\\\\\\\icast\\\\\\.exe$\")) OR process_path = \"None\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6be322d6-01fa-4022-992a-524adc902d16"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

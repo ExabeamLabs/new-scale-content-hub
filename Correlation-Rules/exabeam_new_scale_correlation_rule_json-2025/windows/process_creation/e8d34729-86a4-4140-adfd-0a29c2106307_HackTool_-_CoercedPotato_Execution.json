@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - CoercedPotato Execution",
+      "description": "Detects the use of CoercedPotato, a tool for privilege escalation",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\CoercedPotato\\\\\\.exe$\") OR process_command_line = RGX(\".*\\\\ \\\\-\\\\-exploitId\\\\ .*\") OR (process_hash = RGX(\".*IMPHASH\\\\=A75D7669DB6B2E107A44C4057FF7F7D6.*\") OR process_hash = RGX(\".*IMPHASH\\\\=F91624350E2C678C5DCBE5E1F24E22C9.*\") OR process_hash = RGX(\".*IMPHASH\\\\=14C81850A079A87E83D50CA41C709A15.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "15a72af3-4c83-4fd5-9065-577ab979e7be"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

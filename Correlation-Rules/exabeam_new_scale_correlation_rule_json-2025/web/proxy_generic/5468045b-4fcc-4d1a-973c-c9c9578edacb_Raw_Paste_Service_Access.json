@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Raw Paste Service Access",
+      "description": "Detects direct access to raw pastes in different paste services often used by malware in their second stages to download malicious code in encrypted or encoded form Note: Unmapped fields: c-uri",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(c-uri = RGX(\".*\\\\\\.paste\\\\\\.ee\\\\/r\\\\/.*\") OR c-uri = RGX(\".*\\\\\\.pastebin\\\\\\.com\\\\/raw\\\\/.*\") OR c-uri = RGX(\".*\\\\\\.hastebin\\\\\\.com\\\\/raw\\\\/.*\") OR c-uri = RGX(\".*\\\\\\.ghostbin\\\\\\.co\\\\/paste\\\\/*\\\\/raw\\\\/.*\") OR c-uri = RGX(\".*pastetext\\\\\\.net\\\\/.*\") OR c-uri = RGX(\".*pastebin\\\\\\.pl\\\\/.*\") OR c-uri = RGX(\".*paste\\\\\\.ee\\\\/.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2fcd83be-8682-4272-9e9e-8703318002cc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

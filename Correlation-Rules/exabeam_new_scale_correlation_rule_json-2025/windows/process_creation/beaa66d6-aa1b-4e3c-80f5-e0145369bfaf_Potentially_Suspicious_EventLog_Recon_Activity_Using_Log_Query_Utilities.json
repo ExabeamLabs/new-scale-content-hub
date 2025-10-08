@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Suspicious EventLog Recon Activity Using Log Query Utilities",
+      "description": "Detects execution of different log query utilities and commands to search and dump the content of specific event logs or look for specific event IDs.\nThis technique is used by threat actors in order to extract sensitive information from events logs such as usernames, IP addresses, hostnames, etc.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*Microsoft\\\\-Windows\\\\-PowerShell.*\") OR process_command_line = RGX(\".*Microsoft\\\\-Windows\\\\-Security\\\\-Auditing.*\") OR process_command_line = RGX(\".*Microsoft\\\\-Windows\\\\-TerminalServices\\\\-LocalSessionManager.*\") OR process_command_line = RGX(\".*Microsoft\\\\-Windows\\\\-TerminalServices\\\\-RemoteConnectionManager.*\") OR process_command_line = RGX(\".*Microsoft\\\\-Windows\\\\-Windows\\\\ Defender.*\") OR process_command_line = RGX(\".*PowerShellCore.*\") OR process_command_line = RGX(\".*Security.*\") OR process_command_line = RGX(\".*Windows\\\\ PowerShell.*\")) OR (process_command_line = RGX(\".*\\\\-InstanceId\\\\ 462?.*\") OR process_command_line = RGX(\".*\\\\\\.eventid\\\\ \\\\-eq\\\\ 462?.*\") OR process_command_line = RGX(\".*EventCode\\\\=?462?.*\") OR process_command_line = RGX(\".*EventIdentifier\\\\=?462?.*\") OR process_command_line = RGX(\".*System\\\\[EventID\\\\=462?\\\\].*\") OR process_command_line = RGX(\".*\\\\-InstanceId\\\\ 4778.*\") OR process_command_line = RGX(\".*\\\\\\.eventid\\\\ \\\\-eq\\\\ 4778.*\") OR process_command_line = RGX(\".*System\\\\[EventID\\\\=4778\\\\].*\") OR process_command_line = RGX(\".*EventCode\\\\=?4778?.*\") OR process_command_line = RGX(\".*EventIdentifier\\\\=?4778?.*\") OR process_command_line = RGX(\".*\\\\-InstanceId\\\\ 25.*\") OR process_command_line = RGX(\".*\\\\\\.eventid\\\\ \\\\-eq\\\\ 25.*\") OR process_command_line = RGX(\".*System\\\\[EventID\\\\=25\\\\].*\") OR process_command_line = RGX(\".*EventCode\\\\=?25?.*\") OR process_command_line = RGX(\".*EventIdentifier\\\\=?25?.*\"))) AND ((process_command_line = RGX(\".*Select.*\") AND process_command_line = RGX(\".*Win32\\\\_NTLogEvent.*\")) OR ((process_path = RGX(\"\\\\\\\\wevtutil\\\\\\.exe$\") OR process_original_file_name = \"wevtutil\\.exe\") AND (process_command_line = RGX(\".*\\\\ qe\\\\ .*\") OR process_command_line = RGX(\".*\\\\ query\\\\-events\\\\ .*\"))) OR ((process_path = RGX(\"\\\\\\\\wmic\\\\\\.exe$\") OR process_original_file_name = \"wmic\\.exe\") AND process_command_line = RGX(\".*\\\\ ntevent.*\")) OR (process_command_line = RGX(\".*Get\\\\-WinEvent\\\\ .*\") OR process_command_line = RGX(\".*get\\\\-eventlog\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c35a2dae-eed1-45f6-9c33-4a17dd48bab0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

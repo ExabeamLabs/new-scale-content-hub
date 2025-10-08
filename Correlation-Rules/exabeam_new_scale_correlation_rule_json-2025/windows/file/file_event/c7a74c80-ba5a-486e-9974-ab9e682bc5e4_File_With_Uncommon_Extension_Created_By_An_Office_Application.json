@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "File With Uncommon Extension Created By An Office Application",
+      "description": "Detects the creation of files with an executable or script extension by an Office application.",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\excel\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msaccess\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mspub\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powerpnt\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\visio\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\winword\\\\\\.exe$\")) AND (file_path = RGX(\"\\\\\\.bat$\") OR file_path = RGX(\"\\\\\\.cmd$\") OR file_path = RGX(\"\\\\\\.com$\") OR file_path = RGX(\"\\\\\\.dll$\") OR file_path = RGX(\"\\\\\\.exe$\") OR file_path = RGX(\"\\\\\\.hta$\") OR file_path = RGX(\"\\\\\\.ocx$\") OR file_path = RGX(\"\\\\\\.proj$\") OR file_path = RGX(\"\\\\\\.ps1$\") OR file_path = RGX(\"\\\\\\.scf$\") OR file_path = RGX(\"\\\\\\.scr$\") OR file_path = RGX(\"\\\\\\.sys$\") OR file_path = RGX(\"\\\\\\.vbe$\") OR file_path = RGX(\"\\\\\\.vbs$\") OR file_path = RGX(\"\\\\\\.wsf$\") OR file_path = RGX(\"\\\\\\.wsh$\"))) AND  NOT ((file_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\assembly\\\\\\\\tmp\\\\\\\\.*\") AND file_path = RGX(\"\\\\\\.dll$\"))) AND  NOT (((file_path = RGX(\".*C\\\\:\\\\\\\\Users\\\\\\\\.*\") AND file_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Microsoft\\\\\\\\Office\\\\\\\\.*\") AND file_path = RGX(\".*\\\\\\\\WebServiceCache\\\\\\\\AllUsers.*\")) AND file_path = RGX(\"\\\\\\.com$\")) OR (process_path = RGX(\"\\\\\\\\winword\\\\\\.exe$\") AND file_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\webexdelta\\\\\\\\.*\") AND (file_path = RGX(\"\\\\\\.dll$\") OR file_path = RGX(\"\\\\\\.exe$\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "52eb0915-a75d-47a2-9c8e-6f799d1f135f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

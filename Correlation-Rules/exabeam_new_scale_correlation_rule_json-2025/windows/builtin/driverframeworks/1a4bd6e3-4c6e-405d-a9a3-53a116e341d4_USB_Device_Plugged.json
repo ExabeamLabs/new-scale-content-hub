@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "USB Device Plugged",
+      "description": "Detects plugged/unplugged USB devices",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 2003 OR event_id = 2100 OR event_id = 2102)",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "883262f0-9084-4b62-ae6b-d99ebaa9f9a4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

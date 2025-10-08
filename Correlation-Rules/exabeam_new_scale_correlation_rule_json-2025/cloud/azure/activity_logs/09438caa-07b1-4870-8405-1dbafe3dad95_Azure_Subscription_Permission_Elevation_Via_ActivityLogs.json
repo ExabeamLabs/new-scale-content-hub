@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Azure Subscription Permission Elevation Via ActivityLogs",
+      "description": "Detects when a user has been elevated to manage all Azure Subscriptions.\nThis change should be investigated immediately if it isn't planned.\nThis setting could allow an attacker access to Azure subscriptions in your environment.\n Note: Unmapped fields: operationName",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "operationName = \"MICROSOFT\\.AUTHORIZATION\\/ELEVATEACCESS\\/ACTION\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8e9a2203-f8c6-497c-8a88-120e7c0109a4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

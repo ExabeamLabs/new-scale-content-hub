@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Microsoft Defender Blocked from Loading Unsigned DLL",
+      "description": "Detects Code Integrity (CI) engine blocking Microsoft Defender's processes (MpCmdRun and NisSrv) from loading unsigned DLLs which may be an attempt to sideload arbitrary DLL Note: Unmapped fields: ProcessPath",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((event_id = 11 OR event_id = 12) AND (ProcessPath = RGX(\"\\\\\\\\MpCmdRun\\\\\\.exe$\") OR ProcessPath = RGX(\"\\\\\\\\NisSrv\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "06056e1f-f446-43fa-99c2-5b12bb2e2a66"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

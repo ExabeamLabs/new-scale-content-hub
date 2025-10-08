@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Publisher Attachment File Dropped In Suspicious Location",
+      "description": "Detects creation of files with the \".pub\" extension in suspicious or uncommon locations. This could be a sign of attackers abusing Publisher documents",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((file_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") OR file_path = RGX(\".*\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR file_path = RGX(\".*\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\") OR file_path = RGX(\".*C\\\\:\\\\\\\\Temp\\\\\\\\.*\")) AND file_path = RGX(\"\\\\\\.pub$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "142938ff-6e85-43d7-bd4d-15b7f0765226"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

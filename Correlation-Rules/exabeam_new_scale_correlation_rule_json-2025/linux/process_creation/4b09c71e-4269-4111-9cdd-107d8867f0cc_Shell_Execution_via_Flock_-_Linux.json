@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Shell Execution via Flock - Linux",
+      "description": "Detects the use of the \"flock\" command to execute a shell. Such behavior may be associated with privilege escalation, unauthorized command execution, or to break out from restricted environments.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/flock$\") AND process_command_line = RGX(\".*\\\\ \\\\-u\\\\ .*\")) AND (process_command_line = RGX(\".*\\\\/bin\\\\/bash.*\") OR process_command_line = RGX(\".*\\\\/bin\\\\/dash.*\") OR process_command_line = RGX(\".*\\\\/bin\\\\/fish.*\") OR process_command_line = RGX(\".*\\\\/bin\\\\/sh.*\") OR process_command_line = RGX(\".*\\\\/bin\\\\/zsh.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "bc874d1f-ff29-4639-a327-8d92b11b912c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Renamed Office Binary Execution",
+      "description": "Detects the execution of a renamed office binary",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_original_file_name = \"Excel\\.exe\" OR process_original_file_name = \"MSACCESS\\.EXE\" OR process_original_file_name = \"MSPUB\\.EXE\" OR process_original_file_name = \"OneNote\\.exe\" OR process_original_file_name = \"OneNoteM\\.exe\" OR process_original_file_name = \"OUTLOOK\\.EXE\" OR process_original_file_name = \"POWERPNT\\.EXE\" OR process_original_file_name = \"WinWord\\.exe\") OR (process_description = \"Microsoft\\ Access\" OR process_description = \"Microsoft\\ Excel\" OR process_description = \"Microsoft\\ OneNote\" OR process_description = \"Microsoft\\ Outlook\" OR process_description = \"Microsoft\\ PowerPoint\" OR process_description = \"Microsoft\\ Publisher\" OR process_description = \"Microsoft\\ Word\" OR process_description = \"Sent\\ to\\ OneNote\\ Tool\")) AND  NOT ((process_path = RGX(\"\\\\\\\\EXCEL\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\excelcnv\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\MSACCESS\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\MSPUB\\\\\\.EXE$\") OR process_path = RGX(\"\\\\\\\\ONENOTE\\\\\\.EXE$\") OR process_path = RGX(\"\\\\\\\\ONENOTEM\\\\\\.EXE$\") OR process_path = RGX(\"\\\\\\\\OUTLOOK\\\\\\.EXE$\") OR process_path = RGX(\"\\\\\\\\POWERPNT\\\\\\.EXE$\") OR process_path = RGX(\"\\\\\\\\WINWORD\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "66748448-43c9-4222-8b54-8e022f88d731"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

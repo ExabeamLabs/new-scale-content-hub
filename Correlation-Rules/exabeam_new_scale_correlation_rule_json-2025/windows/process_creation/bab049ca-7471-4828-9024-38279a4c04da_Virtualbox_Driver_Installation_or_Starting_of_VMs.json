@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Virtualbox Driver Installation or Starting of VMs",
+      "description": "Adversaries can carry out malicious operations using a virtual instance to avoid detection. This rule is built to detect the registration of the Virtualbox driver or start of a Virtualbox VM.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*VBoxRT\\\\\\.dll\\\\,RTR3Init.*\") OR process_command_line = RGX(\".*VBoxC\\\\\\.dll.*\") OR process_command_line = RGX(\".*VBoxDrv\\\\\\.sys.*\")) OR (process_command_line = RGX(\".*startvm.*\") OR process_command_line = RGX(\".*controlvm.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "35a702d6-17eb-4a93-832e-5fc3a06b95f1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

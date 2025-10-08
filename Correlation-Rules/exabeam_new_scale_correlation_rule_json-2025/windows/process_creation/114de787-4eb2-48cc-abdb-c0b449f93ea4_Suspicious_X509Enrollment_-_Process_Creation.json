@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious X509Enrollment - Process Creation",
+      "description": "Detect use of X509Enrollment",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*X509Enrollment\\\\\\.CBinaryConverter.*\") OR process_command_line = RGX(\".*884e2002\\\\-217d\\\\-11da\\\\-b2a4\\\\-000e7bbb2b09.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6f10aded-fa21-43f7-a347-4600c89c77bd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

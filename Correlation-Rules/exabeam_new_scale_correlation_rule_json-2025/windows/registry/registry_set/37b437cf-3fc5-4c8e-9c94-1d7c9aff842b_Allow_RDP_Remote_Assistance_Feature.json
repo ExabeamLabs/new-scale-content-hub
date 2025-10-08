@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Allow RDP Remote Assistance Feature",
+      "description": "Detect enable rdp feature to allow specific user to rdp connect on the targeted machine Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\"System\\\\\\\\CurrentControlSet\\\\\\\\Control\\\\\\\\Terminal\\\\ Server\\\\\\\\fAllowToGetHelp$\") AND Details = \"DWORD\\ \\(0x00000001\\)\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e2c2844b-6526-413e-a71b-f1cd4271639e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

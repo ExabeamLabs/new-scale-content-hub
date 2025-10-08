@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious LNK Double Extension File Created",
+      "description": "Detects the creation of files with an \"LNK\" as a second extension. This is sometimes used by malware as a method to abuse the fact that Windows hides the \"LNK\" extension by default.\n",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(file_path = RGX(\"\\\\\\.lnk$\") AND (file_path = RGX(\".*\\\\\\.doc\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.docx\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.jpg\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.pdf\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.ppt\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.pptx\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.xls\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.xlsx\\\\\\..*\"))) AND  NOT (file_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\Recent\\\\\\\\.*\")) AND  NOT (((process_path = RGX(\"\\\\\\\\excel\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powerpnt\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\winword\\\\\\.exe$\")) AND file_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\Microsoft\\\\\\\\Office\\\\\\\\Recent\\\\\\\\.*\")) OR (process_path = RGX(\"\\\\\\\\excel\\\\\\.exe$\") AND file_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\Microsoft\\\\\\\\Excel.*\")) OR (process_path = RGX(\"\\\\\\\\powerpnt\\\\\\.exe$\") AND file_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\Microsoft\\\\\\\\PowerPoint.*\")) OR (process_path = RGX(\"\\\\\\\\winword\\\\\\.exe$\") AND file_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\Microsoft\\\\\\\\Word.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "421945b2-27ca-4bb6-95d4-4fca6256133e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

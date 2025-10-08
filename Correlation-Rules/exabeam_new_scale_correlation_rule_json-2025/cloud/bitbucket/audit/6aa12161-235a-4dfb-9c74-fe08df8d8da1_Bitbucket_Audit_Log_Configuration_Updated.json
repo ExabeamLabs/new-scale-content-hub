@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Bitbucket Audit Log Configuration Updated",
+      "description": "Detects changes to the bitbucket audit log configuration. Note: Unmapped fields: auditType.category, auditType.action",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(auditType.category = \"Auditing\" AND auditType.action = \"Audit\\ log\\ configuration\\ updated\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "23a125fb-222b-4e13-9751-9fd84d95009a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

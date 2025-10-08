@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PowerShell Defender Threat Severity Default Action Set to 'Allow' or 'NoAction'",
+      "description": "Detects the use of PowerShell to execute the 'Set-MpPreference' cmdlet to configure Windows Defender's threat severity default action to 'Allow' (value '6') or 'NoAction' (value '9').\nThis is a highly suspicious configuration change that effectively disables Defender's ability to automatically mitigate threats of a certain severity level.\nAn attacker might use this technique via the command line to bypass defenses before executing payloads.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*Set\\\\-MpPreference.*\") AND (process_command_line = RGX(\".*\\\\-LowThreatDefaultAction.*\") OR process_command_line = RGX(\".*\\\\-ModerateThreatDefaultAction.*\") OR process_command_line = RGX(\".*\\\\-HighThreatDefaultAction.*\") OR process_command_line = RGX(\".*\\\\-SevereThreatDefaultAction.*\") OR process_command_line = RGX(\".*\\\\-ltdefac\\\\ .*\") OR process_command_line = RGX(\".*\\\\-mtdefac\\\\ .*\") OR process_command_line = RGX(\".*\\\\-htdefac\\\\ .*\") OR process_command_line = RGX(\".*\\\\-stdefac\\\\ .*\")) AND (process_command_line = RGX(\".*Allow.*\") OR process_command_line = RGX(\".*6.*\") OR process_command_line = RGX(\".*NoAction.*\") OR process_command_line = RGX(\".*9.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6db4511c-b956-4d6e-9511-4dee9c181a5b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

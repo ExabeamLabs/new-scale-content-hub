@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PwnDrp Access",
+      "description": "Detects downloads from PwnDrp web servers developed for red team testing and most likely also used for criminal activity Note: Unmapped fields: c-uri",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "c-uri = RGX(\".*\\\\/pwndrop\\\\/.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "846f13af-f7ad-4e25-9b3f-c58fe9991810"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

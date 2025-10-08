@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool Service Registration or Execution",
+      "description": "Detects installation or execution of services Note: Unmapped fields: Provider_Name, ServiceName, ImagePath",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Provider_Name = \"Service\\ Control\\ Manager\" AND (event_id = 7045 OR event_id = 7036)) AND ((ServiceName = RGX(\".*cachedump.*\") OR ServiceName = RGX(\".*DumpSvc.*\") OR ServiceName = RGX(\".*gsecdump.*\") OR ServiceName = RGX(\".*pwdump.*\") OR ServiceName = RGX(\".*UACBypassedService.*\") OR ServiceName = RGX(\".*WCE\\\\ SERVICE.*\") OR ServiceName = RGX(\".*WCESERVICE.*\") OR ServiceName = RGX(\".*winexesvc.*\")) OR ImagePath = RGX(\".*bypass.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8590f1aa-4e15-4aed-91de-c16632c0ebe6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

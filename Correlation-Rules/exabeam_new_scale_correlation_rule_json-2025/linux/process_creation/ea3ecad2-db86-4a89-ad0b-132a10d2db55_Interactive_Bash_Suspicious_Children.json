@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Interactive Bash Suspicious Children",
+      "description": "Detects suspicious interactive bash as a parent to rather uncommon child processes",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "parent_process_command_line = \"bash\\ \\-i\" AND ((process_command_line = RGX(\".*\\\\-c\\\\ import\\\\ .*\") OR process_command_line = RGX(\".*base64.*\") OR process_command_line = RGX(\".*pty\\\\\\.spawn.*\")) OR (process_path = RGX(\"whoami$\") OR process_path = RGX(\"iptables$\") OR process_path = RGX(\"\\\\/ncat$\") OR process_path = RGX(\"\\\\/nc$\") OR process_path = RGX(\"\\\\/netcat$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "76350dcb-5969-4aaa-adf6-9b08837095b4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation VAR++ LAUNCHER OBFUSCATION - System",
+      "description": "Detects Obfuscated Powershell via VAR++ LAUNCHER Note: Unmapped fields: Provider_Name, ImagePath",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Provider_Name = \"Service\\ Control\\ Manager\" AND event_id = 7045 AND (ImagePath = RGX(\".*\\\\&\\\\&set.*\") AND ImagePath = RGX(\".*cmd.*\") AND ImagePath = RGX(\".*\\\\/c.*\") AND ImagePath = RGX(\".*\\\\-f.*\")) AND (ImagePath = RGX(\".*\\\\{0\\\\}.*\") OR ImagePath = RGX(\".*\\\\{1\\\\}.*\") OR ImagePath = RGX(\".*\\\\{2\\\\}.*\") OR ImagePath = RGX(\".*\\\\{3\\\\}.*\") OR ImagePath = RGX(\".*\\\\{4\\\\}.*\") OR ImagePath = RGX(\".*\\\\{5\\\\}.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1bf197ea-1974-4fab-beda-9cf27389b499"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

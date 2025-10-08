@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "User Added To Admin Group Via DseditGroup",
+      "description": "Detects attempts to create and/or add an account to the admin group, thus granting admin privileges.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/dseditgroup$\") AND (process_command_line = RGX(\".*\\\\ \\\\-o\\\\ edit\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-a\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-t\\\\ user.*\") AND process_command_line = RGX(\".*admin.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "908a8fd6-f1f0-4a2a-b938-5aea1fade639"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "NTDS.DIT Created",
+      "description": "Detects creation of a file named \"ntds.dit\" (Active Directory Database)",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "file_path = RGX(\"ntds\\\\\\.dit$\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "35cd4a6b-a0e3-47ba-a66f-984bcac50311"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

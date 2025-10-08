@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Disabled Windows Defender Eventlog",
+      "description": "Detects the disabling of the Windows Defender eventlog as seen in relation to Lockbit 3.0 infections Note: Unmapped fields: Details",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\WINEVT\\\\\\\\Channels\\\\\\\\Microsoft\\\\-Windows\\\\-Windows\\\\ Defender\\\\/Operational\\\\\\\\Enabled.*\") AND Details = \"DWORD\\ \\(0x00000000\\)\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f43928d4-3118-4d70-a59c-0d50e90597c1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

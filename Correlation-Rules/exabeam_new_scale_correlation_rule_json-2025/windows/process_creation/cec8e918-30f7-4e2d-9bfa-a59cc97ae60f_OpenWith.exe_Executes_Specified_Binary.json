@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "OpenWith.exe Executes Specified Binary",
+      "description": "The OpenWith.exe executes other binary",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\OpenWith\\\\\\.exe$\") AND process_command_line = RGX(\".*\\\\/c.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2cf40c9c-7318-443a-83d1-c5d835f32c8d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Fsutil Drive Enumeration",
+      "description": "Attackers may leverage fsutil to enumerated connected drives.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\fsutil\\\\\\.exe$\") OR process_original_file_name = \"fsutil\\.exe\") AND process_command_line = RGX(\".*drives.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "aebf4ce8-aa1c-4386-b361-3533991fd9ef"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

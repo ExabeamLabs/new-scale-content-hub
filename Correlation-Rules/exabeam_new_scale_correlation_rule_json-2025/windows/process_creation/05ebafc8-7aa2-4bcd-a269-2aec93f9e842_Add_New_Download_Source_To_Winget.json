@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Add New Download Source To Winget",
+      "description": "Detects usage of winget to add new additional download sources",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\winget\\\\\\.exe$\") OR process_original_file_name = \"winget\\.exe\") AND (process_command_line = RGX(\".*source\\\\ .*\") AND process_command_line = RGX(\".*add\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8d8ac516-b133-4e1a-ab9e-fd620b2064ab"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

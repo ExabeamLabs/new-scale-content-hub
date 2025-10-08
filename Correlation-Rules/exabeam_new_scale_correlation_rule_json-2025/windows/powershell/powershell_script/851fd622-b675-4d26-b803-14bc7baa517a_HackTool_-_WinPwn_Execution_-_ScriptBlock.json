@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - WinPwn Execution - ScriptBlock",
+      "description": "Detects scriptblock text keywords indicative of potential usge of the tool WinPwn. A tool for Windows and Active Directory reconnaissance and exploitation.\n Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Offline\\\\_Winpwn.*\") OR ScriptBlockText = RGX(\".*WinPwn\\\\ .*\") OR ScriptBlockText = RGX(\".*WinPwn\\\\\\.exe.*\") OR ScriptBlockText = RGX(\".*WinPwn\\\\\\.ps1.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0c486776-1352-4ae3-bc28-6b792064b7d7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

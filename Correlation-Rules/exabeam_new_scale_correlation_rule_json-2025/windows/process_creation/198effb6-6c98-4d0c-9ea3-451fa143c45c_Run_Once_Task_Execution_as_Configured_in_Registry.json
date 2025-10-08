@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Run Once Task Execution as Configured in Registry",
+      "description": "This rule detects the execution of Run Once task as configured in the registry",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\runonce\\\\\\.exe$\") OR process_description = \"Run\\ Once\\ Wrapper\") AND (process_command_line = RGX(\".*\\\\/AlternateShellStartup.*\") OR process_command_line = RGX(\"\\\\/r$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "eb5cb4af-a796-4f41-a609-6663d7245e09"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

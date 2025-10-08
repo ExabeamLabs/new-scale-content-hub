@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "VBScript Payload Stored in Registry",
+      "description": "Detects VBScript content stored into registry keys as seen being used by UNC2452 group Note: Unmapped fields: Details",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*Software\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion.*\") AND (Details = RGX(\".*vbscript\\\\:.*\") OR Details = RGX(\".*jscript\\\\:.*\") OR Details = RGX(\".*mshtml\\\\,.*\") OR Details = RGX(\".*RunHTMLApplication.*\") OR Details = RGX(\".*Execute\\\\(.*\") OR Details = RGX(\".*CreateObject.*\") OR Details = RGX(\".*window\\\\\\.close.*\"))) AND  NOT (registry_path = RGX(\".*Software\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Run.*\") OR (process_path = RGX(\"\\\\\\\\msiexec\\\\\\.exe$\") AND registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Installer\\\\\\\\UserData\\\\\\\\.*\") AND (Details = RGX(\".*\\\\\\\\Microsoft\\\\\\.NET\\\\\\\\Primary\\\\ Interop\\\\ Assemblies\\\\\\\\Microsoft\\\\\\.mshtml\\\\\\.dll.*\") OR Details = RGX(\".*\\\\<\\\\\\\\Microsoft\\\\\\.mshtml\\\\,fileVersion\\\\=.*\") OR Details = RGX(\".*\\\\_mshtml\\\\_dll\\\\_.*\") OR Details = RGX(\".*\\\\<\\\\\\\\Microsoft\\\\\\.mshtml\\\\,culture\\\\=.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "fae2efd7-c31e-43f6-9432-7460b29fda9c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

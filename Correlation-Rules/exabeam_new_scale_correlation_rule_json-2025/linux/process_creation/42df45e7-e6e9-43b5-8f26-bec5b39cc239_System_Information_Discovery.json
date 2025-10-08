@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "System Information Discovery",
+      "description": "Detects system information discovery commands",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/uname$\") OR process_path = RGX(\"\\\\/hostname$\") OR process_path = RGX(\"\\\\/uptime$\") OR process_path = RGX(\"\\\\/lspci$\") OR process_path = RGX(\"\\\\/dmidecode$\") OR process_path = RGX(\"\\\\/lscpu$\") OR process_path = RGX(\"\\\\/lsmod$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0e22f615-4fe4-48c0-a527-14e18d3f0661"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

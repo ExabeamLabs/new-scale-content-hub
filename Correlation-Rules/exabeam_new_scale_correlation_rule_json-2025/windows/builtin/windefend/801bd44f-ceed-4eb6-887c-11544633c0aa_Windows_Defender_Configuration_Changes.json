@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows Defender Configuration Changes",
+      "description": "Detects suspicious changes to the Windows Defender configuration Note: Unmapped fields: NewValue",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 5007 AND (NewValue = RGX(\".*\\\\\\\\Windows\\\\ Defender\\\\\\\\DisableAntiSpyware\\\\ .*\") OR NewValue = RGX(\".*\\\\\\\\Windows\\\\ Defender\\\\\\\\Scan\\\\\\\\DisableRemovableDriveScanning\\\\ .*\") OR NewValue = RGX(\".*\\\\\\\\Windows\\\\ Defender\\\\\\\\Scan\\\\\\\\DisableScanningMappedNetworkDrivesForFullScan\\\\ .*\") OR NewValue = RGX(\".*\\\\\\\\Windows\\\\ Defender\\\\\\\\SpyNet\\\\\\\\DisableBlockAtFirstSeen\\\\ .*\") OR NewValue = RGX(\".*\\\\\\\\Real\\\\-Time\\\\ Protection\\\\\\\\SpyNetReporting\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "749ec4c5-6697-4228-9f06-94f7e9d1cf99"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

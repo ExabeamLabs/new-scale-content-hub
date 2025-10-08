@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious SysAidServer Child",
+      "description": "Detects suspicious child processes of SysAidServer (as seen in MERCURY threat actor intrusions)",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((parent_process_path = RGX(\"\\\\\\\\java\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\javaw\\\\\\.exe$\")) AND parent_process_command_line = RGX(\".*SysAidServer.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "32b36754-504e-4a0d-91a3-0ac67cfc2086"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

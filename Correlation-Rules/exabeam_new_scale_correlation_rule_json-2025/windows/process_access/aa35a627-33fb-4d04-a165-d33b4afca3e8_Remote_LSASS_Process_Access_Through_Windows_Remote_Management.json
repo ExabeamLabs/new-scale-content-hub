@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remote LSASS Process Access Through Windows Remote Management",
+      "description": "Detects remote access to the LSASS process via WinRM. This could be a sign of credential dumping from tools like mimikatz. Note: Unmapped fields: TargetImage, SourceImage, GrantedAccess",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(TargetImage = RGX(\"\\\\\\\\lsass\\\\\\.exe$\") AND SourceImage = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\system32\\\\\\\\wsmprovhost\\\\\\.exe$\")) AND  NOT (GrantedAccess = \"0x80000000\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "da295f00-e29f-4bc6-b254-dcc3e5844379"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

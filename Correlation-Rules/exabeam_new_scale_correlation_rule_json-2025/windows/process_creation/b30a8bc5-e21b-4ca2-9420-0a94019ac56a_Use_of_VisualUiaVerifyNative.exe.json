@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Use of VisualUiaVerifyNative.exe",
+      "description": "VisualUiaVerifyNative.exe is a Windows SDK that can be used for AWL bypass and is listed in Microsoft's recommended block rules.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\VisualUiaVerifyNative\\\\\\.exe$\") OR process_original_file_name = \"VisualUiaVerifyNative\\.exe\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ee9601e0-5d17-4f4d-ac03-edba3163fc51"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

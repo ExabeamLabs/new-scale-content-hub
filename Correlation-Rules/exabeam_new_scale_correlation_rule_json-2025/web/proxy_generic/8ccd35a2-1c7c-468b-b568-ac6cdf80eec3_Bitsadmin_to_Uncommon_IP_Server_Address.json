@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Bitsadmin to Uncommon IP Server Address",
+      "description": "Detects Bitsadmin connections to IP addresses instead of FQDN names Note: Unmapped fields: c-useragent, cs-host",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(c-useragent = RGX(\"^Microsoft\\\\ BITS\\\\/\") AND (cs-host = RGX(\"1$\") OR cs-host = RGX(\"2$\") OR cs-host = RGX(\"3$\") OR cs-host = RGX(\"4$\") OR cs-host = RGX(\"5$\") OR cs-host = RGX(\"6$\") OR cs-host = RGX(\"7$\") OR cs-host = RGX(\"8$\") OR cs-host = RGX(\"9$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ad2e90ef-867b-49ec-af3c-051db50628ad"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

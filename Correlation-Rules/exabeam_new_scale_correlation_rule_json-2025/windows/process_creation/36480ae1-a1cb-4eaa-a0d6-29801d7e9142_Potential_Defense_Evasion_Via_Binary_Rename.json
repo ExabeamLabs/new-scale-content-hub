@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Defense Evasion Via Binary Rename",
+      "description": "Detects the execution of a renamed binary often used by attackers or malware leveraging new Sysmon OriginalFileName datapoint.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_original_file_name = \"Cmd\\.Exe\" OR process_original_file_name = \"CONHOST\\.EXE\" OR process_original_file_name = \"7z\\.exe\" OR process_original_file_name = \"7za\\.exe\" OR process_original_file_name = \"WinRAR\\.exe\" OR process_original_file_name = \"wevtutil\\.exe\" OR process_original_file_name = \"net\\.exe\" OR process_original_file_name = \"net1\\.exe\" OR process_original_file_name = \"netsh\\.exe\" OR process_original_file_name = \"InstallUtil\\.exe\") AND  NOT ((process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\conhost\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\7z\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\7za\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\WinRAR\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wevtutil\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\net\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\net1\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\netsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\InstallUtil\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7fd31cc1-be86-407d-acf9-c7151f1b299b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

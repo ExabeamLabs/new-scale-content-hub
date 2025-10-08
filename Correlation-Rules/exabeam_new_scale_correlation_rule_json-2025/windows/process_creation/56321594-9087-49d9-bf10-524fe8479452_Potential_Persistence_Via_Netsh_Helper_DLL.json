@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Persistence Via Netsh Helper DLL",
+      "description": "Detects the execution of netsh with \"add helper\" flag in order to add a custom helper DLL. This technique can be abused to add a malicious helper DLL that can be used as a persistence proxy that gets called when netsh.exe is executed.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_original_file_name = \"netsh\\.exe\" OR process_path = RGX(\"\\\\\\\\netsh\\\\\\.exe$\")) AND (process_command_line = RGX(\".*add.*\") AND process_command_line = RGX(\".*helper.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "925a9212-2578-463f-a989-3aa1bb0934d5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

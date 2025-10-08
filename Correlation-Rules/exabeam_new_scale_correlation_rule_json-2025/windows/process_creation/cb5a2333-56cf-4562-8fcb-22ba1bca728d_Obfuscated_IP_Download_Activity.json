@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Obfuscated IP Download Activity",
+      "description": "Detects use of an encoded/obfuscated version of an IP address (hex, octal...) in an URL combined with a download command",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*Invoke\\\\-WebRequest.*\") OR process_command_line = RGX(\".*iwr\\\\ .*\") OR process_command_line = RGX(\".*Invoke\\\\-RestMethod.*\") OR process_command_line = RGX(\".*irm\\\\ .*\") OR process_command_line = RGX(\".*wget\\\\ .*\") OR process_command_line = RGX(\".*curl\\\\ .*\") OR process_command_line = RGX(\".*DownloadFile.*\") OR process_command_line = RGX(\".*DownloadString.*\")) AND ((process_command_line = RGX(\".*\\\\ 0x.*\") OR process_command_line = RGX(\".*\\\\/\\\\/0x.*\") OR process_command_line = RGX(\".*\\\\\\.0x.*\") OR process_command_line = RGX(\".*\\\\\\.00x.*\")) OR (process_command_line = RGX(\".*http\\\\:\\\\/\\\\/\\\\%.*\") AND process_command_line = RGX(\".*\\\\%2e.*\")) OR (process_command_line = RGX(\"https?://[0-9]{1,3}.[0-9]{1,3}.0[0-9]{3,4}\") OR process_command_line = RGX(\"https?://[0-9]{1,3}.0[0-9]{3,7}\") OR process_command_line = RGX(\"https?://0[0-9]{3,11}\") OR process_command_line = RGX(\"https?://(0[0-9]{1,11}.){3}0[0-9]{1,11}\") OR process_command_line = RGX(\"https?://0[0-9]{1,11}\") OR process_command_line = RGX(\" [0-7]{7,13}\"))) AND  NOT (process_command_line = RGX(\"https?://((25[0-5]|(2[0-4]|1\\d|[1-9])?\\d)(.|\\b)){4}\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a7de610e-7aba-497d-9113-2f7d004486cf"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HTTP Logging Disabled On IIS Server",
+      "description": "Detects changes to of the IIS server configuration in order to disable HTTP logging for successful requests. Note: Unmapped fields: Configuration, NewValue",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 29 AND Configuration = \"\\/system\\.webServer\\/httpLogging\\/\\@dontLog\" AND NewValue = \"true\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b6f931ba-9654-4940-bea3-10a17b86aabc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

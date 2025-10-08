@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "NetNTLM Downgrade Attack",
+      "description": "Detects NetNTLM downgrade attack Note: Unmapped fields: ObjectName, ObjectValueName",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4657 AND (ObjectName = RGX(\".*\\\\\\\\REGISTRY\\\\\\\\MACHINE\\\\\\\\SYSTEM.*\") AND ObjectName = RGX(\".*ControlSet.*\") AND ObjectName = RGX(\".*\\\\\\\\Control\\\\\\\\Lsa.*\")) AND (ObjectValueName = \"LmCompatibilityLevel\" OR ObjectValueName = \"NtlmMinClientSec\" OR ObjectValueName = \"RestrictSendingNTLMTraffic\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1ee1139f-6b6f-4dab-a1b5-0cc1637c9b98"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

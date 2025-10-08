@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Always Install Elevated MSI Spawned Cmd And Powershell",
+      "description": "Detects Windows Installer service (msiexec.exe) spawning \"cmd\" or \"powershell\"",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\")) OR (process_original_file_name = \"Cmd\\.Exe\" OR process_original_file_name = \"PowerShell\\.EXE\" OR process_original_file_name = \"pwsh\\.dll\")) AND ((parent_process_path = RGX(\".*\\\\\\\\Windows\\\\\\\\Installer\\\\\\\\.*\") AND parent_process_path = RGX(\".*msi.*\")) AND parent_process_path = RGX(\"tmp$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5a83c268-cc52-465b-ba5b-047c837ce6ab"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

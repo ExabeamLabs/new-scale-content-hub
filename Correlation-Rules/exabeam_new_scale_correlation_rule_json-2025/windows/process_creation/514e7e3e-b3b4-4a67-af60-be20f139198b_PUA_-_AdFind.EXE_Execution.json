@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - AdFind.EXE Execution",
+      "description": "Detects execution of Adfind.exe utility, which can be used for reconnaissance in an Active Directory environment",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\AdFind\\\\\\.exe$\") OR process_original_file_name = \"AdFind\\.exe\" OR (process_hash = RGX(\".*IMPHASH\\\\=d144de8117df2beceaba2201ad304764.*\") OR process_hash = RGX(\".*IMPHASH\\\\=12ce1c0f3f5837ecc18a3782408fa975.*\") OR process_hash = RGX(\".*IMPHASH\\\\=bca5675746d13a1f246e2da3c2217492.*\") OR process_hash = RGX(\".*IMPHASH\\\\=4fbf3f084fbbb2470b80b2013134df35.*\") OR process_hash = RGX(\".*IMPHASH\\\\=49b639b4acbecc49d72a01f357aa4930.*\") OR process_hash = RGX(\".*IMPHASH\\\\=53e117a96057eaf19c41380d0e87f1c2.*\") OR process_hash = RGX(\".*IMPHASH\\\\=680dad9e300346e05a85023965867201.*\") OR process_hash = RGX(\".*IMPHASH\\\\=21aa085d54992511b9f115355e468782.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "48bc934d-a114-4411-8fae-90230291c110"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

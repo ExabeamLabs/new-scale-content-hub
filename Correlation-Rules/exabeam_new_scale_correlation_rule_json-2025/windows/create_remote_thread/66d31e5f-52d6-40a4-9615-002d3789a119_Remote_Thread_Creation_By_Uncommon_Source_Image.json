@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remote Thread Creation By Uncommon Source Image",
+      "description": "Detects uncommon processes creating remote threads. Note: Unmapped fields: SourceImage, TargetImage, TargetParentProcessId, SourceCommandLine, SourceParentImage",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(SourceImage = RGX(\"\\\\\\\\explorer\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\iexplore\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\msiexec\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\powerpnt\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\winlogon\\\\\\.exe$\")) AND  NOT ((SourceImage = \"C\\:\\\\Windows\\\\System32\\\\winlogon\\.exe\" AND (TargetImage = \"C\\:\\\\Windows\\\\System32\\\\services\\.exe\" OR TargetImage = \"C\\:\\\\Windows\\\\System32\\\\wininit\\.exe\" OR TargetImage = \"C\\:\\\\Windows\\\\System32\\\\csrss\\.exe\" OR TargetImage = \"C\\:\\\\Windows\\\\System32\\\\LogonUI\\.exe\" OR TargetImage = \"C\\:\\\\Windows\\\\System32\\\\wlrmdr\\.exe\" OR TargetImage = \"C\\:\\\\Windows\\\\System32\\\\AtBroker\\.exe\" OR TargetImage = \"C\\:\\\\Windows\\\\System32\\\\dwm\\.exe\" OR TargetImage = \"C\\:\\\\Windows\\\\System32\\\\fontdrvhost\\.exe\" OR TargetImage = \"C\\:\\\\Windows\\\\System32\\\\userinit\\.exe\")) OR (SourceImage = \"C\\:\\\\Windows\\\\System32\\\\winlogon\\.exe\" AND TargetParentProcessId = 4) OR ((SourceImage = \"C\\:\\\\Windows\\\\System32\\\\schtasks\\.exe\" OR SourceImage = \"C\\:\\\\Windows\\\\SysWOW64\\\\schtasks\\.exe\") AND TargetImage = \"C\\:\\\\Windows\\\\System32\\\\conhost\\.exe\") OR (SourceImage = \"C\\:\\\\Windows\\\\explorer\\.exe\" AND (TargetImage = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\\") OR TargetImage = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\\") OR TargetImage = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\\") OR TargetImage = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\\"))) OR TargetImage = \"System\" OR (SourceImage = RGX(\"\\\\\\\\msiexec\\\\\\.exe$\") AND (TargetImage = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\.*\") OR TargetImage = RGX(\".*C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\.*\") OR TargetImage = RGX(\".*C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\.*\") OR TargetImage = RGX(\".*C\\\\:\\\\\\\\Windows\\\\\\\\Microsoft\\\\\\.NET\\\\\\\\Framework64\\\\\\\\.*\"))) OR (SourceImage = RGX(\"\\\\\\\\msiexec\\\\\\.exe$\") AND (TargetImage = \"C\\:\\\\Windows\\\\System32\\\\msiexec\\.exe\" OR TargetImage = \"C\\:\\\\Windows\\\\SysWOW64\\\\msiexec\\.exe\")) OR (SourceImage = \"C\\:\\\\Program\\ Files\\\\Internet\\ Explorer\\\\iexplore\\.exe\" AND (TargetImage = \"C\\:\\\\Program\\ Files\\ \\(x86\\)\\\\Internet\\ Explorer\\\\iexplore\\.exe\" OR TargetImage = \"C\\:\\\\Windows\\\\System32\\\\rundll32\\.exe\")) OR (SourceImage = RGX(\"\\\\\\\\POWERPNT\\\\\\.EXE$\") AND (TargetImage = RGX(\".*C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Microsoft\\\\ Office\\\\\\\\.*\") OR TargetImage = RGX(\".*C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Microsoft\\\\ Office\\\\\\\\.*\"))) OR TargetImage = \"None\" OR TargetImage = \"\") AND  NOT ((SourceImage = \"C\\:\\\\Program\\ Files\\\\internet\\ explorer\\\\iexplore\\.exe\" AND (SourceCommandLine = RGX(\".*https\\\\:\\\\/\\\\/.*\") AND SourceCommandLine = RGX(\".*\\\\\\.checkpoint\\\\\\.com\\\\/documents\\\\/.*\") AND SourceCommandLine = RGX(\".*SmartConsole\\\\_OLH\\\\/.*\") AND SourceCommandLine = RGX(\".*default\\\\\\.htm\\\\#cshid\\\\=.*\"))) OR (SourceImage = \"C\\:\\\\Program\\ Files\\\\internet\\ explorer\\\\iexplore\\.exe\" AND (SourceParentImage = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\\") OR SourceParentImage = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\\")) AND (SourceParentImage = RGX(\".*\\\\\\\\CheckPoint\\\\\\\\SmartConsole\\\\\\\\.*\") AND SourceParentImage = RGX(\".*\\\\\\\\SmartConsole\\\\\\.exe.*\"))) OR (SourceImage = RGX(\".*\\\\\\\\Microsoft\\\\ Office\\\\\\\\.*\") AND SourceImage = RGX(\"\\\\\\\\POWERPNT\\\\\\.EXE$\") AND TargetImage = \"C\\:\\\\Windows\\\\System32\\\\csrss\\.exe\") OR (SourceImage = \"C\\:\\\\Windows\\\\explorer\\.exe\" AND TargetImage = RGX(\"\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Microsoft\\\\\\\\OneDrive\\\\\\\\OneDrive\\\\\\.exe$\")) OR (SourceImage = \"C\\:\\\\Windows\\\\explorer\\.exe\" AND TargetImage = RGX(\"\\\\\\\\aurora\\\\-dashboard\\\\\\.exe$\")) OR (SourceImage = \"C\\:\\\\Windows\\\\explorer\\.exe\" AND TargetImage = RGX(\"\\\\\\\\OfficeSetup\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5339e5cc-e060-42bb-b3d8-67b229ab6ea2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

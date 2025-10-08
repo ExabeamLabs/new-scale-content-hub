@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PSEXEC Remote Execution File Artefact",
+      "description": "Detects creation of the PSEXEC key file. Which is created anytime a PsExec command is executed. It gets written to the file system and will be recorded in the USN Journal on the target system",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(file_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\PSEXEC\\\\-\") AND file_path = RGX(\"\\\\\\.key$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a5ac5474-4fe6-49a5-be92-0e3f3cbf63a9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

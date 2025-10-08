@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Bad Opsec Powershell Code Artifacts",
+      "description": "focuses on trivial artifacts observed in variants of prevalent offensive ps1 payloads, including\nCobalt Strike Beacon, PoshC2, Powerview, Letmein, Empire, Powersploit, and other attack payloads\nthat often undergo minimal changes by attackers due to bad opsec.\n Note: Unmapped fields: Payload",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Payload = RGX(\".*\\\\$DoIt.*\") OR Payload = RGX(\".*harmj0y.*\") OR Payload = RGX(\".*mattifestation.*\") OR Payload = RGX(\".*\\\\_RastaMouse.*\") OR Payload = RGX(\".*tifkin\\\\_.*\") OR Payload = RGX(\".*0xdeadbeef.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7ab94b94-67d4-4652-9d19-9fa793a74f8a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Script Execution From Temp Folder",
+      "description": "Detects a suspicious script executions from temporary folder",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\")) AND (process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\Temp.*\") OR process_command_line = RGX(\".*\\\\\\\\Temporary\\\\ Internet.*\") OR process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp.*\") OR process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\Temp.*\") OR process_command_line = RGX(\".*\\\\%TEMP\\\\%.*\") OR process_command_line = RGX(\".*\\\\%TMP\\\\%.*\") OR process_command_line = RGX(\".*\\\\%LocalAppData\\\\%\\\\\\\\Temp.*\"))) AND  NOT ((process_command_line = RGX(\".*\\\\ \\\\>.*\") OR process_command_line = RGX(\".*Out\\\\-File.*\") OR process_command_line = RGX(\".*ConvertTo\\\\-Json.*\") OR process_command_line = RGX(\".*\\\\-WindowStyle\\\\ hidden\\\\ \\\\-Verb\\\\ runAs.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\system32\\\\\\\\config\\\\\\\\systemprofile\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\Amazon\\\\\\\\EC2\\\\-Windows\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "95208321-fff9-4b45-a9db-39c1a5386795"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

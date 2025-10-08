@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Uncommon Child Processes Of SndVol.exe",
+      "description": "Detects potentially uncommon child processes of SndVol.exe (the Windows volume mixer)",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "parent_process_path = RGX(\"\\\\\\\\SndVol\\\\\\.exe$\") AND  NOT ((process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") AND process_command_line = RGX(\".*\\\\ shell32\\\\\\.dll\\\\,Control\\\\_RunDLL\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0a1e9664-b935-46ce-b006-4e7cc985f5d2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}
