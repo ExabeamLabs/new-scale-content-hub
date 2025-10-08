@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Persistence Via Hhctrl.ocx",
+      "description": "Detects when an attacker modifies the registry value of the \"hhctrl\" to point to a custom binary Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\".*\\\\\\\\CLSID\\\\\\\\\\\\{52A2AAAE\\\\-085D\\\\-4187\\\\-97EA\\\\-8C30DB990436\\\\}\\\\\\\\InprocServer32\\\\\\\\\\\\(Default\\\\).*\") AND  NOT (Details = \"C\\:\\\\Windows\\\\System32\\\\hhctrl\\.ocx\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ae8194b0-714f-4209-a1c7-5920cd9e3e9d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

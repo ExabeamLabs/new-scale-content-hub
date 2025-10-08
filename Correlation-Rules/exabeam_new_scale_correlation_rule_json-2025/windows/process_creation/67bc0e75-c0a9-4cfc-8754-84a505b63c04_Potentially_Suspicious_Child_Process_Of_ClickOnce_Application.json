@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Suspicious Child Process Of ClickOnce Application",
+      "description": "Detects potentially suspicious child processes of a ClickOnce deployment application",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Apps\\\\\\\\2\\\\\\.0\\\\\\\\.*\") AND (process_path = RGX(\"\\\\\\\\calc\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\explorer\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\net\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\net1\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\nltest\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\notepad\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\reg\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\werfault\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1f7f6ea2-34c4-47bb-ba4d-ba288fc213ef"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

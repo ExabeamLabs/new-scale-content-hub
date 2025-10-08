@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Delegated Permissions Granted For All Users",
+      "description": "Detects when highly privileged delegated permissions are granted on behalf of all users Note: Unmapped fields: properties.message",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "properties.message = \"Add\\ delegated\\ permission\\ grant\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "daff2427-50f3-4d0c-b0e3-6811061dd8ce"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

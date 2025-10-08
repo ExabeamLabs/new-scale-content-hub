@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Edputil.DLL Sideloading",
+      "description": "Detects potential DLL sideloading of \"edputil.dll\" Note: Unmapped fields: ImageLoaded",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ImageLoaded = RGX(\"\\\\\\\\edputil\\\\\\.dll$\") AND  NOT ((ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\\\\\Windows\\\\\\\\WinSxS\\\\\\\\\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3f133d41-709b-4911-9f06-aab4deadc68e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

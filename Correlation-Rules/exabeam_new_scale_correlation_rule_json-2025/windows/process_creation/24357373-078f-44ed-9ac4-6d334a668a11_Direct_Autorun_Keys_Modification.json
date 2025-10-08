@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Direct Autorun Keys Modification",
+      "description": "Detects direct modification of autostart extensibility point (ASEP) in registry using reg.exe.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\reg\\\\\\.exe$\") AND process_command_line = RGX(\".*add.*\")) AND (process_command_line = RGX(\".*\\\\\\\\software\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Run.*\") OR process_command_line = RGX(\".*\\\\\\\\software\\\\\\\\WOW6432Node\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Run.*\") OR process_command_line = RGX(\".*\\\\\\\\software\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\Explorer\\\\\\\\Run.*\") OR process_command_line = RGX(\".*\\\\\\\\software\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\Winlogon\\\\\\\\Userinit.*\") OR process_command_line = RGX(\".*\\\\\\\\software\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\Winlogon\\\\\\\\Shell.*\") OR process_command_line = RGX(\".*\\\\\\\\software\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\Windows.*\") OR process_command_line = RGX(\".*\\\\\\\\software\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Explorer\\\\\\\\User\\\\ Shell\\\\ Folders.*\") OR process_command_line = RGX(\".*\\\\\\\\system\\\\\\\\CurrentControlSet\\\\\\\\Control\\\\\\\\SafeBoot\\\\\\\\AlternateShell.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "da8a6027-f130-4bd5-8e88-aa2d92c6b7a3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

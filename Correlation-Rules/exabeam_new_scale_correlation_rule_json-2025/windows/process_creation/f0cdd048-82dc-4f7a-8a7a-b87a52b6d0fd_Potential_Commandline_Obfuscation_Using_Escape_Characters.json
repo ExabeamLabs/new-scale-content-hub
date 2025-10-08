@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Commandline Obfuscation Using Escape Characters",
+      "description": "Detects potential commandline obfuscation using known escape characters",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*h\\\\^t\\\\^t\\\\^p.*\") OR process_command_line = RGX(\".*h\\\\\"t\\\\\"t\\\\\"p.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "287e6e4e-a481-419e-b3ce-d32729fe0e5f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

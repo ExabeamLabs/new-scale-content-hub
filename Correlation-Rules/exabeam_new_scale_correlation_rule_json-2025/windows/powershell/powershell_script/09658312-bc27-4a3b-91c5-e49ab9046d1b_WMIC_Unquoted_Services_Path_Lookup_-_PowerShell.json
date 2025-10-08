@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "WMIC Unquoted Services Path Lookup - PowerShell",
+      "description": "Detects known WMI recon method to look for unquoted service paths, often used by pentest inside of powershell scripts attackers enum scripts Note: Unmapped fields: ScriptBlockText",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ScriptBlockText = RGX(\".*Get\\\\-WmiObject\\\\ .*\") OR ScriptBlockText = RGX(\".*gwmi\\\\ .*\")) AND (ScriptBlockText = RGX(\".*\\\\ Win32\\\\_Service\\\\ .*\") AND ScriptBlockText = RGX(\".*Name.*\") AND ScriptBlockText = RGX(\".*DisplayName.*\") AND ScriptBlockText = RGX(\".*PathName.*\") AND ScriptBlockText = RGX(\".*StartMode.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "51069a90-edcf-41d3-953a-db34501e62ac"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

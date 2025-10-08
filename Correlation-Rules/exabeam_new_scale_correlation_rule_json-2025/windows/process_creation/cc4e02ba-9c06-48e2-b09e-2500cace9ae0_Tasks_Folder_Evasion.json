@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Tasks Folder Evasion",
+      "description": "The Tasks folder in system32 and syswow64 are globally writable paths.\nAdversaries can take advantage of this and load or influence any script hosts or ANY .NET Application\nin Tasks to load and execute a custom assembly into cscript, wscript, regsvr32, mshta, eventvwr\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*echo\\\\ .*\") OR process_command_line = RGX(\".*copy\\\\ .*\") OR process_command_line = RGX(\".*type\\\\ .*\") OR process_command_line = RGX(\".*file\\\\ createnew.*\")) AND (process_command_line = RGX(\".*\\\\ C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\Tasks\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\ C\\\\:\\\\\\\\Windows\\\\\\\\SysWow64\\\\\\\\Tasks\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6ebc9ba4-c971-4bda-ac23-4cd654b5debe"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

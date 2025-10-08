@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "DNS Query Tor .Onion Address - Sysmon",
+      "description": "Detects DNS queries to an \".onion\" address related to Tor routing networks Note: Unmapped fields: QueryName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(QueryName = RGX(\"\\\\\\.hiddenservice\\\\\\.net$\") OR QueryName = RGX(\"\\\\\\.onion\\\\\\.ca$\") OR QueryName = RGX(\"\\\\\\.onion\\\\\\.cab$\") OR QueryName = RGX(\"\\\\\\.onion\\\\\\.casa$\") OR QueryName = RGX(\"\\\\\\.onion\\\\\\.city$\") OR QueryName = RGX(\"\\\\\\.onion\\\\\\.direct$\") OR QueryName = RGX(\"\\\\\\.onion\\\\\\.dog$\") OR QueryName = RGX(\"\\\\\\.onion\\\\\\.glass$\") OR QueryName = RGX(\"\\\\\\.onion\\\\\\.gq$\") OR QueryName = RGX(\"\\\\\\.onion\\\\\\.ink$\") OR QueryName = RGX(\"\\\\\\.onion\\\\\\.it$\") OR QueryName = RGX(\"\\\\\\.onion\\\\\\.link$\") OR QueryName = RGX(\"\\\\\\.onion\\\\\\.lt$\") OR QueryName = RGX(\"\\\\\\.onion\\\\\\.lu$\") OR QueryName = RGX(\"\\\\\\.onion\\\\\\.nu$\") OR QueryName = RGX(\"\\\\\\.onion\\\\\\.pet$\") OR QueryName = RGX(\"\\\\\\.onion\\\\\\.plus$\") OR QueryName = RGX(\"\\\\\\.onion\\\\\\.rip$\") OR QueryName = RGX(\"\\\\\\.onion\\\\\\.sh$\") OR QueryName = RGX(\"\\\\\\.onion\\\\\\.to$\") OR QueryName = RGX(\"\\\\\\.onion\\\\\\.top$\") OR QueryName = RGX(\"\\\\\\.onion$\") OR QueryName = RGX(\"\\\\\\.s1\\\\\\.tor\\\\-gateways\\\\\\.de$\") OR QueryName = RGX(\"\\\\\\.s2\\\\\\.tor\\\\-gateways\\\\\\.de$\") OR QueryName = RGX(\"\\\\\\.s3\\\\\\.tor\\\\-gateways\\\\\\.de$\") OR QueryName = RGX(\"\\\\\\.s4\\\\\\.tor\\\\-gateways\\\\\\.de$\") OR QueryName = RGX(\"\\\\\\.s5\\\\\\.tor\\\\-gateways\\\\\\.de$\") OR QueryName = RGX(\"\\\\\\.t2w\\\\\\.pw$\") OR QueryName = RGX(\"\\\\\\.tor2web\\\\\\.ae\\\\\\.org$\") OR QueryName = RGX(\"\\\\\\.tor2web\\\\\\.blutmagie\\\\\\.de$\") OR QueryName = RGX(\"\\\\\\.tor2web\\\\\\.com$\") OR QueryName = RGX(\"\\\\\\.tor2web\\\\\\.fi$\") OR QueryName = RGX(\"\\\\\\.tor2web\\\\\\.io$\") OR QueryName = RGX(\"\\\\\\.tor2web\\\\\\.org$\") OR QueryName = RGX(\"\\\\\\.tor2web\\\\\\.xyz$\") OR QueryName = RGX(\"\\\\\\.torlink\\\\\\.co$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "422115fc-9e6f-46b1-8282-23437b6ac036"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

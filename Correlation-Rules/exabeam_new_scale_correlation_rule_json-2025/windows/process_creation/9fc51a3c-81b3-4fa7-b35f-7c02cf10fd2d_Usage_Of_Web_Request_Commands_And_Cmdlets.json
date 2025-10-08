@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Usage Of Web Request Commands And Cmdlets",
+      "description": "Detects the use of various web request commands with commandline tools and Windows PowerShell cmdlets (including aliases) via CommandLine",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\[System\\\\\\.Net\\\\\\.WebRequest\\\\]\\\\:\\\\:create.*\") OR process_command_line = RGX(\".*curl\\\\ .*\") OR process_command_line = RGX(\".*Invoke\\\\-RestMethod.*\") OR process_command_line = RGX(\".*Invoke\\\\-WebRequest.*\") OR process_command_line = RGX(\".*\\\\ irm\\\\ .*\") OR process_command_line = RGX(\".*iwr\\\\ .*\") OR process_command_line = RGX(\".*Net\\\\\\.WebClient.*\") OR process_command_line = RGX(\".*Resume\\\\-BitsTransfer.*\") OR process_command_line = RGX(\".*Start\\\\-BitsTransfer.*\") OR process_command_line = RGX(\".*wget\\\\ .*\") OR process_command_line = RGX(\".*WinHttp\\\\\\.WinHttpRequest.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7b1c122c-42b4-4744-81c0-09c9eb6253a8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious PowerShell Invocations - Specific - PowerShell Module",
+      "description": "Detects suspicious PowerShell invocation command parameters Note: Unmapped fields: ContextInfo",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ContextInfo = RGX(\".*\\\\-nop.*\") AND ContextInfo = RGX(\".*\\\\ \\\\-w\\\\ .*\") AND ContextInfo = RGX(\".*hidden.*\") AND ContextInfo = RGX(\".*\\\\ \\\\-c\\\\ .*\") AND ContextInfo = RGX(\".*\\\\[Convert\\\\]\\\\:\\\\:FromBase64String.*\")) OR (ContextInfo = RGX(\".*\\\\ \\\\-w\\\\ .*\") AND ContextInfo = RGX(\".*hidden.*\") AND ContextInfo = RGX(\".*\\\\-noni.*\") AND ContextInfo = RGX(\".*\\\\-nop.*\") AND ContextInfo = RGX(\".*\\\\ \\\\-c\\\\ .*\") AND ContextInfo = RGX(\".*iex.*\") AND ContextInfo = RGX(\".*New\\\\-Object.*\")) OR (ContextInfo = RGX(\".*\\\\ \\\\-w\\\\ .*\") AND ContextInfo = RGX(\".*hidden.*\") AND ContextInfo = RGX(\".*\\\\-ep.*\") AND ContextInfo = RGX(\".*bypass.*\") AND ContextInfo = RGX(\".*\\\\-Enc.*\")) OR ((ContextInfo = RGX(\".*powershell.*\") AND ContextInfo = RGX(\".*reg.*\") AND ContextInfo = RGX(\".*add.*\")) AND (ContextInfo = RGX(\".*\\\\\\\\software\\\\\\\\microsoft\\\\\\\\windows\\\\\\\\currentversion\\\\\\\\run.*\") OR ContextInfo = RGX(\".*\\\\\\\\software\\\\\\\\wow6432node\\\\\\\\microsoft\\\\\\\\windows\\\\\\\\currentversion\\\\\\\\run.*\") OR ContextInfo = RGX(\".*\\\\\\\\software\\\\\\\\microsoft\\\\\\\\windows\\\\\\\\currentversion\\\\\\\\policies\\\\\\\\explorer\\\\\\\\run.*\"))) OR (ContextInfo = RGX(\".*bypass.*\") AND ContextInfo = RGX(\".*\\\\-noprofile.*\") AND ContextInfo = RGX(\".*\\\\-windowstyle.*\") AND ContextInfo = RGX(\".*hidden.*\") AND ContextInfo = RGX(\".*new\\\\-object.*\") AND ContextInfo = RGX(\".*system\\\\\\.net\\\\\\.webclient.*\") AND ContextInfo = RGX(\".*\\\\\\.download.*\")) OR (ContextInfo = RGX(\".*iex.*\") AND ContextInfo = RGX(\".*New\\\\-Object.*\") AND ContextInfo = RGX(\".*Net\\\\\\.WebClient.*\") AND ContextInfo = RGX(\".*\\\\\\.Download.*\"))) AND  NOT ((ContextInfo = RGX(\".*\\\\(New\\\\-Object\\\\ System\\\\\\.Net\\\\\\.WebClient\\\\)\\\\\\.DownloadString\\\\(\\\\'https\\\\:\\\\/\\\\/community\\\\\\.chocolatey\\\\\\.org\\\\/install\\\\\\.ps1.*\") OR ContextInfo = RGX(\".*Write\\\\-ChocolateyWarning.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8d067cbe-17a8-4a6f-affe-2c8b15e5ea1d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

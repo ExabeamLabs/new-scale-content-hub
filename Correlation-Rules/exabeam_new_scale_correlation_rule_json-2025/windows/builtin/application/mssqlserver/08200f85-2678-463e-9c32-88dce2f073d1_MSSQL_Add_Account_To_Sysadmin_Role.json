@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "MSSQL Add Account To Sysadmin Role",
+      "description": "Detects when an attacker tries to backdoor the MSSQL server by adding a backdoor account to the sysadmin fixed server role Note: Unmapped fields: Provider_Name, Data",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Provider_Name = RGX(\".*MSSQL.*\") AND event_id = 33205 AND (Data = RGX(\".*object\\\\_name\\\\:sysadmin.*\") AND Data = RGX(\".*statement\\\\:alter\\\\ server\\\\ role\\\\ \\\\[sysadmin\\\\]\\\\ add\\\\ member\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7ccc512d-cde2-454c-8f24-f83faedcfbc2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

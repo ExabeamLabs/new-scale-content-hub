@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "User Added to Local Administrator Group",
+      "description": "Detects the addition of a new member to the local administrator group, which could be legitimate activity or a sign of privilege escalation activity Note: Unmapped fields: TargetSid",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4732 AND (dest_user = RGX(\"^Administr\") OR TargetSid = \"S\\-1\\-5\\-32\\-544\")) AND  NOT (user = RGX(\"\\\\$$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "fd3e7c51-3014-48a3-bc8d-56fe42127c42"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

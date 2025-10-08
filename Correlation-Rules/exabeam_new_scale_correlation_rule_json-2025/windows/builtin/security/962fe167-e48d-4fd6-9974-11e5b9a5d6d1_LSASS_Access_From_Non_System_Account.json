@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "LSASS Access From Non System Account",
+      "description": "Detects potential mimikatz-like tools accessing LSASS from non system account Note: Unmapped fields: AccessMask, ObjectType, ObjectName, ProcessName",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((event_id = 4663 OR event_id = 4656) AND (AccessMask = \"0x100000\" OR AccessMask = \"0x1010\" OR AccessMask = \"0x1400\" OR AccessMask = \"0x1410\" OR AccessMask = \"0x1418\" OR AccessMask = \"0x1438\" OR AccessMask = \"0x143a\" OR AccessMask = \"0x1f0fff\" OR AccessMask = \"0x1f1fff\" OR AccessMask = \"0x1f2fff\" OR AccessMask = \"0x1f3fff\" OR AccessMask = \"0x40\" OR AccessMask = \"143a\" OR AccessMask = \"1f0fff\" OR AccessMask = \"1f1fff\" OR AccessMask = \"1f2fff\" OR AccessMask = \"1f3fff\") AND ObjectType = \"Process\" AND ObjectName = RGX(\"\\\\\\\\lsass\\\\\\.exe$\")) AND  NOT (user = RGX(\"\\\\$$\") OR (ProcessName = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\.*\") OR ProcessName = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\.*\")) OR (ProcessName = \"C\\:\\\\Windows\\\\System32\\\\wbem\\\\WmiPrvSE\\.exe\" AND AccessMask = \"0x1410\")) AND  NOT (ProcessName = RGX(\".*\\\\\\\\SteamLibrary\\\\\\\\steamapps\\\\\\\\.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c13b98ba-8cf5-4389-a59d-4866393c6ab4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

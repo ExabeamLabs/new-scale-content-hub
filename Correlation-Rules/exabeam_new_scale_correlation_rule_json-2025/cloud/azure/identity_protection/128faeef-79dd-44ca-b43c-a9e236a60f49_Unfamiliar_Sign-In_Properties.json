@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Unfamiliar Sign-In Properties",
+      "description": "Detects sign-in with properties that are unfamiliar to the user. The detection considers past sign-in history to look for anomalous sign-ins. Note: Unmapped fields: riskEventType",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "riskEventType = \"unfamiliarFeatures\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e309b08e-bc9a-479e-b435-cf4d2c3e26af"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

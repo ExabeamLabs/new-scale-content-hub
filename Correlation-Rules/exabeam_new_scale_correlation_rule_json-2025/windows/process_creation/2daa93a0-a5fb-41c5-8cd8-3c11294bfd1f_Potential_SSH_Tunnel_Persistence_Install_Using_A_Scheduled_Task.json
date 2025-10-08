@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential SSH Tunnel Persistence Install Using A Scheduled Task",
+      "description": "Detects the creation of new scheduled tasks via commandline, using Schtasks.exe. This rule detects tasks creating that call OpenSSH, which may indicate the creation of reverse SSH tunnel to the attacker's server.",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") OR process_original_file_name = \"schtasks\\.exe\") AND ((process_command_line = RGX(\".*\\\\ \\\\/create\\\\ .*\") AND process_command_line = RGX(\".*sshd\\\\\\.exe.*\") AND process_command_line = RGX(\".*\\\\-f.*\")) OR (process_command_line = RGX(\".*\\\\ \\\\/create\\\\ .*\") AND process_command_line = RGX(\".*ssh\\\\\\.exe.*\") AND process_command_line = RGX(\".*\\\\-i.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "31bb19ea-13b2-46b5-9e77-31f9e1c7dc7c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

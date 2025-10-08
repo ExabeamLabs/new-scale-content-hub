@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - Mouse Lock Execution",
+      "description": "In Kaspersky's 2020 Incident Response Analyst Report they listed legitimate tool \"Mouse Lock\" as being used for both credential access and collection in security incidents.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_product = RGX(\".*Mouse\\\\ Lock.*\") OR process_company = RGX(\".*Misc314.*\") OR process_command_line = RGX(\".*Mouse\\\\ Lock\\\\_.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d553ccb1-ca23-47be-bd94-ae35591aaab0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "DirLister Execution",
+      "description": "Detect the usage of \"DirLister.exe\" a utility for quickly listing folder or drive contents. It was seen used by BlackCat ransomware to create a list of accessible directories and files.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_original_file_name = \"DirLister\\.exe\" OR process_path = RGX(\"\\\\\\\\dirlister\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3787be3f-2a75-407f-a326-3de0fe2b9288"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

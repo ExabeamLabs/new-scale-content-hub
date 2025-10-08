@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Uncommon Child Process Of AddinUtil.EXE",
+      "description": "Detects uncommon child processes of the Add-In deployment cache updating utility (AddInutil.exe) which could be a sign of potential abuse of the binary to proxy execution via a custom Addins.Store payload.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "parent_process_path = RGX(\"\\\\\\\\addinutil\\\\\\.exe$\") AND  NOT ((process_path = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\conhost\\\\\\.exe$\") OR process_path = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\werfault\\\\\\.exe$\") OR process_path = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\werfault\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "332c84c9-ef70-4f5a-b9c1-a42a775a8ac6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - SecurityXploded Execution",
+      "description": "Detects the execution of SecurityXploded Tools",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_company = \"SecurityXploded\" OR process_path = RGX(\"PasswordDump\\\\\\.exe$\") OR process_original_file_name = RGX(\"PasswordDump\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8a98472d-d9d3-47a5-aa23-75049cd460db"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

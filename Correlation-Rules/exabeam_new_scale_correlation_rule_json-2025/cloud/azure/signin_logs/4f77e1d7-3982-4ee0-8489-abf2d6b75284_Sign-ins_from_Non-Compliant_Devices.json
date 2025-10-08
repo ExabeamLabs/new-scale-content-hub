@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Sign-ins from Non-Compliant Devices",
+      "description": "Monitor and alert for sign-ins where the device was non-compliant. Note: Unmapped fields: DeviceDetail.isCompliant",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "DeviceDetail.isCompliant = \"false\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e12864f4-5869-4677-9530-c7df89a4498f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

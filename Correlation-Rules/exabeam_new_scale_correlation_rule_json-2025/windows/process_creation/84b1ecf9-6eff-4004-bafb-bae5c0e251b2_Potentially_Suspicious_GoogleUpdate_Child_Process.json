@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Suspicious GoogleUpdate Child Process",
+      "description": "Detects potentially suspicious child processes of \"GoogleUpdate.exe\"",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "parent_process_path = RGX(\"\\\\\\\\GoogleUpdate\\\\\\.exe$\") AND  NOT ((process_path = RGX(\".*\\\\\\\\Google.*\") OR (process_path = RGX(\"\\\\\\\\setup\\\\\\.exe$\") OR process_path = RGX(\"chrome\\\\_updater\\\\\\.exe$\") OR process_path = RGX(\"chrome\\\\_installer\\\\\\.exe$\"))) OR process_path = \"None\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "03d8239c-5b57-4c92-92b0-27c204050c9d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

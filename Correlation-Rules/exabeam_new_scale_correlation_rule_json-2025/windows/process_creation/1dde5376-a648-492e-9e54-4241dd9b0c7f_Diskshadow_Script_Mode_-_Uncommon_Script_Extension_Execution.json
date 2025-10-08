@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Diskshadow Script Mode - Uncommon Script Extension Execution",
+      "description": "Detects execution of \"Diskshadow.exe\" in script mode to execute an script with a potentially uncommon extension.\nInitial baselining of the allowed extension list is required.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_original_file_name = \"diskshadow\\.exe\" OR process_path = RGX(\"\\\\\\\\diskshadow\\\\\\.exe$\")) AND (process_command_line = RGX(\".*\\\\-s\\\\ .*\") OR process_command_line = RGX(\".*\\\\/s\\\\ .*\"))) AND  NOT (process_command_line = RGX(\".*\\\\\\.txt.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a2fc2197-3bc6-4188-a35f-800d4aa429da"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

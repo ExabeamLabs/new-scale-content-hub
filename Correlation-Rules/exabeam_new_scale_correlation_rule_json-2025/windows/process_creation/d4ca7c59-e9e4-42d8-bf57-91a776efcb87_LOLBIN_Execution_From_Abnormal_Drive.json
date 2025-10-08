@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "LOLBIN Execution From Abnormal Drive",
+      "description": "Detects LOLBINs executing from an abnormal or uncommon drive such as a mounted ISO.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\calc\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\certutil\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cmstp\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\installutil\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\")) OR (process_original_file_name = \"CALC\\.EXE\" OR process_original_file_name = \"CertUtil\\.exe\" OR process_original_file_name = \"CMSTP\\.EXE\" OR process_original_file_name = \"cscript\\.exe\" OR process_original_file_name = \"installutil\\.exe\" OR process_original_file_name = \"MSHTA\\.EXE\" OR process_original_file_name = \"REGSVR32\\.EXE\" OR process_original_file_name = \"RUNDLL32\\.EXE\" OR process_original_file_name = \"wscript\\.exe\")) AND  NOT (process_working_directory = RGX(\".*C\\\\:\\\\\\\\.*\") OR process_working_directory = \"\" OR process_working_directory = \"None\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5c574e77-2b19-4b03-bd00-0b033a92ccd2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Child Process Of Manage Engine ServiceDesk",
+      "description": "Detects suspicious child processes of the \"Manage Engine ServiceDesk Plus\" Java web service",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((parent_process_path = RGX(\".*\\\\\\\\ManageEngine\\\\\\\\ServiceDesk\\\\\\\\.*\") AND parent_process_path = RGX(\".*\\\\\\\\java\\\\\\.exe.*\")) AND (process_path = RGX(\"\\\\\\\\AppVLP\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\bash\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\bitsadmin\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\calc\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\certutil\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\curl\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\forfiles\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mftrace\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\net\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\net1\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\notepad\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\query\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\reg\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\scrcons\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\sh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\systeminfo\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\whoami\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wmic\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\"))) AND  NOT (((process_path = RGX(\"\\\\\\\\net\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\net1\\\\\\.exe$\")) AND process_command_line = RGX(\".*\\\\ stop.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "98ba3fa2-8ea0-485c-9e35-0f79473022e0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

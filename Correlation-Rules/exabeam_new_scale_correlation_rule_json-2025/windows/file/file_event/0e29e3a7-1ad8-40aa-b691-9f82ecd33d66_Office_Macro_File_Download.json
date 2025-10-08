@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Office Macro File Download",
+      "description": "Detects the creation of a new office macro files on the systems via an application (browser, mail client).",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\RuntimeBroker\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\outlook\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\thunderbird\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\brave\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\chrome\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\firefox\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\iexplore\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\maxthon\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\MicrosoftEdge\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msedge\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msedgewebview2\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\opera\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\safari\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\seamonkey\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\vivaldi\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\whale\\\\\\.exe$\")) AND ((file_path = RGX(\"\\\\\\.docm$\") OR file_path = RGX(\"\\\\\\.dotm$\") OR file_path = RGX(\"\\\\\\.xlsm$\") OR file_path = RGX(\"\\\\\\.xltm$\") OR file_path = RGX(\"\\\\\\.potm$\") OR file_path = RGX(\"\\\\\\.pptm$\")) OR (file_path = RGX(\".*\\\\\\.docm\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.dotm\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.xlsm\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.xltm\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.potm\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.pptm\\\\:Zone.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "10aaeb4e-c1da-4ec5-b150-0d67b268ebe7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

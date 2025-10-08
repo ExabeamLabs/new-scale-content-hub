@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious SSL Connection",
+      "description": "Adversaries may employ a known encryption algorithm to conceal command and control traffic rather than relying on any inherent protections provided by a communication protocol. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*System\\\\\\.Net\\\\\\.Security\\\\\\.SslStream.*\") AND ScriptBlockText = RGX(\".*Net\\\\\\.Security\\\\\\.RemoteCertificateValidationCallback.*\") AND ScriptBlockText = RGX(\".*\\\\\\.AuthenticateAsClient.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8e6f1429-f9b1-4efd-a241-8b65052e2109"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

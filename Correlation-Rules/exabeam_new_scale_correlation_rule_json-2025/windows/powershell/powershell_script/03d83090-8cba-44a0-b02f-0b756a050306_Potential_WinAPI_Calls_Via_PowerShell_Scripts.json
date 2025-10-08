@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential WinAPI Calls Via PowerShell Scripts",
+      "description": "Detects use of WinAPI functions in PowerShell scripts Note: Unmapped fields: ScriptBlockText",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ScriptBlockText = RGX(\".*VirtualAlloc.*\") AND ScriptBlockText = RGX(\".*OpenProcess.*\") AND ScriptBlockText = RGX(\".*WriteProcessMemory.*\") AND ScriptBlockText = RGX(\".*CreateRemoteThread.*\")) OR (ScriptBlockText = RGX(\".*OpenProcessToken.*\") AND ScriptBlockText = RGX(\".*LookupPrivilegeValue.*\") AND ScriptBlockText = RGX(\".*AdjustTokenPrivileges.*\")) OR (ScriptBlockText = RGX(\".*OpenProcessToken.*\") AND ScriptBlockText = RGX(\".*DuplicateTokenEx.*\") AND ScriptBlockText = RGX(\".*CloseHandle.*\")) OR (ScriptBlockText = RGX(\".*WriteProcessMemory.*\") AND ScriptBlockText = RGX(\".*VirtualAlloc.*\") AND ScriptBlockText = RGX(\".*ReadProcessMemory.*\") AND ScriptBlockText = RGX(\".*VirtualFree.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1526386c-beed-4515-8549-29e1aae0ce39"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

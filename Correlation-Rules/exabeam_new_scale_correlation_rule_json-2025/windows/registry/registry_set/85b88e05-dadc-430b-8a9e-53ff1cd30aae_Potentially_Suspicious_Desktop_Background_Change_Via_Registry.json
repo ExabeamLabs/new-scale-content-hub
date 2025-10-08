@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Suspicious Desktop Background Change Via Registry",
+      "description": "Detects registry value settings that would replace the user's desktop background.\nThis is a common technique used by malware to change the desktop background to a ransom note or other image.\n Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*Control\\\\ Panel\\\\\\\\Desktop.*\") OR registry_path = RGX(\".*CurrentVersion\\\\\\\\Policies\\\\\\\\ActiveDesktop.*\") OR registry_path = RGX(\".*CurrentVersion\\\\\\\\Policies\\\\\\\\System.*\")) AND ((registry_path = RGX(\"NoChangingWallpaper$\") AND Details = \"DWORD\\ \\(0x00000001\\)\") OR registry_path = RGX(\"\\\\\\\\Wallpaper$\") OR (registry_path = RGX(\"\\\\\\\\WallpaperStyle$\") AND Details = 2)) AND  NOT (process_path = RGX(\"\\\\\\\\svchost\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0f4eb970-88be-400f-8a3f-ce3effc4d557"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remote PowerShell Session Host Process (WinRM)",
+      "description": "Detects remote PowerShell sections by monitoring for wsmprovhost (WinRM host process) as a parent or child process (sign of an active PowerShell remote session).",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\wsmprovhost\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\wsmprovhost\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "67395b0b-6f83-4ed5-899d-24f697661a61"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

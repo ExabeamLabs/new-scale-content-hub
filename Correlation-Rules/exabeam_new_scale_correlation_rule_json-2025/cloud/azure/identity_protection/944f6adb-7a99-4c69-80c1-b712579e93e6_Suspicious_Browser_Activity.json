@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Browser Activity",
+      "description": "Indicates anomalous behavior based on suspicious sign-in activity across multiple tenants from different countries in the same browser Note: Unmapped fields: riskEventType",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "riskEventType = \"suspiciousBrowser\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "78ba6287-8dc1-4e3a-bad2-31a3f141cd91"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

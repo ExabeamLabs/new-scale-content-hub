@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "ESXi Syslog Configuration Change Via ESXCLI",
+      "description": "Detects changes to the ESXi syslog configuration via \"esxcli\"",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/esxcli$\") AND (process_command_line = RGX(\".*system.*\") AND process_command_line = RGX(\".*syslog.*\") AND process_command_line = RGX(\".*config.*\")) AND process_command_line = RGX(\".*\\\\ set.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "18ce51c9-e42d-45e7-abfc-5ecb5701954e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

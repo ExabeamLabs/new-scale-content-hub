@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "DHCP Callout DLL Installation",
+      "description": "Detects the installation of a Callout DLL via CalloutDlls and CalloutEnabled parameter in Registry, which can be used to execute code in context of the DHCP server (restart required)",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\"\\\\\\\\Services\\\\\\\\DHCPServer\\\\\\\\Parameters\\\\\\\\CalloutDlls$\") OR registry_path = RGX(\"\\\\\\\\Services\\\\\\\\DHCPServer\\\\\\\\Parameters\\\\\\\\CalloutEnabled$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "33e5ffe9-861f-4a07-946a-1b002c98ed2d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "AD Groups Or Users Enumeration Using PowerShell - PoshModule",
+      "description": "Adversaries may attempt to find domain-level groups and permission settings.\nThe knowledge of domain-level permission groups can help adversaries determine which groups exist and which users belong to a particular group.\nAdversaries may use this information to determine which users have elevated permissions, such as domain administrators.\n Note: Unmapped fields: Payload, ContextInfo",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((Payload = RGX(\".*get\\\\-ADPrincipalGroupMembership.*\") OR ContextInfo = RGX(\".*get\\\\-ADPrincipalGroupMembership.*\")) OR ((Payload = RGX(\".*get\\\\-aduser.*\") AND Payload = RGX(\".*\\\\-f\\\\ .*\") AND Payload = RGX(\".*\\\\-pr\\\\ .*\") AND Payload = RGX(\".*DoesNotRequirePreAuth.*\")) OR (ContextInfo = RGX(\".*get\\\\-aduser.*\") AND ContextInfo = RGX(\".*\\\\-f\\\\ .*\") AND ContextInfo = RGX(\".*\\\\-pr\\\\ .*\") AND ContextInfo = RGX(\".*DoesNotRequirePreAuth.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "95fda65e-5fd5-4c4c-8871-d3aac7fac4e4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

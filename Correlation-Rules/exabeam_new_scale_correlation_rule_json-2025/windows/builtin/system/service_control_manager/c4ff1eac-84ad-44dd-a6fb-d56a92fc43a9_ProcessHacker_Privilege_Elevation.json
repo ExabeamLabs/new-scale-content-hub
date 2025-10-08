@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "ProcessHacker Privilege Elevation",
+      "description": "Detects a ProcessHacker tool that elevated privileges to a very high level Note: Unmapped fields: Provider_Name, ServiceName, AccountName",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Provider_Name = \"Service\\ Control\\ Manager\" AND event_id = 7045 AND ServiceName = RGX(\"^ProcessHacker\") AND AccountName = \"LocalSystem\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e83455cb-e732-474c-b73a-17359b1be8e7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "ScreenSaver Registry Key Set",
+      "description": "Detects registry key established after masqueraded .scr file execution using Rundll32 through desk.cpl Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") AND (registry_path = RGX(\".*\\\\\\\\Control\\\\ Panel\\\\\\\\Desktop\\\\\\\\SCRNSAVE\\\\\\.EXE.*\") AND Details = RGX(\"\\\\\\.scr$\")) AND  NOT ((Details = RGX(\".*C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\.*\") OR Details = RGX(\".*C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9d243f46-0701-400b-9495-4d943242d931"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

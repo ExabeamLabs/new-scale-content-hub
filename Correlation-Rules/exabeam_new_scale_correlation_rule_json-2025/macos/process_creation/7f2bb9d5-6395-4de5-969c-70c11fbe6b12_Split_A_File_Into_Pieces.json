@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Split A File Into Pieces",
+      "description": "Detection use of the command \"split\" to split files into parts and possible transfer.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_path = RGX(\"\\\\/split$\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c8d7a2f3-86c1-494c-bb6d-5354500e60f8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

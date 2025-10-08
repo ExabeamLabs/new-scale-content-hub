@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Multifactor Authentication Denied",
+      "description": "User has indicated they haven't instigated the MFA prompt and could indicate an attacker has the password for the account. Note: Unmapped fields: AuthenticationRequirement, Status",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(AuthenticationRequirement = \"multiFactorAuthentication\" AND Status = RGX(\".*MFA\\\\ Denied.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5dbe25cd-9e06-4f0c-93df-dcd11e49cbf4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

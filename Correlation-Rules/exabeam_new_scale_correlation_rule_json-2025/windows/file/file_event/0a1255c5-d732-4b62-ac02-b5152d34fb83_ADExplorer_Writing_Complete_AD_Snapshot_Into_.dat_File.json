@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "ADExplorer Writing Complete AD Snapshot Into .dat File",
+      "description": "Detects the dual use tool ADExplorer writing a complete AD snapshot into a .dat file. This can be used by attackers to extract data for Bloodhound, usernames for password spraying or use the meta data for social engineering. The snapshot doesn't contain password hashes but there have been cases, where administrators put passwords in the comment field.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\ADExp\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\ADExplorer\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\ADExplorer64\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\ADExplorer64a\\\\\\.exe$\")) AND file_path = RGX(\"\\\\\\.dat$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "74bd547e-ec1f-4962-9b8d-6f70304a4612"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "JAMF MDM Potential Suspicious Child Process",
+      "description": "Detects potential suspicious child processes of \"jamf\". Could be a sign of potential abuse of Jamf as a C2 server as seen by Typhon MythicAgent.",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\/jamf$\") AND (process_path = RGX(\"\\\\/bash$\") OR process_path = RGX(\"\\\\/sh$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "cf472fe8-90d2-4241-ac84-bc71e6e1ef8f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

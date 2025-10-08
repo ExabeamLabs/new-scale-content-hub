@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - Jlaive In-Memory Assembly Execution",
+      "description": "Detects the use of Jlaive to execute assemblies in a copied PowerShell",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") AND parent_process_command_line = RGX(\"\\\\\\.bat$\")) AND (((process_path = RGX(\"\\\\\\\\xcopy\\\\\\.exe$\") AND (process_command_line = RGX(\".*powershell\\\\\\.exe.*\") AND process_command_line = RGX(\".*\\\\\\.bat\\\\\\.exe.*\"))) OR (process_path = RGX(\"\\\\\\\\xcopy\\\\\\.exe$\") AND (process_command_line = RGX(\".*pwsh\\\\\\.exe.*\") AND process_command_line = RGX(\".*\\\\\\.bat\\\\\\.exe.*\"))) OR (process_path = RGX(\"\\\\\\\\attrib\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\+s.*\") AND process_command_line = RGX(\".*\\\\+h.*\") AND process_command_line = RGX(\".*\\\\\\.bat\\\\\\.exe.*\")))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f711a0b9-2f9e-4d1e-b6a5-5c9b67a4266a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

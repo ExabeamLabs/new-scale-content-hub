@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Arbitrary Command Execution Via FTP.EXE",
+      "description": "Detects execution of \"ftp.exe\" script with the \"-s\" or \"/s\" flag and any child processes ran by \"ftp.exe\".",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "parent_process_path = RGX(\"\\\\\\\\ftp\\\\\\.exe$\") OR ((process_path = RGX(\"\\\\\\\\ftp\\\\\\.exe$\") OR process_original_file_name = \"ftp\\.exe\") AND (process_command_line = RGX(\".*\\\\-s\\\\:.*\") OR process_command_line = RGX(\".*\\\\/s\\\\:.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0c6f1280-ab20-49ea-b9d8-9e4a90fcff65"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

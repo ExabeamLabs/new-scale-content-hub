@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Flush Iptables Ufw Chain",
+      "description": "Detect use of iptables to flush all firewall rules, tables and chains and allow all network traffic",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/iptables$\") OR process_path = RGX(\"\\\\/xtables\\\\-legacy\\\\-multi$\") OR process_path = RGX(\"\\\\/iptables\\\\-legacy\\\\-multi$\") OR process_path = RGX(\"\\\\/ip6tables$\") OR process_path = RGX(\"\\\\/ip6tables\\\\-legacy\\\\-multi$\")) AND (process_command_line = RGX(\".*\\\\-F.*\") OR process_command_line = RGX(\".*\\\\-Z.*\") OR process_command_line = RGX(\".*\\\\-X.*\")) AND (process_command_line = RGX(\".*ufw\\\\-logging\\\\-deny.*\") OR process_command_line = RGX(\".*ufw\\\\-logging\\\\-allow.*\") OR process_command_line = RGX(\".*ufw6\\\\-logging\\\\-deny.*\") OR process_command_line = RGX(\".*ufw6\\\\-logging\\\\-allow.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f90e45f2-79e3-4d38-ae6a-a2c8f6d83f90"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious PowerShell Download - Powershell Script",
+      "description": "Detects suspicious PowerShell download command Note: Unmapped fields: ScriptBlockText",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ScriptBlockText = RGX(\".*System\\\\\\.Net\\\\\\.WebClient.*\") AND (ScriptBlockText = RGX(\".*\\\\\\.DownloadFile\\\\(.*\") OR ScriptBlockText = RGX(\".*\\\\\\.DownloadFileAsync\\\\(.*\") OR ScriptBlockText = RGX(\".*\\\\\\.DownloadString\\\\(.*\") OR ScriptBlockText = RGX(\".*\\\\\\.DownloadStringAsync\\\\(.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "68b441f5-53c8-4bbc-a8cf-ba8c9c36f079"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

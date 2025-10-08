@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Persistence Via GlobalFlags",
+      "description": "Detects registry persistence technique using the GlobalFlags and SilentProcessExit keys",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((registry_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\.*\") AND registry_path = RGX(\".*\\\\\\\\Image\\\\ File\\\\ Execution\\\\ Options\\\\\\\\.*\") AND registry_path = RGX(\".*\\\\\\\\GlobalFlag.*\")) OR ((registry_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\.*\") AND registry_path = RGX(\".*\\\\\\\\SilentProcessExit\\\\\\\\.*\")) AND (registry_path = RGX(\".*\\\\\\\\ReportingMode.*\") OR registry_path = RGX(\".*\\\\\\\\MonitorProcess.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1151e3ff-e51a-4611-9602-c45e48e0f98e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

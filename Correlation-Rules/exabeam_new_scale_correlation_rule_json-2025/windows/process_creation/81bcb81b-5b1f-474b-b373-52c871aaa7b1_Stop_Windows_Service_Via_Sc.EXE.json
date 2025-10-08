@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Stop Windows Service Via Sc.EXE",
+      "description": "Detects the stopping of a Windows service via the \"sc.exe\" utility",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_original_file_name = \"sc\\.exe\" OR process_path = RGX(\"\\\\\\\\sc\\\\\\.exe$\")) AND process_command_line = RGX(\".*\\\\ stop\\\\ .*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1f175438-7c29-472f-a8ea-1a4cc849333a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

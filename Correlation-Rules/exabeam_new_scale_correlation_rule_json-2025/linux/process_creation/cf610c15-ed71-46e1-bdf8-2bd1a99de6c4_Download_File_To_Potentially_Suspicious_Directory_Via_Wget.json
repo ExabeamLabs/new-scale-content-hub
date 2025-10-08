@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Download File To Potentially Suspicious Directory Via Wget",
+      "description": "Detects the use of wget to download content to a suspicious directory",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/wget$\") AND (process_command_line = RGX(\"\\s-O\\s\") OR process_command_line = RGX(\".*\\\\-\\\\-output\\\\-document.*\")) AND process_command_line = RGX(\".*\\\\/tmp\\\\/.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "93713a9e-9afc-40ee-a6e5-3977e720b87d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

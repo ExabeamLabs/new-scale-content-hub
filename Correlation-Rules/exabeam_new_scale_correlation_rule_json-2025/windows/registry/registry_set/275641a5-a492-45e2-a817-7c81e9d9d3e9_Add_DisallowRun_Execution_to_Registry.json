@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Add DisallowRun Execution to Registry",
+      "description": "Detect set DisallowRun to 1 to prevent user running specific computer program Note: Unmapped fields: Details",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\"Software\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\Explorer\\\\\\\\DisallowRun$\") AND Details = \"DWORD\\ \\(0x00000001\\)\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7f125120-9e20-4d9e-a9f2-2fad807dd2c5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

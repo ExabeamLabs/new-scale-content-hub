@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Appended Extension",
+      "description": "Detects file renames where the target filename uses an uncommon double extension. Could indicate potential ransomware activity renaming files and adding a custom extension to the encrypted files, such as \".jpg.crypted\", \".docx.locky\", etc. Note: Unmapped fields: SourceFilename",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((SourceFilename = RGX(\"\\\\\\.doc$\") OR SourceFilename = RGX(\"\\\\\\.docx$\") OR SourceFilename = RGX(\"\\\\\\.jpeg$\") OR SourceFilename = RGX(\"\\\\\\.jpg$\") OR SourceFilename = RGX(\"\\\\\\.lnk$\") OR SourceFilename = RGX(\"\\\\\\.pdf$\") OR SourceFilename = RGX(\"\\\\\\.png$\") OR SourceFilename = RGX(\"\\\\\\.pst$\") OR SourceFilename = RGX(\"\\\\\\.rtf$\") OR SourceFilename = RGX(\"\\\\\\.xls$\") OR SourceFilename = RGX(\"\\\\\\.xlsx$\")) AND (file_path = RGX(\".*\\\\\\.doc\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.docx\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.jpeg\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.jpg\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.lnk\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.pdf\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.png\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.pst\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.rtf\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.xls\\\\\\..*\") OR file_path = RGX(\".*\\\\\\.xlsx\\\\\\..*\"))) AND  NOT ((file_path = RGX(\"\\\\\\.backup$\") OR file_path = RGX(\"\\\\\\.bak$\") OR file_path = RGX(\"\\\\\\.old$\") OR file_path = RGX(\"\\\\\\.orig$\") OR file_path = RGX(\"\\\\\\.temp$\") OR file_path = RGX(\"\\\\\\.tmp$\"))) AND  NOT ((file_path = RGX(\".*\\\\:\\\\\\\\ProgramData\\\\\\\\Anaconda3\\\\\\\\.*\") AND file_path = RGX(\"\\\\\\.c\\\\~$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "553db0d7-7baa-4b46-8df6-3269b03e3c08"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

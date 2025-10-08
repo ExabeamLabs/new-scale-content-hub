@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Powershell MsXml COM Object",
+      "description": "Adversaries may abuse PowerShell commands and scripts for execution.\nPowerShell is a powerful interactive command-line interface and scripting environment included in the Windows operating system. (Citation: TechNet PowerShell)\nAdversaries can use PowerShell to perform a number of actions, including discovery of information and execution of code\n Note: Unmapped fields: ScriptBlockText",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*New\\\\-Object.*\") AND ScriptBlockText = RGX(\".*\\\\-ComObject.*\") AND ScriptBlockText = RGX(\".*MsXml2\\\\\\..*\") AND ScriptBlockText = RGX(\".*XmlHttp.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "132e37b7-974d-461d-92b2-7dfcf2200eb3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

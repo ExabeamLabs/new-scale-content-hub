@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remote Access Tool - MeshAgent Command Execution via MeshCentral",
+      "description": "Detects the use of MeshAgent to execute commands on the target host, particularly when threat actors might abuse it to execute commands directly.\nMeshAgent can execute commands on the target host by leveraging win-console to obscure their activities and win-dispatcher to run malicious code through IPC with child processes.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\meshagent\\\\\\.exe$\") AND (process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4268c046-beb6-4e48-b924-b83e4b780cb8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Detected Windows Software Discovery",
+      "description": "Adversaries may attempt to enumerate software for a variety of reasons, such as figuring out what security measures are present or if the compromised system has a version of software that is vulnerable.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\reg\\\\\\.exe$\") AND (process_command_line = RGX(\".*query.*\") AND process_command_line = RGX(\".*\\\\\\\\software\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\/v.*\") AND process_command_line = RGX(\".*svcversion.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9852a845-c3a8-4724-864a-98f7d4bbbf8c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

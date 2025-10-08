@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Security Software Discovery Via Powershell Script",
+      "description": "Detects calls to \"get-process\" where the output is piped to a \"where-object\" filter to search for security solution processes.\nAdversaries may attempt to get a listing of security software, configurations, defensive tools, and sensors that are installed on a system or in a cloud environment. This may include things such as firewall rules and anti-virus\n Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ScriptBlockText = RGX(\".*get\\\\-process\\\\ \\\\|\\\\ \\\\?.*\") OR ScriptBlockText = RGX(\".*get\\\\-process\\\\ \\\\|\\\\ where.*\") OR ScriptBlockText = RGX(\".*gps\\\\ \\\\|\\\\ \\\\?.*\") OR ScriptBlockText = RGX(\".*gps\\\\ \\\\|\\\\ where.*\")) AND (ScriptBlockText = RGX(\".*Company\\\\ \\\\-like.*\") OR ScriptBlockText = RGX(\".*Description\\\\ \\\\-like.*\") OR ScriptBlockText = RGX(\".*Name\\\\ \\\\-like.*\") OR ScriptBlockText = RGX(\".*Path\\\\ \\\\-like.*\") OR ScriptBlockText = RGX(\".*Product\\\\ \\\\-like.*\")) AND (ScriptBlockText = RGX(\".*\\\\*avira\\\\*.*\") OR ScriptBlockText = RGX(\".*\\\\*carbonblack\\\\*.*\") OR ScriptBlockText = RGX(\".*\\\\*cylance\\\\*.*\") OR ScriptBlockText = RGX(\".*\\\\*defender\\\\*.*\") OR ScriptBlockText = RGX(\".*\\\\*kaspersky\\\\*.*\") OR ScriptBlockText = RGX(\".*\\\\*malware\\\\*.*\") OR ScriptBlockText = RGX(\".*\\\\*sentinel\\\\*.*\") OR ScriptBlockText = RGX(\".*\\\\*symantec\\\\*.*\") OR ScriptBlockText = RGX(\".*\\\\*virus\\\\*.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "78e57492-7ccb-415b-94fd-58ee73fb7997"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

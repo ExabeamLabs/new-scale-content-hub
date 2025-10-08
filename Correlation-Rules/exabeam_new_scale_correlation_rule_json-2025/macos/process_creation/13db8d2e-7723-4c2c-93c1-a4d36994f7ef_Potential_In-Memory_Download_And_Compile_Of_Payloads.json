@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential In-Memory Download And Compile Of Payloads",
+      "description": "Detects potential in-memory downloading and compiling of applets using curl and osacompile as seen used by XCSSET malware",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*osacompile.*\") AND process_command_line = RGX(\".*curl.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7b927bb2-71a9-4346-ab24-53de997ef5fa"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

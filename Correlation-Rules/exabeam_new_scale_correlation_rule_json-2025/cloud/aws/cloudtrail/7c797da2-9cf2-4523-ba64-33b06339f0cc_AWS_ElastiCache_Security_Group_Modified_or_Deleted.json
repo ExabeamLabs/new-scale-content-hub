@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "AWS ElastiCache Security Group Modified or Deleted",
+      "description": "Identifies when an ElastiCache security group has been modified or deleted. Note: Unmapped fields: eventSource, eventName",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(eventSource = \"elasticache\\.amazonaws\\.com\" AND (eventName = \"DeleteCacheSecurityGroup\" OR eventName = \"AuthorizeCacheSecurityGroupIngress\" OR eventName = \"RevokeCacheSecurityGroupIngress\" OR eventName = \"AuthorizeCacheSecurityGroupEgress\" OR eventName = \"RevokeCacheSecurityGroupEgress\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c345047f-ed30-4f88-a9ac-3b046da6dba8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

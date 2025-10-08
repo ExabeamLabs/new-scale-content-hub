@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Linux HackTool Execution",
+      "description": "Detects known hacktool execution based on image name.",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/crackmapexec$\") OR process_path = RGX(\"\\\\/havoc$\") OR process_path = RGX(\"\\\\/merlin\\\\-agent$\") OR process_path = RGX(\"\\\\/merlinServer\\\\-Linux\\\\-x64$\") OR process_path = RGX(\"\\\\/msfconsole$\") OR process_path = RGX(\"\\\\/msfvenom$\") OR process_path = RGX(\"\\\\/ps\\\\-empire\\\\ server$\") OR process_path = RGX(\"\\\\/ps\\\\-empire$\") OR process_path = RGX(\"\\\\/sliver\\\\-client$\") OR process_path = RGX(\"\\\\/sliver\\\\-server$\") OR process_path = RGX(\"\\\\/Villain\\\\\\.py$\")) OR (process_path = RGX(\".*\\\\/cobaltstrike.*\") OR process_path = RGX(\".*\\\\/teamserver.*\")) OR (process_path = RGX(\"\\\\/autorecon$\") OR process_path = RGX(\"\\\\/httpx$\") OR process_path = RGX(\"\\\\/legion$\") OR process_path = RGX(\"\\\\/naabu$\") OR process_path = RGX(\"\\\\/netdiscover$\") OR process_path = RGX(\"\\\\/nuclei$\") OR process_path = RGX(\"\\\\/recon\\\\-ng$\")) OR process_path = RGX(\".*\\\\/sniper.*\") OR (process_path = RGX(\"\\\\/dirb$\") OR process_path = RGX(\"\\\\/dirbuster$\") OR process_path = RGX(\"\\\\/eyewitness$\") OR process_path = RGX(\"\\\\/feroxbuster$\") OR process_path = RGX(\"\\\\/ffuf$\") OR process_path = RGX(\"\\\\/gobuster$\") OR process_path = RGX(\"\\\\/wfuzz$\") OR process_path = RGX(\"\\\\/whatweb$\")) OR (process_path = RGX(\"\\\\/joomscan$\") OR process_path = RGX(\"\\\\/nikto$\") OR process_path = RGX(\"\\\\/wpscan$\")) OR (process_path = RGX(\"\\\\/aircrack\\\\-ng$\") OR process_path = RGX(\"\\\\/bloodhound\\\\-python$\") OR process_path = RGX(\"\\\\/bpfdos$\") OR process_path = RGX(\"\\\\/ebpfki$\") OR process_path = RGX(\"\\\\/evil\\\\-winrm$\") OR process_path = RGX(\"\\\\/hashcat$\") OR process_path = RGX(\"\\\\/hoaxshell\\\\\\.py$\") OR process_path = RGX(\"\\\\/hydra$\") OR process_path = RGX(\"\\\\/john$\") OR process_path = RGX(\"\\\\/ncrack$\") OR process_path = RGX(\"\\\\/nxc\\\\-ubuntu\\\\-latest$\") OR process_path = RGX(\"\\\\/pidhide$\") OR process_path = RGX(\"\\\\/pspy32$\") OR process_path = RGX(\"\\\\/pspy32s$\") OR process_path = RGX(\"\\\\/pspy64$\") OR process_path = RGX(\"\\\\/pspy64s$\") OR process_path = RGX(\"\\\\/setoolkit$\") OR process_path = RGX(\"\\\\/sqlmap$\") OR process_path = RGX(\"\\\\/writeblocker$\")) OR process_path = RGX(\".*\\\\/linpeas.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "bb7efd18-bf90-48a4-a772-384f98f6b2a0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

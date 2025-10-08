@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "TeamViewer Domain Query By Non-TeamViewer Application",
+      "description": "Detects DNS queries to a TeamViewer domain only resolved by a TeamViewer client by an image that isn't named TeamViewer (sometimes used by threat actors for obfuscation) Note: Unmapped fields: QueryName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(QueryName = \"taf\\.teamviewer\\.com\" OR QueryName = \"udp\\.ping\\.teamviewer\\.com\") AND  NOT (process_path = RGX(\".*TeamViewer.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a8e57c12-37bb-485c-9813-8f390718dce4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Persistence Via Custom Protocol Handler",
+      "description": "Detects potential persistence activity via the registering of a new custom protocole handlers. While legitimate applications register protocole handlers often times during installation. And attacker can abuse this by setting a custom handler to be used as a persistence mechanism. Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\"^HKCR\\\\\\\\\") AND Details = RGX(\"^URL\\\\:\")) AND  NOT (Details = RGX(\"^URL\\\\:ms\\\\-\") OR (process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "16a6e48e-2e8b-4532-aa13-c0fbb62a06e7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

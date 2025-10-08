@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Suspicious Self Extraction Directive File Created",
+      "description": "Detects the creation of a binary file with the \".sed\" extension. The \".sed\" extension stand for Self Extraction Directive files.\nThese files are used by the \"iexpress.exe\" utility in order to create self extracting packages.\nAttackers were seen abusing this utility and creating PE files with embedded \".sed\" entries.\nUsually \".sed\" files are simple ini files and not PE binaries.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "file_path = RGX(\"\\\\\\.sed$\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1febf087-ffcd-4ff0-8ae2-0adb326a793c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

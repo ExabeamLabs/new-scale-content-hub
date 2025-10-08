@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Failed Authentications From Countries You Do Not Operate Out Of",
+      "description": "Detect failed authentications from countries you do not operate out of. Note: Unmapped fields: Status, Location",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": " NOT (Status = \"Success\") AND  NOT (Location = RGX(\".*\\\\<Countries\\\\ you\\\\ DO\\\\ operate\\\\ out\\\\ of\\\\ e\\\\,g\\\\ GB\\\\,\\\\ use\\\\ OR\\\\ for\\\\ multiple\\\\>.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d4fc96e8-4571-404d-b11d-964c689d5d52"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

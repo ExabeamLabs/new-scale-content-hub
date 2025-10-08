@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Regsvr32 Execution From Remote Share",
+      "description": "Detects REGSVR32.exe to execute DLL hosted on remote shares",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR process_original_file_name = \"\\\\REGSVR32\\.EXE\") AND process_command_line = RGX(\".*\\\\ \\\\\\\\\\\\\\\\.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "bcf601a2-06ec-4c4f-ba79-5cf8a57eec80"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

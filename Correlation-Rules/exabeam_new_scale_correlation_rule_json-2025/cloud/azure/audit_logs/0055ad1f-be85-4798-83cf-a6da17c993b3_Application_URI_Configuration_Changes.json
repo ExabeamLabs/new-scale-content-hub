@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Application URI Configuration Changes",
+      "description": "Detects when a configuration change is made to an applications URI.\nURIs for domain names that no longer exist (dangling URIs), not using HTTPS, wildcards at the end of the domain, URIs that are no unique to that app, or URIs that point to domains you do not control should be investigated.\n Note: Unmapped fields: properties.message",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "properties.message = \"Update\\ Application\\ Sucess\\-\\ Property\\ Name\\ AppAddress\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3aefb52e-1cab-4630-a727-f62a041ea466"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

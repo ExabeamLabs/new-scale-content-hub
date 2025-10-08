@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation VAR++ LAUNCHER OBFUSCATION",
+      "description": "Detects Obfuscated Powershell via VAR++ LAUNCHER",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*\\\\&\\\\&set.*\") AND process_command_line = RGX(\".*cmd.*\") AND process_command_line = RGX(\".*\\\\/c.*\") AND process_command_line = RGX(\".*\\\\-f.*\")) AND (process_command_line = RGX(\".*\\\\{0\\\\}.*\") OR process_command_line = RGX(\".*\\\\{1\\\\}.*\") OR process_command_line = RGX(\".*\\\\{2\\\\}.*\") OR process_command_line = RGX(\".*\\\\{3\\\\}.*\") OR process_command_line = RGX(\".*\\\\{4\\\\}.*\") OR process_command_line = RGX(\".*\\\\{5\\\\}.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2f460f93-bd1f-4104-9e77-47a7c1136c02"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

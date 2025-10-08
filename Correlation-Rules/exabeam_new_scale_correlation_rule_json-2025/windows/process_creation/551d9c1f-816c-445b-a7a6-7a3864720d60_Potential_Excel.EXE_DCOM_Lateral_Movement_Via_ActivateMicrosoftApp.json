@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Excel.EXE DCOM Lateral Movement Via ActivateMicrosoftApp",
+      "description": "Detects suspicious child processes of Excel which could be an indicator of lateral movement leveraging the \"ActivateMicrosoftApp\" Excel DCOM object.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\excel\\\\\\.exe$\") AND ((process_original_file_name = \"foxprow\\.exe\" OR process_original_file_name = \"schdplus\\.exe\" OR process_original_file_name = \"winproj\\.exe\") OR (process_path = RGX(\"\\\\\\\\foxprow\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\schdplus\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\winproj\\\\\\.exe$\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1c20d567-b623-484f-83ac-d5a0d55b278f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

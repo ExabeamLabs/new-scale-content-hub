@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential RemoteFXvGPUDisablement.EXE Abuse",
+      "description": "Detects PowerShell module creation where the module Contents are set to \"function Get-VMRemoteFXPhysicalVideoAdapter\". This could be a sign of potential abuse of  the \"RemoteFXvGPUDisablement.exe\" binary which is known to be vulnerable to module load-order hijacking. Note: Unmapped fields: Data",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "Data = RGX(\".*ModuleContents\\\\=function\\\\ Get\\\\-VMRemoteFXPhysicalVideoAdapter\\\\ \\\\{.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "190840e8-6de5-4d1f-b83a-cd33e2acf314"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

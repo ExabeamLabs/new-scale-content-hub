@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Lolbin Runexehelper Use As Proxy",
+      "description": "Detect usage of the \"runexehelper.exe\" binary as a proxy to launch other programs",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "parent_process_path = RGX(\"\\\\\\\\runexehelper\\\\\\.exe$\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "15a1ec58-2a39-428a-ab33-e8580e4c823b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

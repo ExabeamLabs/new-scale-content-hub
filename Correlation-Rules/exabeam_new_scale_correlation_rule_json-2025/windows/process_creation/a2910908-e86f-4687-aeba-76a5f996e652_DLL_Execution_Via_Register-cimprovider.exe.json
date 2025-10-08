@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "DLL Execution Via Register-cimprovider.exe",
+      "description": "Detects using register-cimprovider.exe to execute arbitrary dll file.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\register\\\\-cimprovider\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\-path.*\") AND process_command_line = RGX(\".*dll.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "cb8f3a02-66f5-4729-910d-986f71ddbdd9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation Via Use MSHTA - System",
+      "description": "Detects Obfuscated Powershell via use MSHTA in Scripts Note: Unmapped fields: Provider_Name, ImagePath",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Provider_Name = \"Service\\ Control\\ Manager\" AND event_id = 7045 AND (ImagePath = RGX(\".*mshta.*\") AND ImagePath = RGX(\".*vbscript\\\\:createobject.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "db96e38a-35d1-436c-bf8a-4a09cc66f65b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

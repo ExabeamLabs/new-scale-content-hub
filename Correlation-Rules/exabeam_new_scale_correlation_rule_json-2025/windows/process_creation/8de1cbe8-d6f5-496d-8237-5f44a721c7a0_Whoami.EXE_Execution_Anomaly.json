@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Whoami.EXE Execution Anomaly",
+      "description": "Detects the execution of whoami.exe with suspicious parent processes.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\whoami\\\\\\.exe$\") OR process_original_file_name = \"whoami\\.exe\") AND  NOT ((parent_process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\powershell\\\\_ise\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\")) OR parent_process_path = \"None\" OR (parent_process_path = \"\" OR parent_process_path = \"\\-\")) AND  NOT (parent_process_path = RGX(\"\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Microsoft\\\\ Monitoring\\\\ Agent\\\\\\\\Agent\\\\\\\\MonitoringHost\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f8cda38c-43d2-46cc-9676-5a213fc2061f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

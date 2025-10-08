@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential WerFault ReflectDebugger Registry Value Abuse",
+      "description": "Detects potential WerFault \"ReflectDebugger\" registry value abuse for persistence.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\"\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\Windows\\\\ Error\\\\ Reporting\\\\\\\\Hangs\\\\\\\\ReflectDebugger$\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e7efbbcc-fb2b-44b0-877a-59541ddfdc1d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

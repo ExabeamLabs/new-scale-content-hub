@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - GMER Rootkit Detector and Remover Execution",
+      "description": "Detects the execution GMER tool based on image and hash fields.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\gmer\\\\\\.exe$\") OR (process_hash = RGX(\".*MD5\\\\=E9DC058440D321AA17D0600B3CA0AB04.*\") OR process_hash = RGX(\".*SHA1\\\\=539C228B6B332F5AA523E5CE358C16647D8BBE57.*\") OR process_hash = RGX(\".*SHA256\\\\=E8A3E804A96C716A3E9B69195DB6FFB0D33E2433AF871E4D4E1EAB3097237173.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "27d22574-72e2-4d90-9da5-43e5cd4f50cf"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

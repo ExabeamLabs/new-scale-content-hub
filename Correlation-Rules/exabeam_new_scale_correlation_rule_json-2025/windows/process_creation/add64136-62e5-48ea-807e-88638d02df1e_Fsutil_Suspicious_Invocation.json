@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Fsutil Suspicious Invocation",
+      "description": "Detects suspicious parameters of fsutil (deleting USN journal, configuring it with small size, etc).\nMight be used by ransomwares during the attack (seen by NotPetya and others).\n",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\fsutil\\\\\\.exe$\") OR process_original_file_name = \"fsutil\\.exe\") AND (process_command_line = RGX(\".*deletejournal.*\") OR process_command_line = RGX(\".*createjournal.*\") OR process_command_line = RGX(\".*setZeroData.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "17ed164b-81bf-4db0-9aa3-aade9f75a586"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

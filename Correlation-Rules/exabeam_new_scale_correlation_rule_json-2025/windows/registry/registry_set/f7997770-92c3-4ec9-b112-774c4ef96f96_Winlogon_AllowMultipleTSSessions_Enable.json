@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Winlogon AllowMultipleTSSessions Enable",
+      "description": "Detects when the 'AllowMultipleTSSessions' value is enabled.\nWhich allows for multiple Remote Desktop connection sessions to be opened at once.\nThis is often used by attacker as a way to connect to an RDP session without disconnecting the other users\n Note: Unmapped fields: Details",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\"\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\Winlogon\\\\\\\\AllowMultipleTSSessions$\") AND Details = RGX(\"DWORD\\\\ \\\\(0x00000001\\\\)$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c990fa9c-0423-4734-a5de-1740214bc579"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

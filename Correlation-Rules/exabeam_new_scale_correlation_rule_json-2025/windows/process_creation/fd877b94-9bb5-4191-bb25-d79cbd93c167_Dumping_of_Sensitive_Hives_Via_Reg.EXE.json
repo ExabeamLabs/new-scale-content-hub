@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Dumping of Sensitive Hives Via Reg.EXE",
+      "description": "Detects the usage of \"reg.exe\" in order to dump sensitive registry hives. This includes SAM, SYSTEM and SECURITY hives.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\reg\\\\\\.exe$\") OR process_original_file_name = \"reg\\.exe\") AND (process_command_line = RGX(\".*\\\\ save\\\\ .*\") OR process_command_line = RGX(\".*\\\\ export\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \u02e2ave\\\\ .*\") OR process_command_line = RGX(\".*\\\\ e\u02e3port\\\\ .*\")) AND (process_command_line = RGX(\".*hklm.*\") OR process_command_line = RGX(\".*hk\u02eam.*\") OR process_command_line = RGX(\".*hkey\\\\_local\\\\_machine.*\") OR process_command_line = RGX(\".*hkey\\\\_\u02eaocal\\\\_machine.*\") OR process_command_line = RGX(\".*hkey\\\\_loca\u02ea\\\\_machine.*\") OR process_command_line = RGX(\".*hkey\\\\_\u02eaoca\u02ea\\\\_machine.*\")) AND (process_command_line = RGX(\".*\\\\\\\\system.*\") OR process_command_line = RGX(\".*\\\\\\\\sam.*\") OR process_command_line = RGX(\".*\\\\\\\\security.*\") OR process_command_line = RGX(\".*\\\\\\\\\u02e2ystem.*\") OR process_command_line = RGX(\".*\\\\\\\\sy\u02e2tem.*\") OR process_command_line = RGX(\".*\\\\\\\\\u02e2y\u02e2tem.*\") OR process_command_line = RGX(\".*\\\\\\\\\u02e2am.*\") OR process_command_line = RGX(\".*\\\\\\\\\u02e2ecurity.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0f6afafa-f48b-4a30-8a02-d6223a9d68aa"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

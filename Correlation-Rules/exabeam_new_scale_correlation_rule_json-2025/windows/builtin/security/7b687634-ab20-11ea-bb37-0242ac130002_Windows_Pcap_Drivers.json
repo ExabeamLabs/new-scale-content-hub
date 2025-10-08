@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows Pcap Drivers",
+      "description": "Detects Windows Pcap driver installation based on a list of associated .sys files. Note: Unmapped fields: ServiceFileName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4697 AND (ServiceFileName = RGX(\".*pcap.*\") OR ServiceFileName = RGX(\".*npcap.*\") OR ServiceFileName = RGX(\".*npf.*\") OR ServiceFileName = RGX(\".*nm3.*\") OR ServiceFileName = RGX(\".*ndiscap.*\") OR ServiceFileName = RGX(\".*nmnt.*\") OR ServiceFileName = RGX(\".*windivert.*\") OR ServiceFileName = RGX(\".*USBPcap.*\") OR ServiceFileName = RGX(\".*pktmon.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8cbbd900-4260-4bf8-bd07-272116a13fbe"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

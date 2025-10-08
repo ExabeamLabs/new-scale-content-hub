@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "User Added to Remote Desktop Users Group",
+      "description": "Detects addition of users to the local Remote Desktop Users group via \"Net\" or \"Add-LocalGroupMember\".",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_command_line = RGX(\".*localgroup\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\/add.*\")) OR (process_command_line = RGX(\".*Add\\\\-LocalGroupMember\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-Group\\\\ .*\"))) AND (process_command_line = RGX(\".*Remote\\\\ Desktop\\\\ Users.*\") OR process_command_line = RGX(\".*Utilisateurs\\\\ du\\\\ Bureau\\\\ \u00e0\\\\ distance.*\") OR process_command_line = RGX(\".*Usuarios\\\\ de\\\\ escritorio\\\\ remoto.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1b89cd66-2563-42e9-ac17-7d3be665756d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

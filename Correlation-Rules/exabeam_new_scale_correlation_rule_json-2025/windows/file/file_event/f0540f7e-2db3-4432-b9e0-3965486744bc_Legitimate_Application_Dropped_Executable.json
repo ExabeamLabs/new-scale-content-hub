@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Legitimate Application Dropped Executable",
+      "description": "Detects programs on a Windows system that should not write executables to disk",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\eqnedt32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wordpad\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wordview\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\certutil\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\certoc\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\CertReq\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\Desktopimgdownldr\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\esentutl\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\AcroRd32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\RdrCEF\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\hh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\finger\\\\\\.exe$\")) AND (file_path = RGX(\"\\\\\\.exe$\") OR file_path = RGX(\"\\\\\\.dll$\") OR file_path = RGX(\"\\\\\\.ocx$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "daf0103d-ce89-45f4-b243-e12c33ba007b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

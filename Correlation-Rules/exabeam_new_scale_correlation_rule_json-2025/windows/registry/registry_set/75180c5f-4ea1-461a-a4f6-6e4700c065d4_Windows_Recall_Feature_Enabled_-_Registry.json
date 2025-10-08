@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows Recall Feature Enabled - Registry",
+      "description": "Detects the enabling of the Windows Recall feature via registry manipulation. Windows Recall can be enabled by setting the value of \"DisableAIDataAnalysis\" to \"0\".\nAdversaries may enable Windows Recall as part of post-exploitation discovery and collection activities.\nThis rule assumes that Recall is already explicitly disabled on the host, and subsequently enabled by the adversary.\n Note: Unmapped fields: Details",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\"\\\\\\\\Software\\\\\\\\Policies\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\WindowsAI\\\\\\\\DisableAIDataAnalysis$\") AND Details = \"DWORD\\ \\(0x00000000\\)\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "867a0005-64bd-432e-9fca-acbfcbecc1a7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

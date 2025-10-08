@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Process Launched Without Image Name",
+      "description": "Detect the use of processes with no name (\".exe\"), which can be used to evade Image-based detections.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_path = RGX(\"\\\\\\\\\\\\\\.exe$\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d22bf807-2b13-480d-80cb-d0adc9c678a2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

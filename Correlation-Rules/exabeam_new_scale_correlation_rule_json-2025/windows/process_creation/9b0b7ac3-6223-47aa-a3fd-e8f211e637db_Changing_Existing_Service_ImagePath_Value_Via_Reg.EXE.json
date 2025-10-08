@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Changing Existing Service ImagePath Value Via Reg.EXE",
+      "description": "Adversaries may execute their own malicious payloads by hijacking the Registry entries used by services.\nAdversaries may use flaws in the permissions for registry to redirect from the originally specified executable to one that they control, in order to launch their own code at Service start.\nWindows stores local service configuration information in the Registry under HKLM\\SYSTEM\\CurrentControlSet\\Services\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\reg\\\\\\.exe$\") AND (process_command_line = RGX(\".*add\\\\ .*\") AND process_command_line = RGX(\".*SYSTEM\\\\\\\\CurrentControlSet\\\\\\\\Services\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\ ImagePath\\\\ .*\"))) AND process_command_line = RGX(\".*\\\\ \\\\-d\\\\ .*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "166c9c61-9080-4395-80d0-03cc7c008885"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

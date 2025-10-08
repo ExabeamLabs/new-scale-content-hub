@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential DLL Injection Or Execution Using Tracker.exe",
+      "description": "Detects potential DLL injection and execution using \"Tracker.exe\"",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\tracker\\\\\\.exe$\") OR process_description = \"Tracker\") AND (process_command_line = RGX(\".*\\\\ \\\\/d\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\/c\\\\ .*\"))) AND  NOT (process_command_line = RGX(\".*\\\\ \\\\/ERRORREPORT\\\\:PROMPT\\\\ .*\") OR (parent_process_path = RGX(\"\\\\\\\\Msbuild\\\\\\\\Current\\\\\\\\Bin\\\\\\\\MSBuild\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\Msbuild\\\\\\\\Current\\\\\\\\Bin\\\\\\\\amd64\\\\\\\\MSBuild\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1d3cc6e8-b24c-4979-9bd2-f87c355109ff"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

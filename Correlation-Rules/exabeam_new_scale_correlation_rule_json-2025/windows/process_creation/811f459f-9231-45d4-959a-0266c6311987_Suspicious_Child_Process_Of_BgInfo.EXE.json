@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Child Process Of BgInfo.EXE",
+      "description": "Detects suspicious child processes of \"BgInfo.exe\" which could be a sign of potential abuse of the binary to proxy execution via external VBScript",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((parent_process_path = RGX(\"\\\\\\\\bginfo\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\bginfo64\\\\\\.exe$\")) AND ((process_path = RGX(\"\\\\\\\\calc\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\notepad\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\")) OR (process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Temp\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\PerfLogs\\\\\\\\.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b33676ff-0acb-4f1a-bdfc-0e7e48cc8dcf"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Nltest.EXE Execution",
+      "description": "Detects nltest commands that can be used for information discovery",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\nltest\\\\\\.exe$\") OR process_original_file_name = \"nltestrk\\.exe\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "50b84655-9734-4403-8db4-81e5e59905c0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

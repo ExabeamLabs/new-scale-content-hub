@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "System Shutdown/Reboot - MacOs",
+      "description": "Adversaries may shutdown/reboot systems to interrupt access to, or aid in the destruction of, those systems.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/shutdown$\") OR process_path = RGX(\"\\\\/reboot$\") OR process_path = RGX(\"\\\\/halt$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a068870d-572f-462e-b6bf-98b68db33878"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

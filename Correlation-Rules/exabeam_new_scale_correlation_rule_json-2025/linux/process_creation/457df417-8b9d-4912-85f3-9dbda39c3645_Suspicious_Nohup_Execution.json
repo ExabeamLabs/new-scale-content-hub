@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Nohup Execution",
+      "description": "Detects execution of binaries located in potentially suspicious locations via \"nohup\"",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/nohup$\") AND process_command_line = RGX(\".*\\\\/tmp\\\\/.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "84d818b3-cf91-496b-81f9-56bb5147163f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "AgentExecutor PowerShell Execution",
+      "description": "Detects execution of the AgentExecutor.exe binary. Which can be abused as a LOLBIN to execute powershell scripts with the ExecutionPolicy \"Bypass\" or any binary named \"powershell.exe\" located in the path provided by 6th positional argument",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = \"\\\\AgentExecutor\\.exe\" OR process_original_file_name = \"AgentExecutor\\.exe\") AND (process_command_line = RGX(\".*\\\\ \\\\-powershell.*\") OR process_command_line = RGX(\".*\\\\ \\\\-remediationScript.*\"))) AND  NOT (parent_process_path = RGX(\"\\\\\\\\Microsoft\\\\\\.Management\\\\\\.Services\\\\\\.IntuneWindowsAgent\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f7d33ada-65a7-4c53-84ab-67ab7ef92da5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

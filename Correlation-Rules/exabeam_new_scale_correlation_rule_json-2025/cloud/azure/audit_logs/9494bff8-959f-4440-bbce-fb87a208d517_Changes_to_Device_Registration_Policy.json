@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Changes to Device Registration Policy",
+      "description": "Monitor and alert for changes to the device registration policy. Note: Unmapped fields: Category, ActivityDisplayName",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Category = \"Policy\" AND ActivityDisplayName = \"Set\\ device\\ registration\\ policies\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "caf5f256-5960-4009-b89c-9da93f93a793"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "A Member Was Added to a Security-Enabled Global Group",
+      "description": "Detects activity when a member is added to a security-enabled global group",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4728 OR event_id = 632)",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4a1e2ee4-5da1-4cc9-a770-5b3ba2a026a8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

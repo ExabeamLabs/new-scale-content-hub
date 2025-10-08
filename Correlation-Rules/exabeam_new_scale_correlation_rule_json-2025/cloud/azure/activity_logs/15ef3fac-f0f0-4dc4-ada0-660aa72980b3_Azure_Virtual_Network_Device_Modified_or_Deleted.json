@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Azure Virtual Network Device Modified or Deleted",
+      "description": "Identifies when a virtual network device is being modified or deleted.\nThis can be a network interface, network virtual appliance, virtual hub, or virtual router.\n Note: Unmapped fields: operationName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(operationName = \"MICROSOFT\\.NETWORK\\/NETWORKINTERFACES\\/TAPCONFIGURATIONS\\/WRITE\" OR operationName = \"MICROSOFT\\.NETWORK\\/NETWORKINTERFACES\\/TAPCONFIGURATIONS\\/DELETE\" OR operationName = \"MICROSOFT\\.NETWORK\\/NETWORKINTERFACES\\/WRITE\" OR operationName = \"MICROSOFT\\.NETWORK\\/NETWORKINTERFACES\\/JOIN\\/ACTION\" OR operationName = \"MICROSOFT\\.NETWORK\\/NETWORKINTERFACES\\/DELETE\" OR operationName = \"MICROSOFT\\.NETWORK\\/NETWORKVIRTUALAPPLIANCES\\/DELETE\" OR operationName = \"MICROSOFT\\.NETWORK\\/NETWORKVIRTUALAPPLIANCES\\/WRITE\" OR operationName = \"MICROSOFT\\.NETWORK\\/VIRTUALHUBS\\/DELETE\" OR operationName = \"MICROSOFT\\.NETWORK\\/VIRTUALHUBS\\/WRITE\" OR operationName = \"MICROSOFT\\.NETWORK\\/VIRTUALROUTERS\\/WRITE\" OR operationName = \"MICROSOFT\\.NETWORK\\/VIRTUALROUTERS\\/DELETE\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "89e3d4ce-b6e8-474c-922d-c81cc4794af0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

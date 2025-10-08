@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - PPID Spoofing SelectMyParent Tool Execution",
+      "description": "Detects the use of parent process ID spoofing tools like Didier Stevens tool SelectMyParent",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\SelectMyParent\\\\\\.exe$\") OR (process_command_line = RGX(\".*PPID\\\\-spoof.*\") OR process_command_line = RGX(\".*ppid\\\\_spoof.*\") OR process_command_line = RGX(\".*spoof\\\\-ppid.*\") OR process_command_line = RGX(\".*spoof\\\\_ppid.*\") OR process_command_line = RGX(\".*ppidspoof.*\") OR process_command_line = RGX(\".*spoofppid.*\") OR process_command_line = RGX(\".*spoofedppid.*\") OR process_command_line = RGX(\".*\\\\ \\\\-spawnto\\\\ .*\")) OR (process_original_file_name = RGX(\".*PPID\\\\-spoof.*\") OR process_original_file_name = RGX(\".*ppid\\\\_spoof.*\") OR process_original_file_name = RGX(\".*spoof\\\\-ppid.*\") OR process_original_file_name = RGX(\".*spoof\\\\_ppid.*\") OR process_original_file_name = RGX(\".*ppidspoof.*\") OR process_original_file_name = RGX(\".*spoofppid.*\") OR process_original_file_name = RGX(\".*spoofedppid.*\")) OR process_description = \"SelectMyParent\" OR (process_hash = RGX(\".*IMPHASH\\\\=04D974875BD225F00902B4CAD9AF3FBC.*\") OR process_hash = RGX(\".*IMPHASH\\\\=A782AF154C9E743DDF3F3EB2B8F3D16E.*\") OR process_hash = RGX(\".*IMPHASH\\\\=89059503D7FBF470E68F7E63313DA3AD.*\") OR process_hash = RGX(\".*IMPHASH\\\\=CA28337632625C8281AB8A130B3D6BAD.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ab9fe8ff-f974-42f1-a9dc-676c026bba55"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

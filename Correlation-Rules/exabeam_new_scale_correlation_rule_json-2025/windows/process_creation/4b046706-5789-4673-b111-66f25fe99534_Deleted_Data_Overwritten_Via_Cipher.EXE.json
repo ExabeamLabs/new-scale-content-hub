@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Deleted Data Overwritten Via Cipher.EXE",
+      "description": "Detects usage of the \"cipher\" built-in utility in order to overwrite deleted data from disk.\nAdversaries may destroy data and files on specific systems or in large numbers on a network to interrupt availability to systems, services, and network resources.\nData destruction is likely to render stored data irrecoverable by forensic techniques through overwriting files or data on local and remote drives\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_original_file_name = \"CIPHER\\.EXE\" OR process_path = RGX(\"\\\\\\\\cipher\\\\\\.exe$\")) AND process_command_line = RGX(\".*\\\\ \\\\/w\\\\:.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "015fcdaf-e7b1-4528-8dbe-292704ace0b5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

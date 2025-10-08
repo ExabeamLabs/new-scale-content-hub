@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Python Reverse Shell Execution Via PTY And Socket Modules",
+      "description": "Detects the execution of python with calls to the socket and pty module in order to connect and spawn a potential reverse shell.\n",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\".*python.*\") AND (process_command_line = RGX(\".*\\\\ \\\\-c\\\\ .*\") AND process_command_line = RGX(\".*import.*\") AND process_command_line = RGX(\".*pty.*\") AND process_command_line = RGX(\".*socket.*\") AND process_command_line = RGX(\".*spawn.*\") AND process_command_line = RGX(\".*\\\\\\.connect.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "54319c01-e3f6-4e21-b987-050a80c1bf16"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "MMC Spawning Windows Shell",
+      "description": "Detects a Windows command line executable started from MMC",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\mmc\\\\\\.exe$\") AND ((process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\sh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\bash\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\reg\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\")) OR process_path = RGX(\".*\\\\\\\\BITSADMIN.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a17161ed-0729-424e-8755-7fb5b5534749"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

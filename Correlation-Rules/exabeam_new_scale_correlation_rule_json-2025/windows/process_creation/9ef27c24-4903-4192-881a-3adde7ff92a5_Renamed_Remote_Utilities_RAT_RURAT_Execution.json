@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Renamed Remote Utilities RAT (RURAT) Execution",
+      "description": "Detects execution of renamed Remote Utilities (RURAT) via Product PE header field",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_product = \"Remote\\ Utilities\" AND  NOT ((process_path = RGX(\"\\\\\\\\rutserv\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\rfusclient\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e573430e-efb4-4788-b6b3-e7ef0c8a9970"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

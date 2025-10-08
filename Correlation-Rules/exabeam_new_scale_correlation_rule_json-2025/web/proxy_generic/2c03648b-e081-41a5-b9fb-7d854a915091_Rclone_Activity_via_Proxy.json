@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Rclone Activity via Proxy",
+      "description": "Detects the use of rclone, a command-line program to manage files on cloud storage, via its default user-agent string Note: Unmapped fields: c-useragent",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "c-useragent = RGX(\"^rclone\\\\/v\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "bf062359-9ec3-4b8a-ab91-c2bb3d4fbdb9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

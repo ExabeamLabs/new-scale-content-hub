@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Service DACL Abuse To Hide Services Via Sc.EXE",
+      "description": "Detects usage of the \"sc.exe\" utility adding a new service with special permission seen used by threat actors which makes the service hidden and unremovable.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\sc\\\\\\.exe$\") OR process_original_file_name = \"sc\\.exe\") AND (process_command_line = RGX(\".*sdset.*\") AND process_command_line = RGX(\".*DCLCWPDTSD.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7cf6cad5-90eb-42d2-8002-f79e47b1eeb8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

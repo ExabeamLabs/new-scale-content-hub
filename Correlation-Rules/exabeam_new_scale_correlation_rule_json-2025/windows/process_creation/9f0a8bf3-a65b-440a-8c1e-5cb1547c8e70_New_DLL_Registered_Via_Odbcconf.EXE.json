@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New DLL Registered Via Odbcconf.EXE",
+      "description": "Detects execution of \"odbcconf\" with \"REGSVR\" in order to register a new DLL (equivalent to running regsvr32). Attackers abuse this to install and run malicious DLLs.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\odbcconf\\\\\\.exe$\") OR process_original_file_name = \"odbcconf\\.exe\") AND (process_command_line = RGX(\".*REGSVR\\\\ .*\") AND process_command_line = RGX(\".*\\\\\\.dll.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b360e845-5af1-4b74-8f60-971e9b4e5bca"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

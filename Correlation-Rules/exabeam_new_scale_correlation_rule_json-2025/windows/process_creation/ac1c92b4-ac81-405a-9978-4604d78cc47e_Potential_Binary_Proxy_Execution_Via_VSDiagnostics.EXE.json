@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Binary Proxy Execution Via VSDiagnostics.EXE",
+      "description": "Detects execution of \"VSDiagnostics.exe\" with the \"start\" command in order to launch and proxy arbitrary binaries.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\VSDiagnostics\\\\\\.exe$\") OR process_original_file_name = \"VSDiagnostics\\.exe\") AND process_command_line = RGX(\".*start.*\") AND (process_command_line = RGX(\".*\\\\ \\\\/launch\\\\:.*\") OR process_command_line = RGX(\".*\\\\ \\\\-launch\\\\:.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0d81cdca-00db-4af3-add2-9738d0e57680"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

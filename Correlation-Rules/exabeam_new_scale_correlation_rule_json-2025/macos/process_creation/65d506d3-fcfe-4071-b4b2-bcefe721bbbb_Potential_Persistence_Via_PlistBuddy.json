@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Persistence Via PlistBuddy",
+      "description": "Detects potential persistence activity using LaunchAgents or LaunchDaemons via the PlistBuddy utility",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/PlistBuddy$\") AND (process_command_line = RGX(\".*RunAtLoad.*\") AND process_command_line = RGX(\".*true.*\")) AND (process_command_line = RGX(\".*LaunchAgents.*\") OR process_command_line = RGX(\".*LaunchDaemons.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4cec2f15-b5ae-4dce-8dd3-d19ee0c53651"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

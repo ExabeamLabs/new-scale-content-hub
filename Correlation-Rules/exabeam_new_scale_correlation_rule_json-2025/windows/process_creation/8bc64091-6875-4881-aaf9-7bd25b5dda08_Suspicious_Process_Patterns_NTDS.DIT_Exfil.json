@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Process Patterns NTDS.DIT Exfil",
+      "description": "Detects suspicious process patterns used in NTDS.DIT exfiltration",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\NTDSDump\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\NTDSDumpEx\\\\\\.exe$\")) OR (process_command_line = RGX(\".*ntds\\\\\\.dit.*\") AND process_command_line = RGX(\".*system\\\\\\.hiv.*\")) OR process_command_line = RGX(\".*NTDSgrab\\\\\\.ps1.*\")) OR (process_command_line = RGX(\".*ac\\\\ i\\\\ ntds.*\") AND process_command_line = RGX(\".*create\\\\ full.*\")) OR (process_command_line = RGX(\".*\\\\/c\\\\ copy\\\\ .*\") AND process_command_line = RGX(\".*\\\\\\\\windows\\\\\\\\ntds\\\\\\\\ntds\\\\\\.dit.*\")) OR (process_command_line = RGX(\".*activate\\\\ instance\\\\ ntds.*\") AND process_command_line = RGX(\".*create\\\\ full.*\")) OR (process_command_line = RGX(\".*powershell.*\") AND process_command_line = RGX(\".*ntds\\\\\\.dit.*\"))) OR (process_command_line = RGX(\".*ntds\\\\\\.dit.*\") AND ((parent_process_path = RGX(\".*\\\\\\\\apache.*\") OR parent_process_path = RGX(\".*\\\\\\\\tomcat.*\") OR parent_process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\.*\") OR parent_process_path = RGX(\".*\\\\\\\\Temp\\\\\\\\.*\") OR parent_process_path = RGX(\".*\\\\\\\\Public\\\\\\\\.*\") OR parent_process_path = RGX(\".*\\\\\\\\PerfLogs\\\\\\\\.*\")) OR (process_path = RGX(\".*\\\\\\\\apache.*\") OR process_path = RGX(\".*\\\\\\\\tomcat.*\") OR process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\Temp\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\Public\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\PerfLogs\\\\\\\\.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1d137d34-3a05-4570-9e36-80da2824e4fd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Process Injection Via Msra.EXE",
+      "description": "Detects potential process injection via Microsoft Remote Asssistance (Msra.exe) by looking at suspicious child processes spawned from the aforementioned process. It has been a target used by many threat actors and used for discovery and persistence tactics",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\msra\\\\\\.exe$\") AND parent_process_command_line = RGX(\"msra\\\\\\.exe$\") AND (process_path = RGX(\"\\\\\\\\arp\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\net\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\netstat\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\nslookup\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\route\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\whoami\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3096b763-0858-4732-83f1-4d5b80fa0d52"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

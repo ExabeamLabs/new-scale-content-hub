@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Schedule Task Creation From Env Variable Or Potentially Suspicious Path Via Schtasks.EXE",
+      "description": "Detects Schtask creations that point to a suspicious folder or an environment variable often used by malware",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") AND process_command_line = RGX(\".*\\\\ \\\\/create\\\\ .*\")) AND (process_command_line = RGX(\".*\\\\:\\\\\\\\Perflogs.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\All\\\\ Users\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\Default\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\Public.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Temp.*\") OR process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\%AppData\\\\%.*\") OR process_command_line = RGX(\".*\\\\%Public\\\\%.*\"))) OR (parent_process_command_line = RGX(\"\\\\\\\\svchost\\\\\\.exe\\\\ \\\\-k\\\\ netsvcs\\\\ \\\\-p\\\\ \\\\-s\\\\ Schedule$\") AND (process_command_line = RGX(\".*\\\\:\\\\\\\\Perflogs.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Temp.*\") OR process_command_line = RGX(\".*\\\\\\\\Users\\\\\\\\Public.*\") OR process_command_line = RGX(\".*\\\\%Public\\\\%.*\")))) AND  NOT ((parent_process_command_line = RGX(\".*unattended\\\\\\.ini.*\") OR process_command_line = RGX(\".*update\\\\_task\\\\\\.xml.*\")) OR process_command_line = RGX(\".*\\\\/Create\\\\ \\\\/TN\\\\ TVInstallRestore\\\\ \\\\/TR.*\") OR (process_command_line = RGX(\".*\\\\/Create\\\\ \\\\/Xml\\\\ \\\\\"C\\\\:\\\\\\\\Users\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\\\\\\\.CR\\\\\\..*\") AND process_command_line = RGX(\".*Avira\\\\_Security\\\\_Installation\\\\\\.xml.*\")) OR ((process_command_line = RGX(\".*\\\\/Create\\\\ \\\\/F\\\\ \\\\/TN.*\") AND process_command_line = RGX(\".*\\\\/Xml\\\\ .*\") AND process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\is\\\\-.*\") AND process_command_line = RGX(\".*Avira\\\\_.*\")) AND (process_command_line = RGX(\".*\\\\\\.tmp\\\\\\\\UpdateFallbackTask\\\\\\.xml.*\") OR process_command_line = RGX(\".*\\\\\\.tmp\\\\\\\\WatchdogServiceControlManagerTimeout\\\\\\.xml.*\") OR process_command_line = RGX(\".*\\\\\\.tmp\\\\\\\\SystrayAutostart\\\\\\.xml.*\") OR process_command_line = RGX(\".*\\\\\\.tmp\\\\\\\\MaintenanceTask\\\\\\.xml.*\"))) OR (process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\/Create\\\\ \\\\/TN\\\\ \\\\\"klcp\\\\_update\\\\\"\\\\ \\\\/XML\\\\ .*\") AND process_command_line = RGX(\".*\\\\\\\\klcp\\\\_update\\\\_task\\\\\\.xml.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d66f5c95-3227-41ef-8474-907b89cb7b95"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Sysinternals PsSuspend Suspicious Execution",
+      "description": "Detects suspicious execution of Sysinternals PsSuspend, where the utility is used to suspend critical processes such as AV or EDR to bypass defenses",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_original_file_name = \"pssuspend\\.exe\" OR (process_path = RGX(\"\\\\\\\\pssuspend\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pssuspend64\\\\\\.exe$\"))) AND process_command_line = RGX(\".*msmpeng\\\\\\.exe.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1d14c2c7-31dd-4763-97e8-3f03e4b61f17"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

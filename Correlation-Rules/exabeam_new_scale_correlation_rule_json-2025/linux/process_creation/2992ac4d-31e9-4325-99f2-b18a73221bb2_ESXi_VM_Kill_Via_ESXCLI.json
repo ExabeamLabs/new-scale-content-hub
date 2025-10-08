@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "ESXi VM Kill Via ESXCLI",
+      "description": "Detects execution of the \"esxcli\" command with the \"vm\" and \"kill\" flag in order to kill/shutdown a specific VM.",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/esxcli$\") AND (process_command_line = RGX(\".*vm\\\\ process.*\") AND process_command_line = RGX(\".*kill.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "486f7f88-5944-4a5e-a261-862edb4c2a22"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

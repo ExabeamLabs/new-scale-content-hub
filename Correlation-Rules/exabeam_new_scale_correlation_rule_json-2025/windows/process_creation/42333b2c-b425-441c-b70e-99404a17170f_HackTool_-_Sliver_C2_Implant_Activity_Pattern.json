@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - Sliver C2 Implant Activity Pattern",
+      "description": "Detects process activity patterns as seen being used by Sliver C2 framework implants",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_command_line = RGX(\".*\\\\-NoExit\\\\ \\\\-Command\\\\ \\\\[Console\\\\]\\\\:\\\\:OutputEncoding\\\\=\\\\[Text\\\\\\.UTF8Encoding\\\\]\\\\:\\\\:UTF8.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "077f373c-ed17-4200-8902-1854cf6d844d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

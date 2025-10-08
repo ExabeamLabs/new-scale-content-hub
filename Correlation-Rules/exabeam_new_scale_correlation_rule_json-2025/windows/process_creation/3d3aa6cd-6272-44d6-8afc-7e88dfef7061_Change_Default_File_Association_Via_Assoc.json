@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Change Default File Association Via Assoc",
+      "description": "Detects file association changes using the builtin \"assoc\" command.\nWhen a file is opened, the default program used to open the file (also called the file association or handler) is checked. File association selections are stored in the Windows Registry and can be edited by users, administrators, or programs that have Registry access or by administrators using the built-in assoc utility. Applications can modify the file association for a given file extension to call an arbitrary program when a file with the given extension is opened.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_original_file_name = \"Cmd\\.Exe\") AND process_command_line = RGX(\".*assoc.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4e3988bc-b593-4044-909a-1ccd4aa76e4e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

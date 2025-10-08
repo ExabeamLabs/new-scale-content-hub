@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Process By Web Server Process",
+      "description": "Detects potentially suspicious processes being spawned by a web server process which could be the result of a successfully placed web shell or exploitation\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((parent_process_path = RGX(\"\\\\\\\\caddy\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\httpd\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\nginx\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\php\\\\-cgi\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\php\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\tomcat\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\UMWorkerProcess\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\w3wp\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\ws\\\\_TomcatService\\\\\\.exe$\")) OR ((parent_process_path = RGX(\"\\\\\\\\java\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\javaw\\\\\\.exe$\")) AND (parent_process_path = RGX(\".*\\\\-tomcat\\\\-.*\") OR parent_process_path = RGX(\".*\\\\\\\\tomcat.*\"))) OR ((parent_process_path = RGX(\"\\\\\\\\java\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\javaw\\\\\\.exe$\")) AND (parent_process_command_line = RGX(\".*CATALINA\\\\_HOME.*\") OR parent_process_command_line = RGX(\".*catalina\\\\\\.home.*\") OR parent_process_command_line = RGX(\".*catalina\\\\\\.jar.*\")))) AND (process_path = RGX(\"\\\\\\\\arp\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\at\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\bash\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\bitsadmin\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\certutil\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\dsget\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\hostname\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\nbtstat\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\net\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\net1\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\netdom\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\netsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\nltest\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\ntdsutil\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\_ise\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\qprocess\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\query\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\qwinsta\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\reg\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\sc\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\sh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wmic\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wusa\\\\\\.exe$\")) AND  NOT ((parent_process_path = RGX(\"\\\\\\\\java\\\\\\.exe$\") AND process_command_line = RGX(\"Windows\\\\\\\\system32\\\\\\\\cmd\\\\\\.exe\\\\ \\\\/c\\\\ C\\\\:\\\\\\\\ManageEngine\\\\\\\\ADManager\\\\ \\\\\"Plus\\\\\\\\ES\\\\\\\\bin\\\\\\\\elasticsearch\\\\\\.bat\\\\ \\\\-Enode\\\\\\.name\\\\=RMP\\\\-NODE1\\\\ \\\\-pelasticsearch\\\\-pid\\\\\\.txt$\")) OR (parent_process_path = RGX(\"\\\\\\\\java\\\\\\.exe$\") AND (process_command_line = RGX(\".*sc\\\\ query.*\") AND process_command_line = RGX(\".*ADManager\\\\ Plus.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2e671171-34bc-468f-b216-d7e0fd444788"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

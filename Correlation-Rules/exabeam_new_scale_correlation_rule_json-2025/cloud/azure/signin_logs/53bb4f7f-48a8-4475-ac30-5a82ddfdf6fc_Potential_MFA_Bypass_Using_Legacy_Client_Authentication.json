@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential MFA Bypass Using Legacy Client Authentication",
+      "description": "Detects successful authentication from potential clients using legacy authentication via user agent strings. This could be a sign of MFA bypass using a password spray attack. Note: Unmapped fields: Status, userAgent",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Status = \"Success\" AND (userAgent = RGX(\".*BAV2ROPC.*\") OR userAgent = RGX(\".*CBAinPROD.*\") OR userAgent = RGX(\".*CBAinTAR.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7e57ec3f-b1ea-4ae1-9622-f853c52e6a74"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

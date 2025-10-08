@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Zip A Folder With PowerShell For Staging In Temp - PowerShell",
+      "description": "Detects PowerShell scripts that make use of the \"Compress-Archive\" Cmdlet in order to compress folders and files where the output is stored in a potentially suspicious location that is used often by malware for exfiltration.\nAn adversary might compress data (e.g., sensitive documents) that is collected prior to exfiltration in order to make it portable and minimize the amount of data sent over the network.\n Note: Unmapped fields: Data",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Data = RGX(\".*Compress\\\\-Archive\\\\ \\\\-Path*\\\\-DestinationPath\\\\ \\\\$env\\\\:TEMP.*\") OR Data = RGX(\".*Compress\\\\-Archive\\\\ \\\\-Path*\\\\-DestinationPath*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") OR Data = RGX(\".*Compress\\\\-Archive\\\\ \\\\-Path*\\\\-DestinationPath*\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "60afacec-8a92-4779-8fff-7d04cf53f57b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

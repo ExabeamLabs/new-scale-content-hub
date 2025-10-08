@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Ntdsutil Abuse",
+      "description": "Detects potential abuse of ntdsutil to dump ntds.dit database Note: Unmapped fields: Provider_Name, Data",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Provider_Name = \"ESENT\" AND (event_id = 216 OR event_id = 325 OR event_id = 326 OR event_id = 327) AND Data = RGX(\".*ntds\\\\\\.dit.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "43d83c23-8f81-474f-8496-1a350ecdd96b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

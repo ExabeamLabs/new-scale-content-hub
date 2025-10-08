@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Webshell Creation On Static Website",
+      "description": "Detects the creation of files with certain extensions on a static web site. This can be indicative of potential uploads of a web shell.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((file_path = RGX(\".*\\\\\\\\inetpub\\\\\\\\wwwroot\\\\\\\\.*\") AND (file_path = RGX(\".*\\\\\\.ashx.*\") OR file_path = RGX(\".*\\\\\\.asp.*\") OR file_path = RGX(\".*\\\\\\.ph.*\") OR file_path = RGX(\".*\\\\\\.soap.*\"))) OR ((file_path = RGX(\".*\\\\\\\\www\\\\\\\\.*\") OR file_path = RGX(\".*\\\\\\\\htdocs\\\\\\\\.*\") OR file_path = RGX(\".*\\\\\\\\html\\\\\\\\.*\")) AND file_path = RGX(\".*\\\\\\.ph.*\"))) AND  NOT ((file_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") OR file_path = RGX(\".*\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\")) OR process_path = \"System\" OR file_path = RGX(\".*\\\\\\\\xampp.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8ff57d8a-cfd6-464d-8a42-71f3c2b79d52"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Execute Files with Msdeploy.exe",
+      "description": "Detects file execution using the msdeploy.exe lolbin",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*verb\\\\:sync.*\") AND process_command_line = RGX(\".*\\\\-source\\\\:RunCommand.*\") AND process_command_line = RGX(\".*\\\\-dest\\\\:runCommand.*\")) AND process_path = RGX(\"\\\\\\\\msdeploy\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1fd6036f-da05-4664-a7d2-fd230fde425f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

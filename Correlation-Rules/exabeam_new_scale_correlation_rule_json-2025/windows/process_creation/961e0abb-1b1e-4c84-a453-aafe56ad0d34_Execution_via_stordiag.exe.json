@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Execution via stordiag.exe",
+      "description": "Detects the use of stordiag.exe to execute schtasks.exe systeminfo.exe and fltmc.exe",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\stordiag\\\\\\.exe$\") AND (process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\systeminfo\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\fltmc\\\\\\.exe$\"))) AND  NOT ((parent_process_path = RGX(\"^c\\\\:\\\\\\\\windows\\\\\\\\system32\\\\\\\\\") OR parent_process_path = RGX(\"^c\\\\:\\\\\\\\windows\\\\\\\\syswow64\\\\\\\\\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "dcd8f4da-ff33-4b5e-9bba-ee5a9a3eeef8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

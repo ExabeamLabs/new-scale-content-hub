@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Portable Gpg.EXE Execution",
+      "description": "Detects the execution of \"gpg.exe\" from uncommon location. Often used by ransomware and loaders to decrypt/encrypt data.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\gpg\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\gpg2\\\\\\.exe$\")) OR process_original_file_name = \"gpg\\.exe\" OR process_description = \"GnuPG\u2019s\\ OpenPGP\\ tool\") AND  NOT ((process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\GNU\\\\\\\\GnuPG\\\\\\\\bin\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\GnuPG\\\\ VS\\\\-Desktop\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\GnuPG\\\\\\\\bin\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Gpg4win\\\\\\\\bin\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "832dc61b-1fb9-4e31-ba00-8196223c9c74"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

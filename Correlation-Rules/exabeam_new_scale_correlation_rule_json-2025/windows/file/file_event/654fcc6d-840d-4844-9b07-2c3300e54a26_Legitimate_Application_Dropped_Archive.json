@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Legitimate Application Dropped Archive",
+      "description": "Detects programs on a Windows system that should not write an archive to disk",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\winword\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\excel\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powerpnt\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msaccess\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mspub\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\eqnedt32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\visio\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wordpad\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wordview\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\certutil\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\certoc\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\CertReq\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\Desktopimgdownldr\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\esentutl\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\finger\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\notepad\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\AcroRd32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\RdrCEF\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\hh\\\\\\.exe$\")) AND (file_path = RGX(\"\\\\\\.zip$\") OR file_path = RGX(\"\\\\\\.rar$\") OR file_path = RGX(\"\\\\\\.7z$\") OR file_path = RGX(\"\\\\\\.diagcab$\") OR file_path = RGX(\"\\\\\\.appx$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "36e59da0-c904-44dd-9431-ee49fed89d06"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

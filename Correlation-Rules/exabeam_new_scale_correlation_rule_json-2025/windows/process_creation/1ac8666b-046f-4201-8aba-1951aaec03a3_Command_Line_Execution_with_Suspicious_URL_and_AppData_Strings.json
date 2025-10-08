@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Command Line Execution with Suspicious URL and AppData Strings",
+      "description": "Detects a suspicious command line execution that includes an URL and AppData string in the command line parameters as used by several droppers (js/vbs > powershell)",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") AND (process_command_line = RGX(\".*http.*\") AND process_command_line = RGX(\".*\\\\:\\\\/\\\\/.*\") AND process_command_line = RGX(\".*\\\\%AppData\\\\%.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "37a14ff4-71e4-4ebe-8951-213343e070f7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

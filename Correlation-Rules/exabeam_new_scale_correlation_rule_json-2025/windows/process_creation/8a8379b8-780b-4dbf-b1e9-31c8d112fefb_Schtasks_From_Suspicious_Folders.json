@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Schtasks From Suspicious Folders",
+      "description": "Detects scheduled task creations that have suspicious action command and folder combinations",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") OR process_original_file_name = \"schtasks\\.exe\") AND process_command_line = RGX(\".*\\\\ \\\\/create\\\\ .*\") AND (process_command_line = RGX(\".*powershell.*\") OR process_command_line = RGX(\".*pwsh.*\") OR process_command_line = RGX(\".*cmd\\\\ \\\\/c\\\\ .*\") OR process_command_line = RGX(\".*cmd\\\\ \\\\/k\\\\ .*\") OR process_command_line = RGX(\".*cmd\\\\ \\\\/r\\\\ .*\") OR process_command_line = RGX(\".*cmd\\\\\\.exe\\\\ \\\\/c\\\\ .*\") OR process_command_line = RGX(\".*cmd\\\\\\.exe\\\\ \\\\/k\\\\ .*\") OR process_command_line = RGX(\".*cmd\\\\\\.exe\\\\ \\\\/r\\\\ .*\")) AND (process_command_line = RGX(\".*C\\\\:\\\\\\\\ProgramData\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\%ProgramData\\\\%.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "03fdc9e9-3162-4101-a7bd-d224e2e3cbdf"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

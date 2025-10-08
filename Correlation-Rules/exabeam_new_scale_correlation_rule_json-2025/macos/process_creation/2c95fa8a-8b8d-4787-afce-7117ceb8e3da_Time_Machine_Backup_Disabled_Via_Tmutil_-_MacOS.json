@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Time Machine Backup Disabled Via Tmutil - MacOS",
+      "description": "Detects disabling of Time Machine (Apple's automated backup utility software) via the native macOS backup utility \"tmutil\".\nAn attacker can use this to prevent backups from occurring.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/tmutil$\") OR process_command_line = RGX(\".*tmutil.*\")) AND process_command_line = RGX(\".*disable.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "216a31ad-ba5c-4f2c-9df6-db08695823d8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

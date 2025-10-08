@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Bitbucket Unauthorized Full Data Export Triggered",
+      "description": "Detects when full data export is attempted an unauthorized user. Note: Unmapped fields: auditType.category, auditType.action",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(auditType.category = \"Data\\ pipeline\" AND auditType.action = \"Unauthorized\\ full\\ data\\ export\\ triggered\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "84cff919-0a9f-4c48-9937-b54eecac36f9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

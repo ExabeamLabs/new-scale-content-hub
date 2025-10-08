@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Unblock-File",
+      "description": "Remove the Zone.Identifier alternate data stream which identifies the file as downloaded from the internet. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Unblock\\\\-File\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\-Path\\\\ .*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "64afc211-e88d-4ccd-81d4-a1a73a02862b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

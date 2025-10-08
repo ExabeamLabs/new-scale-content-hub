@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious RDP Redirect Using TSCON",
+      "description": "Detects a suspicious RDP session redirect using tscon.exe",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_command_line = RGX(\".*\\\\ \\\\/dest\\\\:rdp\\\\-tcp\\\\#.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "bb5f537a-7258-419a-b256-571999a1193f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

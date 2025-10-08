@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential DLL Sideloading Of Non-Existent DLLs From System Folders",
+      "description": "Detects DLL sideloading of system DLLs that are not present on the system by default (at least not in system directories).\nUsually this technique is used to achieve UAC bypass or privilege escalation.\n Note: Unmapped fields: ImageLoaded, Signed, SignatureStatus, Signature",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ImageLoaded = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\TSMSISrv\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\TSVIPSrv\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\wbem\\\\\\\\wbemcomn\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\WLBSCTRL\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\wow64log\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\WptsExtensions\\\\\\.dll$\")) AND  NOT ((Signed = \"true\" AND SignatureStatus = \"Valid\" AND Signature = \"Microsoft\\ Windows\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f2cd2464-821b-4228-bf6f-3a0ce3b7b3c2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

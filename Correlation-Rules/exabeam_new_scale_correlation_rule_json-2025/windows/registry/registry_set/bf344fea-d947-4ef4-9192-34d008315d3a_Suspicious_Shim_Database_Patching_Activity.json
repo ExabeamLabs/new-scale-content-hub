@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Shim Database Patching Activity",
+      "description": "Detects installation of new shim databases that try to patch sections of known processes for potential process injection or persistence.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\AppCompatFlags\\\\\\\\Custom\\\\\\\\.*\") AND (registry_path = RGX(\"\\\\\\\\csrss\\\\\\.exe$\") OR registry_path = RGX(\"\\\\\\\\dllhost\\\\\\.exe$\") OR registry_path = RGX(\"\\\\\\\\explorer\\\\\\.exe$\") OR registry_path = RGX(\"\\\\\\\\RuntimeBroker\\\\\\.exe$\") OR registry_path = RGX(\"\\\\\\\\services\\\\\\.exe$\") OR registry_path = RGX(\"\\\\\\\\sihost\\\\\\.exe$\") OR registry_path = RGX(\"\\\\\\\\svchost\\\\\\.exe$\") OR registry_path = RGX(\"\\\\\\\\taskhostw\\\\\\.exe$\") OR registry_path = RGX(\"\\\\\\\\winlogon\\\\\\.exe$\") OR registry_path = RGX(\"\\\\\\\\WmiPrvSe\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "501d9b54-bf0b-4b71-a50c-3abcf9bc877a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

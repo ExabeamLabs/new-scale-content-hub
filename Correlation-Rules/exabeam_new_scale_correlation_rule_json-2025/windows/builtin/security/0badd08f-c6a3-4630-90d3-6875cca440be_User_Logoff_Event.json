@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "User Logoff Event",
+      "description": "Detects a user log-off activity. Could be used for example to correlate information during forensic investigations",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4634 OR event_id = 4647)",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "863ef14f-26c7-468c-b3b5-cd04a8c1389a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

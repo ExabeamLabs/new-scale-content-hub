@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "RDP Login from Localhost",
+      "description": "RDP login with localhost source address may be a tunnelled login Note: Unmapped fields: LogonType, IpAddress",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4624 AND LogonType = 10 AND (IpAddress = \"\\:\\:1\" OR IpAddress = \"127\\.0\\.0\\.1\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "81f0c157-7c01-414f-a312-83926b16c25a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

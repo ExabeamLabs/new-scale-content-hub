@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious New-PSDrive to Admin Share",
+      "description": "Adversaries may use to interact with a remote network share using Server Message Block (SMB). The adversary may then perform actions as the logged-on user. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*New\\\\-PSDrive.*\") AND ScriptBlockText = RGX(\".*\\\\-psprovider\\\\ .*\") AND ScriptBlockText = RGX(\".*filesystem.*\") AND ScriptBlockText = RGX(\".*\\\\-root\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\\\\\\\\\\\\\.*\") AND ScriptBlockText = RGX(\".*\\\\$.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ee4a59cd-1b2d-4e13-a05e-f3d3e5942d7b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

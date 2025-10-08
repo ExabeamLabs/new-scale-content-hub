@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Manage-bde.wsf Abuse To Proxy Execution",
+      "description": "Detects potential abuse of the \"manage-bde.wsf\" script as a LOLBIN to proxy execution",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\") OR process_original_file_name = \"wscript\\.exe\") AND process_command_line = RGX(\".*manage\\\\-bde\\\\\\.wsf.*\")) OR (((parent_process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\")) AND parent_process_command_line = RGX(\".*manage\\\\-bde\\\\\\.wsf.*\")) AND  NOT (process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ea333a6e-8d32-4928-8b03-945b9b182669"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

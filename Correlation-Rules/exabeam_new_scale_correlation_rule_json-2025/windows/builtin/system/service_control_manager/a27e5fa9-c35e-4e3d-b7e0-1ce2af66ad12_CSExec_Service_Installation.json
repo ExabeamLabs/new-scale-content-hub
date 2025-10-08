@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "CSExec Service Installation",
+      "description": "Detects CSExec service installation and execution events Note: Unmapped fields: Provider_Name, ServiceName, ImagePath",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((Provider_Name = \"Service\\ Control\\ Manager\" AND event_id = 7045) AND (ServiceName = \"csexecsvc\" OR ImagePath = RGX(\"\\\\\\\\csexecsvc\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5141c88c-45c8-46d1-87e4-ae558c9af037"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

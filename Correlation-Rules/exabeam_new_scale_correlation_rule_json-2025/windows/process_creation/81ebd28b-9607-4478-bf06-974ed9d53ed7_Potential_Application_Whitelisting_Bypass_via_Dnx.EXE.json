@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Application Whitelisting Bypass via Dnx.EXE",
+      "description": "Detects the execution of Dnx.EXE. The Dnx utility allows for the execution of C# code.\nAttackers might abuse this in order to bypass application whitelisting.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_path = RGX(\"\\\\\\\\dnx\\\\\\.exe$\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e5cac015-9ac5-42b6-8b92-f7f82cf89fcf"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

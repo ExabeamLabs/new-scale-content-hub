@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Important Windows Service Terminated With Error",
+      "description": "Detects important or interesting Windows services that got terminated for whatever reason Note: Unmapped fields: Provider_Name, param1, Binary",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((Provider_Name = \"Service\\ Control\\ Manager\" AND event_id = 7023) AND ((param1 = RGX(\".*\\\\ Antivirus.*\") OR param1 = RGX(\".*\\\\ Firewall.*\") OR param1 = RGX(\".*Application\\\\ Guard.*\") OR param1 = RGX(\".*BitLocker\\\\ Drive\\\\ Encryption\\\\ Service.*\") OR param1 = RGX(\".*Encrypting\\\\ File\\\\ System.*\") OR param1 = RGX(\".*Microsoft\\\\ Defender.*\") OR param1 = RGX(\".*Threat\\\\ Protection.*\") OR param1 = RGX(\".*Windows\\\\ Event\\\\ Log.*\")) OR (Binary = RGX(\".*770069006e0064006500660065006e006400.*\") OR Binary = RGX(\".*4500760065006e0074004c006f006700.*\") OR Binary = RGX(\".*6d0070007300730076006300.*\") OR Binary = RGX(\".*530065006e0073006500.*\") OR Binary = RGX(\".*450046005300.*\") OR Binary = RGX(\".*420044004500530056004300.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7659bb3f-a78a-4bf8-8905-b3ef9137e51d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Dllhost.EXE Execution Anomaly",
+      "description": "Detects a \"dllhost\" process spawning with no commandline arguments which is very rare to happen and could indicate process injection activity or malware mimicking similar system processes.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\dllhost\\\\\\.exe$\") AND (process_command_line = \"dllhost\\.exe\" OR process_command_line = \"dllhost\")) AND  NOT (process_command_line = \"None\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8ef9b388-135b-4315-a247-8f0f2145a441"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

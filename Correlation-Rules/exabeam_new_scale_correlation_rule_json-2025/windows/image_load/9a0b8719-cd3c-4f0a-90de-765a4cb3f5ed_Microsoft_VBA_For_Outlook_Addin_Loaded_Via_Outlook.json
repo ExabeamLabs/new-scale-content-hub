@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Microsoft VBA For Outlook Addin Loaded Via Outlook",
+      "description": "Detects outlvba (Microsoft VBA for Outlook Addin) DLL being loaded by the outlook process Note: Unmapped fields: ImageLoaded",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\outlook\\\\\\.exe$\") AND ImageLoaded = RGX(\"\\\\\\\\outlvba\\\\\\.dll$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2a8c2102-7c64-4897-bed1-6904dfc8302b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

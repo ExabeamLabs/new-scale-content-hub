@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HKTL - SharpSuccessor Privilege Escalation Tool Execution",
+      "description": "Detects the execution of SharpSuccessor, a tool used to exploit the BadSuccessor attack for privilege escalation in WinServer 2025 Active Directory environments.\nSuccessful usage of this tool can let the attackers gain the domain admin privileges by exploiting the BadSuccessor vulnerability.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\SharpSuccessor\\\\\\.exe$\") OR process_original_file_name = \"SharpSuccessor\\.exe\" OR process_command_line = RGX(\".*SharpSuccessor.*\") OR (process_command_line = RGX(\".*\\\\ add\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\/impersonate.*\") AND process_command_line = RGX(\".*\\\\ \\\\/path.*\") AND process_command_line = RGX(\".*\\\\ \\\\/account.*\") AND process_command_line = RGX(\".*\\\\ \\\\/name.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e4d5e100-5045-4940-9b6d-411a85b6886d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

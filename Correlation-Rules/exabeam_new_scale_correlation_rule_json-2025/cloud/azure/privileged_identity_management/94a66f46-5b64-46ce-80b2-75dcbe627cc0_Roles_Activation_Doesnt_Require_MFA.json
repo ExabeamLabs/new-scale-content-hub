@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Roles Activation Doesn't Require MFA",
+      "description": "Identifies when a privilege role can be activated without performing mfa. Note: Unmapped fields: riskEventType",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "riskEventType = \"noMfaOnRoleActivationAlertIncident\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4c1c9e73-1379-4f74-8147-7881f5d2ac0c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

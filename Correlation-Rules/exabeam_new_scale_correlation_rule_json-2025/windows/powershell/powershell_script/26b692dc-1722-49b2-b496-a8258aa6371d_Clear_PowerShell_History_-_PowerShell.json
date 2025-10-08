@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Clear PowerShell History - PowerShell",
+      "description": "Detects keywords that could indicate clearing PowerShell history Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ScriptBlockText = RGX(\".*Set\\\\-PSReadlineOption.*\") AND ScriptBlockText = RGX(\".*\u2013HistorySaveStyle.*\") AND ScriptBlockText = RGX(\".*SaveNothing.*\")) OR (ScriptBlockText = RGX(\".*Set\\\\-PSReadlineOption.*\") AND ScriptBlockText = RGX(\".*\\\\-HistorySaveStyle.*\") AND ScriptBlockText = RGX(\".*SaveNothing.*\"))) OR ((ScriptBlockText = RGX(\".*del.*\") OR ScriptBlockText = RGX(\".*Remove\\\\-Item.*\") OR ScriptBlockText = RGX(\".*rm.*\")) AND ScriptBlockText = RGX(\".*\\\\(Get\\\\-PSReadlineOption\\\\)\\\\\\.HistorySavePath.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e83f7bf4-0f90-4c0d-a192-a066ac752498"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

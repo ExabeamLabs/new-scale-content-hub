@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Extrac32 Execution",
+      "description": "Download or Copy file with Extrac32",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*extrac32\\\\\\.exe.*\") OR process_path = RGX(\"\\\\\\\\extrac32\\\\\\.exe$\") OR process_original_file_name = \"extrac32\\.exe\") AND process_command_line = RGX(\".*\\\\\\.cab.*\") AND (process_command_line = RGX(\".*\\\\/C.*\") OR process_command_line = RGX(\".*\\\\/Y.*\") OR process_command_line = RGX(\".*\\\\ \\\\\\\\\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d93be545-195f-4b95-b5c1-4c45a9e3a311"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "RegAsm.EXE Execution Without CommandLine Flags or Files",
+      "description": "Detects the execution of \"RegAsm.exe\" without a commandline flag or file, which might indicate potential process injection activity.\nUsually \"RegAsm.exe\" should point to a dedicated DLL file or call the help with the \"/?\" flag.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\RegAsm\\\\\\.exe$\") OR process_original_file_name = \"RegAsm\\.exe\") AND (process_command_line = RGX(\"RegAsm$\") OR process_command_line = RGX(\"RegAsm\\\\\\.exe$\") OR process_command_line = RGX(\"RegAsm\\\\\\.exe\\\\$\") OR process_command_line = RGX(\"RegAsm\\\\\\.exe\\\\$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f8759b96-0f16-4174-a9ca-616b040e1400"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

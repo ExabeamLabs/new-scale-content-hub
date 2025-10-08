@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Nslookup PowerShell Download Cradle - ProcessCreation",
+      "description": "Detects suspicious powershell download cradle using nslookup. This cradle uses nslookup to extract payloads from DNS records",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\".*\\\\\\\\nslookup\\\\\\.exe.*\") OR process_original_file_name = \"\\\\nslookup\\.exe\") AND ((parent_process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\")) AND (process_command_line = RGX(\".*\\\\ \\\\-q\\\\=txt\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-querytype\\\\=txt\\\\ .*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e8625e88-d8cb-4562-bade-3160aa002312"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

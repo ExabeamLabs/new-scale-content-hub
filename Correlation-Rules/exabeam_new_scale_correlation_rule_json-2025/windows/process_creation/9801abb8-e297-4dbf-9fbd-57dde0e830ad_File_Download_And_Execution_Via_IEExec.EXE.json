@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "File Download And Execution Via IEExec.EXE",
+      "description": "Detects execution of the IEExec utility to download and execute files",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\IEExec\\\\\\.exe$\") OR process_original_file_name = \"IEExec\\.exe\") AND (process_command_line = RGX(\".*http\\\\:\\\\/\\\\/.*\") OR process_command_line = RGX(\".*https\\\\:\\\\/\\\\/.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "85977b37-6e25-4c87-a175-1005e0408878"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

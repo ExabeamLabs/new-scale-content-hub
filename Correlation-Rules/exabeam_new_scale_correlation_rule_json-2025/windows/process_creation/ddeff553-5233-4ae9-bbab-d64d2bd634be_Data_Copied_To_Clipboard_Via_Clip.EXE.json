@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Data Copied To Clipboard Via Clip.EXE",
+      "description": "Detects the execution of clip.exe in order to copy data to the clipboard. Adversaries may collect data stored in the clipboard from users copying information within or between applications.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\clip\\\\\\.exe$\") OR process_original_file_name = \"clip\\.exe\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "60d00911-d490-4e2e-b340-2d61b9dc164f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

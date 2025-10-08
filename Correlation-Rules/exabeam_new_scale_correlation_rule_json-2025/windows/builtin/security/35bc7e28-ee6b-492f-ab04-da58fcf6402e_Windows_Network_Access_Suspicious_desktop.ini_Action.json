@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows Network Access Suspicious desktop.ini Action",
+      "description": "Detects unusual processes accessing desktop.ini remotely over network share, which can be leveraged to alter how Explorer displays a folder's content (i.e. renaming files) without changing them on disk. Note: Unmapped fields: ObjectType, RelativeTargetName, AccessList",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 5145 AND ObjectType = \"File\" AND RelativeTargetName = RGX(\"\\\\\\\\desktop\\\\\\.ini$\") AND (AccessList = RGX(\".*WriteData.*\") OR AccessList = RGX(\".*DELETE.*\") OR AccessList = RGX(\".*WriteDAC.*\") OR AccessList = RGX(\".*AppendData.*\") OR AccessList = RGX(\".*AddSubdirectory.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "93611780-1ed3-46fc-9918-8b43c68fa259"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

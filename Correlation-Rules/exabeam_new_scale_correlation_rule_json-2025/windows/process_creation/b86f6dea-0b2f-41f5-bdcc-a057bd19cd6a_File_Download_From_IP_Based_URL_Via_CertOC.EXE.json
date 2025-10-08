@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "File Download From IP Based URL Via CertOC.EXE",
+      "description": "Detects when a user downloads a file from an IP based URL using CertOC.exe",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\certoc\\\\\\.exe$\") OR process_original_file_name = \"CertOC\\.exe\") AND process_command_line = RGX(\"://[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}\") AND process_command_line = RGX(\".*\\\\-GetCACAPS.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "13a4981f-4001-4d89-b6cd-cf23d5d72d56"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

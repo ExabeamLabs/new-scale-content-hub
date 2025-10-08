@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "COM Object Hijacking Via Modification Of Default System CLSID Default Value",
+      "description": "Detects potential COM object hijacking via modification of default system CLSID. Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((registry_path = RGX(\".*\\\\\\\\CLSID\\\\\\\\.*\") AND (registry_path = RGX(\"\\\\\\\\InprocServer32\\\\\\\\\\\\(Default\\\\)$\") OR registry_path = RGX(\"\\\\\\\\LocalServer32\\\\\\\\\\\\(Default\\\\)$\"))) AND (registry_path = RGX(\".*\\\\\\\\\\\\{1f486a52\\\\-3cb1\\\\-48fd\\\\-8f50\\\\-b8dc300d9f9d\\\\}\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\\\\\{2155fee3\\\\-2419\\\\-4373\\\\-b102\\\\-6843707eb41f\\\\}\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\\\\\{4590f811\\\\-1d3a\\\\-11d0\\\\-891f\\\\-00aa004b2e24\\\\}\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\\\\\{4de225bf\\\\-cf59\\\\-4cfc\\\\-85f7\\\\-68b90f185355\\\\}\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\\\\\{ddc05a5a\\\\-351a\\\\-4e06\\\\-8eaf\\\\-54ec1bc2dcea\\\\}\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\\\\\{F56F6FDD\\\\-AA9D\\\\-4618\\\\-A949\\\\-C1B91AF43B1A\\\\}\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\\\\\{F82B4EF1\\\\-93A9\\\\-4DDE\\\\-8015\\\\-F7950A1A6E31\\\\}\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\\\\\{7849596a\\\\-48ea\\\\-486e\\\\-8937\\\\-a2a3009f31a9\\\\}\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\\\\\{0b91a74b\\\\-ad7c\\\\-4a9d\\\\-b563\\\\-29eef9167172\\\\}\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\\\\\{603D3801\\\\-BD81\\\\-11d0\\\\-A3A5\\\\-00C04FD706EC\\\\}\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\\\\\{30D49246\\\\-D217\\\\-465F\\\\-B00B\\\\-AC9DDD652EB7\\\\}\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\\\\\{A7A63E5C\\\\-3877\\\\-4840\\\\-8727\\\\-C1EA9D7A4D50\\\\}\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\\\\\{2227A280\\\\-3AEA\\\\-1069\\\\-A2DE\\\\-08002B30309D\\\\}\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\\\\\{2DEA658F\\\\-54C1\\\\-4227\\\\-AF9B\\\\-260AB5FC3543\\\\}\\\\\\\\.*\"))) AND ((Details = RGX(\".*\\\\:\\\\\\\\Perflogs\\\\\\\\.*\") OR Details = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\.*\") OR Details = RGX(\".*\\\\\\\\Desktop\\\\\\\\.*\") OR Details = RGX(\".*\\\\\\\\Downloads\\\\\\\\.*\") OR Details = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\Start\\\\ Menu\\\\\\\\Programs\\\\\\\\Startup\\\\\\\\.*\") OR Details = RGX(\".*\\\\\\\\System32\\\\\\\\spool\\\\\\\\drivers\\\\\\\\color\\\\\\\\.*\") OR Details = RGX(\".*\\\\\\\\Temporary\\\\ Internet.*\") OR Details = RGX(\".*\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR Details = RGX(\".*\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\") OR Details = RGX(\".*\\\\%appdata\\\\%.*\") OR Details = RGX(\".*\\\\%temp\\\\%.*\") OR Details = RGX(\".*\\\\%tmp\\\\%.*\")) OR ((Details = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND Details = RGX(\".*\\\\\\\\Favorites\\\\\\\\.*\")) OR (Details = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND Details = RGX(\".*\\\\\\\\Favourites\\\\\\\\.*\")) OR (Details = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND Details = RGX(\".*\\\\\\\\Contacts\\\\\\\\.*\")) OR (Details = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND Details = RGX(\".*\\\\\\\\Pictures\\\\\\\\.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "675551d8-9624-4eca-b6b2-5b069d6be694"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

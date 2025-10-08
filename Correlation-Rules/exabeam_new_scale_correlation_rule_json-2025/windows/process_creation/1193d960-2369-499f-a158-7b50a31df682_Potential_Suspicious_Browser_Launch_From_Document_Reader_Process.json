@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Suspicious Browser Launch From Document Reader Process",
+      "description": "Detects when a browser process or browser tab is launched from an application that handles document files such as Adobe, Microsoft Office, etc. And connects to a web application over http(s), this could indicate a possible phishing attempt.\n",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((parent_process_path = RGX(\".*Acrobat\\\\ Reader.*\") OR parent_process_path = RGX(\".*Microsoft\\\\ Office.*\") OR parent_process_path = RGX(\".*PDF\\\\ Reader.*\")) AND (process_path = RGX(\"\\\\\\\\brave\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\chrome\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\firefox\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msedge\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\opera\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\maxthon\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\seamonkey\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\vivaldi\\\\\\.exe$\") OR process_path = RGX(\"$\")) AND process_command_line = RGX(\".*http.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "011efc1b-b2cf-4e11-ba42-5e7e17f91260"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Modify Group Policy Settings - ScriptBlockLogging",
+      "description": "Detect malicious GPO modifications can be used to implement many other malicious behaviors. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Policies\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\System.*\") AND (ScriptBlockText = RGX(\".*GroupPolicyRefreshTimeDC.*\") OR ScriptBlockText = RGX(\".*GroupPolicyRefreshTimeOffsetDC.*\") OR ScriptBlockText = RGX(\".*GroupPolicyRefreshTime.*\") OR ScriptBlockText = RGX(\".*GroupPolicyRefreshTimeOffset.*\") OR ScriptBlockText = RGX(\".*EnableSmartScreen.*\") OR ScriptBlockText = RGX(\".*ShellSmartScreenLevel.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c0b2ba15-ee8f-48ec-bd63-3fc6702d2577"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

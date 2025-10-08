@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Scheduled Task Creation Via Schtasks.EXE",
+      "description": "Detects the creation of scheduled tasks by user accounts via the \"schtasks\" utility.",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") AND process_command_line = RGX(\".*\\\\ \\\\/create\\\\ .*\")) AND  NOT ((user = RGX(\".*AUTHORI.*\") OR user = RGX(\".*AUTORI.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b4dadea0-7006-42e8-b11b-c69816686438"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

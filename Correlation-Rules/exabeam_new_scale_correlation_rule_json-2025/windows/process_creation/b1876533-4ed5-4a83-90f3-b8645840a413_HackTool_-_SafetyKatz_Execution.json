@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - SafetyKatz Execution",
+      "description": "Detects the execution of the hacktool SafetyKatz via PE information and default Image name",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\SafetyKatz\\\\\\.exe$\") OR process_original_file_name = \"SafetyKatz\\.exe\" OR process_description = \"SafetyKatz\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9927c48a-1411-49cf-b126-4e9efae88284"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

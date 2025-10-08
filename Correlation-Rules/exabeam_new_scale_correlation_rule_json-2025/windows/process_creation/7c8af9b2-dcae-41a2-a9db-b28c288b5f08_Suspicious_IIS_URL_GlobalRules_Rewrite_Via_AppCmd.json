@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious IIS URL GlobalRules Rewrite Via AppCmd",
+      "description": "Detects usage of \"appcmd\" to create new global URL rewrite rules. This behaviour has been observed being used by threat actors to add new rules so they can access their webshells.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\appcmd\\\\\\.exe$\") OR process_original_file_name = \"appcmd\\.exe\") AND (process_command_line = RGX(\".*set.*\") AND process_command_line = RGX(\".*config.*\") AND process_command_line = RGX(\".*section\\\\:system\\\\\\.webServer\\\\/rewrite\\\\/globalRules.*\") AND process_command_line = RGX(\".*commit\\\\:.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "579ff68a-ae70-4d0c-a5aa-326fd8f65a0a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

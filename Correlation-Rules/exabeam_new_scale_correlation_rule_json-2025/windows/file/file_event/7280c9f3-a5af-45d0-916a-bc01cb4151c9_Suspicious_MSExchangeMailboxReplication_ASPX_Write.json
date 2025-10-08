@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious MSExchangeMailboxReplication ASPX Write",
+      "description": "Detects suspicious activity in which the MSExchangeMailboxReplication process writes .asp and .apsx files to disk, which could be a sign of ProxyShell exploitation",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\MSExchangeMailboxReplication\\\\\\.exe$\") AND (file_path = RGX(\"\\\\\\.aspx$\") OR file_path = RGX(\"\\\\\\.asp$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "954728bb-21f9-4a27-820a-8994ae68385c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

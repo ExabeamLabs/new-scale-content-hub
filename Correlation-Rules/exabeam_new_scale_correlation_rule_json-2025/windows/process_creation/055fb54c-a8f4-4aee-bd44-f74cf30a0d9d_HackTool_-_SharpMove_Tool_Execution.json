@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - SharpMove Tool Execution",
+      "description": "Detects the execution of SharpMove, a .NET utility performing multiple tasks such as \"Task Creation\", \"SCM\" query, VBScript execution using WMI via its PE metadata and command line options.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\SharpMove\\\\\\.exe$\") OR process_original_file_name = \"SharpMove\\.exe\") OR (process_command_line = RGX(\".*computername\\\\=.*\") AND (process_command_line = RGX(\".*action\\\\=create.*\") OR process_command_line = RGX(\".*action\\\\=dcom.*\") OR process_command_line = RGX(\".*action\\\\=executevbs.*\") OR process_command_line = RGX(\".*action\\\\=hijackdcom.*\") OR process_command_line = RGX(\".*action\\\\=modschtask.*\") OR process_command_line = RGX(\".*action\\\\=modsvc.*\") OR process_command_line = RGX(\".*action\\\\=query.*\") OR process_command_line = RGX(\".*action\\\\=scm.*\") OR process_command_line = RGX(\".*action\\\\=startservice.*\") OR process_command_line = RGX(\".*action\\\\=taskscheduler.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8c16b77a-5029-4a77-83dc-8aafc2676fde"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

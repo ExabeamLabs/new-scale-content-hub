@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Service Installation",
+      "description": "Detects suspicious service installation commands Note: Unmapped fields: Provider_Name, ImagePath",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Provider_Name = \"Service\\ Control\\ Manager\" AND event_id = 7045 AND (ImagePath = RGX(\".*\\\\ \\\\-nop\\\\ .*\") OR ImagePath = RGX(\".*\\\\ \\\\-sta\\\\ .*\") OR ImagePath = RGX(\".*\\\\ \\\\-w\\\\ hidden\\\\ .*\") OR ImagePath = RGX(\".*\\\\:\\\\\\\\Temp\\\\\\\\.*\") OR ImagePath = RGX(\".*\\\\\\.downloadfile\\\\(.*\") OR ImagePath = RGX(\".*\\\\\\.downloadstring\\\\(.*\") OR ImagePath = RGX(\".*\\\\\\\\ADMIN\\\\$\\\\\\\\.*\") OR ImagePath = RGX(\".*\\\\\\\\Perflogs\\\\\\\\.*\") OR ImagePath = RGX(\".*\\\\&\\\\&.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4e4223ab-97a1-4233-91bf-1ee228aa4d9c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

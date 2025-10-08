@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Account Lockout",
+      "description": "Identifies user account which has been locked because the user tried to sign in too many times with an incorrect user ID or password. Note: Unmapped fields: ResultType",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ResultType = 50053",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ea1f2b1f-a875-45d3-ac47-8e15af469690"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

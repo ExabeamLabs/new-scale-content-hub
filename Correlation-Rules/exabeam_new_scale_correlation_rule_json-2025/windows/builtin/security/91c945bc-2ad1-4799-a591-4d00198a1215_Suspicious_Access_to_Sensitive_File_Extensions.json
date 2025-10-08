@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Access to Sensitive File Extensions",
+      "description": "Detects known sensitive file extensions accessed on a network share Note: Unmapped fields: RelativeTargetName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 5145 AND (RelativeTargetName = RGX(\"\\\\\\.bak$\") OR RelativeTargetName = RGX(\"\\\\\\.dmp$\") OR RelativeTargetName = RGX(\"\\\\\\.edb$\") OR RelativeTargetName = RGX(\"\\\\\\.kirbi$\") OR RelativeTargetName = RGX(\"\\\\\\.msg$\") OR RelativeTargetName = RGX(\"\\\\\\.nsf$\") OR RelativeTargetName = RGX(\"\\\\\\.nst$\") OR RelativeTargetName = RGX(\"\\\\\\.oab$\") OR RelativeTargetName = RGX(\"\\\\\\.ost$\") OR RelativeTargetName = RGX(\"\\\\\\.pst$\") OR RelativeTargetName = RGX(\"\\\\\\.rdp$\") OR RelativeTargetName = RGX(\"\\\\\\\\groups\\\\\\.xml$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "14591258-9c42-4564-8098-1ac751330ad2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

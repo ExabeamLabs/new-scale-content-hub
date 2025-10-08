@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Silence.EDA Detection",
+      "description": "Detects Silence EmpireDNSAgent as described in the Group-IP report Note: Unmapped fields: ScriptBlockText",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*System\\\\\\.Diagnostics\\\\\\.Process.*\") AND ScriptBlockText = RGX(\".*Stop\\\\-Computer.*\") AND ScriptBlockText = RGX(\".*Restart\\\\-Computer.*\") AND ScriptBlockText = RGX(\".*Exception\\\\ in\\\\ execution.*\") AND ScriptBlockText = RGX(\".*\\\\$cmdargs.*\") AND ScriptBlockText = RGX(\".*Close\\\\-Dnscat2Tunnel.*\")) AND (ScriptBlockText = RGX(\".*set\\\\ type\\\\=\\\\$LookupType\\\\`nserver.*\") AND ScriptBlockText = RGX(\".*\\\\$Command\\\\ \\\\|\\\\ nslookup\\\\ 2\\\\>\\\\&1\\\\ \\\\|\\\\ Out\\\\-String.*\") AND ScriptBlockText = RGX(\".*New\\\\-RandomDNSField.*\") AND ScriptBlockText = RGX(\".*\\\\[Convert\\\\]\\\\:\\\\:ToString\\\\(\\\\$SYNOptions\\\\,\\\\ 16\\\\).*\") AND ScriptBlockText = RGX(\".*\\\\$Session\\\\\\.Dead\\\\ \\\\=\\\\ \\\\$True.*\") AND ScriptBlockText = RGX(\".*\\\\$Session\\\\[\\\\\"Driver\\\\\"\\\\]\\\\ \\\\-eq.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7c2f90ec-5e9b-4398-bf38-cfe03b67c65e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

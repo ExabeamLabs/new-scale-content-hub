@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remote Code Execute via Winrm.vbs",
+      "description": "Detects an attempt to execute code or create service on remote host via winrm.vbs.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR process_original_file_name = \"cscript\\.exe\") AND (process_command_line = RGX(\".*winrm.*\") AND process_command_line = RGX(\".*invoke\\\\ Create\\\\ wmicimv2\\\\/Win32\\\\_.*\") AND process_command_line = RGX(\".*\\\\-r\\\\:http.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b4ebc1bc-4f05-4035-932c-f462fc64db46"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows Processes Suspicious Parent Directory",
+      "description": "Detect suspicious parent processes of well-known Windows processes",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\svchost\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\taskhost\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\lsm\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\lsass\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\services\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\lsaiso\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\csrss\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wininit\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\winlogon\\\\\\.exe$\")) AND  NOT (((parent_process_path = RGX(\"\\\\\\\\SavService\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\ngen\\\\\\.exe$\")) OR (parent_process_path = RGX(\".*\\\\\\\\System32\\\\\\\\.*\") OR parent_process_path = RGX(\".*\\\\\\\\SysWOW64\\\\\\\\.*\"))) OR ((parent_process_path = RGX(\".*\\\\\\\\Windows\\\\ Defender\\\\\\\\.*\") OR parent_process_path = RGX(\".*\\\\\\\\Microsoft\\\\ Security\\\\ Client\\\\\\\\.*\")) AND parent_process_path = RGX(\"\\\\\\\\MsMpEng\\\\\\.exe$\")) OR (parent_process_path = \"None\" OR (parent_process_path = \"\" OR parent_process_path = \"\\-\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "627ef6bc-b216-4366-8b63-2b395434a6e8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

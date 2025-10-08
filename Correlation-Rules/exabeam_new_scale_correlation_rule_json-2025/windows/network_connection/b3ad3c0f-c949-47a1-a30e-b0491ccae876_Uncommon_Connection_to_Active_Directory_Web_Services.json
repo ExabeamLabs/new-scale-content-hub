@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Uncommon Connection to Active Directory Web Services",
+      "description": "Detects uncommon network connections to the Active Directory Web Services (ADWS) from processes not typically associated with ADWS management.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(network_initiated = \"True\" AND dest_port = 9389) AND  NOT (process_path = \"C\\:\\\\Windows\\\\system32\\\\dsac\\.exe\" OR process_path = \"C\\:\\\\Program\\ Files\\\\Microsoft\\ Monitoring\\ Agent\\\\\" OR (process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\PowerShell\\\\\\\\7\\\\\\\\pwsh\\\\\\.exe\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\PowerShell\\\\\\\\7\\\\-preview\\\\\\\\pwsh\\\\\\.ex\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\WindowsPowerShell\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\WindowsPowerShell\\\\\\\\\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "de1c0489-62da-449b-8250-c84301cc6222"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious DNS Query with B64 Encoded String",
+      "description": "Detects suspicious DNS queries using base64 encoding Note: Unmapped fields: query",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "query = RGX(\".*\\\\=\\\\=\\\\\\..*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "00b861dd-df70-44a6-bf26-31572f6df6dc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

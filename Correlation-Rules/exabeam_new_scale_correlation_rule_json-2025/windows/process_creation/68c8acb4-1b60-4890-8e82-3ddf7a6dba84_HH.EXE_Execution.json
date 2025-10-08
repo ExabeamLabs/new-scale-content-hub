@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HH.EXE Execution",
+      "description": "Detects the execution of \"hh.exe\" to open \".chm\" files.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_original_file_name = \"HH\\.exe\" OR process_path = RGX(\"\\\\\\\\hh\\\\\\.exe$\")) AND process_command_line = RGX(\".*\\\\\\.chm.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6e29f603-14e8-4a93-bc35-b7505a62d005"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

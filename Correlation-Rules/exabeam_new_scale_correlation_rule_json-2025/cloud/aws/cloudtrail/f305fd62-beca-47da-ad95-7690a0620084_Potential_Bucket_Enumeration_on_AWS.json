@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Bucket Enumeration on AWS",
+      "description": "Looks for potential enumeration of AWS buckets via ListBuckets. Note: Unmapped fields: eventSource, eventName, userIdentity.type",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(eventSource = \"s3\\.amazonaws\\.com\" AND eventName = \"ListBuckets\") AND  NOT (userIdentity.type = \"AssumedRole\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5b2f3919-0558-4137-ac44-99b42124a008"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

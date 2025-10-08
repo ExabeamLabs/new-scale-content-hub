@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential RoboForm.DLL Sideloading",
+      "description": "Detects potential DLL sideloading of \"roboform.dll\", a DLL used by RoboForm Password Manager Note: Unmapped fields: ImageLoaded",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ImageLoaded = RGX(\"\\\\\\\\roboform\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\roboform\\\\-x64\\\\\\.dll$\")) AND  NOT (((process_path = RGX(\"^\\\\ C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Siber\\\\ Systems\\\\\\\\AI\\\\ RoboForm\\\\\\\\\") OR process_path = RGX(\"^\\\\ C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Siber\\\\ Systems\\\\\\\\AI\\\\ RoboForm\\\\\\\\\")) AND (process_path = RGX(\"\\\\\\\\robotaskbaricon\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\robotaskbaricon\\\\-x64\\\\\\.exe$\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "cb96564c-c937-4711-b4d5-3c300c7004f8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

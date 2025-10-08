@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Registry Explorer Policy Modification",
+      "description": "Detects registry modifications that disable internal tools or functions in explorer (malware like Agent Tesla uses this technique) Note: Unmapped fields: Details",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((registry_path = RGX(\"SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\Explorer\\\\\\\\NoLogOff$\") OR registry_path = RGX(\"SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\Explorer\\\\\\\\NoDesktop$\") OR registry_path = RGX(\"SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\Explorer\\\\\\\\NoRun$\") OR registry_path = RGX(\"SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\Explorer\\\\\\\\NoFind$\") OR registry_path = RGX(\"SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\Explorer\\\\\\\\NoControlPanel$\") OR registry_path = RGX(\"SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\Explorer\\\\\\\\NoFileMenu$\") OR registry_path = RGX(\"SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\Explorer\\\\\\\\NoClose$\") OR registry_path = RGX(\"SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\Explorer\\\\\\\\NoSetTaskbar$\") OR registry_path = RGX(\"SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\Explorer\\\\\\\\NoPropertiesMyDocuments$\") OR registry_path = RGX(\"SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\Explorer\\\\\\\\NoTrayContextMenu$\")) AND Details = \"DWORD\\ \\(0x00000001\\)\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "815e4255-e75e-41d3-8491-f38b538e393f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

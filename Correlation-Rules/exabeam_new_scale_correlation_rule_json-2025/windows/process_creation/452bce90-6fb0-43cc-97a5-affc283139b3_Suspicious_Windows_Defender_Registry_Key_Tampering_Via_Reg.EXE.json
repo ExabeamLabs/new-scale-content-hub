@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Windows Defender Registry Key Tampering Via Reg.EXE",
+      "description": "Detects the usage of \"reg.exe\" to tamper with different Windows Defender registry keys in order to disable some important features related to protection and detection\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\reg\\\\\\.exe$\") OR process_original_file_name = \"reg\\.exe\") AND (process_command_line = RGX(\".*SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\ Defender\\\\\\\\.*\") OR process_command_line = RGX(\".*SOFTWARE\\\\\\\\Policies\\\\\\\\Microsoft\\\\\\\\Windows\\\\ Defender\\\\ Security\\\\ Center.*\") OR process_command_line = RGX(\".*SOFTWARE\\\\\\\\Policies\\\\\\\\Microsoft\\\\\\\\Windows\\\\ Defender\\\\\\\\.*\"))) AND (((process_command_line = RGX(\".*\\\\ add\\\\ .*\") AND process_command_line = RGX(\".*d\\\\ 0.*\")) AND (process_command_line = RGX(\".*DisallowExploitProtectionOverride.*\") OR process_command_line = RGX(\".*EnableControlledFolderAccess.*\") OR process_command_line = RGX(\".*MpEnablePus.*\") OR process_command_line = RGX(\".*PUAProtection.*\") OR process_command_line = RGX(\".*SpynetReporting.*\") OR process_command_line = RGX(\".*SubmitSamplesConsent.*\") OR process_command_line = RGX(\".*TamperProtection.*\"))) OR ((process_command_line = RGX(\".*\\\\ add\\\\ .*\") AND process_command_line = RGX(\".*d\\\\ 1.*\")) AND (process_command_line = RGX(\".*DisableAccess.*\") OR process_command_line = RGX(\".*DisableAntiSpyware.*\") OR process_command_line = RGX(\".*DisableAntiSpywareRealtimeProtection.*\") OR process_command_line = RGX(\".*DisableAntiVirus.*\") OR process_command_line = RGX(\".*DisableAntiVirusSignatures.*\") OR process_command_line = RGX(\".*DisableArchiveScanning.*\") OR process_command_line = RGX(\".*DisableBehaviorMonitoring.*\") OR process_command_line = RGX(\".*DisableBlockAtFirstSeen.*\") OR process_command_line = RGX(\".*DisableCloudProtection.*\") OR process_command_line = RGX(\".*DisableConfig.*\") OR process_command_line = RGX(\".*DisableEnhancedNotifications.*\") OR process_command_line = RGX(\".*DisableIntrusionPreventionSystem.*\") OR process_command_line = RGX(\".*DisableIOAVProtection.*\") OR process_command_line = RGX(\".*DisableNetworkProtection.*\") OR process_command_line = RGX(\".*DisableOnAccessProtection.*\") OR process_command_line = RGX(\".*DisablePrivacyMode.*\") OR process_command_line = RGX(\".*DisableRealtimeMonitoring.*\") OR process_command_line = RGX(\".*DisableRoutinelyTakingAction.*\") OR process_command_line = RGX(\".*DisableScanOnRealtimeEnable.*\") OR process_command_line = RGX(\".*DisableScriptScanning.*\") OR process_command_line = RGX(\".*DisableSecurityCenter.*\") OR process_command_line = RGX(\".*Notification\\\\_Suppress.*\") OR process_command_line = RGX(\".*SignatureDisableUpdateOnStartupWithoutEngine.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "65ec996c-831b-42af-87cf-413874d2a7d8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

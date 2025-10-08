@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Startup Folder Persistence",
+      "description": "Detects when a file with a suspicious extension is created in the startup folder",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(file_path = RGX(\".*\\\\\\\\Windows\\\\\\\\Start\\\\ Menu\\\\\\\\Programs\\\\\\\\Startup\\\\\\\\.*\") AND (file_path = RGX(\"\\\\\\.vbs$\") OR file_path = RGX(\"\\\\\\.vbe$\") OR file_path = RGX(\"\\\\\\.bat$\") OR file_path = RGX(\"\\\\\\.ps1$\") OR file_path = RGX(\"\\\\\\.hta$\") OR file_path = RGX(\"\\\\\\.dll$\") OR file_path = RGX(\"\\\\\\.jar$\") OR file_path = RGX(\"\\\\\\.msi$\") OR file_path = RGX(\"\\\\\\.scr$\") OR file_path = RGX(\"\\\\\\.cmd$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9208117e-912a-4aa5-a216-14254656a543"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

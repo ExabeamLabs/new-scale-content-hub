@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PIM Alert Setting Changes To Disabled",
+      "description": "Detects when PIM alerts are set to disabled. Note: Unmapped fields: properties.message",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "properties.message = \"Disable\\ PIM\\ Alert\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "cdd3eb62-98ee-46f6-9e50-2f05a3cadafd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

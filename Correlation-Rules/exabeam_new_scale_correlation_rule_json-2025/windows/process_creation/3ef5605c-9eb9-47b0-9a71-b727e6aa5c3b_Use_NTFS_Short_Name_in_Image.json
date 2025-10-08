@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Use NTFS Short Name in Image",
+      "description": "Detect use of the Windows 8.3 short name. Which could be used as a method to avoid Image based detection",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\".*\\\\~1\\\\\\.bat.*\") OR process_path = RGX(\".*\\\\~1\\\\\\.dll.*\") OR process_path = RGX(\".*\\\\~1\\\\\\.exe.*\") OR process_path = RGX(\".*\\\\~1\\\\\\.hta.*\") OR process_path = RGX(\".*\\\\~1\\\\\\.js.*\") OR process_path = RGX(\".*\\\\~1\\\\\\.msi.*\") OR process_path = RGX(\".*\\\\~1\\\\\\.ps1.*\") OR process_path = RGX(\".*\\\\~1\\\\\\.tmp.*\") OR process_path = RGX(\".*\\\\~1\\\\\\.vbe.*\") OR process_path = RGX(\".*\\\\~1\\\\\\.vbs.*\") OR process_path = RGX(\".*\\\\~2\\\\\\.bat.*\") OR process_path = RGX(\".*\\\\~2\\\\\\.dll.*\") OR process_path = RGX(\".*\\\\~2\\\\\\.exe.*\") OR process_path = RGX(\".*\\\\~2\\\\\\.hta.*\") OR process_path = RGX(\".*\\\\~2\\\\\\.js.*\") OR process_path = RGX(\".*\\\\~2\\\\\\.msi.*\") OR process_path = RGX(\".*\\\\~2\\\\\\.ps1.*\") OR process_path = RGX(\".*\\\\~2\\\\\\.tmp.*\") OR process_path = RGX(\".*\\\\~2\\\\\\.vbe.*\") OR process_path = RGX(\".*\\\\~2\\\\\\.vbs.*\")) AND  NOT (parent_process_path = \"C\\:\\\\Windows\\\\explorer\\.exe\") AND  NOT (parent_process_path = RGX(\"\\\\\\\\WebEx\\\\\\\\WebexHost\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\thor\\\\\\\\thor64\\\\\\.exe$\") OR process_path = \"C\\:\\\\PROGRA\\~1\\\\WinZip\\\\WZPREL\\~1\\.EXE\" OR process_path = RGX(\"\\\\\\\\VCREDI\\\\~1\\\\\\.EXE$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b020af8f-3c09-4912-a1ca-9070a8905dcc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PowerShell Hotfix Enumeration",
+      "description": "Detects call to \"Win32_QuickFixEngineering\" in order to enumerate installed hotfixes often used in \"enum\" scripts by attackers Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Win32\\\\_QuickFixEngineering.*\") AND ScriptBlockText = RGX(\".*HotFixID.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1017e22d-5d19-4e0a-8331-7e9cf1ca3c39"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

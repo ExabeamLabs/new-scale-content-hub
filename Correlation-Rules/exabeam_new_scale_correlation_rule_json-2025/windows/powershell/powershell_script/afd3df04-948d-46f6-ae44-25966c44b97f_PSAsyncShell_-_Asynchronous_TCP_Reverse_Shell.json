@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PSAsyncShell - Asynchronous TCP Reverse Shell",
+      "description": "Detects the use of PSAsyncShell an Asynchronous TCP Reverse Shell written in powershell Note: Unmapped fields: ScriptBlockText",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ScriptBlockText = RGX(\".*PSAsyncShell.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d57dffaa-ee69-4c5f-ba0f-2f337f333a37"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

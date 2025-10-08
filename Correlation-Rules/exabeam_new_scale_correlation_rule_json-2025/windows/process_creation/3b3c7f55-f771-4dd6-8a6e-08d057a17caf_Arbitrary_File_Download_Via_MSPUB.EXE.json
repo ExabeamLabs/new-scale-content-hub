@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Arbitrary File Download Via MSPUB.EXE",
+      "description": "Detects usage of \"MSPUB\" (Microsoft Publisher) to download arbitrary files",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\MSPUB\\\\\\.exe$\") OR process_original_file_name = \"MSPUB\\.exe\") AND (process_command_line = RGX(\".*ftp\\\\:\\\\/\\\\/.*\") OR process_command_line = RGX(\".*http\\\\:\\\\/\\\\/.*\") OR process_command_line = RGX(\".*https\\\\:\\\\/\\\\/.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "94d61f2b-0833-4eef-9ff5-1602f46db470"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Cobalt Strike DNS Beaconing - DNS Client",
+      "description": "Detects a program that invoked suspicious DNS queries known from Cobalt Strike beacons Note: Unmapped fields: QueryName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "event_id = 3008 AND ((QueryName = RGX(\"^aaa\\\\\\.stage\\\\\\.\") OR QueryName = RGX(\"^post\\\\\\.1\")) OR QueryName = RGX(\".*\\\\\\.stage\\\\\\.123456\\\\\\..*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "aaec20a0-4177-4f8f-8a47-fec244f2a7fb"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

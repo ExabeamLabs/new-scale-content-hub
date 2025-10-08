@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remote File Download Via Desktopimgdownldr Utility",
+      "description": "Detects the desktopimgdownldr utility being used to download a remote file. An adversary may use desktopimgdownldr to download arbitrary files as an alternative to certutil.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\desktopimgdownldr\\\\\\.exe$\") AND parent_process_path = RGX(\"\\\\\\\\desktopimgdownldr\\\\\\.exe$\") AND process_command_line = RGX(\".*\\\\/lockscreenurl\\\\:http.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c82fe7ca-dd39-4400-9bac-13209a015dbb"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Service Installation in Suspicious Folder",
+      "description": "Detects service installation in suspicious folder appdata Note: Unmapped fields: Provider_Name, ImagePath, ServiceName",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Provider_Name = \"Service\\ Control\\ Manager\" AND event_id = 7045 AND (ImagePath = RGX(\".*\\\\\\\\AppData\\\\\\\\.*\") OR ImagePath = RGX(\".*\\\\\\\\\\\\\\\\127\\\\\\.0\\\\\\.0\\\\\\.1.*\") OR ImagePath = RGX(\".*\\\\\\\\\\\\\\\\localhost.*\"))) AND  NOT ((ServiceName = \"Zoom\\ Sharing\\ Service\" AND ImagePath = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Common\\\\ Files\\\\\\\\Zoom\\\\\\\\Support\\\\\\\\CptService\\\\\\.exe.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5fe680b3-b78e-4311-9272-80acdedd2fa5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

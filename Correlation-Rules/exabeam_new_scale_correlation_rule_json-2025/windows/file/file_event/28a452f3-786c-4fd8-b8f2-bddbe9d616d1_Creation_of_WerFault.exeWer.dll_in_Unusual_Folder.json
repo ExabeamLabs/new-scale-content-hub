@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Creation of WerFault.exe/Wer.dll in Unusual Folder",
+      "description": "Detects the creation of a file named \"WerFault.exe\" or \"wer.dll\" in an uncommon folder, which could be a sign of WerFault DLL hijacking.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(file_path = RGX(\"\\\\\\\\WerFault\\\\\\.exe$\") OR file_path = RGX(\"\\\\\\\\wer\\\\\\.dll$\")) AND  NOT ((file_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\SoftwareDistribution\\\\\\\\\") OR file_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\\") OR file_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\\") OR file_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\WinSxS\\\\\\\\\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "bdf475ac-c198-4180-b04c-2d89c44408cf"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

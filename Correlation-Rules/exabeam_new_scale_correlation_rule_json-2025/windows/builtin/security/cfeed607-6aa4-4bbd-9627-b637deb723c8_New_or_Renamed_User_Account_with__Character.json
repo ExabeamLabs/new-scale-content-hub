@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New or Renamed User Account with '$' Character",
+      "description": "Detects the creation of a user with the \"$\" character. This can be used by attackers to hide a user or trick detection systems that lack the parsing mechanisms.\n Note: Unmapped fields: SamAccountName, NewTargetUserName",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((event_id = 4720 AND SamAccountName = RGX(\".*\\\\$.*\")) OR (event_id = 4781 AND NewTargetUserName = RGX(\".*\\\\$.*\"))) AND  NOT ((event_id = 4720 AND dest_user = \"HomeGroupUser\\$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "19ece5c9-5b49-412e-bcc8-c4cf8e65c0d6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

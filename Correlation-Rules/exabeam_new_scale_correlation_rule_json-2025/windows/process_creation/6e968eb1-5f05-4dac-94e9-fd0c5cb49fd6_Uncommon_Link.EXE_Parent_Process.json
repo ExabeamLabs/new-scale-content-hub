@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Uncommon Link.EXE Parent Process",
+      "description": "Detects an uncommon parent process of \"LINK.EXE\".\nLink.EXE in Microsoft incremental linker. Its a utility usually bundled with Visual Studio installation.\nMultiple utilities often found in the same folder (editbin.exe, dumpbin.exe, lib.exe, etc) have a hardcode call to the \"LINK.EXE\" binary without checking its validity.\nThis would allow an attacker to sideload any binary with the name \"link.exe\" if one of the aforementioned tools get executed from a different location.\nBy filtering the known locations of such utilities we can spot uncommon parent process of LINK.EXE that might be suspicious or malicious.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\link\\\\\\.exe$\") AND process_command_line = RGX(\".*LINK\\\\ \\\\/.*\")) AND  NOT (((parent_process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Microsoft\\\\ Visual\\\\ Studio\\\\\\\\\") OR parent_process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Microsoft\\\\ Visual\\\\ Studio\\\\\\\\\")) AND (parent_process_path = RGX(\".*\\\\\\\\VC\\\\\\\\bin\\\\\\\\.*\") OR parent_process_path = RGX(\".*\\\\\\\\VC\\\\\\\\Tools\\\\\\\\.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "acba5b99-35f2-4614-b7bd-15d62a97eb82"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

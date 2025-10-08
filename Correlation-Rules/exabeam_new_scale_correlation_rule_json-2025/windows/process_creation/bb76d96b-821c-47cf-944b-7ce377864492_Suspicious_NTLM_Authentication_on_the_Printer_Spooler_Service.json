@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious NTLM Authentication on the Printer Spooler Service",
+      "description": "Detects a privilege elevation attempt by coercing NTLM authentication on the Printer Spooler service",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_original_file_name = \"RUNDLL32\\.EXE\") AND ((process_command_line = RGX(\".*C\\\\:\\\\\\\\windows\\\\\\\\system32\\\\\\\\davclnt\\\\\\.dll\\\\,DavSetCookie.*\") AND process_command_line = RGX(\".*http.*\")) AND (process_command_line = RGX(\".*spoolss.*\") OR process_command_line = RGX(\".*srvsvc.*\") OR process_command_line = RGX(\".*\\\\/print\\\\/pipe\\\\/.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b6bbf9bd-bd15-4ccb-8fed-c1e0aa0791d3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

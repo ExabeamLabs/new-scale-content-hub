@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Azure Firewall Rule Configuration Modified or Deleted",
+      "description": "Identifies when a Firewall Rule Configuration is Modified or Deleted. Note: Unmapped fields: operationName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(operationName = \"MICROSOFT\\.NETWORK\\/FIREWALLPOLICIES\\/RULECOLLECTIONGROUPS\\/WRITE\" OR operationName = \"MICROSOFT\\.NETWORK\\/FIREWALLPOLICIES\\/RULECOLLECTIONGROUPS\\/DELETE\" OR operationName = \"MICROSOFT\\.NETWORK\\/FIREWALLPOLICIES\\/RULEGROUPS\\/WRITE\" OR operationName = \"MICROSOFT\\.NETWORK\\/FIREWALLPOLICIES\\/RULEGROUPS\\/DELETE\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0c7bc18a-8d9c-4c16-9dbf-7c281b2cb4a2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - AdvancedRun Execution",
+      "description": "Detects the execution of AdvancedRun utility",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_original_file_name = \"AdvancedRun\\.exe\" OR (process_command_line = RGX(\".*\\\\ \\\\/EXEFilename\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\/Run.*\")) OR (process_command_line = RGX(\".*\\\\ \\\\/WindowState\\\\ 0.*\") AND process_command_line = RGX(\".*\\\\ \\\\/RunAs\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\/CommandLine\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7c6592a3-d8c3-4f3c-8dd4-152936910d95"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

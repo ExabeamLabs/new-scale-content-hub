@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Replace.exe Usage",
+      "description": "Detects the use of Replace.exe which can be used to replace file with another file",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_path = RGX(\"\\\\\\\\replace\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\-a.*\") OR process_command_line = RGX(\".*\\\\/a.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2e192f9e-d945-4340-988f-4cd6e625194b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

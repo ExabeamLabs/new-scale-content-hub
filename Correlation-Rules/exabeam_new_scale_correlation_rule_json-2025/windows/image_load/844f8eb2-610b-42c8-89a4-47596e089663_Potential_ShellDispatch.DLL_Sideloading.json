@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential ShellDispatch.DLL Sideloading",
+      "description": "Detects potential DLL sideloading of \"ShellDispatch.dll\" Note: Unmapped fields: ImageLoaded",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ImageLoaded = RGX(\"\\\\\\\\ShellDispatch\\\\\\.dll$\") AND  NOT (((ImageLoaded = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND ImageLoaded = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\")) OR ImageLoaded = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8803ef5b-c49f-4d67-9ed8-ed952805393d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

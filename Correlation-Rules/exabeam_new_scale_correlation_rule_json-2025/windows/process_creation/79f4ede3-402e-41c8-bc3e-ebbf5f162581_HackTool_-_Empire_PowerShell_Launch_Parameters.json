@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - Empire PowerShell Launch Parameters",
+      "description": "Detects suspicious powershell command line parameters used in Empire",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\ \\\\-NoP\\\\ \\\\-sta\\\\ \\\\-NonI\\\\ \\\\-W\\\\ Hidden\\\\ \\\\-Enc\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-noP\\\\ \\\\-sta\\\\ \\\\-w\\\\ 1\\\\ \\\\-enc\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-NoP\\\\ \\\\-NonI\\\\ \\\\-W\\\\ Hidden\\\\ \\\\-enc\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-noP\\\\ \\\\-sta\\\\ \\\\-w\\\\ 1\\\\ \\\\-enc.*\") OR process_command_line = RGX(\".*\\\\ \\\\-enc\\\\ \\\\ SQB.*\") OR process_command_line = RGX(\".*\\\\ \\\\-nop\\\\ \\\\-exec\\\\ bypass\\\\ \\\\-EncodedCommand\\\\ .*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1efc95a7-6274-4389-b405-b30045af3e09"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

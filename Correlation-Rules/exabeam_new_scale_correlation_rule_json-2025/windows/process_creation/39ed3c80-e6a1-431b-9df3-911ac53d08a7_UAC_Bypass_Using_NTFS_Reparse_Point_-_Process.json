@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "UAC Bypass Using NTFS Reparse Point - Process",
+      "description": "Detects the pattern of UAC Bypass using NTFS reparse point and wusa.exe DLL hijacking (UACMe 36)",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\"^\\\\\"C\\\\:\\\\\\\\Windows\\\\\\\\system32\\\\\\\\wusa\\\\\\.exe\\\\\"\\\\ \\\\ \\\\/quiet\\\\ C\\\\:\\\\\\\\Users\\\\\\\\\") AND process_command_line = RGX(\"\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\update\\\\\\.msu$\") AND (process_integrity_level = \"High\" OR process_integrity_level = \"System\" OR process_integrity_level = \"S\\-1\\-16\\-16384\" OR process_integrity_level = \"S\\-1\\-16\\-12288\")) OR (parent_process_command_line = \"\\\"C\\:\\\\Windows\\\\system32\\\\dism\\.exe\\\"\\ \\/online\\ \\/quiet\\ \\/norestart\\ \\/add\\-package\\ \\/packagepath\\:\\\"C\\:\\\\Windows\\\\system32\\\\pe386\\\"\\ \\/ignorecheck\" AND (process_integrity_level = \"High\" OR process_integrity_level = \"System\") AND (process_command_line = RGX(\".*C\\\\:\\\\\\\\Users\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\\\\\dismhost\\\\\\.exe\\\\ \\\\{.*\")) AND process_path = RGX(\"\\\\\\\\DismHost\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b85d0102-3fae-4b5d-80c7-f80fea7aa183"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

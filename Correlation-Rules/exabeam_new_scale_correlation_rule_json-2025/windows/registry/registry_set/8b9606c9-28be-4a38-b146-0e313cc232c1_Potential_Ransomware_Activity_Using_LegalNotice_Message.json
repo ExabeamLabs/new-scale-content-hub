@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Ransomware Activity Using LegalNotice Message",
+      "description": "Detect changes to the \"LegalNoticeCaption\" or \"LegalNoticeText\" registry values where the message set contains keywords often used in ransomware ransom messages Note: Unmapped fields: Details",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\System\\\\\\\\LegalNoticeCaption.*\") OR registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\System\\\\\\\\LegalNoticeText.*\")) AND (Details = RGX(\".*encrypted.*\") OR Details = RGX(\".*Unlock\\\\-Password.*\") OR Details = RGX(\".*paying.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a959e608-fbbf-4f64-9990-5d140d636891"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

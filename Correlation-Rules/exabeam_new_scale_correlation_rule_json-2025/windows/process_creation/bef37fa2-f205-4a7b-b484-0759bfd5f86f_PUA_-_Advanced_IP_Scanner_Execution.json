@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - Advanced IP Scanner Execution",
+      "description": "Detects the use of Advanced IP Scanner. Seems to be a popular tool for ransomware groups.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\".*\\\\\\\\advanced\\\\_ip\\\\_scanner.*\") OR process_original_file_name = RGX(\".*advanced\\\\_ip\\\\_scanner.*\") OR process_description = RGX(\".*Advanced\\\\ IP\\\\ Scanner.*\")) OR (process_command_line = RGX(\".*\\\\/portable.*\") AND process_command_line = RGX(\".*\\\\/lng.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ed9e7ba9-a66a-45e3-8d40-093848bcad2b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

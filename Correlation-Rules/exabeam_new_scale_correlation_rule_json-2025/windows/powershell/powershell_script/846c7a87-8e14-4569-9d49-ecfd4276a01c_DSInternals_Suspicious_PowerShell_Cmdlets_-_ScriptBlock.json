@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "DSInternals Suspicious PowerShell Cmdlets - ScriptBlock",
+      "description": "Detects execution and usage of the DSInternals PowerShell module. Which can be used to perform what might be considered as suspicious activity such as dumping DPAPI backup keys or manipulating NTDS.DIT files.\nThe DSInternals PowerShell Module exposes several internal features of Active Directory and Azure Active Directory. These include FIDO2 and NGC key auditing, offline ntds.dit file manipulation, password auditing, DC recovery from IFM backups and password hash calculation.\n Note: Unmapped fields: ScriptBlockText",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Add\\\\-ADDBSidHistory.*\") OR ScriptBlockText = RGX(\".*Add\\\\-ADNgcKey.*\") OR ScriptBlockText = RGX(\".*Add\\\\-ADReplNgcKey.*\") OR ScriptBlockText = RGX(\".*ConvertFrom\\\\-ADManagedPasswordBlob.*\") OR ScriptBlockText = RGX(\".*ConvertFrom\\\\-GPPrefPassword.*\") OR ScriptBlockText = RGX(\".*ConvertFrom\\\\-ManagedPasswordBlob.*\") OR ScriptBlockText = RGX(\".*ConvertFrom\\\\-UnattendXmlPassword.*\") OR ScriptBlockText = RGX(\".*ConvertFrom\\\\-UnicodePassword.*\") OR ScriptBlockText = RGX(\".*ConvertTo\\\\-AADHash.*\") OR ScriptBlockText = RGX(\".*ConvertTo\\\\-GPPrefPassword.*\") OR ScriptBlockText = RGX(\".*ConvertTo\\\\-KerberosKey.*\") OR ScriptBlockText = RGX(\".*ConvertTo\\\\-LMHash.*\") OR ScriptBlockText = RGX(\".*ConvertTo\\\\-MsoPasswordHash.*\") OR ScriptBlockText = RGX(\".*ConvertTo\\\\-NTHash.*\") OR ScriptBlockText = RGX(\".*ConvertTo\\\\-OrgIdHash.*\") OR ScriptBlockText = RGX(\".*ConvertTo\\\\-UnicodePassword.*\") OR ScriptBlockText = RGX(\".*Disable\\\\-ADDBAccount.*\") OR ScriptBlockText = RGX(\".*Enable\\\\-ADDBAccount.*\") OR ScriptBlockText = RGX(\".*Get\\\\-ADDBAccount.*\") OR ScriptBlockText = RGX(\".*Get\\\\-ADDBBackupKey.*\") OR ScriptBlockText = RGX(\".*Get\\\\-ADDBDomainController.*\") OR ScriptBlockText = RGX(\".*Get\\\\-ADDBGroupManagedServiceAccount.*\") OR ScriptBlockText = RGX(\".*Get\\\\-ADDBKdsRootKey.*\") OR ScriptBlockText = RGX(\".*Get\\\\-ADDBSchemaAttribute.*\") OR ScriptBlockText = RGX(\".*Get\\\\-ADDBServiceAccount.*\") OR ScriptBlockText = RGX(\".*Get\\\\-ADDefaultPasswordPolicy.*\") OR ScriptBlockText = RGX(\".*Get\\\\-ADKeyCredential.*\") OR ScriptBlockText = RGX(\".*Get\\\\-ADPasswordPolicy.*\") OR ScriptBlockText = RGX(\".*Get\\\\-ADReplAccount.*\") OR ScriptBlockText = RGX(\".*Get\\\\-ADReplBackupKey.*\") OR ScriptBlockText = RGX(\".*Get\\\\-ADReplicationAccount.*\") OR ScriptBlockText = RGX(\".*Get\\\\-ADSIAccount.*\") OR ScriptBlockText = RGX(\".*Get\\\\-AzureADUserEx.*\") OR ScriptBlockText = RGX(\".*Get\\\\-BootKey.*\") OR ScriptBlockText = RGX(\".*Get\\\\-KeyCredential.*\") OR ScriptBlockText = RGX(\".*Get\\\\-LsaBackupKey.*\") OR ScriptBlockText = RGX(\".*Get\\\\-LsaPolicy.*\") OR ScriptBlockText = RGX(\".*Get\\\\-SamPasswordPolicy.*\") OR ScriptBlockText = RGX(\".*Get\\\\-SysKey.*\") OR ScriptBlockText = RGX(\".*Get\\\\-SystemKey.*\") OR ScriptBlockText = RGX(\".*New\\\\-ADDBRestoreFromMediaScript.*\") OR ScriptBlockText = RGX(\".*New\\\\-ADKeyCredential.*\") OR ScriptBlockText = RGX(\".*New\\\\-ADNgcKey.*\") OR ScriptBlockText = RGX(\".*New\\\\-NTHashSet.*\") OR ScriptBlockText = RGX(\".*Remove\\\\-ADDBObject.*\") OR ScriptBlockText = RGX(\".*Save\\\\-DPAPIBlob.*\") OR ScriptBlockText = RGX(\".*Set\\\\-ADAccountPasswordHash.*\") OR ScriptBlockText = RGX(\".*Set\\\\-ADDBAccountPassword.*\") OR ScriptBlockText = RGX(\".*Set\\\\-ADDBBootKey.*\") OR ScriptBlockText = RGX(\".*Set\\\\-ADDBDomainController.*\") OR ScriptBlockText = RGX(\".*Set\\\\-ADDBPrimaryGroup.*\") OR ScriptBlockText = RGX(\".*Set\\\\-ADDBSysKey.*\") OR ScriptBlockText = RGX(\".*Set\\\\-AzureADUserEx.*\") OR ScriptBlockText = RGX(\".*Set\\\\-LsaPolicy.*\") OR ScriptBlockText = RGX(\".*Set\\\\-SamAccountPasswordHash.*\") OR ScriptBlockText = RGX(\".*Set\\\\-WinUserPasswordHash.*\") OR ScriptBlockText = RGX(\".*Test\\\\-ADDBPasswordQuality.*\") OR ScriptBlockText = RGX(\".*Test\\\\-ADPasswordQuality.*\") OR ScriptBlockText = RGX(\".*Test\\\\-ADReplPasswordQuality.*\") OR ScriptBlockText = RGX(\".*Test\\\\-PasswordQuality.*\") OR ScriptBlockText = RGX(\".*Unlock\\\\-ADDBAccount.*\") OR ScriptBlockText = RGX(\".*Write\\\\-ADNgcKey.*\") OR ScriptBlockText = RGX(\".*Write\\\\-ADReplNgcKey.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "fad460b8-a526-4145-9aa3-b68582aa3288"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

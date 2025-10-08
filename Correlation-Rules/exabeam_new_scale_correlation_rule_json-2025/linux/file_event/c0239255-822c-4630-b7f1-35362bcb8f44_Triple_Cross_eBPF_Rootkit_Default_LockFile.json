@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Triple Cross eBPF Rootkit Default LockFile",
+      "description": "Detects the creation of the file \"rootlog\" which is used by the TripleCross rootkit as a way to check if the backdoor is already running.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "file_path = \"\\/tmp\\/rootlog\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8b7b69be-0678-4ec5-9c0a-9404de4093b9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

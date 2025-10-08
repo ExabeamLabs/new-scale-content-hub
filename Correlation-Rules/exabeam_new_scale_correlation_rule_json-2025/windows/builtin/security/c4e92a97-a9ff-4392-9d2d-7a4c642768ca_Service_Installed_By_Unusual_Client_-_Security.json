@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Service Installed By Unusual Client - Security",
+      "description": "Detects a service installed by a client which has PID 0 or whose parent has PID 0 Note: Unmapped fields: ClientProcessId",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4697 AND (ClientProcessId = 0 OR parent_process_id = 0))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "55a88ec3-2a8c-44cb-b68c-924e6ad82cd4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

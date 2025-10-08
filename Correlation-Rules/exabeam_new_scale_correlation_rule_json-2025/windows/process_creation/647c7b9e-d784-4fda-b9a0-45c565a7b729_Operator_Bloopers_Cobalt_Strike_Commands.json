@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Operator Bloopers Cobalt Strike Commands",
+      "description": "Detects use of Cobalt Strike commands accidentally entered in the CMD shell",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_original_file_name = \"Cmd\\.Exe\" OR process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\")) AND ((process_command_line = RGX(\"^cmd\\\\ \") OR process_command_line = RGX(\"^cmd\\\\\\.exe\") OR process_command_line = RGX(\"^c\\\\:\\\\\\\\windows\\\\\\\\system32\\\\\\\\cmd\\\\\\.exe\")) AND (process_command_line = RGX(\".*psinject.*\") OR process_command_line = RGX(\".*spawnas.*\") OR process_command_line = RGX(\".*make\\\\_token.*\") OR process_command_line = RGX(\".*remote\\\\-exec.*\") OR process_command_line = RGX(\".*rev2self.*\") OR process_command_line = RGX(\".*dcsync.*\") OR process_command_line = RGX(\".*logonpasswords.*\") OR process_command_line = RGX(\".*execute\\\\-assembly.*\") OR process_command_line = RGX(\".*getsystem.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "60182376-fb01-42de-9731-b2bbca815a16"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

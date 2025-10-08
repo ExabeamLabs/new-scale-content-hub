@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Webshell ReGeorg Detection Via Web Logs",
+      "description": "Certain strings in the uri_query field when combined with null referer and null user agent can indicate activity associated with the webshell ReGeorg. Note: Unmapped fields: cs-uri-query, cs-referer, cs-user-agent, cs-method",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(cs-uri-query = RGX(\".*cmd\\\\=read.*\") OR cs-uri-query = RGX(\".*connect\\\\&target.*\") OR cs-uri-query = RGX(\".*cmd\\\\=connect.*\") OR cs-uri-query = RGX(\".*cmd\\\\=disconnect.*\") OR cs-uri-query = RGX(\".*cmd\\\\=forward.*\")) AND (cs-referer = \"None\" AND cs-user-agent = \"None\" AND cs-method = \"POST\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a0ff5394-e5b7-40b4-9f47-6abad3d48cf2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

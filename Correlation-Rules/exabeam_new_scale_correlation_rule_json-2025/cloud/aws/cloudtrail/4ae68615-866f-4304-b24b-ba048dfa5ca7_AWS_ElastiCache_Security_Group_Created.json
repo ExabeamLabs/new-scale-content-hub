@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "AWS ElastiCache Security Group Created",
+      "description": "Detects when an ElastiCache security group has been created. Note: Unmapped fields: eventSource, eventName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(eventSource = \"elasticache\\.amazonaws\\.com\" AND eventName = \"CreateCacheSecurityGroup\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "69f31859-0785-4fbe-ab63-fb7c4f36eb39"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "DNS Query To MEGA Hosting Website - DNS Client",
+      "description": "Detects DNS queries for subdomains related to MEGA sharing website Note: Unmapped fields: QueryName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 3008 AND QueryName = RGX(\".*userstorage\\\\\\.mega\\\\\\.co\\\\\\.nz.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ebbb4a3e-e169-49bf-a937-7a192a1487cc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

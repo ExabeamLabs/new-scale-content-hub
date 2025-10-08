@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "AWS IAM S3Browser LoginProfile Creation",
+      "description": "Detects S3 Browser utility performing reconnaissance looking for existing IAM Users without a LoginProfile defined then (when found) creating a LoginProfile. Note: Unmapped fields: eventSource, eventName, userAgent",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(eventSource = \"iam\\.amazonaws\\.com\" AND (eventName = \"GetLoginProfile\" OR eventName = \"CreateLoginProfile\") AND userAgent = RGX(\".*S3\\\\ Browser.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f3dea829-8ea1-43b6-b1da-e3b4c1a0929b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

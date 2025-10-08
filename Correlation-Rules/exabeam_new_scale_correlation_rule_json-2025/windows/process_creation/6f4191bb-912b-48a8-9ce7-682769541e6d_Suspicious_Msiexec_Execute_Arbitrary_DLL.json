@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Msiexec Execute Arbitrary DLL",
+      "description": "Adversaries may abuse msiexec.exe to proxy execution of malicious payloads.\nMsiexec.exe is the command-line utility for the Windows Installer and is thus commonly associated with executing installation packages (.msi)\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\msiexec\\\\\\.exe$\") AND process_command_line = RGX(\".*\\\\ \\\\-y.*\")) AND  NOT ((process_command_line = RGX(\".*\\\\\\\\MsiExec\\\\\\.exe\\\\\"\\\\ \\\\/Y\\\\ \\\\\"C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Bonjour\\\\\\\\mdnsNSP\\\\\\.dll.*\") OR process_command_line = RGX(\".*\\\\\\\\MsiExec\\\\\\.exe\\\\\"\\\\ \\\\/Y\\\\ \\\\\"C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Bonjour\\\\\\\\mdnsNSP\\\\\\.dll.*\") OR process_command_line = RGX(\".*\\\\\\\\MsiExec\\\\\\.exe\\\\\"\\\\ \\\\/Y\\\\ \\\\\"C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Apple\\\\ Software\\\\ Update\\\\\\\\ScriptingObjectModel\\\\\\.dll.*\") OR process_command_line = RGX(\".*\\\\\\\\MsiExec\\\\\\.exe\\\\\"\\\\ \\\\/Y\\\\ \\\\\"C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Apple\\\\ Software\\\\ Update\\\\\\\\SoftwareUpdateAdmin\\\\\\.dll.*\") OR process_command_line = RGX(\".*\\\\\\\\MsiExec\\\\\\.exe\\\\\"\\\\ \\\\/Y\\\\ \\\\\"C\\\\:\\\\\\\\Windows\\\\\\\\CCM\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\MsiExec\\\\\\.exe\\\\\"\\\\ \\\\/Y\\\\ C\\\\:\\\\\\\\Windows\\\\\\\\CCM\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\MsiExec\\\\\\.exe\\\\\"\\\\ \\\\-Y\\\\ \\\\\"C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Bonjour\\\\\\\\mdnsNSP\\\\\\.dll.*\") OR process_command_line = RGX(\".*\\\\\\\\MsiExec\\\\\\.exe\\\\\"\\\\ \\\\-Y\\\\ \\\\\"C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Bonjour\\\\\\\\mdnsNSP\\\\\\.dll.*\") OR process_command_line = RGX(\".*\\\\\\\\MsiExec\\\\\\.exe\\\\\"\\\\ \\\\-Y\\\\ \\\\\"C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Apple\\\\ Software\\\\ Update\\\\\\\\ScriptingObjectModel\\\\\\.dll.*\") OR process_command_line = RGX(\".*\\\\\\\\MsiExec\\\\\\.exe\\\\\"\\\\ \\\\-Y\\\\ \\\\\"C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Apple\\\\ Software\\\\ Update\\\\\\\\SoftwareUpdateAdmin\\\\\\.dll.*\") OR process_command_line = RGX(\".*\\\\\\\\MsiExec\\\\\\.exe\\\\\"\\\\ \\\\-Y\\\\ \\\\\"C\\\\:\\\\\\\\Windows\\\\\\\\CCM\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\MsiExec\\\\\\.exe\\\\\"\\\\ \\\\-Y\\\\ C\\\\:\\\\\\\\Windows\\\\\\\\CCM\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "dbac6b46-0c46-4e5f-8a07-66804832d4dd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Download From Suspicious TLD - Whitelist",
+      "description": "Detects executable downloads from suspicious remote systems Note: Unmapped fields: c-uri-extension, cs-host",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(c-uri-extension = \"exe\" OR c-uri-extension = \"vbs\" OR c-uri-extension = \"bat\" OR c-uri-extension = \"rar\" OR c-uri-extension = \"ps1\" OR c-uri-extension = \"doc\" OR c-uri-extension = \"docm\" OR c-uri-extension = \"xls\" OR c-uri-extension = \"xlsm\" OR c-uri-extension = \"pptm\" OR c-uri-extension = \"rtf\" OR c-uri-extension = \"hta\" OR c-uri-extension = \"dll\" OR c-uri-extension = \"ws\" OR c-uri-extension = \"wsf\" OR c-uri-extension = \"sct\" OR c-uri-extension = \"zip\") AND  NOT ((cs-host = RGX(\"\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.org$\") OR cs-host = RGX(\"\\\\\\.net$\") OR cs-host = RGX(\"\\\\\\.edu$\") OR cs-host = RGX(\"\\\\\\.gov$\") OR cs-host = RGX(\"\\\\\\.uk$\") OR cs-host = RGX(\"\\\\\\.ca$\") OR cs-host = RGX(\"\\\\\\.de$\") OR cs-host = RGX(\"\\\\\\.jp$\") OR cs-host = RGX(\"\\\\\\.fr$\") OR cs-host = RGX(\"\\\\\\.au$\") OR cs-host = RGX(\"\\\\\\.us$\") OR cs-host = RGX(\"\\\\\\.ch$\") OR cs-host = RGX(\"\\\\\\.it$\") OR cs-host = RGX(\"\\\\\\.nl$\") OR cs-host = RGX(\"\\\\\\.se$\") OR cs-host = RGX(\"\\\\\\.no$\") OR cs-host = RGX(\"\\\\\\.es$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "39f30eb6-3db1-4b2e-9f4e-89f0b2050dd0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

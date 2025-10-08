@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "MSSQL XPCmdshell Option Change",
+      "description": "Detects when the MSSQL \"xp_cmdshell\" stored procedure setting is changed.\n Note: Unmapped fields: Provider_Name, Data",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Provider_Name = RGX(\".*MSSQL.*\") AND event_id = 15457 AND Data = RGX(\".*xp\\\\_cmdshell.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9429b193-57b5-4d44-bbe6-62acaf85e448"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

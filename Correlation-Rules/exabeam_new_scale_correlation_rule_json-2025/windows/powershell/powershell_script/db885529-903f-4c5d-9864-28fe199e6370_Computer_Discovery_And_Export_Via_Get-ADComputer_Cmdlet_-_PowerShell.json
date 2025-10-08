@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Computer Discovery And Export Via Get-ADComputer Cmdlet - PowerShell",
+      "description": "Detects usage of the Get-ADComputer cmdlet to collect computer information and output it to a file Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ScriptBlockText = RGX(\".*Get\\\\-ADComputer\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\ \\\\-Filter\\\\ \\\\*.*\")) AND (ScriptBlockText = RGX(\".*\\\\ \\\\|\\\\ Select\\\\ .*\") OR ScriptBlockText = RGX(\".*Out\\\\-File.*\") OR ScriptBlockText = RGX(\".*Set\\\\-Content.*\") OR ScriptBlockText = RGX(\".*Add\\\\-Content.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f8ee0ec8-3050-42a4-802e-c196f25e3413"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

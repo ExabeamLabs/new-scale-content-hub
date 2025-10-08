@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Process Memory Dump Via Dotnet-Dump",
+      "description": "Detects the execution of \"dotnet-dump\" with the \"collect\" flag. The execution could indicate potential process dumping of critical processes such as LSASS.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\dotnet\\\\-dump\\\\\\.exe$\") OR process_original_file_name = \"dotnet\\-dump\\.dll\") AND process_command_line = RGX(\".*collect.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0d03a3a5-1601-4a40-9425-f9d220dc576e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

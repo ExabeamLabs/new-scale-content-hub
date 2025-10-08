@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remote Utilities Host Service Install",
+      "description": "Detects Remote Utilities Host service installation on the target system. Note: Unmapped fields: Provider_Name, ImagePath, ServiceName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((Provider_Name = \"Service\\ Control\\ Manager\" AND event_id = 7045) AND ((ImagePath = RGX(\".*\\\\\\\\rutserv\\\\\\.exe.*\") AND ImagePath = RGX(\".*\\\\-service.*\")) OR ServiceName = \"Remote\\ Utilities\\ \\-\\ Host\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a2f99c43-ad00-4f29-80d9-e6c8fb772958"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

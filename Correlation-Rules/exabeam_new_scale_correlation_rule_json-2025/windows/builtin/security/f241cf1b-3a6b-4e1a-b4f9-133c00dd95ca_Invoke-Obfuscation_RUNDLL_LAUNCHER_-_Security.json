@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation RUNDLL LAUNCHER - Security",
+      "description": "Detects Obfuscated Powershell via RUNDLL LAUNCHER Note: Unmapped fields: ServiceFileName",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4697 AND (ServiceFileName = RGX(\".*rundll32\\\\\\.exe.*\") AND ServiceFileName = RGX(\".*shell32\\\\\\.dll.*\") AND ServiceFileName = RGX(\".*shellexec\\\\_rundll.*\") AND ServiceFileName = RGX(\".*powershell.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "942f2202-79b3-4c74-96b9-a60ecaaa9fb2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

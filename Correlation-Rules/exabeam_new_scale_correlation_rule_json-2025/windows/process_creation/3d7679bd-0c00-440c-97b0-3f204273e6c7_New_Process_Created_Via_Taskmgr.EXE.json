@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New Process Created Via Taskmgr.EXE",
+      "description": "Detects the creation of a process via the Windows task manager. This might be an attempt to bypass UAC",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "parent_process_path = RGX(\"\\\\\\\\taskmgr\\\\\\.exe$\") AND  NOT ((process_path = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\mmc\\\\\\.exe$\") OR process_path = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\resmon\\\\\\.exe$\") OR process_path = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\Taskmgr\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f22b5135-efb8-434a-abf6-7cd7e1c14667"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

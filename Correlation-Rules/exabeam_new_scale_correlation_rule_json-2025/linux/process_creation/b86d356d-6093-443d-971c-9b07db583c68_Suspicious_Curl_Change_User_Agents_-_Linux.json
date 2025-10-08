@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Curl Change User Agents - Linux",
+      "description": "Detects a suspicious curl process start on linux with set useragent options",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/curl$\") AND (process_command_line = RGX(\".*\\\\ \\\\-A\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-\\\\-user\\\\-agent\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f6587039-765f-4587-991d-b4aa12a7b613"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

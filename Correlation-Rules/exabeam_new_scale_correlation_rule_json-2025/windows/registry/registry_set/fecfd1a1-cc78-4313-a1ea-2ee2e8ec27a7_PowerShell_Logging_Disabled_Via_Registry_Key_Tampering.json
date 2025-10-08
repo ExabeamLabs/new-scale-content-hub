@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PowerShell Logging Disabled Via Registry Key Tampering",
+      "description": "Detects changes to the registry for the currently logged-in user. In order to disable PowerShell module logging, script block logging or transcription and script execution logging Note: Unmapped fields: Details",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((registry_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\PowerShell\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\PowerShellCore\\\\\\\\.*\")) AND (registry_path = RGX(\"\\\\\\\\ModuleLogging\\\\\\\\EnableModuleLogging$\") OR registry_path = RGX(\"\\\\\\\\ScriptBlockLogging\\\\\\\\EnableScriptBlockLogging$\") OR registry_path = RGX(\"\\\\\\\\ScriptBlockLogging\\\\\\\\EnableScriptBlockInvocationLogging$\") OR registry_path = RGX(\"\\\\\\\\Transcription\\\\\\\\EnableTranscripting$\") OR registry_path = RGX(\"\\\\\\\\Transcription\\\\\\\\EnableInvocationHeader$\") OR registry_path = RGX(\"\\\\\\\\EnableScripts$\")) AND Details = \"DWORD\\ \\(0x00000000\\)\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "bbd38101-7389-40b5-947d-25ec0b972435"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

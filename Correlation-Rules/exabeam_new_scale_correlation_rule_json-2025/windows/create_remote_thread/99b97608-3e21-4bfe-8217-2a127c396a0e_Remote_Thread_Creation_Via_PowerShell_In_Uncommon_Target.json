@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remote Thread Creation Via PowerShell In Uncommon Target",
+      "description": "Detects the creation of a remote thread from a Powershell process in an uncommon target process Note: Unmapped fields: SourceImage, TargetImage",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((SourceImage = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\")) AND (TargetImage = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR TargetImage = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3866de60-2fde-4abd-ac65-30991a8da22b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

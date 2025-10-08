@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "System Network Discovery - macOS",
+      "description": "Detects enumeration of local network configuration",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/arp$\") OR process_path = RGX(\"\\\\/ifconfig$\") OR process_path = RGX(\"\\\\/netstat$\") OR process_path = RGX(\"\\\\/networksetup$\") OR process_path = RGX(\"\\\\/socketfilterfw$\")) OR (process_path = \"\\/usr\\/bin\\/defaults\" AND (process_command_line = RGX(\".*\\\\/Library\\\\/Preferences\\\\/com\\\\\\.apple\\\\\\.alf.*\") AND process_command_line = RGX(\".*read.*\")))) AND  NOT (parent_process_path = RGX(\"\\\\/wifivelocityd$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "669ddd35-cfa2-4a00-9361-660a6dc57ae9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

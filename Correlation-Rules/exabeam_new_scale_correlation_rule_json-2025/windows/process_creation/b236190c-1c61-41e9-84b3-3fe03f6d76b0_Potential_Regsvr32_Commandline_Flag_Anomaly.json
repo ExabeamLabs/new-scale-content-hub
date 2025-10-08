@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Regsvr32 Commandline Flag Anomaly",
+      "description": "Detects a potential command line flag anomaly related to \"regsvr32\" in which the \"/i\" flag is used without the \"/n\" which should be uncommon.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") AND process_command_line = RGX(\".*\\\\ \\\\-i\\\\:.*\")) AND  NOT (process_command_line = RGX(\".*\\\\ \\\\-n\\\\ .*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6a0734e2-6897-47ce-ae57-d5dc8eae3e13"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

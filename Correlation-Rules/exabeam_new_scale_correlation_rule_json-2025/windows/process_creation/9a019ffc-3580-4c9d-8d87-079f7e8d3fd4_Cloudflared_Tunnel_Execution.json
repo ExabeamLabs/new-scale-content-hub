@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Cloudflared Tunnel Execution",
+      "description": "Detects execution of the \"cloudflared\" tool to connect back to a tunnel. This was seen used by threat actors to maintain persistence and remote access to compromised networks.",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*\\\\ tunnel\\\\ .*\") AND process_command_line = RGX(\".*\\\\ run\\\\ .*\")) AND (process_command_line = RGX(\".*\\\\-config\\\\ .*\") OR process_command_line = RGX(\".*\\\\-credentials\\\\-contents\\\\ .*\") OR process_command_line = RGX(\".*\\\\-credentials\\\\-file\\\\ .*\") OR process_command_line = RGX(\".*\\\\-token\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b4d8023a-b21a-445c-9ebb-c5aad72c1882"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

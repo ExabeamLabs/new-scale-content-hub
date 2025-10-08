@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Inbox Manipulation Rules",
+      "description": "Detects suspicious rules that delete or move messages or folders are set on a user's inbox. Note: Unmapped fields: riskEventType",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "riskEventType = \"mcasSuspiciousInboxManipulationRules\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4ff9799a-1ce6-4fb5-988b-481d774e64b2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

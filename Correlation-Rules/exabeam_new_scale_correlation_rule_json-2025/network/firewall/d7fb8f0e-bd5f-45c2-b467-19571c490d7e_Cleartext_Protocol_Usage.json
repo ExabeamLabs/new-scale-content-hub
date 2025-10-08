@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Cleartext Protocol Usage",
+      "description": "Ensure that all account usernames and authentication credentials are transmitted across networks using encrypted channels.\nEnsure that an encryption is used for all sensitive information in transit. Ensure that an encrypted channels is used for all administrative account access.\n Note: Unmapped fields: dst_port, action, blocked",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(dst_port = 8080 OR dst_port = 21 OR dst_port = 80 OR dst_port = 23 OR dst_port = 50000 OR dst_port = 1521 OR dst_port = 27017 OR dst_port = 3306 OR dst_port = 1433 OR dst_port = 11211 OR dst_port = 15672 OR dst_port = 5900 OR dst_port = 5901 OR dst_port = 5902 OR dst_port = 5903 OR dst_port = 5904) AND ((action = \"forward\" OR action = \"accept\" OR action = 2) OR blocked = \"false\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "abf6eef4-66c7-406b-842b-84bd4e6ca553"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

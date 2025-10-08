@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential RDP Tunneling Via Plink",
+      "description": "Execution of plink to perform data exfiltration and tunneling",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\plink\\\\\\.exe$\") AND process_command_line = RGX(\".*\\\\:127\\\\\\.0\\\\\\.0\\\\\\.1\\\\:3389.*\")) OR ((process_path = RGX(\"\\\\\\\\plink\\\\\\.exe$\") AND process_command_line = RGX(\".*\\\\:3389.*\")) AND (process_command_line = RGX(\".*\\\\ \\\\-P\\\\ 443.*\") OR process_command_line = RGX(\".*\\\\ \\\\-P\\\\ 22.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6fe39831-0abc-4508-976f-e8b901d8f63f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Hidden Executable In NTFS Alternate Data Stream",
+      "description": "Detects the creation of an ADS (Alternate Data Stream) that contains an executable by looking at a non-empty Imphash Note: Unmapped fields: Hash",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "Hash = RGX(\".*IMPHASH\\\\=.*\") AND  NOT (Hash = RGX(\".*IMPHASH\\\\=00000000000000000000000000000000.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3a8ffd0c-f85e-46f1-9c39-69c7adec45b7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

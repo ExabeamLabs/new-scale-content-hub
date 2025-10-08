@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remote Access Tool - AnyDesk Silent Installation",
+      "description": "Detects AnyDesk Remote Desktop silent installation. Which can be used by attackers to gain remote access.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\-\\\\-install.*\") AND process_command_line = RGX(\".*\\\\-\\\\-start\\\\-with\\\\-win.*\") AND process_command_line = RGX(\".*\\\\-\\\\-silent.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0692c419-9f37-4f7d-9638-a8660d6f3aee"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

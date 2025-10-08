@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "NET NGenAssemblyUsageLog Registry Key Tamper",
+      "description": "Detects changes to the NGenAssemblyUsageLog registry key.\n.NET Usage Log output location can be controlled by setting the NGenAssemblyUsageLog CLR configuration knob in the Registry or by configuring an environment variable (as described in the next section).\nBy simplify specifying an arbitrary value (e.g. fake output location or junk data) for the expected value, a Usage Log file for the .NET execution context will not be created.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\"SOFTWARE\\\\\\\\Microsoft\\\\\\\\\\\\\\.NETFramework\\\\\\\\NGenAssemblyUsageLog$\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "10cd49bf-90c4-401d-bbd2-ebb35f2860b1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

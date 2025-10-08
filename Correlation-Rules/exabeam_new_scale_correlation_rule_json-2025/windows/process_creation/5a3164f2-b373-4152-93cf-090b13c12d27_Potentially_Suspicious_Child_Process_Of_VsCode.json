@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Suspicious Child Process Of VsCode",
+      "description": "Detects uncommon or suspicious child processes spawning from a VsCode \"code.exe\" process. This could indicate an attempt of persistence via VsCode tasks or terminal profiles.",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "parent_process_path = RGX(\"\\\\\\\\code\\\\\\.exe$\") AND ((process_path = RGX(\"\\\\\\\\calc\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\")) OR ((process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\")) AND (process_command_line = RGX(\".*Invoke\\\\-Expressions.*\") OR process_command_line = RGX(\".*IEX.*\") OR process_command_line = RGX(\".*Invoke\\\\-Command.*\") OR process_command_line = RGX(\".*ICM.*\") OR process_command_line = RGX(\".*DownloadString.*\") OR process_command_line = RGX(\".*rundll32.*\") OR process_command_line = RGX(\".*regsvr32.*\") OR process_command_line = RGX(\".*wscript.*\") OR process_command_line = RGX(\".*cscript.*\"))) OR (process_path = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Temp\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ef075425-3752-4239-a171-b96c97c79aaf"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

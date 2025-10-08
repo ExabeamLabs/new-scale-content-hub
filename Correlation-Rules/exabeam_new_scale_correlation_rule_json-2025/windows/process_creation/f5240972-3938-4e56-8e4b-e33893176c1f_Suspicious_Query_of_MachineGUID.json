@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Query of MachineGUID",
+      "description": "Use of reg to get MachineGuid information",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\reg\\\\\\.exe$\") AND (process_command_line = RGX(\".*SOFTWARE\\\\\\\\Microsoft\\\\\\\\Cryptography.*\") AND process_command_line = RGX(\".*\\\\/v\\\\ .*\") AND process_command_line = RGX(\".*MachineGuid.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f88684e2-08e5-42ea-9573-a165e28c2420"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

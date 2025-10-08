@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Use of Wfc.exe",
+      "description": "The Workflow Command-line Compiler can be used for AWL bypass and is listed in Microsoft's recommended block rules.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\wfc\\\\\\.exe$\") OR process_original_file_name = \"wfc\\.exe\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f9b9e46f-f078-485e-a59b-d5a16548d952"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

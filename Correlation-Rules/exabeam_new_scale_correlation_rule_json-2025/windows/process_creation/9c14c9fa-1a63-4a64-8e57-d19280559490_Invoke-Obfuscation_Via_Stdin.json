@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation Via Stdin",
+      "description": "Detects Obfuscated Powershell via Stdin in Scripts",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_command_line = RGX(\"(?i)(set).*&&\\s?set.*(environment|invoke|${?input).*&&.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "129a63ae-7c91-4422-a693-e623f7ae1a03"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

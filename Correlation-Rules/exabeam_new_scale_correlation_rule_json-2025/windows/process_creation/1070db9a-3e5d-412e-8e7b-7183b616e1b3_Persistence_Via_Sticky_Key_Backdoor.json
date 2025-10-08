@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Persistence Via Sticky Key Backdoor",
+      "description": "By replacing the sticky keys executable with the local admins CMD executable, an attacker is able to access a privileged windows console session without authenticating to the system.\nWhen the sticky keys are \"activated\" the privilleged shell is launched.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*copy\\\\ .*\") AND process_command_line = RGX(\".*\\\\/y\\\\ .*\") AND process_command_line = RGX(\".*C\\\\:\\\\\\\\windows\\\\\\\\system32\\\\\\\\cmd\\\\\\.exe\\\\ C\\\\:\\\\\\\\windows\\\\\\\\system32\\\\\\\\sethc\\\\\\.exe.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7367e23c-9c41-4c1b-beff-1dd91bdd3c03"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

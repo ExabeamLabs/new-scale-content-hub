@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remote DLL Load Via Rundll32.EXE",
+      "description": "Detects a remote DLL load event via \"rundll32.exe\". Note: Unmapped fields: ImageLoaded",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") AND ImageLoaded = RGX(\"^\\\\\\\\\\\\\\\\\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c17e6464-f338-4c13-a4d2-a21297ce6099"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

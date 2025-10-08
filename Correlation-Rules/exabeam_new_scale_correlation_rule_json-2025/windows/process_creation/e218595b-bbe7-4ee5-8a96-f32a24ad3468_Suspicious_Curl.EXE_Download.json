@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Curl.EXE Download",
+      "description": "Detects a suspicious curl process start on Windows and outputs the requested document to a local file",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\curl\\\\\\.exe$\") OR process_product = \"The\\ curl\\ executable\") AND ((process_command_line = RGX(\".*\\\\%AppData\\\\%.*\") OR process_command_line = RGX(\".*\\\\%Public\\\\%.*\") OR process_command_line = RGX(\".*\\\\%Temp\\\\%.*\") OR process_command_line = RGX(\".*\\\\%tmp\\\\%.*\") OR process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Desktop\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR process_command_line = RGX(\".*C\\\\:\\\\\\\\PerfLogs\\\\\\\\.*\") OR process_command_line = RGX(\".*C\\\\:\\\\\\\\ProgramData\\\\\\\\.*\") OR process_command_line = RGX(\".*C\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\")) OR (process_command_line = RGX(\"\\\\\\.dll$\") OR process_command_line = RGX(\"\\\\\\.gif$\") OR process_command_line = RGX(\"\\\\\\.jpeg$\") OR process_command_line = RGX(\"\\\\\\.jpg$\") OR process_command_line = RGX(\"\\\\\\.png$\") OR process_command_line = RGX(\"\\\\\\.temp$\") OR process_command_line = RGX(\"\\\\\\.tmp$\") OR process_command_line = RGX(\"\\\\\\.txt$\") OR process_command_line = RGX(\"\\\\\\.vbe$\") OR process_command_line = RGX(\"\\\\\\.vbs$\"))) AND  NOT ((parent_process_path = \"C\\:\\\\Program\\ Files\\\\Git\\\\usr\\\\bin\\\\sh\\.exe\" AND process_path = \"C\\:\\\\Program\\ Files\\\\Git\\\\mingw64\\\\bin\\\\curl\\.exe\" AND (process_command_line = RGX(\".*\\\\-\\\\-silent\\\\ \\\\-\\\\-show\\\\-error\\\\ \\\\-\\\\-output\\\\ .*\") AND process_command_line = RGX(\".*gfw\\\\-httpget\\\\-.*\") AND process_command_line = RGX(\".*AppData.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "21c09a09-1f92-40f5-9bb9-4f18fea5269d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

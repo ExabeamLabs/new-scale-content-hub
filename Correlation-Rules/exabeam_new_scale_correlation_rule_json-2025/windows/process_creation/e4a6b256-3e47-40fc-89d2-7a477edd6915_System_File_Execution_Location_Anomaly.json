@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "System File Execution Location Anomaly",
+      "description": "Detects the execution of a Windows system binary that is usually located in the system folder from an uncommon location.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\atbroker\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\audiodg\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\bcdedit\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\bitsadmin\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\certreq\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\certutil\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cmstp\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\conhost\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\consent\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\csrss\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\dashost\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\defrag\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\dfrgui\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\dism\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\dllhost\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\dllhst3g\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\dwm\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\eventvwr\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\logonui\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\LsaIso\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\lsass\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\lsm\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msiexec\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\ntoskrnl\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\_ise\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\runonce\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\RuntimeBroker\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\services\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\sihost\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\smartscreen\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\smss\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\spoolsv\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\svchost\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\taskhost\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\taskhostw\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\Taskmgr\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\userinit\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wininit\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\winlogon\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\winver\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wlanext\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wsl\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wsmprovhost\\\\\\.exe$\")) AND  NOT ((process_path = RGX(\"^C\\\\:\\\\\\\\\\\\$WINDOWS\\\\\\.\\\\~BT\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\\\\\$WinREAgent\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\SoftwareDistribution\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\SystemTemp\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\uus\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\WinSxS\\\\\\\\\")) OR (process_path = \"C\\:\\\\Program\\ Files\\\\PowerShell\\\\7\\\\pwsh\\.exe\" OR process_path = \"C\\:\\\\Program\\ Files\\\\PowerShell\\\\7\\-preview\\\\pwsh\\.exe\") OR (process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\WindowsApps\\\\\\\\MicrosoftCorporationII\\\\\\.WindowsSubsystemForLinux\") AND process_path = RGX(\"\\\\\\\\wsl\\\\\\.exe$\"))) AND  NOT (process_path = RGX(\".*\\\\\\\\SystemRoot\\\\\\\\System32\\\\\\\\.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0c4c8d7e-afc8-4e6f-91d3-20ec35953a9a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Terminal Service Process Spawn",
+      "description": "Detects a process spawned by the terminal service server process (this could be an indicator for an exploitation of CVE-2019-0708)",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_command_line = RGX(\".*\\\\\\\\svchost\\\\\\.exe.*\") AND parent_process_command_line = RGX(\".*termsvcs.*\")) AND  NOT ((process_path = RGX(\"\\\\\\\\rdpclip\\\\\\.exe$\") OR process_path = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\csrss\\\\\\.exe$\") OR process_path = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\wininit\\\\\\.exe$\") OR process_path = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\winlogon\\\\\\.exe$\")) OR process_path = \"None\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "87e11f3d-260a-4bec-b6cb-deda1f98a2aa"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

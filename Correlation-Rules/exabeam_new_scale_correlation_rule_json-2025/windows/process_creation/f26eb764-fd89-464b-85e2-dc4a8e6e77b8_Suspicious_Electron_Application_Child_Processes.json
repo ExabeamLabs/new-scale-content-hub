@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Electron Application Child Processes",
+      "description": "Detects suspicious child processes of electron apps (teams, discord, slack, etc.). This could be a potential sign of \".asar\" file tampering (See reference section for more information) or binary execution proxy through specific CLI arguments (see related rule)\n",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\chrome\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\discord\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\GitHubDesktop\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\keybase\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\msedge\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\msedgewebview2\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\msteams\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\slack\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\teams\\\\\\.exe$\")) AND ((process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\whoami\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\")) OR (process_path = RGX(\".*\\\\:\\\\\\\\ProgramData\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Temp\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\"))) AND  NOT ((parent_process_path = RGX(\"\\\\\\\\Discord\\\\\\.exe$\") AND process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") AND process_command_line = RGX(\".*\\\\\\\\NVSMI\\\\\\\\nvidia\\\\-smi\\\\\\.exe.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7c073e01-9f9d-44d5-9f9a-31fa9bf15f87"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

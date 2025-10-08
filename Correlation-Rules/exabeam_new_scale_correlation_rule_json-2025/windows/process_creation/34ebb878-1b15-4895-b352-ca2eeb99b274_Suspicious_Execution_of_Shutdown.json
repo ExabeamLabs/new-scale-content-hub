@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Execution of Shutdown",
+      "description": "Use of the commandline to shutdown or reboot windows",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\shutdown\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\/r\\\\ .*\") OR process_command_line = RGX(\".*\\\\/s\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "bc388a37-5028-4857-865b-2418b67328cb"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

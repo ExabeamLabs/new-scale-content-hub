@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Plink Port Forwarding",
+      "description": "Detects suspicious Plink tunnel port forwarding to a local port",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_description = \"Command\\-line\\ SSH\\,\\ Telnet\\,\\ and\\ Rlogin\\ client\" AND process_command_line = RGX(\".*\\\\ \\\\-R\\\\ .*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0b052be7-d638-4d83-9346-f408c7023da2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

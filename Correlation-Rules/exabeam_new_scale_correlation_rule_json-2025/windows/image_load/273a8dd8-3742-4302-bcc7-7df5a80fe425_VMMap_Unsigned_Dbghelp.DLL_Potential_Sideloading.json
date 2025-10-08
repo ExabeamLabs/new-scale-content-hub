@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "VMMap Unsigned Dbghelp.DLL Potential Sideloading",
+      "description": "Detects potential DLL sideloading of an unsigned dbghelp.dll by the Sysinternals VMMap. Note: Unmapped fields: ImageLoaded, Signed",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ImageLoaded = RGX(\".*C\\\\:\\\\\\\\Debuggers\\\\\\\\dbghelp\\\\\\.dll.*\") AND (process_path = RGX(\"\\\\\\\\vmmap\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\vmmap64\\\\\\.exe$\"))) AND  NOT (Signed = \"true\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d10f88e5-198f-4e6d-ac3a-428a33897446"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

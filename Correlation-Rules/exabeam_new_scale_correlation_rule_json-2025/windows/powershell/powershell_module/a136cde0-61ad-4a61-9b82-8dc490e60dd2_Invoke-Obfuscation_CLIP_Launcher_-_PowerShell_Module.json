@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation CLIP+ Launcher - PowerShell Module",
+      "description": "Detects Obfuscated use of Clip.exe to execute PowerShell Note: Unmapped fields: Payload",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "Payload = RGX(\"cmd.{0,5}(?:/c|/r).+clip(?:.exe)?.{0,4}&&.+clipboard]::(\\s\\\"{\\d}.+-f.+\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9224dfa1-e3ae-43f4-8a3b-2049b8eb92f3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Creation Of A Local User Account",
+      "description": "Detects the creation of a new user account. Such accounts may be used for persistence that do not require persistent remote access tools to be deployed on the system.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/dscl$\") AND process_command_line = RGX(\".*create.*\")) OR (process_path = RGX(\"\\\\/sysadminctl$\") AND process_command_line = RGX(\".*addUser.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e0b71583-1215-4566-93db-2a733bd9e5bb"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

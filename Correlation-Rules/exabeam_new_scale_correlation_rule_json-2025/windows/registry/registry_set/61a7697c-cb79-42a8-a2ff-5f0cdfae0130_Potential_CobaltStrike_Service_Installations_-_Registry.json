@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential CobaltStrike Service Installations - Registry",
+      "description": "Detects known malicious service installs that appear in cases in which a Cobalt Strike beacon elevates privileges or lateral movement.\n Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((registry_path = RGX(\".*\\\\\\\\System\\\\\\\\CurrentControlSet\\\\\\\\Services.*\") OR (registry_path = RGX(\".*\\\\\\\\System\\\\\\\\ControlSet.*\") AND registry_path = RGX(\".*\\\\\\\\Services.*\"))) AND ((Details = RGX(\".*ADMIN\\\\$.*\") AND Details = RGX(\".*\\\\\\.exe.*\")) OR (Details = RGX(\".*\\\\%COMSPEC\\\\%.*\") AND Details = RGX(\".*start.*\") AND Details = RGX(\".*powershell.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c9a4b2e0-44ad-4042-a3d8-19a4f0dd487f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

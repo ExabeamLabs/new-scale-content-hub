@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Svchost Process Access",
+      "description": "Detects suspicious access to the \"svchost\" process such as that used by Invoke-Phantom to kill the thread of the Windows event logging service. Note: Unmapped fields: TargetImage, GrantedAccess, CallTrace, SourceImage",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(TargetImage = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\svchost\\\\\\.exe$\") AND GrantedAccess = \"0x1F3FFF\" AND CallTrace = RGX(\".*UNKNOWN.*\")) AND  NOT ((SourceImage = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Microsoft\\\\ Visual\\\\ Studio\\\\\\\\.*\") AND SourceImage = RGX(\"\\\\\\\\MSBuild\\\\\\\\Current\\\\\\\\Bin\\\\\\\\MSBuild\\\\\\.exe$\") AND (CallTrace = RGX(\".*Microsoft\\\\\\.Build\\\\\\.ni\\\\\\.dll.*\") OR CallTrace = RGX(\".*System\\\\\\.ni\\\\\\.dll.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "885cdfb8-6bee-4285-9657-7676689fea49"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

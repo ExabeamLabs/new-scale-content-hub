@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious DLL Loaded via CertOC.EXE",
+      "description": "Detects when a user installs certificates by using CertOC.exe to load the target DLL file.",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\certoc\\\\\\.exe$\") OR process_original_file_name = \"CertOC\\.exe\") AND process_command_line = RGX(\".*\\\\ \\\\-LoadDLL\\\\ .*\") AND (process_command_line = RGX(\".*\\\\\\\\Appdata\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Desktop\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Downloads\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR process_command_line = RGX(\".*C\\\\:\\\\\\\\Windows\\\\\\\\Tasks\\\\\\\\.*\") OR process_command_line = RGX(\".*C\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d547e60d-002e-4950-ad98-4c702942ee35"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

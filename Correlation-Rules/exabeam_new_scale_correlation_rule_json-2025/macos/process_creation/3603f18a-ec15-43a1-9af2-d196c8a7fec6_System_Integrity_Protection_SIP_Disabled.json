@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "System Integrity Protection (SIP) Disabled",
+      "description": "Detects the use of csrutil to disable the Configure System Integrity Protection (SIP). This technique is used in post-exploit scenarios.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/csrutil$\") AND process_command_line = RGX(\".*disable.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "dbc0f80a-6be9-48c0-9f41-e04aa8782ba7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

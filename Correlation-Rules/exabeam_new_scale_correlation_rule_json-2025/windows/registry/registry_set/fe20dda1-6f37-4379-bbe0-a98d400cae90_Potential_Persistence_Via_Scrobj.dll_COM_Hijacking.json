@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Persistence Via Scrobj.dll COM Hijacking",
+      "description": "Detect use of scrobj.dll as this DLL looks for the ScriptletURL key to get the location of the script to execute Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\"InprocServer32\\\\\\\\\\\\(Default\\\\)$\") AND Details = \"C\\:\\\\WINDOWS\\\\system32\\\\scrobj\\.dll\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "99afa7a3-b1da-4d27-a2a0-6078f11bbe47"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Execute Code with Pester.bat",
+      "description": "Detects code execution via Pester.bat (Pester - Powershell Modulte for testing)",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\")) AND (process_command_line = RGX(\".*Pester.*\") AND process_command_line = RGX(\".*Get\\\\-Help.*\"))) OR ((process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") AND (process_command_line = RGX(\".*pester.*\") AND process_command_line = RGX(\".*\\\\;.*\"))) AND (process_command_line = RGX(\".*help.*\") OR process_command_line = RGX(\".*\\\\?.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "fa0cc78b-194e-4803-8eb4-dc6e2eaf1dc3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

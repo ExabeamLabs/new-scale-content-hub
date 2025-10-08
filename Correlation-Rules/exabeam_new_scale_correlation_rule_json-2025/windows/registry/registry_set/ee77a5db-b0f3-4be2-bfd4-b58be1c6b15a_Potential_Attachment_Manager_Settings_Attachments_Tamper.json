@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Attachment Manager Settings Attachments Tamper",
+      "description": "Detects tampering with attachment manager settings policies attachments (See reference for more information) Note: Unmapped fields: Details",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\Attachments\\\\\\\\.*\") AND ((registry_path = RGX(\"\\\\\\\\HideZoneInfoOnProperties$\") AND Details = \"DWORD\\ \\(0x00000001\\)\") OR (registry_path = RGX(\"\\\\\\\\SaveZoneInformation$\") AND Details = \"DWORD\\ \\(0x00000002\\)\") OR (registry_path = RGX(\"\\\\\\\\ScanWithAntiVirus$\") AND Details = \"DWORD\\ \\(0x00000001\\)\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5e7b2222-4adf-474c-9a59-4172ae9a2776"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

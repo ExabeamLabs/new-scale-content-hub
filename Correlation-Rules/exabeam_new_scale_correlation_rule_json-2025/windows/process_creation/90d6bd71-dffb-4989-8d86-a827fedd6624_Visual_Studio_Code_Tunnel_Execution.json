@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Visual Studio Code Tunnel Execution",
+      "description": "Detects Visual Studio Code tunnel execution. Attackers can abuse this functionality to establish a C2 channel",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_original_file_name = \"None\" AND process_command_line = RGX(\"\\\\\\.exe\\\\ tunnel$\")) OR (process_command_line = RGX(\".*\\\\\\.exe\\\\ tunnel.*\") AND process_command_line = RGX(\".*\\\\-\\\\-accept\\\\-server\\\\-license\\\\-terms.*\")) OR (parent_process_command_line = RGX(\"\\\\ tunnel$\") AND process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\/d\\\\ \\\\/c\\\\ .*\") AND process_command_line = RGX(\".*\\\\\\\\servers\\\\\\\\Stable\\\\-.*\") AND process_command_line = RGX(\".*code\\\\-server\\\\\\.cmd.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "dfa27b90-8a32-4d22-9b5c-228d6bba3773"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

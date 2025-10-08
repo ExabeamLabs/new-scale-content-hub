@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Enable Windows Remote Management",
+      "description": "Adversaries may use Valid Accounts to interact with remote systems using Windows Remote Management (WinRM). The adversary may then perform actions as the logged-on user. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ScriptBlockText = RGX(\".*Enable\\\\-PSRemoting\\\\ .*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2dc99382-a81a-43fe-ace0-35e99c141800"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

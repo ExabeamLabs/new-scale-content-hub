@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows Defender Exclusion Registry Key - Write Access Requested",
+      "description": "Detects write access requests to the Windows Defender exclusions registry keys. This could be an indication of an attacker trying to request a handle or access the object to write new exclusions in order to bypass security.\n Note: Unmapped fields: AccessList, ObjectName",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((AccessList = RGX(\".*\\\\%\\\\%4417.*\") OR AccessList = RGX(\".*\\\\%\\\\%4418.*\")) AND (event_id = 4656 OR event_id = 4663) AND ObjectName = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\ Defender\\\\\\\\Exclusions\\\\\\\\.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "eff9438d-6f19-4cec-b82c-cf627339a925"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

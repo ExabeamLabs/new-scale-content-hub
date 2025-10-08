@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Kerberos RC4 Ticket Encryption",
+      "description": "Detects service ticket requests using RC4 encryption type Note: Unmapped fields: TicketOptions, TicketEncryptionType, ServiceName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4769 AND TicketOptions = \"0x40810000\" AND TicketEncryptionType = \"0x17\") AND  NOT (ServiceName = RGX(\"\\\\$$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2b79f5ad-daca-4e0b-848d-b8819eaef3a6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

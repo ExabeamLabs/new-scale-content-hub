@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "App Granted Privileged Delegated Or App Permissions",
+      "description": "Detects when administrator grants either application permissions (app roles) or highly privileged delegated permissions Note: Unmapped fields: properties.message",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "properties.message = \"Add\\ app\\ role\\ assignment\\ to\\ service\\ principal\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a0c6edc9-4bfe-46b8-8b69-c045ebcdbaaf"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - Rubeus Execution - ScriptBlock",
+      "description": "Detects the execution of the hacktool Rubeus using specific command line flags Note: Unmapped fields: ScriptBlockText",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*asreproast\\\\ .*\") OR ScriptBlockText = RGX(\".*dump\\\\ \\\\/service\\\\:krbtgt\\\\ .*\") OR ScriptBlockText = RGX(\".*dump\\\\ \\\\/luid\\\\:0x.*\") OR ScriptBlockText = RGX(\".*kerberoast\\\\ .*\") OR ScriptBlockText = RGX(\".*createnetonly\\\\ \\\\/program\\\\:.*\") OR ScriptBlockText = RGX(\".*ptt\\\\ \\\\/ticket\\\\:.*\") OR ScriptBlockText = RGX(\".*\\\\/impersonateuser\\\\:.*\") OR ScriptBlockText = RGX(\".*renew\\\\ \\\\/ticket\\\\:.*\") OR ScriptBlockText = RGX(\".*asktgt\\\\ \\\\/user\\\\:.*\") OR ScriptBlockText = RGX(\".*harvest\\\\ \\\\/interval\\\\:.*\") OR ScriptBlockText = RGX(\".*s4u\\\\ \\\\/user\\\\:.*\") OR ScriptBlockText = RGX(\".*s4u\\\\ \\\\/ticket\\\\:.*\") OR ScriptBlockText = RGX(\".*hash\\\\ \\\\/password\\\\:.*\") OR ScriptBlockText = RGX(\".*golden\\\\ \\\\/aes256\\\\:.*\") OR ScriptBlockText = RGX(\".*silver\\\\ \\\\/user\\\\:.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0dac5593-9b03-46ec-a24a-41970bd268c4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Mstsc.EXE Execution With Local RDP File",
+      "description": "Detects potential RDP connection via Mstsc using a local \".rdp\" file located in suspicious locations.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\mstsc\\\\\\.exe$\") OR process_original_file_name = \"mstsc\\.exe\") AND (process_command_line = RGX(\"\\\\\\.rdp$\") OR process_command_line = RGX(\"\\\\\\.rdp\\\\$\")) AND (process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\spool\\\\\\\\drivers\\\\\\\\color.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\Tasks\\\\_Migrated\\\\ .*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Tasks\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Tracing\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Downloads\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4834c74f-0005-4be2-af51-ea3d8a408f6f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

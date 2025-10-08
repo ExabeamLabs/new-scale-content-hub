@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New User Created Via Net.EXE With Never Expire Option",
+      "description": "Detects creation of local users via the net.exe command with the option \"never expire\"",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\net\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\net1\\\\\\.exe$\")) OR (process_original_file_name = \"net\\.exe\" OR process_original_file_name = \"net1\\.exe\")) AND (process_command_line = RGX(\".*user.*\") AND process_command_line = RGX(\".*add.*\") AND process_command_line = RGX(\".*expires\\\\:never.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5aab4759-4a1e-4111-aa8b-db6cbb14f3fd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

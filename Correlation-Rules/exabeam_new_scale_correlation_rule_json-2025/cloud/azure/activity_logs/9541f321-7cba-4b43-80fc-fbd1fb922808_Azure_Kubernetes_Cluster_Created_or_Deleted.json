@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Azure Kubernetes Cluster Created or Deleted",
+      "description": "Detects when a Azure Kubernetes Cluster is created or deleted. Note: Unmapped fields: operationName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(operationName = \"MICROSOFT\\.KUBERNETES\\/CONNECTEDCLUSTERS\\/WRITE\" OR operationName = \"MICROSOFT\\.KUBERNETES\\/CONNECTEDCLUSTERS\\/DELETE\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "23cb086d-dda9-4de3-b567-77002eee1be6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

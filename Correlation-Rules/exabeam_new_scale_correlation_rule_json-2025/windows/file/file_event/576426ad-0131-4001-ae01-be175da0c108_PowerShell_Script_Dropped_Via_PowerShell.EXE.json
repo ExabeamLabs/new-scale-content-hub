@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PowerShell Script Dropped Via PowerShell.EXE",
+      "description": "Detects PowerShell creating a PowerShell file (.ps1). While often times this behavior is benign, sometimes it can be a sign of a dropper script trying to achieve persistence.",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\")) AND file_path = RGX(\"\\\\\\.ps1$\")) AND  NOT (file_path = RGX(\".*\\\\_\\\\_PSScriptPolicyTest\\\\_.*\") OR (file_path = RGX(\"^C\\\\:\\\\\\\\Users\\\\\\\\\") AND file_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\")) OR file_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e54add20-7a6e-4c5a-bb23-eefa17725a4a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

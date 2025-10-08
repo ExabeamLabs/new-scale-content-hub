@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Extrac32 Alternate Data Stream Execution",
+      "description": "Extract data from cab file and hide it in an alternate data stream",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*extrac32\\\\\\.exe.*\") AND process_command_line = RGX(\".*\\\\\\.cab.*\")) AND process_command_line = RGX(\":[^\\]\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d426afd9-2fb2-48da-a177-e1777c4cdf0b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

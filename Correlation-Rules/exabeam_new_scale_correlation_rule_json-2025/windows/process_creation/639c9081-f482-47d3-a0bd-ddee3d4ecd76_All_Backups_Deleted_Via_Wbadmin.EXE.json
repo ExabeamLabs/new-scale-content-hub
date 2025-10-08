@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "All Backups Deleted Via Wbadmin.EXE",
+      "description": "Detects the deletion of all backups or system state backups via \"wbadmin.exe\".\nThis technique is used by numerous ransomware families and actors.\nThis may only be successful on server platforms that have Windows Backup enabled.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\wbadmin\\\\\\.exe$\") OR process_original_file_name = \"WBADMIN\\.EXE\") AND ((process_command_line = RGX(\".*delete.*\") AND process_command_line = RGX(\".*backup.*\")) AND process_command_line = RGX(\".*keepVersions\\\\:0.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "281a4e93-8ae6-4989-837a-ed4a1e0d0f60"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

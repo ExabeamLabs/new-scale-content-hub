@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Child Process of AspNetCompiler",
+      "description": "Detects potentially suspicious child processes of \"aspnet_compiler.exe\".",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\aspnet\\\\_compiler\\\\\\.exe$\") AND ((process_path = RGX(\"\\\\\\\\calc\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\notepad\\\\\\.exe$\")) OR (process_path = RGX(\".*\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Roaming\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Temp\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\Tasks\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Tasks\\\\\\\\.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c9c09f0b-7477-492b-a371-849f359442c2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

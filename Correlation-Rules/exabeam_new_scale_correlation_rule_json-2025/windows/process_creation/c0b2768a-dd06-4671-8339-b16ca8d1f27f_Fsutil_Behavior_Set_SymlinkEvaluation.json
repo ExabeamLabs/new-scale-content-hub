@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Fsutil Behavior Set SymlinkEvaluation",
+      "description": "A symbolic link is a type of file that contains a reference to another file.\nThis is probably done to make sure that the ransomware is able to follow shortcuts on the machine in order to find the original file to encrypt\n",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\fsutil\\\\\\.exe$\") OR process_original_file_name = \"fsutil\\.exe\") AND (process_command_line = RGX(\".*behavior\\\\ .*\") AND process_command_line = RGX(\".*set\\\\ .*\") AND process_command_line = RGX(\".*SymlinkEvaluation.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5ecef08b-1dad-427f-b811-f9434d9d7129"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

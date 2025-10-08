@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Add Debugger Entry To AeDebug For Persistence",
+      "description": "Detects when an attacker adds a new \"Debugger\" value to the \"AeDebug\" key in order to achieve persistence which will get invoked when an application crashes Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\AeDebug\\\\\\\\Debugger.*\") AND Details = RGX(\"\\\\\\.dll$\")) AND  NOT (Details = \"\\\"C\\:\\\\WINDOWS\\\\system32\\\\vsjitdebugger\\.exe\\\"\\ \\-p\\ \\%ld\\ \\-e\\ \\%ld\\ \\-j\\ 0x\\%p\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0823211d-de42-41df-98b1-3485b10a83ef"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential CommandLine Path Traversal Via Cmd.EXE",
+      "description": "Detects potential path traversal attempt via cmd.exe. Could indicate possible command/argument confusion/hijacking",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((parent_process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_original_file_name = \"cmd\\.exe\") AND ((parent_process_command_line = RGX(\".*\\\\/c.*\") OR parent_process_command_line = RGX(\".*\\\\/k.*\") OR parent_process_command_line = RGX(\".*\\\\/r.*\")) OR (process_command_line = RGX(\".*\\\\/c.*\") OR process_command_line = RGX(\".*\\\\/k.*\") OR process_command_line = RGX(\".*\\\\/r.*\"))) AND (parent_process_command_line = \"\\/\\.\\.\\/\\.\\.\\/\" OR process_command_line = RGX(\".*\\\\/\\\\\\.\\\\\\.\\\\/\\\\\\.\\\\\\.\\\\/.*\"))) AND  NOT (process_command_line = RGX(\".*\\\\\\\\Tasktop\\\\\\\\keycloak\\\\\\\\bin\\\\\\\\\\\\/\\\\\\.\\\\\\.\\\\/\\\\\\.\\\\\\.\\\\/jre\\\\\\\\bin\\\\\\\\java.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "01dc4dc0-cc9d-4536-9177-d10b83d5821b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

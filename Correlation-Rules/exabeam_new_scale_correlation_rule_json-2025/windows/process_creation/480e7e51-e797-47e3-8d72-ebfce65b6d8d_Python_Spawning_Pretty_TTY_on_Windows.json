@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Python Spawning Pretty TTY on Windows",
+      "description": "Detects python spawning a pretty tty",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"python\\\\\\.exe$\") OR process_path = RGX(\"python3\\\\\\.exe$\") OR process_path = RGX(\"python2\\\\\\.exe$\")) AND ((process_command_line = RGX(\".*import\\\\ pty.*\") AND process_command_line = RGX(\".*\\\\\\.spawn\\\\(.*\")) OR process_command_line = RGX(\".*from\\\\ pty\\\\ import\\\\ spawn.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "96ae2e40-f8d5-4ed3-be26-2eb8cdb2fa9d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

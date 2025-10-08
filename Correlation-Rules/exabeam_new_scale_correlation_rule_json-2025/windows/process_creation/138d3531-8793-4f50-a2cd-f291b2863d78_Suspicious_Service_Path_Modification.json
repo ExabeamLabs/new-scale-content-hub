@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Service Path Modification",
+      "description": "Detects service path modification via the \"sc\" binary to a suspicious command or path",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\sc\\\\\\.exe$\") AND (process_command_line = RGX(\".*config.*\") AND process_command_line = RGX(\".*binPath.*\")) AND (process_command_line = RGX(\".*powershell.*\") OR process_command_line = RGX(\".*cmd\\\\ .*\") OR process_command_line = RGX(\".*mshta.*\") OR process_command_line = RGX(\".*wscript.*\") OR process_command_line = RGX(\".*cscript.*\") OR process_command_line = RGX(\".*rundll32.*\") OR process_command_line = RGX(\".*svchost.*\") OR process_command_line = RGX(\".*dllhost.*\") OR process_command_line = RGX(\".*cmd\\\\\\.exe\\\\ \\\\/c.*\") OR process_command_line = RGX(\".*cmd\\\\\\.exe\\\\ \\\\/k.*\") OR process_command_line = RGX(\".*cmd\\\\\\.exe\\\\ \\\\/r.*\") OR process_command_line = RGX(\".*cmd\\\\ \\\\/c.*\") OR process_command_line = RGX(\".*cmd\\\\ \\\\/k.*\") OR process_command_line = RGX(\".*cmd\\\\ \\\\/r.*\") OR process_command_line = RGX(\".*C\\\\:\\\\\\\\Users\\\\\\\\Public.*\") OR process_command_line = RGX(\".*\\\\\\\\Downloads\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Desktop\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\Start\\\\ Menu\\\\\\\\Programs\\\\\\\\Startup\\\\\\\\.*\") OR process_command_line = RGX(\".*C\\\\:\\\\\\\\Windows\\\\\\\\TEMP\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "85725fb9-fc21-4c06-b520-d24c88068d91"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

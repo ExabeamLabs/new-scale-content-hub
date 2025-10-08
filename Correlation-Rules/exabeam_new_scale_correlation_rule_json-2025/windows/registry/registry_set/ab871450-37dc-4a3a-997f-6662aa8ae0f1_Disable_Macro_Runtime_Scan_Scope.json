@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Disable Macro Runtime Scan Scope",
+      "description": "Detects tampering with the MacroRuntimeScanScope registry key to disable runtime scanning of enabled macros Note: Unmapped fields: Details",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\.*\") AND registry_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Office\\\\\\\\.*\") AND registry_path = RGX(\".*\\\\\\\\Common\\\\\\\\Security.*\")) AND registry_path = RGX(\"\\\\\\\\MacroRuntimeScanScope$\") AND Details = \"DWORD\\ \\(0x00000000\\)\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d5ae163c-93ce-4943-bc73-16e5502ad7ed"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

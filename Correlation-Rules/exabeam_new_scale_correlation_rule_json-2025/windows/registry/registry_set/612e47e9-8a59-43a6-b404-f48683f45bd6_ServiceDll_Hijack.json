@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "ServiceDll Hijack",
+      "description": "Detects changes to the \"ServiceDLL\" value related to a service in the registry.\nThis is often used as a method of persistence.\n Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((registry_path = RGX(\".*\\\\\\\\System\\\\\\\\.*\") AND registry_path = RGX(\".*ControlSet.*\") AND registry_path = RGX(\".*\\\\\\\\Services\\\\\\\\.*\")) AND registry_path = RGX(\"\\\\\\\\Parameters\\\\\\\\ServiceDll$\")) AND  NOT (Details = \"C\\:\\\\Windows\\\\system32\\\\spool\\\\drivers\\\\x64\\\\3\\\\PrintConfig\\.dll\" OR (process_path = \"C\\:\\\\Windows\\\\system32\\\\lsass\\.exe\" AND registry_path = RGX(\"\\\\\\\\Services\\\\\\\\NTDS\\\\\\\\Parameters\\\\\\\\ServiceDll$\") AND Details = \"\\%\\%systemroot\\%\\%\\\\system32\\\\ntdsa\\.dll\") OR process_path = \"C\\:\\\\Windows\\\\System32\\\\poqexec\\.exe\") AND  NOT ((process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") AND Details = \"C\\:\\\\Windows\\\\System32\\\\STAgent\\.dll\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9c8a3760-fa6f-462f-8c51-fbd406b38c43"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

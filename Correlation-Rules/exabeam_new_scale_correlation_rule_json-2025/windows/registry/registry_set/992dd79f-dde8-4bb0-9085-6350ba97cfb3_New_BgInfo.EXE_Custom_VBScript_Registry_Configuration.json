@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New BgInfo.EXE Custom VBScript Registry Configuration",
+      "description": "Detects setting of a new registry value related to BgInfo configuration, which can be abused to execute custom VBScript via \"BgInfo.exe\" Note: Unmapped fields: Details",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\Software\\\\\\\\Winternals\\\\\\\\BGInfo\\\\\\\\UserFields\\\\\\\\.*\") AND Details = RGX(\"^4\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "32b9895d-6ccd-4fee-84c6-9f5b332cb63c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "File Download Via Windows Defender MpCmpRun.EXE",
+      "description": "Detects the use of Windows Defender MpCmdRun.EXE to download files",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_original_file_name = \"MpCmdRun\\.exe\" OR process_path = RGX(\"\\\\\\\\MpCmdRun\\\\\\.exe$\") OR process_command_line = RGX(\".*MpCmdRun\\\\\\.exe.*\") OR process_description = \"Microsoft\\ Malware\\ Protection\\ Command\\ Line\\ Utility\") AND (process_command_line = RGX(\".*DownloadFile.*\") AND process_command_line = RGX(\".*url.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "920ac9cf-060d-4e21-8111-b48d571babf1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

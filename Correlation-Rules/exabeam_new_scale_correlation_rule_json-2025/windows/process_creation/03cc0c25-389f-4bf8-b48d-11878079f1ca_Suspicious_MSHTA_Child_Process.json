@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious MSHTA Child Process",
+      "description": "Detects a suspicious process spawning from an \"mshta.exe\" process, which could be indicative of a malicious HTA script execution",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") AND ((process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\sh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\bash\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\reg\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\bitsadmin\\\\\\.exe$\")) OR (process_original_file_name = \"Cmd\\.Exe\" OR process_original_file_name = \"PowerShell\\.EXE\" OR process_original_file_name = \"pwsh\\.dll\" OR process_original_file_name = \"wscript\\.exe\" OR process_original_file_name = \"cscript\\.exe\" OR process_original_file_name = \"Bash\\.exe\" OR process_original_file_name = \"reg\\.exe\" OR process_original_file_name = \"REGSVR32\\.EXE\" OR process_original_file_name = \"bitsadmin\\.exe\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8de8c640-2577-485d-a1ec-b5c1114f10d6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

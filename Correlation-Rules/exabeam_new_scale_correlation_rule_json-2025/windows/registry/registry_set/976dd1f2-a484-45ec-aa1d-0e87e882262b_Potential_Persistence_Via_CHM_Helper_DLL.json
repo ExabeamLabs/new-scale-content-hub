@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Persistence Via CHM Helper DLL",
+      "description": "Detects when an attacker modifies the registry key \"HtmlHelp Author\" to achieve persistence",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\Software\\\\\\\\Microsoft\\\\\\\\HtmlHelp\\\\ Author\\\\\\\\Location.*\") OR registry_path = RGX(\".*\\\\\\\\Software\\\\\\\\WOW6432Node\\\\\\\\Microsoft\\\\\\\\HtmlHelp\\\\ Author\\\\\\\\Location.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4a43deb2-9c88-44eb-939f-a34dfb574992"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

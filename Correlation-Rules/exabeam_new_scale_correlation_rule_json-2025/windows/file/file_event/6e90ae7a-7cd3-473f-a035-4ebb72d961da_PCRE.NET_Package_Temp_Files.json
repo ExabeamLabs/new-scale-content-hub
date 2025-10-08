@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PCRE.NET Package Temp Files",
+      "description": "Detects processes creating temp files related to PCRE.NET package",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "file_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\ba9ea7344a4a5f591d6e5dc32a13494b\\\\\\\\.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b3efc078-af65-4f76-82d3-a24fccb5d92e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

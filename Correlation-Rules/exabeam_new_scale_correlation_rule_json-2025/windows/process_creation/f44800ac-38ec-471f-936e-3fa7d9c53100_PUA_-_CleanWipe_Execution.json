@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - CleanWipe Execution",
+      "description": "Detects the use of CleanWipe a tool usually used to delete Symantec antivirus.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\SepRemovalToolNative\\\\_x64\\\\\\.exe$\") OR (process_path = RGX(\"\\\\\\\\CATClean\\\\\\.exe$\") AND process_command_line = RGX(\".*\\\\-\\\\-uninstall.*\")) OR (process_path = RGX(\"\\\\\\\\NetInstaller\\\\\\.exe$\") AND process_command_line = RGX(\".*\\\\-r.*\")) OR (process_path = RGX(\"\\\\\\\\WFPUnins\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\/uninstall.*\") AND process_command_line = RGX(\".*\\\\/enterprise.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "91a38e17-1bb7-4c60-a59a-14361917ee29"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

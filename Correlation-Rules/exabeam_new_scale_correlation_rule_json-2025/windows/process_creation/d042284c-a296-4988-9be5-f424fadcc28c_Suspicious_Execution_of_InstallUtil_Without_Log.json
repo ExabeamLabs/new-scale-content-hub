@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Execution of InstallUtil Without Log",
+      "description": "Uses the .NET InstallUtil.exe application in order to execute image without log",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\InstallUtil\\\\\\.exe$\") AND process_path = RGX(\".*Microsoft\\\\\\.NET\\\\\\\\Framework.*\") AND (process_command_line = RGX(\".*\\\\/logfile\\\\=\\\\ .*\") AND process_command_line = RGX(\".*\\\\/LogToConsole\\\\=false.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1908af4f-7486-4282-bd99-0907052f4dc2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

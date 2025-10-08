@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "File Creation In Suspicious Directory By Msdt.EXE",
+      "description": "Detects msdt.exe creating files in suspicious directories which could be a sign of exploitation of either Follina or Dogwalk vulnerabilities",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\msdt\\\\\\.exe$\") AND (file_path = RGX(\".*\\\\\\\\Desktop\\\\\\\\.*\") OR file_path = RGX(\".*\\\\\\\\Start\\\\ Menu\\\\\\\\Programs\\\\\\\\Startup\\\\\\\\.*\") OR file_path = RGX(\".*C\\\\:\\\\\\\\PerfLogs\\\\\\\\.*\") OR file_path = RGX(\".*C\\\\:\\\\\\\\ProgramData\\\\\\\\.*\") OR file_path = RGX(\".*C\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "82a9dbbc-5908-4bc5-b975-8677850ee45b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Unmount Share Via Net.EXE",
+      "description": "Detects when when a mounted share is removed. Adversaries may remove share connections that are no longer useful in order to clean up traces of their operation",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\net\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\net1\\\\\\.exe$\")) OR (process_original_file_name = \"net\\.exe\" OR process_original_file_name = \"net1\\.exe\")) AND (process_command_line = RGX(\".*share.*\") AND process_command_line = RGX(\".*\\\\/delete.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "402deb6a-50fc-4810-b2a6-3bc861676fbd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

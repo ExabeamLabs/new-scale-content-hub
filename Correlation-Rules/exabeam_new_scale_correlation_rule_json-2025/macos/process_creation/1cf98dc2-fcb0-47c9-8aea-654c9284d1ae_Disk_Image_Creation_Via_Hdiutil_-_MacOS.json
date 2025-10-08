@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Disk Image Creation Via Hdiutil - MacOS",
+      "description": "Detects the execution of the hdiutil utility in order to create a disk image.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/hdiutil$\") AND process_command_line = RGX(\".*create.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "71c4a057-e9ff-4684-bed2-473487710d39"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

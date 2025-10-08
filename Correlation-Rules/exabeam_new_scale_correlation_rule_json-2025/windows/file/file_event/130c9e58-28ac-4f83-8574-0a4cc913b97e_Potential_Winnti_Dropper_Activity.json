@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Winnti Dropper Activity",
+      "description": "Detects files dropped by Winnti as described in RedMimicry Winnti playbook",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(file_path = RGX(\"\\\\\\\\gthread\\\\-3\\\\\\.6\\\\\\.dll$\") OR file_path = RGX(\"\\\\\\\\sigcmm\\\\-2\\\\\\.4\\\\\\.dll$\") OR file_path = RGX(\"\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\tmp\\\\\\.bat$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "004262cc-465c-41a3-8ae6-2b250e87f65e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

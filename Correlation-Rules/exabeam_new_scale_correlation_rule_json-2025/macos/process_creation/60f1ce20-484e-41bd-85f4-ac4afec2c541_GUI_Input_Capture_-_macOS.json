@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "GUI Input Capture - macOS",
+      "description": "Detects attempts to use system dialog prompts to capture user credentials",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = \"\\/usr\\/sbin\\/osascript\" AND (process_command_line = RGX(\".*\\\\-e.*\") AND process_command_line = RGX(\".*display.*\") AND process_command_line = RGX(\".*dialog.*\") AND process_command_line = RGX(\".*answer.*\")) AND (process_command_line = RGX(\".*admin.*\") OR process_command_line = RGX(\".*administrator.*\") OR process_command_line = RGX(\".*authenticate.*\") OR process_command_line = RGX(\".*authentication.*\") OR process_command_line = RGX(\".*credentials.*\") OR process_command_line = RGX(\".*pass.*\") OR process_command_line = RGX(\".*password.*\") OR process_command_line = RGX(\".*unlock.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "828e37e7-90b9-4663-95a6-ba656f5bc11b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

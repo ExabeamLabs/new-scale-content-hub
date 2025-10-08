@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Suspicious ASP.NET Compilation Via AspNetCompiler",
+      "description": "Detects execution of \"aspnet_compiler.exe\" with potentially suspicious paths for compilation.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Microsoft\\\\\\.NET\\\\\\\\Framework\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Microsoft\\\\\\.NET\\\\\\\\Framework64\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Microsoft\\\\\\.NET\\\\\\\\FrameworkArm\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Microsoft\\\\\\.NET\\\\\\\\FrameworkArm64\\\\\\\\.*\")) AND process_path = RGX(\"\\\\\\\\aspnet\\\\_compiler\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Roaming\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\Tasks\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Tasks\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c8efa25e-18a9-4b36-9317-2d806e6846f1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

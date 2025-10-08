@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Insecure Transfer Via Curl.EXE",
+      "description": "Detects execution of \"curl.exe\" with the \"--insecure\" flag.",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\curl\\\\\\.exe$\") OR process_original_file_name = \"curl\\.exe\") AND (process_command_line = RGX(\"\\s-k\\s\") OR process_command_line = RGX(\".*\\\\-\\\\-insecure.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1184e191-4646-42dd-9f6e-7a271a4c4eb4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Automated Collection Bookmarks Using Get-ChildItem PowerShell",
+      "description": "Adversaries may enumerate browser bookmarks to learn more about compromised hosts.\nBrowser bookmarks may reveal personal information about users (ex: banking sites, interests, social media, etc.) as well as details about\ninternal network resources such as servers, tools/dashboards, or other related infrastructure.\n Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Get\\\\-ChildItem.*\") AND ScriptBlockText = RGX(\".*\\\\ \\\\-Recurse\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\ \\\\-Path\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\ \\\\-Filter\\\\ Bookmarks.*\") AND ScriptBlockText = RGX(\".*\\\\ \\\\-ErrorAction\\\\ SilentlyContinue.*\") AND ScriptBlockText = RGX(\".*\\\\ \\\\-Force.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a5cb12c0-8e6d-4061-b9a5-ac89315e91a9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

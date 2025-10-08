@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Azure Network Firewall Policy Modified or Deleted",
+      "description": "Identifies when a Firewall Policy is Modified or Deleted. Note: Unmapped fields: operationName",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(operationName = \"MICROSOFT\\.NETWORK\\/FIREWALLPOLICIES\\/WRITE\" OR operationName = \"MICROSOFT\\.NETWORK\\/FIREWALLPOLICIES\\/JOIN\\/ACTION\" OR operationName = \"MICROSOFT\\.NETWORK\\/FIREWALLPOLICIES\\/CERTIFICATES\\/ACTION\" OR operationName = \"MICROSOFT\\.NETWORK\\/FIREWALLPOLICIES\\/DELETE\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "dd112d12-dc0b-4589-88ff-dc2c444d19c1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

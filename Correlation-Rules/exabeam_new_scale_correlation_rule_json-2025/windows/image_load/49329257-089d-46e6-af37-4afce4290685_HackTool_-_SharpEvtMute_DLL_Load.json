@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - SharpEvtMute DLL Load",
+      "description": "Detects the load of EvtMuteHook.dll, a key component of SharpEvtHook, a tool that tampers with the Windows event logs",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_hash = RGX(\".*IMPHASH\\\\=330768A4F172E10ACB6287B87289D83B.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "29f3f381-2c88-46f2-a215-e9d8b95b9b3e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

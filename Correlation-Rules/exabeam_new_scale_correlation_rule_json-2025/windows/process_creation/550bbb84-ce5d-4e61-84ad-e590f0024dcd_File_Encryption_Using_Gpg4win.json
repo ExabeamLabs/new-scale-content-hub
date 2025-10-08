@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "File Encryption Using Gpg4win",
+      "description": "Detects usage of Gpg4win to encrypt files",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\gpg\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\gpg2\\\\\\.exe$\")) OR process_description = \"GnuPG\u2019s\\ OpenPGP\\ tool\") AND (process_command_line = RGX(\".*\\\\ \\\\-c\\\\ .*\") AND process_command_line = RGX(\".*passphrase.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "09eefd92-d2be-4e7e-a8fc-9e1292824b57"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

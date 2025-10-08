@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Microsoft Office Child Process",
+      "description": "Detects a suspicious process spawning from one of the Microsoft Office suite products (Word, Excel, PowerPoint, Publisher, Visio, etc.)",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\EQNEDT32\\\\\\.EXE$\") OR parent_process_path = RGX(\"\\\\\\\\EXCEL\\\\\\.EXE$\") OR parent_process_path = RGX(\"\\\\\\\\MSACCESS\\\\\\.EXE$\") OR parent_process_path = RGX(\"\\\\\\\\MSPUB\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\ONENOTE\\\\\\.EXE$\") OR parent_process_path = RGX(\"\\\\\\\\POWERPNT\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\VISIO\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\WINWORD\\\\\\.EXE$\") OR parent_process_path = RGX(\"\\\\\\\\wordpad\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\wordview\\\\\\.exe$\")) AND (((process_original_file_name = \"bitsadmin\\.exe\" OR process_original_file_name = \"CertOC\\.exe\" OR process_original_file_name = \"CertUtil\\.exe\" OR process_original_file_name = \"Cmd\\.Exe\" OR process_original_file_name = \"CMSTP\\.EXE\" OR process_original_file_name = \"cscript\\.exe\" OR process_original_file_name = \"curl\\.exe\" OR process_original_file_name = \"HH\\.exe\" OR process_original_file_name = \"IEExec\\.exe\" OR process_original_file_name = \"InstallUtil\\.exe\" OR process_original_file_name = \"javaw\\.exe\" OR process_original_file_name = \"Microsoft\\.Workflow\\.Compiler\\.exe\" OR process_original_file_name = \"msdt\\.exe\" OR process_original_file_name = \"MSHTA\\.EXE\" OR process_original_file_name = \"msiexec\\.exe\" OR process_original_file_name = \"Msxsl\\.exe\" OR process_original_file_name = \"odbcconf\\.exe\" OR process_original_file_name = \"pcalua\\.exe\" OR process_original_file_name = \"PowerShell\\.EXE\" OR process_original_file_name = \"RegAsm\\.exe\" OR process_original_file_name = \"RegSvcs\\.exe\" OR process_original_file_name = \"REGSVR32\\.exe\" OR process_original_file_name = \"RUNDLL32\\.exe\" OR process_original_file_name = \"schtasks\\.exe\" OR process_original_file_name = \"ScriptRunner\\.exe\" OR process_original_file_name = \"wmic\\.exe\" OR process_original_file_name = \"WorkFolders\\.exe\" OR process_original_file_name = \"wscript\\.exe\") OR (process_path = RGX(\"\\\\\\\\AppVLP\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\bash\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\bitsadmin\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\certoc\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\certutil\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cmstp\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\control\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\curl\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\forfiles\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\hh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\ieexec\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\installutil\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\javaw\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mftrace\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\Microsoft\\\\\\.Workflow\\\\\\.Compiler\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msbuild\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msdt\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msidb\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msiexec\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msxsl\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\odbcconf\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pcalua\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\regasm\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\regsvcs\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\scrcons\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\scriptrunner\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\sh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\svchost\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\verclsid\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wmic\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\workfolders\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\"))) OR (process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\ProgramData\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\Windows\\\\\\\\Tasks\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\Windows\\\\\\\\System32\\\\\\\\Tasks\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8f24a547-2a21-445c-b352-1f48cd1923ce"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

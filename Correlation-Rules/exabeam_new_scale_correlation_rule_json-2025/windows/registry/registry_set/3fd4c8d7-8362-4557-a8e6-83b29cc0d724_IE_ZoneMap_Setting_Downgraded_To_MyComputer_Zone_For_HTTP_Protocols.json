@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "IE ZoneMap Setting Downgraded To MyComputer Zone For HTTP Protocols",
+      "description": "Detects changes to Internet Explorer's (IE / Windows Internet properties) ZoneMap configuration of the \"HTTP\" and \"HTTPS\" protocols to point to the \"My Computer\" zone. This allows downloaded files from the Internet to be granted the same level of trust as files stored locally.\n Note: Unmapped fields: Details",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Internet\\\\ Settings\\\\\\\\ZoneMap\\\\\\\\ProtocolDefaults.*\") AND (registry_path = RGX(\"\\\\\\\\http$\") OR registry_path = RGX(\"\\\\\\\\https$\")) AND Details = RGX(\".*DWORD\\\\ \\\\(0x00000000\\\\).*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "94de9e58-a696-46b5-8282-df192d62d921"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

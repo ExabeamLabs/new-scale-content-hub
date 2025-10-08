@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Change Winevt Channel Access Permission Via Registry",
+      "description": "Detects tampering with the \"ChannelAccess\" registry key in order to change access to Windows event channel. Note: Unmapped fields: Details",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\WINEVT\\\\\\\\Channels\\\\\\\\.*\") AND registry_path = RGX(\"\\\\\\\\ChannelAccess$\") AND (Details = RGX(\".*\\\\(A\\\\;\\\\;0x1\\\\;\\\\;\\\\;LA\\\\).*\") OR Details = RGX(\".*\\\\(A\\\\;\\\\;0x1\\\\;\\\\;\\\\;SY\\\\).*\") OR Details = RGX(\".*\\\\(A\\\\;\\\\;0x5\\\\;\\\\;\\\\;BA\\\\).*\"))) AND  NOT (process_path = \"C\\:\\\\Windows\\\\servicing\\\\TrustedInstaller\\.exe\" OR (process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\WinSxS\\\\\\\\\") AND process_path = RGX(\"\\\\\\\\TiWorker\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ad767f9f-ae4f-42a0-9a7b-afcd65f3885f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

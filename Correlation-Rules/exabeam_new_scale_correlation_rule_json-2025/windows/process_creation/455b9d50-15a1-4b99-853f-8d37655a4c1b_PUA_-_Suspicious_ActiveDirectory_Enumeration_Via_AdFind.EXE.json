@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - Suspicious ActiveDirectory Enumeration Via AdFind.EXE",
+      "description": "Detects active directory enumeration activity using known AdFind CLI flags",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*lockoutduration.*\") OR process_command_line = RGX(\".*lockoutthreshold.*\") OR process_command_line = RGX(\".*lockoutobservationwindow.*\") OR process_command_line = RGX(\".*maxpwdage.*\") OR process_command_line = RGX(\".*minpwdage.*\") OR process_command_line = RGX(\".*minpwdlength.*\") OR process_command_line = RGX(\".*pwdhistorylength.*\") OR process_command_line = RGX(\".*pwdproperties.*\")) OR process_command_line = RGX(\".*\\\\-sc\\\\ admincountdmp.*\") OR process_command_line = RGX(\".*\\\\-sc\\\\ exchaddresses.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6ad4778f-c750-4824-a690-f5d836195966"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - Empire UserAgent URI Combo",
+      "description": "Detects user agent and URI paths used by empire agents Note: Unmapped fields: c-useragent, cs-uri, cs-method",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(c-useragent = \"Mozilla\\/5\\.0\\ \\(Windows\\ NT\\ 6\\.1\\;\\ WOW64\\;\\ Trident\\/7\\.0\\;\\ rv\\:11\\.0\\)\\ like\\ Gecko\" AND (cs-uri = \"\\/admin\\/get\\.php\" OR cs-uri = \"\\/news\\.php\" OR cs-uri = \"\\/login\\/process\\.php\") AND cs-method = \"POST\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5f48faa1-ae82-4bd7-8560-8f2bfcaff4ca"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

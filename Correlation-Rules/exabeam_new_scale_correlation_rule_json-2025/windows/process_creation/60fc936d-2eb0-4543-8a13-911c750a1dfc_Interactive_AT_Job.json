@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Interactive AT Job",
+      "description": "Detects an interactive AT job, which may be used as a form of privilege escalation.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\at\\\\\\.exe$\") AND process_command_line = RGX(\".*interactive.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8f75ec2d-bd06-4bd8-ba28-2911631d1afc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

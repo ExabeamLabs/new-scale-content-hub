@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Wazuh Security Platform DLL Sideloading",
+      "description": "Detects potential DLL side loading of DLLs that are part of the Wazuh security platform Note: Unmapped fields: ImageLoaded",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ImageLoaded = RGX(\"\\\\\\\\libwazuhshared\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\libwinpthread\\\\-1\\\\\\.dll$\")) AND  NOT ((ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\\"))) AND  NOT (((ImageLoaded = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\.*\") OR ImageLoaded = RGX(\".*\\\\\\\\ProgramData\\\\\\\\.*\")) AND ImageLoaded = RGX(\"\\\\\\\\mingw64\\\\\\\\bin\\\\\\\\libwinpthread\\\\-1\\\\\\.dll$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "22232a2b-05dd-41eb-ba47-0b288049ea67"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

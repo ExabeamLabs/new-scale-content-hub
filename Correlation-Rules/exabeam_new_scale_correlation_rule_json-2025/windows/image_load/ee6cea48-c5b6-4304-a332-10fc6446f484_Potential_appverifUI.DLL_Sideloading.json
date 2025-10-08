@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential appverifUI.DLL Sideloading",
+      "description": "Detects potential DLL sideloading of \"appverifUI.dll\" Note: Unmapped fields: ImageLoaded",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ImageLoaded = RGX(\"\\\\\\\\appverifUI\\\\\\.dll$\") AND  NOT (((process_path = \"C\\:\\\\Windows\\\\SysWOW64\\\\appverif\\.exe\" OR process_path = \"C\\:\\\\Windows\\\\System32\\\\appverif\\.exe\") AND (ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\WinSxS\\\\\\\\\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2e8e9004-a2d6-4954-b457-2650bf9c2384"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

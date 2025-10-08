@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Shadow Copies Creation Using Operating Systems Utilities",
+      "description": "Shadow Copies creation using operating systems utilities, possible credential access",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wmic\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\vssadmin\\\\\\.exe$\")) OR (process_original_file_name = \"PowerShell\\.EXE\" OR process_original_file_name = \"pwsh\\.dll\" OR process_original_file_name = \"wmic\\.exe\" OR process_original_file_name = \"VSSADMIN\\.EXE\")) AND (process_command_line = RGX(\".*shadow.*\") AND process_command_line = RGX(\".*create.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9c223035-55b2-440e-a6d3-e0f95c53d393"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

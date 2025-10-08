@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "VMGuestLib DLL Sideload",
+      "description": "Detects DLL sideloading of VMGuestLib.dll by the WmiApSrv service. Note: Unmapped fields: ImageLoaded, Signed",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ImageLoaded = RGX(\".*\\\\\\\\VMware\\\\\\\\VMware\\\\ Tools\\\\\\\\vmStatsProvider\\\\\\\\win32.*\") AND ImageLoaded = RGX(\".*\\\\\\\\vmGuestLib\\\\\\.dll.*\")) AND process_path = RGX(\"\\\\\\\\Windows\\\\\\\\System32\\\\\\\\wbem\\\\\\\\WmiApSrv\\\\\\.exe$\")) AND  NOT (Signed = \"true\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "552232cc-7914-4de7-ad8c-df0dddfee3da"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

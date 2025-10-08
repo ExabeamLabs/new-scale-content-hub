@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HybridConnectionManager Service Installation",
+      "description": "Rule to detect the Hybrid Connection Manager service installation. Note: Unmapped fields: ServiceName, ServiceFileName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4697 AND ServiceName = \"HybridConnectionManager\" AND ServiceFileName = RGX(\".*HybridConnectionManager.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c9557af2-6157-4c86-a0ed-9ac233c03a92"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

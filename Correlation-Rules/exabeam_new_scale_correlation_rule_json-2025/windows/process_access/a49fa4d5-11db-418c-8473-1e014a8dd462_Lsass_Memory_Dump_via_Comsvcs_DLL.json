@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Lsass Memory Dump via Comsvcs DLL",
+      "description": "Detects adversaries leveraging the MiniDump export function from comsvcs.dll via rundll32 to perform a memory dump from lsass. Note: Unmapped fields: TargetImage, SourceImage, CallTrace",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(TargetImage = RGX(\"\\\\\\\\lsass\\\\\\.exe$\") AND SourceImage = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") AND CallTrace = RGX(\".*comsvcs\\\\\\.dll.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f6abd516-0083-4054-bc0b-455cc52bd5a8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

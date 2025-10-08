@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Abused Debug Privilege by Arbitrary Parent Processes",
+      "description": "Detection of unusual child processes by different system processes",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((parent_process_path = RGX(\"\\\\\\\\winlogon\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\services\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\lsass\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\csrss\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\smss\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\wininit\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\spoolsv\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\searchindexer\\\\\\.exe$\")) AND (user = RGX(\".*AUTHORI.*\") OR user = RGX(\".*AUTORI.*\"))) AND ((process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\")) OR (process_original_file_name = \"PowerShell\\.EXE\" OR process_original_file_name = \"pwsh\\.dll\" OR process_original_file_name = \"Cmd\\.Exe\"))) AND  NOT ((process_command_line = RGX(\".*\\\\ route\\\\ .*\") AND process_command_line = RGX(\".*\\\\ ADD\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0e83f494-7f98-47ce-9b98-74f86b43ab26"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

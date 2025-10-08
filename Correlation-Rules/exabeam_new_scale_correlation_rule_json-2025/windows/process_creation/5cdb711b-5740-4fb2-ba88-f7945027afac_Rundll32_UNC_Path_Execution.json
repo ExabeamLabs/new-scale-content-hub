@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Rundll32 UNC Path Execution",
+      "description": "Detects rundll32 execution where the DLL is located on a remote location (share)",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_original_file_name = \"RUNDLL32\\.EXE\" OR process_command_line = RGX(\".*rundll32.*\")) AND process_command_line = RGX(\".*\\\\ \\\\\\\\\\\\\\\\.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "09f3da36-78c0-4732-a994-d3c3b354bffc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

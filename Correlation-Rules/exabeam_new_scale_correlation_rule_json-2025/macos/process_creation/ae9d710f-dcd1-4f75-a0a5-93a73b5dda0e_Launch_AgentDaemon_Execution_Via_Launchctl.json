@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Launch Agent/Daemon Execution Via Launchctl",
+      "description": "Detects the execution of programs as Launch Agents or Launch Daemons using launchctl on macOS.",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/launchctl$\") AND (process_command_line = RGX(\".*submit.*\") OR process_command_line = RGX(\".*load.*\") OR process_command_line = RGX(\".*start.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3964cd08-ad49-46b9-b75d-bb6a16813c9b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

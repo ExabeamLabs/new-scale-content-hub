@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Volume Shadow Copy Vssapi.dll Load",
+      "description": "Detects the image load of VSS DLL by uncommon executables Note: Unmapped fields: ImageLoaded",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ImageLoaded = RGX(\"\\\\\\\\vssapi\\\\\\.dll$\") AND  NOT (((process_path = \"C\\:\\\\Windows\\\\explorer\\.exe\" OR process_path = \"C\\:\\\\Windows\\\\ImmersiveControlPanel\\\\SystemSettings\\.exe\") OR (process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\\\\\{\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\WinSxS\\\\\\\\\"))) OR (process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\\")) OR process_path = RGX(\"^C\\\\:\\\\\\\\ProgramData\\\\\\\\Package\\\\ Cache\\\\\\\\\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d7653220-a2e3-4961-950d-ae69174a6736"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

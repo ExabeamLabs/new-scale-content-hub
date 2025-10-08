@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "WinSxS Executable File Creation By Non-System Process",
+      "description": "Detects the creation of binaries in the WinSxS folder by non-system processes",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(file_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\WinSxS\\\\\\\\\") AND file_path = RGX(\"\\\\\\.exe$\")) AND  NOT ((process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\Systems32\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\WinSxS\\\\\\\\\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "18470ac0-4147-4fd2-93c9-5350525e3c60"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

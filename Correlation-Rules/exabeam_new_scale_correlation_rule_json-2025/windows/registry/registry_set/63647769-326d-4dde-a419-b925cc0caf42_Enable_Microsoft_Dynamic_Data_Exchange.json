@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Enable Microsoft Dynamic Data Exchange",
+      "description": "Enable Dynamic Data Exchange protocol (DDE) in all supported editions of Microsoft Word or Excel. Note: Unmapped fields: Details",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((registry_path = RGX(\"\\\\\\\\Word\\\\\\\\Security\\\\\\\\AllowDDE$\") AND (Details = \"DWORD\\ \\(0x00000001\\)\" OR Details = \"DWORD\\ \\(0x00000002\\)\")) OR ((registry_path = RGX(\"\\\\\\\\Excel\\\\\\\\Security\\\\\\\\DisableDDEServerLaunch$\") OR registry_path = RGX(\"\\\\\\\\Excel\\\\\\\\Security\\\\\\\\DisableDDEServerLookup$\")) AND Details = \"DWORD\\ \\(0x00000000\\)\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5a59b03e-d1ef-4eec-9140-ea34286215b7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Unsigned Module Loaded by ClickOnce Application",
+      "description": "Detects unsigned module load by ClickOnce application. Note: Unmapped fields: Signed, SignatureStatus",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Apps\\\\\\\\2\\\\\\.0\\\\\\\\.*\") AND (Signed = \"false\" OR SignatureStatus = \"Expired\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ca3e8342-caa6-4377-ad41-6f0fe1a0093f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

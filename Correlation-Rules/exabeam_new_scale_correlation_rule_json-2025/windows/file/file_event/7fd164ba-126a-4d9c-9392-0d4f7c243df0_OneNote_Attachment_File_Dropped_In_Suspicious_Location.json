@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "OneNote Attachment File Dropped In Suspicious Location",
+      "description": "Detects creation of files with the \".one\"/\".onepkg\" extension in suspicious or uncommon locations. This could be a sign of attackers abusing OneNote attachments",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((file_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") OR file_path = RGX(\".*\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR file_path = RGX(\".*\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\") OR file_path = RGX(\".*\\\\:\\\\\\\\Temp\\\\\\\\.*\")) AND (file_path = RGX(\"\\\\\\.one$\") OR file_path = RGX(\"\\\\\\.onepkg$\"))) AND  NOT ((process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Microsoft\\\\ Office\\\\\\\\.*\") AND process_path = RGX(\"\\\\\\\\ONENOTE\\\\\\.EXE$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "81836858-5934-43c3-8a21-f813f0368b1a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Persistence Via PowerShell User Profile Using Add-Content",
+      "description": "Detects calls to \"Add-Content\" cmdlet in order to modify the content of the user profile and potentially adding suspicious commands for persistence Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Add\\\\-Content\\\\ \\\\$profile.*\") AND (ScriptBlockText = RGX(\".*\\\\-Value\\\\ \\\\\"IEX\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\-Value\\\\ \\\\\"Invoke\\\\-Expression.*\") OR ScriptBlockText = RGX(\".*\\\\-Value\\\\ \\\\\"Invoke\\\\-WebRequest.*\") OR ScriptBlockText = RGX(\".*\\\\-Value\\\\ \\\\\"Start\\\\-Process.*\") OR ScriptBlockText = RGX(\".*\\\\-Value\\\\ \\\\'IEX\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\-Value\\\\ \\\\'Invoke\\\\-Expression.*\") OR ScriptBlockText = RGX(\".*\\\\-Value\\\\ \\\\'Invoke\\\\-WebRequest.*\") OR ScriptBlockText = RGX(\".*\\\\-Value\\\\ \\\\'Start\\\\-Process.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7df05346-3532-4caa-9ec1-51766556bcc9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

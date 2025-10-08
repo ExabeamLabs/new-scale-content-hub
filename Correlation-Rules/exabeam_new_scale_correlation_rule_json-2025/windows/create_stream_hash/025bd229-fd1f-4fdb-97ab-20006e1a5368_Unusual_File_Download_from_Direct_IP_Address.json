@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Unusual File Download from Direct IP Address",
+      "description": "Detects the download of suspicious file type from URLs with IP Note: Unmapped fields: Contents",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Contents = RGX(\"http[s]?://[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}\") AND (file_path = RGX(\".*\\\\\\.ps1\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.bat\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.exe\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.vbe\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.vbs\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.dll\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.one\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.cmd\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.hta\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.xll\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.lnk\\\\:Zone.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "621d827e-cf80-4c11-909f-7a669bbdabf8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

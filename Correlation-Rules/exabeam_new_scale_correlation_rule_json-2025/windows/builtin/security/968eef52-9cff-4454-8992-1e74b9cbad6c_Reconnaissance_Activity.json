@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Reconnaissance Activity",
+      "description": "Detects activity as \"net user administrator /domain\" and \"net group domain admins /domain\" Note: Unmapped fields: AccessMask, ObjectType, ObjectName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4661 AND AccessMask = \"0x2d\" AND (ObjectType = \"SAM\\_USER\" OR ObjectType = \"SAM\\_GROUP\") AND ObjectName = RGX(\"^S\\\\-1\\\\-5\\\\-21\\\\-\") AND (ObjectName = RGX(\"\\\\-500$\") OR ObjectName = RGX(\"\\\\-512$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9a101efb-6440-4505-8f0e-c2557c184cca"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "MSSQL Destructive Query",
+      "description": "Detects the invocation of MS SQL transactions that are destructive towards table or database data, such as \"DROP TABLE\" or \"DROP DATABASE\".\n Note: Unmapped fields: Provider_Name, Data",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Provider_Name = \"MSSQLSERVER\\$AUDIT\" AND event_id = 33205 AND (Data = RGX(\".*statement\\\\:TRUNCATE\\\\ TABLE.*\") OR Data = RGX(\".*statement\\\\:DROP\\\\ TABLE.*\") OR Data = RGX(\".*statement\\\\:DROP\\\\ DATABASE.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2d71de81-1056-4df4-8433-90061c1a1019"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

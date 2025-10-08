@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Base64 Encoded User-Agent",
+      "description": "Detects User Agent strings that end with an equal sign, which can be a sign of base64 encoding. Note: Unmapped fields: c-useragent",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "c-useragent = RGX(\"\\\\=$\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "cab47b32-4cad-4eab-b854-738c5dc9a70b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

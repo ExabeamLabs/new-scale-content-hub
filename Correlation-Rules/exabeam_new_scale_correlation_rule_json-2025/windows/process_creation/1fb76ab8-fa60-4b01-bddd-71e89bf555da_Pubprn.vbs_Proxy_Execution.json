@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Pubprn.vbs Proxy Execution",
+      "description": "Detects the use of the 'Pubprn.vbs' Microsoft signed script to execute commands.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\\\\\pubprn\\\\\\.vbs.*\") AND process_command_line = RGX(\".*script\\\\:.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a55c7c56-0a01-464e-a025-ea8e1f9b44d9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

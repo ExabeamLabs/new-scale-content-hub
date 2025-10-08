@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Whoami.EXE Execution With Output Option",
+      "description": "Detects the execution of \"whoami.exe\" with the \"/FO\" flag to choose CSV as output format or with redirection options to export the results to a file for later use.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\whoami\\\\\\.exe$\") OR process_original_file_name = \"whoami\\.exe\") AND (process_command_line = RGX(\".*\\\\ \\\\/FO\\\\ CSV.*\") OR process_command_line = RGX(\".*\\\\ \\\\-FO\\\\ CSV.*\"))) OR process_command_line = RGX(\".*whoami*\\\\>.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c9765f57-4639-4513-9578-b80259668767"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

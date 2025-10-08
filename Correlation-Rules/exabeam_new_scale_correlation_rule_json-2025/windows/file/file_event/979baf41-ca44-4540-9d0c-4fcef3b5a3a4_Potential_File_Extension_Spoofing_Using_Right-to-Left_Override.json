@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential File Extension Spoofing Using Right-to-Left Override",
+      "description": "Detects suspicious filenames that contain a right-to-left override character and a potentially spoofed file extensions.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((file_path = RGX(\".*\\\\\\\\u202e.*\") OR file_path = RGX(\".*\\\\[U\\\\+202E\\\\].*\")) AND (file_path = RGX(\".*3pm\\\\\\..*\") OR file_path = RGX(\".*4pm\\\\\\..*\") OR file_path = RGX(\".*cod\\\\\\..*\") OR file_path = RGX(\".*fdp\\\\\\..*\") OR file_path = RGX(\".*ftr\\\\\\..*\") OR file_path = RGX(\".*gepj\\\\\\..*\") OR file_path = RGX(\".*gnp\\\\\\..*\") OR file_path = RGX(\".*gpj\\\\\\..*\") OR file_path = RGX(\".*ism\\\\\\..*\") OR file_path = RGX(\".*lmth\\\\\\..*\") OR file_path = RGX(\".*nls\\\\\\..*\") OR file_path = RGX(\".*piz\\\\\\..*\") OR file_path = RGX(\".*slx\\\\\\..*\") OR file_path = RGX(\".*tdo\\\\\\..*\") OR file_path = RGX(\".*vsc\\\\\\..*\") OR file_path = RGX(\".*vwm\\\\\\..*\") OR file_path = RGX(\".*xcod\\\\\\..*\") OR file_path = RGX(\".*xslx\\\\\\..*\") OR file_path = RGX(\".*xtpp\\\\\\..*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ef352371-6619-4b0f-8c8d-8cce39c92fcd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

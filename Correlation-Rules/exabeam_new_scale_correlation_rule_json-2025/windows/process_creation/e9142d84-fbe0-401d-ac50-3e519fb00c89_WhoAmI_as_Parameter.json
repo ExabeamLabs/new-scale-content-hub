@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "WhoAmI as Parameter",
+      "description": "Detects a suspicious process command line that uses whoami as first parameter (as e.g. used by EfsPotato)",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_command_line = RGX(\".*\\\\\\.exe\\\\ whoami.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7f4a480d-e763-44c4-9765-4931c2607625"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

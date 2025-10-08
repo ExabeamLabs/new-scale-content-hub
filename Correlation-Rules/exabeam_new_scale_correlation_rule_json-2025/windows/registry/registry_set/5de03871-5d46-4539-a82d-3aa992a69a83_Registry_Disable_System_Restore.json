@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Registry Disable System Restore",
+      "description": "Detects the modification of the registry to disable a system restore on the computer Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((registry_path = RGX(\".*\\\\\\\\Policies\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\SystemRestore.*\") OR registry_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\SystemRestore.*\")) AND (registry_path = RGX(\"DisableConfig$\") OR registry_path = RGX(\"DisableSR$\")) AND Details = \"DWORD\\ \\(0x00000001\\)\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6b949cb1-31ff-4a53-b0ea-8d6d0e2d78b7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

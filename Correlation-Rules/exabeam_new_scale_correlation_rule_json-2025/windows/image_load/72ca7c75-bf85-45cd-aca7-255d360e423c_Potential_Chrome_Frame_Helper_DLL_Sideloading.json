@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Chrome Frame Helper DLL Sideloading",
+      "description": "Detects potential DLL sideloading of \"chrome_frame_helper.dll\" Note: Unmapped fields: ImageLoaded",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ImageLoaded = RGX(\"\\\\\\\\chrome\\\\_frame\\\\_helper\\\\\\.dll$\") AND  NOT ((ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Google\\\\\\\\Chrome\\\\\\\\Application\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Google\\\\\\\\Chrome\\\\\\\\Application\\\\\\\\\"))) AND  NOT (ImageLoaded = RGX(\".*\\\\\\\\AppData\\\\\\\\local\\\\\\\\Google\\\\\\\\Chrome\\\\\\\\Application\\\\\\\\.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "73a3d891-aa25-4420-8791-d19fe1ba8fff"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

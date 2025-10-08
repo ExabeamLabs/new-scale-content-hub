@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Use of PsLogList",
+      "description": "Detects usage of the PsLogList utility to dump event log in order to extract admin accounts and perform account discovery or delete events logs",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_original_file_name = \"psloglist\\.exe\" OR (process_path = RGX(\"\\\\\\\\psloglist\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\psloglist64\\\\\\.exe$\"))) AND (process_command_line = RGX(\".*\\\\ security.*\") OR process_command_line = RGX(\".*\\\\ application.*\") OR process_command_line = RGX(\".*\\\\ system.*\")) AND (process_command_line = RGX(\".*\\\\ \\\\-d.*\") OR process_command_line = RGX(\".*\\\\ \\\\-x.*\") OR process_command_line = RGX(\".*\\\\ \\\\-s.*\") OR process_command_line = RGX(\".*\\\\ \\\\-c.*\") OR process_command_line = RGX(\".*\\\\ \\\\-g.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "041c0321-6a01-4fd6-b7b4-094086ef2108"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

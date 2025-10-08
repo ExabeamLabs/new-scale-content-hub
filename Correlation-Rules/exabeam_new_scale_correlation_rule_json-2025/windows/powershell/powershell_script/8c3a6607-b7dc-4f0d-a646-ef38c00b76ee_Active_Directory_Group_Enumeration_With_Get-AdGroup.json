@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Active Directory Group Enumeration With Get-AdGroup",
+      "description": "Detects usage of the \"Get-AdGroup\" cmdlet to enumerate Groups within Active Directory Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Get\\\\-AdGroup\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\-Filter.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "231aefaa-10e9-4803-b13a-1e821f910e8c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

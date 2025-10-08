@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - Covenant PowerShell Launcher",
+      "description": "Detects suspicious command lines used in Covenant luanchers",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_command_line = RGX(\".*\\\\-Sta.*\") AND process_command_line = RGX(\".*\\\\-Nop.*\") AND process_command_line = RGX(\".*\\\\-Window.*\") AND process_command_line = RGX(\".*Hidden.*\")) AND (process_command_line = RGX(\".*\\\\-Command.*\") OR process_command_line = RGX(\".*\\\\-EncodedCommand.*\"))) OR (process_command_line = RGX(\".*sv\\\\ o\\\\ \\\\(New\\\\-Object\\\\ IO\\\\\\.MemorySteam\\\\)\\\\;sv\\\\ d\\\\ .*\") OR process_command_line = RGX(\".*mshta\\\\ file\\\\\\.hta.*\") OR process_command_line = RGX(\".*GruntHTTP.*\") OR process_command_line = RGX(\".*\\\\-EncodedCommand\\\\ cwB2ACAAbwAgA.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1512c55e-b924-4a22-ae0b-a85f80f55c44"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Persistence Via Outlook LoadMacroProviderOnBoot Setting",
+      "description": "Detects the modification of Outlook setting \"LoadMacroProviderOnBoot\" which if enabled allows the automatic loading of any configured VBA project/module Note: Unmapped fields: Details",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\"\\\\\\\\Outlook\\\\\\\\LoadMacroProviderOnBoot$\") AND Details = RGX(\".*0x00000001.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0cfe0364-bcfd-441f-a1ff-9430e9f2ca41"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Setup16.EXE Execution With Custom .Lst File",
+      "description": "Detects the execution of \"Setup16.EXE\" and old installation utility with a custom \".lst\" file.\nThese \".lst\" file can contain references to external program that \"Setup16.EXE\" will execute.\nAttackers and adversaries might leverage this as a living of the land utility.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = \"C\\:\\\\Windows\\\\SysWOW64\\\\setup16\\.exe\" AND parent_process_command_line = RGX(\".*\\\\ \\\\-m\\\\ .*\")) AND  NOT (process_path = RGX(\"^C\\\\:\\\\\\\\\\\\~MSSETUP\\\\\\.T\\\\\\\\\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "721cb560-43a6-4848-b73b-d8ec2f82822a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

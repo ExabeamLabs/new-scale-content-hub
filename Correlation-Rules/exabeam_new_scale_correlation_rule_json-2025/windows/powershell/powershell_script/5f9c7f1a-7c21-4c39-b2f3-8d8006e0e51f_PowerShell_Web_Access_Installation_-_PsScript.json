@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PowerShell Web Access Installation - PsScript",
+      "description": "Detects the installation and configuration of PowerShell Web Access, which could be used for remote access and potential abuse Note: Unmapped fields: ScriptBlockText",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Install\\\\-WindowsFeature\\\\ WindowsPowerShellWebAccess.*\") OR ScriptBlockText = RGX(\".*Install\\\\-PswaWebApplication.*\") OR (ScriptBlockText = RGX(\".*Add\\\\-PswaAuthorizationRule.*\") AND ScriptBlockText = RGX(\".*\\\\-UserName\\\\ *.*\") AND ScriptBlockText = RGX(\".*\\\\-ComputerName\\\\ *.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "39497a38-86a4-4846-8ece-e50b39bd4082"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

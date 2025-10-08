@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "AWL Bypass with Winrm.vbs and Malicious WsmPty.xsl/WsmTxt.xsl",
+      "description": "Detects execution of attacker-controlled WsmPty.xsl or WsmTxt.xsl via winrm.vbs and copied cscript.exe (can be renamed)",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_command_line = RGX(\".*winrm.*\") AND ((process_command_line = RGX(\".*format\\\\:pretty.*\") OR process_command_line = RGX(\".*format\\\\:\\\\\"pretty\\\\.*\") OR process_command_line = RGX(\".*format\\\\:\\\\\"text\\\\.*\") OR process_command_line = RGX(\".*format\\\\:text.*\")) AND  NOT ((process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "aed4a65d-9bf0-49ee-a91c-5ac312607f0c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

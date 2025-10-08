@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Inbox Forwarding Identity Protection",
+      "description": "Indicates suspicious rules such as an inbox rule that forwards a copy of all emails to an external address Note: Unmapped fields: riskEventType",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "riskEventType = \"suspiciousInboxForwarding\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "39c9ef3e-3c44-437e-a54d-9a9744b508d6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

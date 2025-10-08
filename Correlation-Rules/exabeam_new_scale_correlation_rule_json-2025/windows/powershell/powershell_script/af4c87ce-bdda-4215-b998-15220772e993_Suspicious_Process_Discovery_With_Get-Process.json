@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Process Discovery With Get-Process",
+      "description": "Get the processes that are running on the local computer. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ScriptBlockText = RGX(\".*Get\\\\-Process.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d36d7514-8b69-4b11-a5aa-3add4ee857cc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

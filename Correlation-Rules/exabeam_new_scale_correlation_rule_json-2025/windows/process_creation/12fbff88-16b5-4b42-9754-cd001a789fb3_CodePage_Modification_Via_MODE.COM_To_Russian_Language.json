@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "CodePage Modification Via MODE.COM To Russian Language",
+      "description": "Detects a CodePage modification using the \"mode.com\" utility to Russian language.\nThis behavior has been used by threat actors behind Dharma ransomware.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\mode\\\\\\.com$\") OR process_original_file_name = \"MODE\\.COM\") AND ((process_command_line = RGX(\".*\\\\ con\\\\ .*\") AND process_command_line = RGX(\".*\\\\ cp\\\\ .*\") AND process_command_line = RGX(\".*\\\\ select\\\\=.*\")) AND (process_command_line = RGX(\"\\\\=1251$\") OR process_command_line = RGX(\"\\\\=866$\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c7cfde76-9807-48c5-8748-6c9ab95890be"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

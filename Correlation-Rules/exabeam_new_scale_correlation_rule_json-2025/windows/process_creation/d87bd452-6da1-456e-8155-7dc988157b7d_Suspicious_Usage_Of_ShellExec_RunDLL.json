@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Usage Of ShellExec_RunDLL",
+      "description": "Detects suspicious usage of the ShellExec_RunDLL function to launch other commands as seen in the the raspberry-robin attack",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*ShellExec\\\\_RunDLL.*\") AND (process_command_line = RGX(\".*\\\\\\\\Desktop\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR process_command_line = RGX(\".*comspec.*\") OR process_command_line = RGX(\".*iex.*\") OR process_command_line = RGX(\".*Invoke\\\\-.*\") OR process_command_line = RGX(\".*msiexec.*\") OR process_command_line = RGX(\".*odbcconf.*\") OR process_command_line = RGX(\".*regsvr32.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7b2fefc3-be4c-47fc-86e1-d090f70ecccc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

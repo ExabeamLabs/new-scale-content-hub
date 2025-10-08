@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Renamed PAExec Execution",
+      "description": "Detects execution of renamed version of PAExec. Often used by attackers",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_description = \"PAExec\\ Application\" OR process_original_file_name = \"PAExec\\.exe\" OR process_product = RGX(\".*PAExec.*\") OR (process_hash = RGX(\".*IMPHASH\\\\=11D40A7B7876288F919AB819CC2D9802.*\") OR process_hash = RGX(\".*IMPHASH\\\\=6444f8a34e99b8f7d9647de66aabe516.*\") OR process_hash = RGX(\".*IMPHASH\\\\=dfd6aa3f7b2b1035b76b718f1ddc689f.*\") OR process_hash = RGX(\".*IMPHASH\\\\=1a6cca4d5460b1710a12dea39e4a592c.*\"))) AND  NOT ((process_path = RGX(\"\\\\\\\\paexec\\\\\\.exe$\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\PAExec\\\\-\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8bd20052-0e21-4d71-a487-9acb82cb530c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

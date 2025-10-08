@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Desktopimgdownldr Command",
+      "description": "Detects a suspicious Microsoft desktopimgdownldr execution with parameters used to download files from the Internet",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\ \\\\/lockscreenurl\\\\:.*\") AND  NOT ((process_command_line = RGX(\".*\\\\\\.jpg.*\") OR process_command_line = RGX(\".*\\\\\\.jpeg.*\") OR process_command_line = RGX(\".*\\\\\\.png.*\")))) OR (process_command_line = RGX(\".*reg\\\\ delete.*\") AND process_command_line = RGX(\".*\\\\\\\\PersonalizationCSP.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "fe2ed542-8af3-4190-a75d-b7cd1efd5bb2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

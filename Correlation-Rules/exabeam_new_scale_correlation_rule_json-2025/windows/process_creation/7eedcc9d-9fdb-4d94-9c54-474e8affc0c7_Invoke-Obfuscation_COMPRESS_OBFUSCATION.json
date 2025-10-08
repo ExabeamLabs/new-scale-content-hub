@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation COMPRESS OBFUSCATION",
+      "description": "Detects Obfuscated Powershell via COMPRESS OBFUSCATION",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*new\\\\-object.*\") AND process_command_line = RGX(\".*text\\\\\\.encoding\\\\]\\\\:\\\\:ascii.*\")) AND (process_command_line = RGX(\".*system\\\\\\.io\\\\\\.compression\\\\\\.deflatestream.*\") OR process_command_line = RGX(\".*system\\\\\\.io\\\\\\.streamreader.*\") OR process_command_line = RGX(\".*readtoend\\\\(.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a847a50c-97bb-410c-a720-651e11dfdbdd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

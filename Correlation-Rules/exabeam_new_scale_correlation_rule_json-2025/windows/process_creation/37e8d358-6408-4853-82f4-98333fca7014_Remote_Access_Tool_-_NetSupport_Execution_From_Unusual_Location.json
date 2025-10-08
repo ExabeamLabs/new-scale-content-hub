@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remote Access Tool - NetSupport Execution From Unusual Location",
+      "description": "Detects execution of client32.exe (NetSupport RAT) from an unusual location (outside of 'C:\\Program Files')",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\client32\\\\\\.exe$\") OR process_product = RGX(\".*NetSupport\\\\ Remote\\\\ Control.*\") OR process_original_file_name = RGX(\".*client32\\\\\\.exe.*\") OR process_hash = RGX(\".*IMPHASH\\\\=a9d50692e95b79723f3e76fcf70d023e.*\")) AND  NOT ((process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e0710277-75eb-4873-95ac-d57a78bf00a1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

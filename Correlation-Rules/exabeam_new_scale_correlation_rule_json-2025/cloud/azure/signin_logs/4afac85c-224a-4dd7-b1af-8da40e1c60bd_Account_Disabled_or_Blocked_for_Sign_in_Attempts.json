@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Account Disabled or Blocked for Sign in Attempts",
+      "description": "Detects when an account is disabled or blocked for sign in but tried to log in Note: Unmapped fields: ResultType, ResultDescription",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ResultType = 50057 AND ResultDescription = \"Failure\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "39fbbaff-5ce5-421d-b952-d22e46f83c65"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious GUP Usage",
+      "description": "Detects execution of the Notepad++ updater in a suspicious directory, which is often used in DLL side-loading attacks",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_path = RGX(\"\\\\\\\\GUP\\\\\\.exe$\") AND  NOT ((process_path = RGX(\"\\\\\\\\Program\\\\ Files\\\\\\\\Notepad\\\\+\\\\+\\\\\\\\updater\\\\\\\\GUP\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Notepad\\\\+\\\\+\\\\\\\\updater\\\\\\\\GUP\\\\\\.exe$\")) OR (process_path = RGX(\".*\\\\\\\\Users\\\\\\\\.*\") AND (process_path = RGX(\"\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Notepad\\\\+\\\\+\\\\\\\\updater\\\\\\\\GUP\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\Notepad\\\\+\\\\+\\\\\\\\updater\\\\\\\\GUP\\\\\\.exe$\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b0e42e97-e033-485a-ac1b-55eb5b342def"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

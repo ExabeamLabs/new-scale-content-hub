@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Sticky Key Like Backdoor Execution",
+      "description": "Detects the usage and installation of a backdoor that uses an option to register a malicious debugger for built-in tools that are accessible in the login screen",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\winlogon\\\\\\.exe$\") AND (process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wt\\\\\\.exe$\")) AND (process_command_line = RGX(\".*sethc\\\\\\.exe.*\") OR process_command_line = RGX(\".*utilman\\\\\\.exe.*\") OR process_command_line = RGX(\".*osk\\\\\\.exe.*\") OR process_command_line = RGX(\".*Magnify\\\\\\.exe.*\") OR process_command_line = RGX(\".*Narrator\\\\\\.exe.*\") OR process_command_line = RGX(\".*DisplaySwitch\\\\\\.exe.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "81a528eb-798d-48e1-acfd-de199536fc57"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

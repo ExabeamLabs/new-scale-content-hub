@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Suspicious Shell Script Creation in Profile Folder",
+      "description": "Detects the creation of shell scripts under the \"profile.d\" path.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(file_path = RGX(\".*\\\\/etc\\\\/profile\\\\\\.d\\\\/.*\") AND (file_path = RGX(\"\\\\\\.csh$\") OR file_path = RGX(\"\\\\\\.sh$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e8256750-6890-405b-8f80-05187f7fbf12"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

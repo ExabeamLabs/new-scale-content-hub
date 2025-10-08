@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Amsi.DLL Loaded Via LOLBIN Process",
+      "description": "Detects loading of \"Amsi.dll\" by a living of the land process. This could be an indication of a \"PowerShell without PowerShell\" attack Note: Unmapped fields: ImageLoaded",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ImageLoaded = RGX(\"\\\\\\\\amsi\\\\\\.dll$\") AND (process_path = RGX(\"\\\\\\\\ExtExport\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\odbcconf\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7f1c8b29-e010-49f7-a89c-834bce1a3b6d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

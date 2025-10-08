@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Schtasks Schedule Types",
+      "description": "Detects scheduled task creations or modification on a suspicious schedule type",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") OR process_original_file_name = \"schtasks\\.exe\") AND (process_command_line = RGX(\".*\\\\ ONLOGON\\\\ .*\") OR process_command_line = RGX(\".*\\\\ ONSTART\\\\ .*\") OR process_command_line = RGX(\".*\\\\ ONCE\\\\ .*\") OR process_command_line = RGX(\".*\\\\ ONIDLE\\\\ .*\"))) AND  NOT ((process_command_line = RGX(\".*NT\\\\ AUT.*\") OR process_command_line = RGX(\".*\\\\ SYSTEM.*\") OR process_command_line = RGX(\".*HIGHEST.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2c2cf9a7-89b7-47fd-8692-e1dfd7da4bea"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

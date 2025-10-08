@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation Via Stdin - PowerShell Module",
+      "description": "Detects Obfuscated Powershell via Stdin in Scripts Note: Unmapped fields: Payload",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "Payload = RGX(\"(?i)(set).*&&\\s?set.*(environment|invoke|$?{?input).*&&.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d4ad3691-a0a3-403d-8ffe-3b1d9361dbea"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

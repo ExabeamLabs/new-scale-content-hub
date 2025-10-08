@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Linux Crypto Mining Pool Connections",
+      "description": "Detects process connections to a Monero crypto mining pool Note: Unmapped fields: DestinationHostname",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(DestinationHostname = \"pool\\.minexmr\\.com\" OR DestinationHostname = \"fr\\.minexmr\\.com\" OR DestinationHostname = \"de\\.minexmr\\.com\" OR DestinationHostname = \"sg\\.minexmr\\.com\" OR DestinationHostname = \"ca\\.minexmr\\.com\" OR DestinationHostname = \"us\\-west\\.minexmr\\.com\" OR DestinationHostname = \"pool\\.supportxmr\\.com\" OR DestinationHostname = \"mine\\.c3pool\\.com\" OR DestinationHostname = \"xmr\\-eu1\\.nanopool\\.org\" OR DestinationHostname = \"xmr\\-eu2\\.nanopool\\.org\" OR DestinationHostname = \"xmr\\-us\\-east1\\.nanopool\\.org\" OR DestinationHostname = \"xmr\\-us\\-west1\\.nanopool\\.org\" OR DestinationHostname = \"xmr\\-asia1\\.nanopool\\.org\" OR DestinationHostname = \"xmr\\-jp1\\.nanopool\\.org\" OR DestinationHostname = \"xmr\\-au1\\.nanopool\\.org\" OR DestinationHostname = \"xmr\\.2miners\\.com\" OR DestinationHostname = \"xmr\\.hashcity\\.org\" OR DestinationHostname = \"xmr\\.f2pool\\.com\" OR DestinationHostname = \"xmrpool\\.eu\" OR DestinationHostname = \"pool\\.hashvault\\.pro\" OR DestinationHostname = \"moneroocean\\.stream\" OR DestinationHostname = \"monerocean\\.stream\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "766e0fbc-947c-489d-9615-19614c650e36"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Increased Failed Authentications Of Any Type",
+      "description": "Detects when sign-ins increased by 10% or greater. Note: Unmapped fields: Status, Count",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Status = \"failure\" AND Count = \"\\<10\\%\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e32da9e2-dde0-4bcf-a17a-2766de230628"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious PowerShell Get Current User",
+      "description": "Detects the use of PowerShell to identify the current logged user. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*\\\\[System\\\\\\.Environment\\\\]\\\\:\\\\:UserName.*\") OR ScriptBlockText = RGX(\".*\\\\$env\\\\:UserName.*\") OR ScriptBlockText = RGX(\".*\\\\[System\\\\\\.Security\\\\\\.Principal\\\\\\.WindowsIdentity\\\\]\\\\:\\\\:GetCurrent\\\\(\\\\).*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3d78d82f-5b5d-4171-b622-2dbbb3ecbfe2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

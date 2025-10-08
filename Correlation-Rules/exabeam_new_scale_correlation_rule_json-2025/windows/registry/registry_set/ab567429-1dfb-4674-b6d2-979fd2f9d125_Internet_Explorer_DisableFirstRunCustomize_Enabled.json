@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Internet Explorer DisableFirstRunCustomize Enabled",
+      "description": "Detects changes to the Internet Explorer \"DisableFirstRunCustomize\" value, which prevents Internet Explorer from running the first run wizard the first time a user starts the browser after installing Internet Explorer or Windows.\n Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\"\\\\\\\\Microsoft\\\\\\\\Internet\\\\ Explorer\\\\\\\\Main\\\\\\\\DisableFirstRunCustomize$\") AND (Details = \"DWORD\\ \\(0x00000001\\)\" OR Details = \"DWORD\\ \\(0x00000002\\)\")) AND  NOT ((process_path = \"C\\:\\\\Windows\\\\explorer\\.exe\" OR process_path = \"C\\:\\\\Windows\\\\System32\\\\ie4uinit\\.exe\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "47a2323f-0e87-4dfe-82a7-31a7dd0946dc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

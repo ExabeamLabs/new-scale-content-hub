@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Hidden Directory Creation Via NTFS INDEX_ALLOCATION Stream",
+      "description": "Detects the creation of hidden file/folder with the \"::$index_allocation\" stream. Which can be used as a technique to prevent access to folder and files from tooling such as \"explorer.exe\" and \"powershell.exe\"\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "file_path = RGX(\".*\\\\:\\\\:\\\\$index\\\\_allocation.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3c7751a1-b7c5-4947-b3f6-92d1ce501350"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

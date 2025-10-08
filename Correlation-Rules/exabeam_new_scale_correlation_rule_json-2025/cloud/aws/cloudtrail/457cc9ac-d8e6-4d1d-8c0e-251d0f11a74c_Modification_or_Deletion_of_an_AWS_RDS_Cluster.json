@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Modification or Deletion of an AWS RDS Cluster",
+      "description": "Detects modifications to an RDS cluster or its deletion, which may indicate potential data exfiltration attempts, unauthorized access, or exposure of sensitive information. Note: Unmapped fields: eventSource, eventName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(eventSource = \"rds\\.amazonaws\\.com\" AND (eventName = \"ModifyDBCluster\" OR eventName = \"DeleteDBCluster\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "09b84fd1-15c6-441c-8e3f-720ab3a800f6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

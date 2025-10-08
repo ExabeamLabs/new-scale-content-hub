@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Enable LM Hash Storage - ProcCreation",
+      "description": "Detects changes to the \"NoLMHash\" registry value in order to allow Windows to store LM Hashes.\nBy setting this registry value to \"0\" (DWORD), Windows will be allowed to store a LAN manager hash of your password in Active Directory and local SAM databases.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\\\\\System\\\\\\\\CurrentControlSet\\\\\\\\Control\\\\\\\\Lsa.*\") AND process_command_line = RGX(\".*NoLMHash.*\") AND process_command_line = RGX(\".*\\\\ 0.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d9336e1a-3940-4a42-9cb1-c736ce0c78d9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

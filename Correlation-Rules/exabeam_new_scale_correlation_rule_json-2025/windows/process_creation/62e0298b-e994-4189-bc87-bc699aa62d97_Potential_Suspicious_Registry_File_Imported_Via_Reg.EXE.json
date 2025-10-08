@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Suspicious Registry File Imported Via Reg.EXE",
+      "description": "Detects the import of '.reg' files from suspicious paths using the 'reg.exe' utility",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\reg\\\\\\.exe$\") OR process_original_file_name = \"reg\\.exe\") AND process_command_line = RGX(\".*\\\\ import\\\\ .*\") AND (process_command_line = RGX(\".*C\\\\:\\\\\\\\Users\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\%temp\\\\%.*\") OR process_command_line = RGX(\".*\\\\%tmp\\\\%.*\") OR process_command_line = RGX(\".*\\\\%appdata\\\\%.*\") OR process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*C\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*C\\\\:\\\\\\\\ProgramData\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "34b770bb-64fa-43ff-b40e-77bae9b72182"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

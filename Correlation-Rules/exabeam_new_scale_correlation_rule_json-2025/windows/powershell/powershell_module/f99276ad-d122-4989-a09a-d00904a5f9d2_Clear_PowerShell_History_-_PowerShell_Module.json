@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Clear PowerShell History - PowerShell Module",
+      "description": "Detects keywords that could indicate clearing PowerShell history Note: Unmapped fields: Payload",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((Payload = RGX(\".*Set\\\\-PSReadlineOption.*\") AND Payload = RGX(\".*\u2013HistorySaveStyle.*\") AND Payload = RGX(\".*SaveNothing.*\")) OR (Payload = RGX(\".*Set\\\\-PSReadlineOption.*\") AND Payload = RGX(\".*\\\\-HistorySaveStyle.*\") AND Payload = RGX(\".*SaveNothing.*\"))) OR ((Payload = RGX(\".*del.*\") OR Payload = RGX(\".*Remove\\\\-Item.*\") OR Payload = RGX(\".*rm.*\")) AND Payload = RGX(\".*\\\\(Get\\\\-PSReadlineOption\\\\)\\\\\\.HistorySavePath.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b440539c-e49c-4df5-a388-acc699604af2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

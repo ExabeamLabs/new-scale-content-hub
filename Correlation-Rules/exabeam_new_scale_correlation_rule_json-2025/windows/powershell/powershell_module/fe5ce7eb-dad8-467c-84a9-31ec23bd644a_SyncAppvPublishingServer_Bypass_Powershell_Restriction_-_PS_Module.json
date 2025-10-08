@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "SyncAppvPublishingServer Bypass Powershell Restriction - PS Module",
+      "description": "Detects SyncAppvPublishingServer process execution which usually utilized by adversaries to bypass PowerShell execution restrictions. Note: Unmapped fields: ContextInfo",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ContextInfo = RGX(\".*SyncAppvPublishingServer\\\\\\.exe.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9750c27f-84f4-4140-b1bc-0bf5c0fb6d94"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

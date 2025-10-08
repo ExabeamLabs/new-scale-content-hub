@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Delete Important Scheduled Task",
+      "description": "Detects when adversaries stop services or processes by deleting their respective scheduled tasks in order to conduct data destructive activities",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\/delete.*\") AND process_command_line = RGX(\".*\\\\/tn.*\")) AND (process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\BitLocker.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\ExploitGuard.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\SystemRestore\\\\\\\\SR.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\UpdateOrchestrator\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\Windows\\\\ Defender\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\WindowsBackup\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\WindowsUpdate\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a7e91587-143a-46df-9539-d084c72c7736"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

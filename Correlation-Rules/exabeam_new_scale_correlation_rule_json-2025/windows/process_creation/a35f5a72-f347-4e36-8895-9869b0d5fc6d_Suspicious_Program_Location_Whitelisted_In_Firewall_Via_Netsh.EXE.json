@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Program Location Whitelisted In Firewall Via Netsh.EXE",
+      "description": "Detects Netsh command execution that whitelists a program located in a suspicious location in the Windows Firewall",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\netsh\\\\\\.exe$\") OR process_original_file_name = \"netsh\\.exe\") AND ((process_command_line = RGX(\".*firewall.*\") AND process_command_line = RGX(\".*add.*\") AND process_command_line = RGX(\".*allowedprogram.*\")) OR (process_command_line = RGX(\".*advfirewall.*\") AND process_command_line = RGX(\".*firewall.*\") AND process_command_line = RGX(\".*add.*\") AND process_command_line = RGX(\".*rule.*\") AND process_command_line = RGX(\".*action\\\\=allow.*\") AND process_command_line = RGX(\".*program\\\\=.*\"))) AND (process_command_line = RGX(\".*\\\\:\\\\\\\\\\\\$Recycle\\\\\\.bin\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\RECYCLER\\\\\\.BIN\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\RECYCLERS\\\\\\.BIN\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\SystemVolumeInformation\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\Default\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\Desktop\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\addins\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\cursors\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\debug\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\drivers\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\fonts\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\help\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\system32\\\\\\\\tasks\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Tasks\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Downloads\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Local\\\\ Settings\\\\\\\\Temporary\\\\ Internet\\\\ Files\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Temporary\\\\ Internet\\\\ Files\\\\\\\\Content\\\\\\.Outlook\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\%Public\\\\%\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\%TEMP\\\\%.*\") OR process_command_line = RGX(\".*\\\\%TMP\\\\%.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ef0382f3-1237-4c26-9404-2e73e45b98ba"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

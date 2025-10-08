@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Renamed Plink Execution",
+      "description": "Detects the execution of a renamed version of the Plink binary",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_original_file_name = \"Plink\" OR (process_command_line = RGX(\".*\\\\ \\\\-l\\\\ forward.*\") AND process_command_line = RGX(\".*\\\\ \\\\-P\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-R\\\\ .*\"))) AND  NOT (process_path = RGX(\"\\\\\\\\plink\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9ad62340-fb0e-44c0-897d-23392c570468"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

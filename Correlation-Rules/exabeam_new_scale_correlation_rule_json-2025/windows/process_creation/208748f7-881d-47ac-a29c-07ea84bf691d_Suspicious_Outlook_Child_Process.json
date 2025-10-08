@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Outlook Child Process",
+      "description": "Detects a suspicious process spawning from an Outlook process.",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\OUTLOOK\\\\\\.EXE$\") AND (process_path = RGX(\"\\\\\\\\AppVLP\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\bash\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\forfiles\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\hh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mftrace\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msbuild\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msdt\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msiexec\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\scrcons\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\scriptrunner\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\sh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\svchost\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wmic\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a784ee40-d9d7-465e-8218-89efddf0f450"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

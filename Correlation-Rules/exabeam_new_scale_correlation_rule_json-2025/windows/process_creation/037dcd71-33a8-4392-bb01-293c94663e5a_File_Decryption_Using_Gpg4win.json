@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "File Decryption Using Gpg4win",
+      "description": "Detects usage of Gpg4win to decrypt files",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\gpg\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\gpg2\\\\\\.exe$\")) OR process_description = \"GnuPG\u2019s\\ OpenPGP\\ tool\") AND (process_command_line = RGX(\".*\\\\ \\\\-d\\\\ .*\") AND process_command_line = RGX(\".*passphrase.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9fef74d9-e432-48b4-b60c-eace5441b916"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

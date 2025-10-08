@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Elevated System Shell Spawned From Uncommon Parent Location",
+      "description": "Detects when a shell program such as the Windows command prompt or PowerShell is launched with system privileges from a uncommon parent location.",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\_ise\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\")) OR (process_original_file_name = \"PowerShell\\.EXE\" OR process_original_file_name = \"powershell\\_ise\\.EXE\" OR process_original_file_name = \"pwsh\\.dll\" OR process_original_file_name = \"Cmd\\.Exe\")) AND ((user = RGX(\".*AUTHORI.*\") OR user = RGX(\".*AUTORI.*\")) AND logon_id = \"0x3e7\")) AND  NOT ((parent_process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\.*\") OR parent_process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\.*\") OR parent_process_path = RGX(\".*\\\\:\\\\\\\\ProgramData\\\\\\\\.*\") OR parent_process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\.*\") OR parent_process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\.*\") OR parent_process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\") OR parent_process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\WinSxS\\\\\\\\.*\")) OR parent_process_path = \"None\" OR (parent_process_path = \"\" OR parent_process_path = \"\\-\")) AND  NOT ((parent_process_path = RGX(\"\\\\:\\\\\\\\ManageEngine\\\\\\\\ADManager\\\\ Plus\\\\\\\\pgsql\\\\\\\\bin\\\\\\\\postgres\\\\\\.exe$\") AND process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\")) OR (process_command_line = RGX(\".*\\\\:\\\\\\\\WINDOWS\\\\\\\\system32\\\\\\\\cmd\\\\\\.exe\\\\ \\\\/c\\\\ \\\\.*\") AND process_working_directory = RGX(\".*\\\\:\\\\\\\\WINDOWS\\\\\\\\Temp\\\\\\\\asgard2\\\\-agent\\\\\\\\.*\")) OR (parent_process_path = RGX(\".*\\\\:\\\\\\\\IBM\\\\\\\\SpectrumProtect\\\\\\\\webserver\\\\\\\\scripts\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\:\\\\\\\\IBM\\\\\\\\SpectrumProtect\\\\\\\\webserver\\\\\\\\scripts\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8d2725f8-965d-4f44-a25e-4ed7dc327d94"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation COMPRESS OBFUSCATION - Security",
+      "description": "Detects Obfuscated Powershell via COMPRESS OBFUSCATION Note: Unmapped fields: ServiceFileName",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4697 AND (ServiceFileName = RGX(\".*new\\\\-object.*\") AND ServiceFileName = RGX(\".*text\\\\\\.encoding\\\\]\\\\:\\\\:ascii.*\") AND ServiceFileName = RGX(\".*readtoend.*\")) AND (ServiceFileName = RGX(\".*system\\\\\\.io\\\\\\.compression\\\\\\.deflatestream.*\") OR ServiceFileName = RGX(\".*system\\\\\\.io\\\\\\.streamreader.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "10a2d9e4-64a7-48a4-a661-70eeac8c3b9e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

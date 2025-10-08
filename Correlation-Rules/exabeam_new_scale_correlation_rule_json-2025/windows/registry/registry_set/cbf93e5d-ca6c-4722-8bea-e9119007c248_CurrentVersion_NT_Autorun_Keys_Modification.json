@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "CurrentVersion NT Autorun Keys Modification",
+      "description": "Detects modification of autostart extensibility point (ASEP) in registry. Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion.*\") AND (registry_path = RGX(\".*\\\\\\\\Winlogon\\\\\\\\VmApplet.*\") OR registry_path = RGX(\".*\\\\\\\\Winlogon\\\\\\\\Userinit.*\") OR registry_path = RGX(\".*\\\\\\\\Winlogon\\\\\\\\Taskman.*\") OR registry_path = RGX(\".*\\\\\\\\Winlogon\\\\\\\\Shell.*\") OR registry_path = RGX(\".*\\\\\\\\Winlogon\\\\\\\\GpExtensions.*\") OR registry_path = RGX(\".*\\\\\\\\Winlogon\\\\\\\\AppSetup.*\") OR registry_path = RGX(\".*\\\\\\\\Winlogon\\\\\\\\AlternateShells\\\\\\\\AvailableShells.*\") OR registry_path = RGX(\".*\\\\\\\\Windows\\\\\\\\IconServiceLib.*\") OR registry_path = RGX(\".*\\\\\\\\Windows\\\\\\\\Appinit\\\\_Dlls.*\") OR registry_path = RGX(\".*\\\\\\\\Image\\\\ File\\\\ Execution\\\\ Options.*\") OR registry_path = RGX(\".*\\\\\\\\Font\\\\ Drivers.*\") OR registry_path = RGX(\".*\\\\\\\\Drivers32.*\") OR registry_path = RGX(\".*\\\\\\\\Windows\\\\\\\\Run.*\") OR registry_path = RGX(\".*\\\\\\\\Windows\\\\\\\\Load.*\"))) AND  NOT (Details = \"\\(Empty\\)\" OR (registry_path = RGX(\".*\\\\\\\\Image\\\\ File\\\\ Execution\\\\ Options\\\\\\\\.*\") AND (registry_path = RGX(\"\\\\\\\\DisableExceptionChainValidation$\") OR registry_path = RGX(\"\\\\\\\\MitigationOptions$\"))) OR (process_path = \"C\\:\\\\Windows\\\\system32\\\\svchost\\.exe\" AND (registry_path = RGX(\".*\\\\\\\\Winlogon\\\\\\\\GPExtensions\\\\\\\\\\\\{827D319E\\\\-6EAC\\\\-11D2\\\\-A4EA\\\\-00C04F79F83A\\\\}\\\\\\\\PreviousPolicyAreas.*\") OR registry_path = RGX(\".*\\\\\\\\Winlogon\\\\\\\\GPExtensions\\\\\\\\\\\\{827D319E\\\\-6EAC\\\\-11D2\\\\-A4EA\\\\-00C04F79F83A\\\\}\\\\\\\\MaxNoGPOListChangesInterval.*\")) AND (Details = \"DWORD\\ \\(0x00000009\\)\" OR Details = \"DWORD\\ \\(0x000003c0\\)\")) OR (process_path = \"C\\:\\\\Windows\\\\System32\\\\RuntimeBroker\\.exe\" AND registry_path = RGX(\".*\\\\\\\\runtimebroker\\\\\\.exe\\\\\\\\Microsoft\\\\\\.Windows\\\\\\.ShellExperienceHost.*\"))) AND  NOT ((process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Microsoft\\\\\\\\Temp\\\\\\\\\") AND process_path = RGX(\"\\\\\\\\MicrosoftEdgeUpdate\\\\\\.exe$\")) OR ((registry_path = RGX(\".*\\\\\\\\ClickToRunStore\\\\\\\\HKLM\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\ClickToRun\\\\\\\\REGISTRY\\\\\\\\MACHINE\\\\\\\\Software\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\.*\")) OR (process_path = \"C\\:\\\\Program\\ Files\\\\Microsoft\\ Office\\\\root\\\\integration\\\\integrator\\.exe\" OR process_path = \"C\\:\\\\Program\\ Files\\ \\(x86\\)\\\\Microsoft\\ Office\\\\root\\\\integration\\\\integrator\\.exe\")) OR ((process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Common\\\\ Files\\\\\\\\Microsoft\\\\ Shared\\\\\\\\ClickToRun\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Common\\\\ Files\\\\\\\\Microsoft\\\\ Shared\\\\\\\\ClickToRun\\\\\\\\Updates\\\\\\\\\")) AND process_path = RGX(\"\\\\\\\\OfficeClickToRun\\\\\\.exe$\")) OR (process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\Microsoft\\\\\\.NET\\\\\\\\Framework\") AND process_path = RGX(\"\\\\\\\\ngen\\\\\\.exe$\")) OR (process_path = RGX(\"\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Microsoft\\\\\\\\OneDrive\\\\\\\\StandaloneUpdater\\\\\\\\OneDriveSetup\\\\\\.exe$\") AND registry_path = RGX(\"\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\RunOnce\\\\\\\\Delete\\\\ Cached\\\\ Update\\\\ Binary$\") AND Details = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\system32\\\\\\\\cmd\\\\\\.exe\\\\ \\\\/q\\\\ \\\\/c\\\\ del\\\\ \\\\/q\\\\ \\\\\"C\\\\:\\\\\\\\Users\\\\\\\\\") AND Details = RGX(\"\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Microsoft\\\\\\\\OneDrive\\\\\\\\Update\\\\\\\\OneDriveSetup\\\\\\.exe\\\\$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9e989a21-e534-42b4-b0ec-ab760dca81e9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

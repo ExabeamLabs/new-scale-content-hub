@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Default RDP Port Changed to Non Standard Port",
+      "description": "Detects changes to the default RDP port.\nRemote desktop is a common feature in operating systems. It allows a user to log into a remote system using an interactive session with a graphical user interface.\nMicrosoft refers to its implementation of the Remote Desktop Protocol (RDP) as Remote Desktop Services (RDS).\n Note: Unmapped fields: Details",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\"\\\\\\\\Control\\\\\\\\Terminal\\\\ Server\\\\\\\\WinStations\\\\\\\\RDP\\\\-Tcp\\\\\\\\PortNumber$\") AND  NOT (Details = \"DWORD\\ \\(0x00000d3d\\)\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ff5eb264-8e57-4e33-bb1d-4c79350465e9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

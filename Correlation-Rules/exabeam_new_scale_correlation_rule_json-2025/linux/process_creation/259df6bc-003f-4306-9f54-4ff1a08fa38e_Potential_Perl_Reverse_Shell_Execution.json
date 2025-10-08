@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Perl Reverse Shell Execution",
+      "description": "Detects execution of the perl binary with the \"-e\" flag and common strings related to potential reverse shell activity",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/perl$\") AND process_command_line = RGX(\".*\\\\ \\\\-e\\\\ .*\")) AND ((process_command_line = RGX(\".*fdopen\\\\(.*\") AND process_command_line = RGX(\".*\\\\:\\\\:Socket\\\\:\\\\:INET.*\")) OR (process_command_line = RGX(\".*Socket.*\") AND process_command_line = RGX(\".*connect.*\") AND process_command_line = RGX(\".*open.*\") AND process_command_line = RGX(\".*exec.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "44baef2a-4643-4870-8587-8ba616a9d06a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

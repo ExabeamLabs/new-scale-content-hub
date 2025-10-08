@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Shadow Copies Deletion Using Operating Systems Utilities",
+      "description": "Shadow Copies deletion using operating systems utilities",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((((process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wmic\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\vssadmin\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\diskshadow\\\\\\.exe$\")) OR (process_original_file_name = \"PowerShell\\.EXE\" OR process_original_file_name = \"pwsh\\.dll\" OR process_original_file_name = \"wmic\\.exe\" OR process_original_file_name = \"VSSADMIN\\.EXE\" OR process_original_file_name = \"diskshadow\\.exe\")) AND (process_command_line = RGX(\".*shadow.*\") AND process_command_line = RGX(\".*delete.*\")))) OR (((process_path = RGX(\"\\\\\\\\wbadmin\\\\\\.exe$\") OR process_original_file_name = \"WBADMIN\\.EXE\") AND (process_command_line = RGX(\".*delete.*\") AND process_command_line = RGX(\".*catalog.*\") AND process_command_line = RGX(\".*quiet.*\")))) OR (((process_path = RGX(\"\\\\\\\\vssadmin\\\\\\.exe$\") OR process_original_file_name = \"VSSADMIN\\.EXE\") AND ((process_command_line = RGX(\".*resize.*\") AND process_command_line = RGX(\".*shadowstorage.*\")) AND (process_command_line = RGX(\".*unbounded.*\") OR process_command_line = RGX(\".*\\\\/MaxSize\\\\=.*\")))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "649f1321-4efa-459e-a7e3-ccfd3de21618"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

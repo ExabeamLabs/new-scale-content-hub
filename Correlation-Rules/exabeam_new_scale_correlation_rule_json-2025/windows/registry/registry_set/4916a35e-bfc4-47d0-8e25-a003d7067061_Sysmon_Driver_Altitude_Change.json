@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Sysmon Driver Altitude Change",
+      "description": "Detects changes in Sysmon driver altitude value.\nIf the Sysmon driver is configured to load at an altitude of another registered service, it will fail to load at boot.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\Services\\\\\\\\.*\") AND registry_path = RGX(\"\\\\\\\\Instances\\\\\\\\Sysmon\\\\ Instance\\\\\\\\Altitude$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "61682e43-dda3-4417-8836-da4f3441d235"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

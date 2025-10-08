@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New File Exclusion Added To Time Machine Via Tmutil - MacOS",
+      "description": "Detects the addition of a new file or path exclusion to MacOS Time Machine via the \"tmutil\" utility.\nAn adversary could exclude a path from Time Machine backups to prevent certain files from being backed up.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/tmutil$\") OR process_command_line = RGX(\".*tmutil.*\")) AND process_command_line = RGX(\".*addexclusion.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2de166de-b3b4-4fb4-abf4-ca039b780382"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Mesh Agent Service Installation",
+      "description": "Detects a Mesh Agent service installation. Mesh Agent is used to remotely manage computers Note: Unmapped fields: Provider_Name, ImagePath, ServiceName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((Provider_Name = \"Service\\ Control\\ Manager\" AND event_id = 7045) AND (ImagePath = RGX(\".*MeshAgent\\\\\\.exe.*\") OR ServiceName = RGX(\".*Mesh\\\\ Agent.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "665614eb-e27a-4a4a-b5d4-6c7331331181"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

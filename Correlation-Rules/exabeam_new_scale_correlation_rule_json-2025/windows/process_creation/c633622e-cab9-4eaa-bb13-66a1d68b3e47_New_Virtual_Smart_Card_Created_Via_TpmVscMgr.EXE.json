@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New Virtual Smart Card Created Via TpmVscMgr.EXE",
+      "description": "Detects execution of \"Tpmvscmgr.exe\" to create a new virtual smart card.",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\tpmvscmgr\\\\\\.exe$\") AND process_original_file_name = \"TpmVscMgr\\.exe\") AND process_command_line = RGX(\".*create.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7d536d70-36d0-4cb7-813f-7a938a958b90"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Applications That Are Using ROPC Authentication Flow",
+      "description": "Resource owner password credentials (ROPC) should be avoided if at all possible as this requires the user to expose their current password credentials to the application directly.\nThe application then uses those credentials to authenticate the user against the identity provider.\n Note: Unmapped fields: properties.message",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "properties.message = \"ROPC\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "69ccccd4-8b07-44d7-86a2-5fdac716cf80"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

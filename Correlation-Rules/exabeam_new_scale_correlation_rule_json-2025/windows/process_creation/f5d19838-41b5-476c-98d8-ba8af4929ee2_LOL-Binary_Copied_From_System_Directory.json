@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "LOL-Binary Copied From System Directory",
+      "description": "Detects a suspicious copy operation that tries to copy a known LOLBIN from system (System32, SysWOW64, WinSxS) directories to another on disk in order to bypass detections based on locations.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") AND process_command_line = RGX(\".*copy\\\\ .*\")) OR ((process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\")) AND (process_command_line = RGX(\".*copy\\\\-item.*\") OR process_command_line = RGX(\".*\\\\ copy\\\\ .*\") OR process_command_line = RGX(\".*cpi\\\\ .*\") OR process_command_line = RGX(\".*\\\\ cp\\\\ .*\"))) OR ((process_path = RGX(\"\\\\\\\\robocopy\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\xcopy\\\\\\.exe$\")) OR (process_original_file_name = \"robocopy\\.exe\" OR process_original_file_name = \"XCOPY\\.EXE\"))) AND ((process_command_line = RGX(\".*\\\\\\\\System32.*\") OR process_command_line = RGX(\".*\\\\\\\\SysWOW64.*\") OR process_command_line = RGX(\".*\\\\\\\\WinSxS.*\")) AND (process_command_line = RGX(\".*\\\\\\\\bitsadmin\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\\\\\calc\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\\\\\certutil\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\\\\\cmdl32\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\\\\\cscript\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\\\\\mshta\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\\\\\rundll32\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\\\\\wscript\\\\\\.exe.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "948262e6-2470-4a6c-ac6c-c247fbf26d96"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

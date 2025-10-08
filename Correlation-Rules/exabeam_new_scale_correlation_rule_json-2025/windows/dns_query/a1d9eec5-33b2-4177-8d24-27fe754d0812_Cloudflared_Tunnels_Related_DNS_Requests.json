@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Cloudflared Tunnels Related DNS Requests",
+      "description": "Detects DNS requests to Cloudflared tunnels domains.\nAttackers can abuse that feature to establish a reverse shell or persistence on a machine.\n Note: Unmapped fields: QueryName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(QueryName = RGX(\"\\\\\\.v2\\\\\\.argotunnel\\\\\\.com$\") OR QueryName = RGX(\"protocol\\\\-v2\\\\\\.argotunnel\\\\\\.com$\") OR QueryName = RGX(\"trycloudflare\\\\\\.com$\") OR QueryName = RGX(\"update\\\\\\.argotunnel\\\\\\.com$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7aa0398b-b217-474b-be2d-d282e26cfecc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Persistence Via Outlook Today Page",
+      "description": "Detects potential persistence activity via outlook today page.\nAn attacker can set a custom page to execute arbitrary code and link to it via the registry values \"URL\" and \"UserDefinedUrl\".\n Note: Unmapped fields: Details",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*Software\\\\\\\\Microsoft\\\\\\\\Office\\\\\\\\.*\") AND registry_path = RGX(\".*\\\\\\\\Outlook\\\\\\\\Today\\\\\\\\.*\")) AND ((registry_path = RGX(\"\\\\\\\\Stamp$\") AND Details = \"DWORD\\ \\(0x00000001\\)\") OR (registry_path = RGX(\"\\\\\\\\URL$\") OR registry_path = RGX(\"\\\\\\\\UserDefinedUrl$\"))) AND  NOT (((process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Common\\\\ Files\\\\\\\\Microsoft\\\\ Shared\\\\\\\\ClickToRun\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Common\\\\ Files\\\\\\\\Microsoft\\\\ Shared\\\\\\\\ClickToRun\\\\\\\\Updates\\\\\\\\\")) AND process_path = RGX(\"\\\\\\\\OfficeClickToRun\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7542c34b-4dee-4cb6-8f14-99cdde501613"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

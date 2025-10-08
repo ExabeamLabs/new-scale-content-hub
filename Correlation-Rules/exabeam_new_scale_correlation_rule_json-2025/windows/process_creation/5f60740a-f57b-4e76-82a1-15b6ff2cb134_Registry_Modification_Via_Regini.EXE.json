@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Registry Modification Via Regini.EXE",
+      "description": "Detects the execution of regini.exe which can be used to modify registry keys, the changes are imported from one or more text files.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\regini\\\\\\.exe$\") OR process_original_file_name = \"REGINI\\.EXE\") AND  NOT (process_command_line = RGX(\":[^ \\]\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b2016a4b-5d56-4819-9783-11e75bc5f17e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

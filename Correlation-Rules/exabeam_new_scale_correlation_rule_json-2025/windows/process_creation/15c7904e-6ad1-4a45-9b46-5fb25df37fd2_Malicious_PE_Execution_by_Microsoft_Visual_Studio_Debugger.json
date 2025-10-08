@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Malicious PE Execution by Microsoft Visual Studio Debugger",
+      "description": "There is an option for a MS VS Just-In-Time Debugger \"vsjitdebugger.exe\" to launch specified executable and attach a debugger.\nThis option may be used adversaries to execute malicious code by signed verified binary.\nThe debugger is installed alongside with Microsoft Visual Studio package.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "parent_process_path = RGX(\"\\\\\\\\vsjitdebugger\\\\\\.exe$\") AND  NOT (process_path = RGX(\"\\\\\\\\vsimmersiveactivatehelper*\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\devenv\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9c4567e8-769c-400d-b83c-8affd54b0681"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

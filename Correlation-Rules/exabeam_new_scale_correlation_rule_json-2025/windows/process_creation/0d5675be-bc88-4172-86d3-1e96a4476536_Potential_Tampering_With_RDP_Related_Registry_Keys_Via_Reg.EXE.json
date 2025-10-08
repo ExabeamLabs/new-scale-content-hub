@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Tampering With RDP Related Registry Keys Via Reg.EXE",
+      "description": "Detects the execution of \"reg.exe\" for enabling/disabling the RDP service on the host by tampering with the 'CurrentControlSet\\Control\\Terminal Server' values",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\reg\\\\\\.exe$\") OR process_original_file_name = \"reg\\.exe\") AND (process_command_line = RGX(\".*\\\\ add\\\\ .*\") AND process_command_line = RGX(\".*\\\\\\\\CurrentControlSet\\\\\\\\Control\\\\\\\\Terminal\\\\ Server.*\") AND process_command_line = RGX(\".*REG\\\\_DWORD.*\") AND process_command_line = RGX(\".*\\\\ \\\\/f.*\"))) AND ((process_command_line = RGX(\".*Licensing\\\\ Core.*\") AND process_command_line = RGX(\".*EnableConcurrentSessions.*\")) OR (process_command_line = RGX(\".*WinStations\\\\\\\\RDP\\\\-Tcp.*\") OR process_command_line = RGX(\".*MaxInstanceCount.*\") OR process_command_line = RGX(\".*fEnableWinStation.*\") OR process_command_line = RGX(\".*TSUserEnabled.*\") OR process_command_line = RGX(\".*TSEnabled.*\") OR process_command_line = RGX(\".*TSAppCompat.*\") OR process_command_line = RGX(\".*IdleWinStationPoolCount.*\") OR process_command_line = RGX(\".*TSAdvertise.*\") OR process_command_line = RGX(\".*AllowTSConnections.*\") OR process_command_line = RGX(\".*fSingleSessionPerUser.*\") OR process_command_line = RGX(\".*fDenyTSConnections.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "016b0aad-8867-4d78-9c41-d6413c3b99f3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

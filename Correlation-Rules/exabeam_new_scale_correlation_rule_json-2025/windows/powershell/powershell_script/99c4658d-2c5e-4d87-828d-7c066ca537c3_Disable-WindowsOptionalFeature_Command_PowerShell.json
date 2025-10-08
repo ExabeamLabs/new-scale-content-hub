@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Disable-WindowsOptionalFeature Command PowerShell",
+      "description": "Detect built in PowerShell cmdlet Disable-WindowsOptionalFeature, Deployment Image Servicing and Management tool.\nSimilar to DISM.exe, this cmdlet is used to enumerate, install, uninstall, configure, and update features and packages in Windows images\n Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ScriptBlockText = RGX(\".*Disable\\\\-WindowsOptionalFeature.*\") AND ScriptBlockText = RGX(\".*\\\\-Online.*\") AND ScriptBlockText = RGX(\".*\\\\-FeatureName.*\")) AND (ScriptBlockText = RGX(\".*Windows\\\\-Defender\\\\-Gui.*\") OR ScriptBlockText = RGX(\".*Windows\\\\-Defender\\\\-Features.*\") OR ScriptBlockText = RGX(\".*Windows\\\\-Defender.*\") OR ScriptBlockText = RGX(\".*Windows\\\\-Defender\\\\-ApplicationGuard.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ae0ddda3-f49c-4237-8248-a4fd8982bda6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

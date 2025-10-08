@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Driver Install by pnputil.exe",
+      "description": "Detects when a possible suspicious driver is being installed via pnputil.exe lolbin",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*\\\\-i.*\") OR process_command_line = RGX(\".*\\\\/install.*\") OR process_command_line = RGX(\".*\\\\-a.*\") OR process_command_line = RGX(\".*\\\\/add\\\\-driver.*\") OR process_command_line = RGX(\".*\\\\\\.inf.*\")) AND process_path = RGX(\"\\\\\\\\pnputil\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ffebdcc5-613f-4136-893c-6eb82da59d82"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

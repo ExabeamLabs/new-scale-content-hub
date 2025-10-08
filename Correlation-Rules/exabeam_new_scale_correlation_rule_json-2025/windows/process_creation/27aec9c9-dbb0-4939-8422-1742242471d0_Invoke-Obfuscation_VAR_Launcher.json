@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation VAR+ Launcher",
+      "description": "Detects Obfuscated use of Environment Variables to execute PowerShell",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_command_line = RGX(\"cmd.{0,5}(?:/c|/r)(?:\\s|)\"set\\s[a-zA-Z]{3,6}.*(?:{\\d}){1,}\\\"\\s+?-f(?:.*)){1,}.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "226a592d-c012-4f1c-b932-2d6ef4e6c5f9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

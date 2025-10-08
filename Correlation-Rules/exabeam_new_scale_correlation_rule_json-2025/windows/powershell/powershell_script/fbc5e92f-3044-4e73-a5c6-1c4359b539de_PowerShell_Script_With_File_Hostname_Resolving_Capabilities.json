@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PowerShell Script With File Hostname Resolving Capabilities",
+      "description": "Detects PowerShell scripts that have capabilities to read files, loop through them and resolve DNS host entries. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Get\\\\-content\\\\ .*\") AND ScriptBlockText = RGX(\".*foreach.*\") AND ScriptBlockText = RGX(\".*\\\\[System\\\\\\.Net\\\\\\.Dns\\\\]\\\\:\\\\:GetHostEntry.*\") AND ScriptBlockText = RGX(\".*Out\\\\-File.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f2afd7c8-9e48-4adc-8e1c-33ab8e2b5cd0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

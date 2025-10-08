@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Response File Execution Via Odbcconf.EXE",
+      "description": "Detects execution of \"odbcconf\" with the \"-f\" flag in order to load a response file with a non-\".rsp\" extension.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\odbcconf\\\\\\.exe$\") OR process_original_file_name = \"odbcconf\\.exe\") AND process_command_line = RGX(\".*\\\\ \\\\-f\\\\ .*\")) AND  NOT (process_command_line = RGX(\".*\\\\\\.rsp.*\") OR (parent_process_path = \"C\\:\\\\Windows\\\\System32\\\\runonce\\.exe\" AND process_path = \"C\\:\\\\Windows\\\\System32\\\\odbcconf\\.exe\" AND process_command_line = RGX(\".*\\\\\\.exe\\\\ \\\\/E\\\\ \\\\/F\\\\ \\\\\"C\\\\:\\\\\\\\WINDOWS\\\\\\\\system32\\\\\\\\odbcconf\\\\\\.tmp\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "35e5380b-1f18-4cb1-92d9-2df75963b8d5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

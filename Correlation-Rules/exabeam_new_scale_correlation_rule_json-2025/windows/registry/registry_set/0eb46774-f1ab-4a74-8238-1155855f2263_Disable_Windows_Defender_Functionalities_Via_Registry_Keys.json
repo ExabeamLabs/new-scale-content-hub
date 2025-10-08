@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Disable Windows Defender Functionalities Via Registry Keys",
+      "description": "Detects when attackers or tools disable Windows Defender functionalities via the Windows registry Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\ Defender\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Policies\\\\\\\\Microsoft\\\\\\\\Windows\\\\ Defender\\\\ Security\\\\ Center\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Policies\\\\\\\\Microsoft\\\\\\\\Windows\\\\ Defender\\\\\\\\.*\")) AND (((registry_path = RGX(\"\\\\\\\\DisableAntiSpyware$\") OR registry_path = RGX(\"\\\\\\\\DisableAntiVirus$\") OR registry_path = RGX(\"\\\\\\\\DisableBehaviorMonitoring$\") OR registry_path = RGX(\"\\\\\\\\DisableBlockAtFirstSeen$\") OR registry_path = RGX(\"\\\\\\\\DisableEnhancedNotifications$\") OR registry_path = RGX(\"\\\\\\\\DisableIntrusionPreventionSystem$\") OR registry_path = RGX(\"\\\\\\\\DisableIOAVProtection$\") OR registry_path = RGX(\"\\\\\\\\DisableOnAccessProtection$\") OR registry_path = RGX(\"\\\\\\\\DisableRealtimeMonitoring$\") OR registry_path = RGX(\"\\\\\\\\DisableScanOnRealtimeEnable$\") OR registry_path = RGX(\"\\\\\\\\DisableScriptScanning$\")) AND Details = \"DWORD\\ \\(0x00000001\\)\") OR ((registry_path = RGX(\"\\\\\\\\DisallowExploitProtectionOverride$\") OR registry_path = RGX(\"\\\\\\\\Features\\\\\\\\TamperProtection$\") OR registry_path = RGX(\"\\\\\\\\MpEngine\\\\\\\\MpEnablePus$\") OR registry_path = RGX(\"\\\\\\\\PUAProtection$\") OR registry_path = RGX(\"\\\\\\\\Signature\\\\ Update\\\\\\\\ForceUpdateFromMU$\") OR registry_path = RGX(\"\\\\\\\\SpyNet\\\\\\\\SpynetReporting$\") OR registry_path = RGX(\"\\\\\\\\SpyNet\\\\\\\\SubmitSamplesConsent$\") OR registry_path = RGX(\"\\\\\\\\Windows\\\\ Defender\\\\ Exploit\\\\ Guard\\\\\\\\Controlled\\\\ Folder\\\\ Access\\\\\\\\EnableControlledFolderAccess$\")) AND Details = \"DWORD\\ \\(0x00000000\\)\")) AND  NOT ((process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Symantec\\\\\\\\Symantec\\\\ Endpoint\\\\ Protection\\\\\\\\\") AND process_path = RGX(\"\\\\\\\\sepWscSvc64\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "072fc71a-a33e-4a16-937d-78c081443267"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

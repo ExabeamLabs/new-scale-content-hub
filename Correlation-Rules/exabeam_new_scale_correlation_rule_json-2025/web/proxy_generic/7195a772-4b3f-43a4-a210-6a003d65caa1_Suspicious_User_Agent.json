@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious User Agent",
+      "description": "Detects suspicious malformed user agent strings in proxy logs Note: Unmapped fields: c-useragent, cs-host",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((c-useragent = RGX(\"^user\\\\-agent\") OR c-useragent = RGX(\"^Mozilla\\\\/3\\\\\\.0\\\\ \") OR c-useragent = RGX(\"^Mozilla\\\\/2\\\\\\.0\\\\ \") OR c-useragent = RGX(\"^Mozilla\\\\/1\\\\\\.0\\\\ \") OR c-useragent = RGX(\"^Mozilla\\\\ \") OR c-useragent = RGX(\"^\\\\ Mozilla\\\\/\") OR c-useragent = RGX(\"^Mozila\\\\/\") OR c-useragent = RGX(\"^Mozilla\\\\/4\\\\\\.0\\\\ \\\\(compatible\\\\;\\\\ MSIE\\\\ 6\\\\\\.0\\\\;\\\\ MS\\\\ Web\\\\ Services\\\\ Client\\\\ Protocol\")) OR (c-useragent = RGX(\".*\\\\ \\\\(compatible\\\\;MSIE\\\\ .*\") OR c-useragent = RGX(\".*\\\\\\.0\\\\;Windows\\\\ NT\\\\ .*\") OR c-useragent = RGX(\".*loader.*\")) OR (c-useragent = \"\\_\" OR c-useragent = \"CertUtil\\ URL\\ Agent\" OR c-useragent = \"Mozilla\\/5\\.0\\ \\(Windows\\ NT\\ 10\\.0\\;\\ Win64\\;\\ x64\\;\\ rv\\:60\\.0\\)\" OR c-useragent = \"Mozilla\\/5\\.0\\ \\(Windows\\ NT\\ 6\\.3\\;\\ WOW64\\;\\ rv\\:28\\.0\\)\\ Gecko\\/20100101\\ Firefox\\/28\\.0\" OR c-useragent = \"HTTPS\" OR c-useragent = \"Erbium\\-UA\\-4ce7c27cb4be9d32e333bf032c88235a\" OR c-useragent = \"x\" OR c-useragent = \"xxx\")) AND  NOT ((c-useragent = \"Mozilla\\/3\\.0\\ *\\ Acrobat\\ *\" OR (cs-host = RGX(\"\\\\\\.acrobat\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.adobe\\\\\\.com$\") OR cs-host = RGX(\"\\\\\\.adobe\\\\\\.io$\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "28fa193a-5b6d-4351-8a8a-58c8729f9942"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

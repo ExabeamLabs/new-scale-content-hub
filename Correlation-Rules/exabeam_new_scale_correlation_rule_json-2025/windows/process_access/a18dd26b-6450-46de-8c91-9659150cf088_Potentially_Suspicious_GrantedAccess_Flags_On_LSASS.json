@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Suspicious GrantedAccess Flags On LSASS",
+      "description": "Detects process access requests to LSASS process with potentially suspicious access flags Note: Unmapped fields: TargetImage, GrantedAccess, SourceImage, CallTrace",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(TargetImage = RGX(\"\\\\\\\\lsass\\\\\\.exe$\") AND ((GrantedAccess = RGX(\"30$\") OR GrantedAccess = RGX(\"50$\") OR GrantedAccess = RGX(\"70$\") OR GrantedAccess = RGX(\"90$\") OR GrantedAccess = RGX(\"B0$\") OR GrantedAccess = RGX(\"D0$\") OR GrantedAccess = RGX(\"F0$\") OR GrantedAccess = RGX(\"18$\") OR GrantedAccess = RGX(\"38$\") OR GrantedAccess = RGX(\"58$\") OR GrantedAccess = RGX(\"78$\") OR GrantedAccess = RGX(\"98$\") OR GrantedAccess = RGX(\"B8$\") OR GrantedAccess = RGX(\"D8$\") OR GrantedAccess = RGX(\"F8$\") OR GrantedAccess = RGX(\"1A$\") OR GrantedAccess = RGX(\"3A$\") OR GrantedAccess = RGX(\"5A$\") OR GrantedAccess = RGX(\"7A$\") OR GrantedAccess = RGX(\"9A$\") OR GrantedAccess = RGX(\"BA$\") OR GrantedAccess = RGX(\"DA$\") OR GrantedAccess = RGX(\"FA$\") OR GrantedAccess = RGX(\"0x14C2$\")) OR (GrantedAccess = RGX(\"^0x100000\") OR GrantedAccess = RGX(\"^0x1418\") OR GrantedAccess = RGX(\"^0x1438\") OR GrantedAccess = RGX(\"^0x143a\") OR GrantedAccess = RGX(\"^0x1f0fff\") OR GrantedAccess = RGX(\"^0x1f1fff\") OR GrantedAccess = RGX(\"^0x1f2fff\") OR GrantedAccess = RGX(\"^0x1f3fff\") OR GrantedAccess = RGX(\"^0x40\")))) AND  NOT ((SourceImage = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\.*\") OR SourceImage = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\.*\") OR SourceImage = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\.*\") OR SourceImage = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\.*\")) OR (SourceImage = RGX(\".*\\\\:\\\\\\\\ProgramData\\\\\\\\Microsoft\\\\\\\\Windows\\\\ Defender\\\\\\\\.*\") AND SourceImage = RGX(\"\\\\\\\\MsMpEng\\\\\\.exe$\")) OR ((CallTrace = RGX(\".*\\\\|?\\\\:\\\\\\\\ProgramData\\\\\\\\Microsoft\\\\\\\\Windows\\\\ Defender\\\\\\\\Definition\\\\ Updates\\\\\\\\\\\\{.*\") AND CallTrace = RGX(\".*\\\\}\\\\\\\\mpengine\\\\\\.dll\\\\+.*\")) AND GrantedAccess = \"0x1418\") OR (CallTrace = RGX(\".*\\\\|c\\\\:\\\\\\\\program\\\\ files\\\\\\\\windows\\\\ defender\\\\\\\\mprtp\\\\\\.dll.*\") OR CallTrace = RGX(\".*\\\\|c\\\\:\\\\\\\\program\\\\ files\\\\\\\\windows\\\\ defender\\\\\\\\MpClient\\\\\\.dll.*\")) OR (SourceImage = RGX(\"\\\\\\\\explorer\\\\\\.exe$\") AND GrantedAccess = \"0x401\")) AND  NOT (SourceImage = RGX(\"\\\\:\\\\\\\\ProgramData\\\\\\\\MALWAREBYTES\\\\\\\\MBAMSERVICE\\\\\\\\ctlrupdate\\\\\\\\mbupdatr\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Programs\\\\\\\\Microsoft\\\\ VS\\\\ Code\\\\\\\\Code\\\\\\.exe$\") OR (SourceImage = RGX(\".*\\\\:\\\\\\\\ProgramData\\\\\\\\VMware\\\\\\\\VMware\\\\ Tools\\\\\\\\.*\") AND SourceImage = RGX(\"\\\\\\\\vmtoolsd\\\\\\.exe$\")) OR ((SourceImage = RGX(\"\\\\\\\\PROCEXP64\\\\\\.EXE$\") OR SourceImage = RGX(\"\\\\\\\\PROCEXP\\\\\\.EXE$\")) AND GrantedAccess = \"0x40\") OR (SourceImage = RGX(\"\\\\\\\\MBAMInstallerService\\\\\\.exe$\") AND GrantedAccess = \"0x40\") OR ((SourceImage = RGX(\"\\\\\\\\aurora\\\\-agent\\\\-64\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\aurora\\\\-agent\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\thor\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\thor64\\\\\\.exe$\")) AND GrantedAccess = \"0x40\") OR ((SourceImage = RGX(\"\\\\\\\\handle\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\handle64\\\\\\.exe$\")) AND GrantedAccess = \"0x40\") OR (SourceImage = RGX(\"\\\\\\\\AppData\\\\\\\\Local\\\\\\\\WebEx\\\\\\\\WebexHost\\\\\\.exe$\") AND GrantedAccess = \"0x401\") OR SourceImage = RGX(\".*\\\\\\\\SteamLibrary\\\\\\\\steamapps\\\\\\\\.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e6a5594a-59aa-46ec-9934-ebc301114e3f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

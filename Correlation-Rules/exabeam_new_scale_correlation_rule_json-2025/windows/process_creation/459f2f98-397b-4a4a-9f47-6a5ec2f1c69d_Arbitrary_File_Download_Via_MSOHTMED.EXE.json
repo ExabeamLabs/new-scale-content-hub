@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Arbitrary File Download Via MSOHTMED.EXE",
+      "description": "Detects usage of \"MSOHTMED\" to download arbitrary files",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\MSOHTMED\\\\\\.exe$\") OR process_original_file_name = \"MsoHtmEd\\.exe\") AND (process_command_line = RGX(\".*ftp\\\\:\\\\/\\\\/.*\") OR process_command_line = RGX(\".*http\\\\:\\\\/\\\\/.*\") OR process_command_line = RGX(\".*https\\\\:\\\\/\\\\/.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3f2ea074-4a01-41f6-9a8f-9da079b9ccee"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

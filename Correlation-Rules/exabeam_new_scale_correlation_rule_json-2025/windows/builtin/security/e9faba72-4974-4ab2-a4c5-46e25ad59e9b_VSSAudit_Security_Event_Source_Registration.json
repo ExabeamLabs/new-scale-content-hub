@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "VSSAudit Security Event Source Registration",
+      "description": "Detects the registration of the security event source VSSAudit. It would usually trigger when volume shadow copy operations happen. Note: Unmapped fields: AuditSourceName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(AuditSourceName = \"VSSAudit\" AND (event_id = 4904 OR event_id = 4905))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "fe381677-9839-45e8-8277-0c9248677dee"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

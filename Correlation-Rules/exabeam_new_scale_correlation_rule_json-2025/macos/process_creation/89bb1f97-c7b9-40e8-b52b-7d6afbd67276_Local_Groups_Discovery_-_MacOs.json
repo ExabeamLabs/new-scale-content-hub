@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Local Groups Discovery - MacOs",
+      "description": "Detects enumeration of local system groups",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/dscacheutil$\") AND (process_command_line = RGX(\".*\\\\-q.*\") AND process_command_line = RGX(\".*group.*\"))) OR (process_path = RGX(\"\\\\/cat$\") AND process_command_line = RGX(\".*\\\\/etc\\\\/group.*\")) OR (process_path = RGX(\"\\\\/dscl$\") AND (process_command_line = RGX(\".*\\\\-list.*\") AND process_command_line = RGX(\".*\\\\/groups.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c2dda97a-a18a-4e6e-919b-b7ca95257d68"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

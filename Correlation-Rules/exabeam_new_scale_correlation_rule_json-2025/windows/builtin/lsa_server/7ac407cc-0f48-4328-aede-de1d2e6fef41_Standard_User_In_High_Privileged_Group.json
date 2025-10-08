@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Standard User In High Privileged Group",
+      "description": "Detect standard users login that are part of high privileged groups such as the Administrator group Note: Unmapped fields: TargetUserSid, SidList",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 300 AND TargetUserSid = RGX(\"^S\\\\-1\\\\-5\\\\-21\\\\-\") AND (SidList = RGX(\".*S\\\\-1\\\\-5\\\\-32\\\\-544.*\") OR SidList = RGX(\".*\\\\-500\\\\}.*\") OR SidList = RGX(\".*\\\\-518\\\\}.*\") OR SidList = RGX(\".*\\\\-519\\\\}.*\"))) AND  NOT ((TargetUserSid = RGX(\"\\\\-500$\") OR TargetUserSid = RGX(\"\\\\-518$\") OR TargetUserSid = RGX(\"\\\\-519$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d7aad442-d552-4560-8d70-9003cabcd4cd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

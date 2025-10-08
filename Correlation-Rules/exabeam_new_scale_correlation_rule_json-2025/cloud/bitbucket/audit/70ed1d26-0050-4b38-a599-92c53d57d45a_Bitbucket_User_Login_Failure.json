@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Bitbucket User Login Failure",
+      "description": "Detects user authentication failure events.\nPlease note that this rule can be noisy and it is recommended to use with correlation based on \"author.name\" field.\n Note: Unmapped fields: auditType.category, auditType.action",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(auditType.category = \"Authentication\" AND auditType.action = \"User\\ login\\ failed\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "bef9c5cd-cea0-4fcf-9911-996b8b8718b6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

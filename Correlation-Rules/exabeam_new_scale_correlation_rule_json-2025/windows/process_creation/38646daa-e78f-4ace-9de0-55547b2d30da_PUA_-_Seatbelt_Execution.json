@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - Seatbelt Execution",
+      "description": "Detects the execution of the PUA/Recon tool Seatbelt via PE information of command line parameters",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\Seatbelt\\\\\\.exe$\") OR process_original_file_name = \"Seatbelt\\.exe\" OR process_description = \"Seatbelt\" OR (process_command_line = RGX(\".*\\\\ DpapiMasterKeys.*\") OR process_command_line = RGX(\".*\\\\ InterestingProcesses.*\") OR process_command_line = RGX(\".*\\\\ InterestingFiles.*\") OR process_command_line = RGX(\".*\\\\ CertificateThumbprints.*\") OR process_command_line = RGX(\".*\\\\ ChromiumBookmarks.*\") OR process_command_line = RGX(\".*\\\\ ChromiumHistory.*\") OR process_command_line = RGX(\".*\\\\ ChromiumPresence.*\") OR process_command_line = RGX(\".*\\\\ CloudCredentials.*\") OR process_command_line = RGX(\".*\\\\ CredEnum.*\") OR process_command_line = RGX(\".*\\\\ CredGuard.*\") OR process_command_line = RGX(\".*\\\\ FirefoxHistory.*\") OR process_command_line = RGX(\".*\\\\ ProcessCreationEvents.*\"))) OR ((process_command_line = RGX(\".*\\\\ \\\\-group\\\\=misc.*\") OR process_command_line = RGX(\".*\\\\ \\\\-group\\\\=remote.*\") OR process_command_line = RGX(\".*\\\\ \\\\-group\\\\=chromium.*\") OR process_command_line = RGX(\".*\\\\ \\\\-group\\\\=slack.*\") OR process_command_line = RGX(\".*\\\\ \\\\-group\\\\=system.*\") OR process_command_line = RGX(\".*\\\\ \\\\-group\\\\=user.*\") OR process_command_line = RGX(\".*\\\\ \\\\-group\\\\=all.*\")) AND process_command_line = RGX(\".*\\\\ \\\\-outputfile\\\\=.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ba7c77a0-cf67-4ace-8883-4155c6793c2c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

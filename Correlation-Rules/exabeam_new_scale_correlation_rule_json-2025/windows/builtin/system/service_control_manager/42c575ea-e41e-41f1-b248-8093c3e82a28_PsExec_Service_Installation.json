@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PsExec Service Installation",
+      "description": "Detects PsExec service installation and execution events Note: Unmapped fields: Provider_Name, ServiceName, ImagePath",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((Provider_Name = \"Service\\ Control\\ Manager\" AND event_id = 7045) AND (ServiceName = \"PSEXESVC\" OR ImagePath = RGX(\"\\\\\\\\PSEXESVC\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2e94b7f6-ae09-4594-b09c-42920dc24298"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

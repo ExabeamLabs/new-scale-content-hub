@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Windows Defender AV Bypass Via Dump64.EXE Rename",
+      "description": "Detects when a user is potentially trying to bypass the Windows Defender AV by renaming a tool to dump64.exe and placing it in the Visual Studio folder.\nCurrently the rule is covering only usage of procdump but other utilities can be added in order to increase coverage.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"^\\\\:\\\\\\\\Program\\\\ Files\") AND process_path = RGX(\".*\\\\\\\\Microsoft\\\\ Visual\\\\ Studio\\\\\\\\.*\") AND process_path = RGX(\"\\\\\\\\dump64\\\\\\.exe$\")) AND ((process_original_file_name = \"procdump\" OR (process_command_line = RGX(\".*\\\\ \\\\-ma\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-mp\\\\ .*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0da303c0-f844-4c3f-b206-86e20c0ec973"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

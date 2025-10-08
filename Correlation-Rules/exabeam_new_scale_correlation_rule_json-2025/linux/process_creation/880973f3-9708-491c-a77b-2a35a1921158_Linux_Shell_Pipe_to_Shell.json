@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Linux Shell Pipe to Shell",
+      "description": "Detects suspicious process command line that starts with a shell that executes something and finally gets piped into another shell",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\"^sh\\\\ \\\\-c\\\\ \") OR process_command_line = RGX(\"^bash\\\\ \\\\-c\\\\ \")) AND ((process_command_line = RGX(\".*\\\\|\\\\ bash\\\\ .*\") OR process_command_line = RGX(\".*\\\\|\\\\ sh\\\\ .*\") OR process_command_line = RGX(\".*\\\\|bash\\\\ .*\") OR process_command_line = RGX(\".*\\\\|sh\\\\ .*\")) OR (process_command_line = RGX(\"\\\\|\\\\ bash$\") OR process_command_line = RGX(\"\\\\|\\\\ sh$\") OR process_command_line = RGX(\"\\\\|bash$\") OR process_command_line = RGX(\"\\\\ \\\\|sh$\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3f176aee-46bd-41ab-95f8-d6929f709b96"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

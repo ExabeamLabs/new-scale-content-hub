@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Non PowerShell WSMAN COM Provider",
+      "description": "Detects suspicious use of the WSMAN provider without PowerShell.exe as the host application. Note: Unmapped fields: Data",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "Data = RGX(\".*ProviderName\\\\=WSMan.*\") AND  NOT ((Data = RGX(\".*HostApplication\\\\=powershell.*\") OR Data = RGX(\".*HostApplication\\\\=C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\WindowsPowerShell\\\\\\\\v1\\\\\\.0\\\\\\\\powershell.*\") OR Data = RGX(\".*HostApplication\\\\=C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\WindowsPowerShell\\\\\\\\v1\\\\\\.0\\\\\\\\powershell.*\") OR Data = RGX(\".*HostApplication\\\\=C\\\\:\\\\/Windows\\\\/System32\\\\/WindowsPowerShell\\\\/v1\\\\\\.0\\\\/powershell.*\") OR Data = RGX(\".*HostApplication\\\\=C\\\\:\\\\/Windows\\\\/SysWOW64\\\\/WindowsPowerShell\\\\/v1\\\\\\.0\\\\/powershell.*\")) OR Data = RGX(\"HostId=[a-zA-Z0-9-]{36}\\s+EngineVersion=\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "15c67059-cf82-4e50-8967-583c3f1c87c1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

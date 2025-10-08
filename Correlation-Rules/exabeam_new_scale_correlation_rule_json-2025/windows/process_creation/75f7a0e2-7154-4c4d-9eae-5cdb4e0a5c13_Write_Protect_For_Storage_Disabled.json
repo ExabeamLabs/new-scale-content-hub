@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Write Protect For Storage Disabled",
+      "description": "Detects applications trying to modify the registry in order to disable any write-protect property for storage devices.\nThis could be a precursor to a ransomware attack and has been an observed technique used by cypherpunk group.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\\\\\System\\\\\\\\CurrentControlSet\\\\\\\\Control.*\") AND process_command_line = RGX(\".*Write\\\\ Protection.*\") AND process_command_line = RGX(\".*0.*\") AND process_command_line = RGX(\".*storage.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "fae1860e-b2da-47e6-9324-94bafe24bbe1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

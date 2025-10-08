@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "User Added To Admin Group Via Dscl",
+      "description": "Detects attempts to create and add an account to the admin group via \"dscl\"",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/dscl$\") AND (process_command_line = RGX(\".*\\\\ \\\\-append\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\/Groups\\\\/admin\\\\ .*\") AND process_command_line = RGX(\".*\\\\ GroupMembership\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e9615dff-ee48-4abb-ae20-f0c5ba4b4e74"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

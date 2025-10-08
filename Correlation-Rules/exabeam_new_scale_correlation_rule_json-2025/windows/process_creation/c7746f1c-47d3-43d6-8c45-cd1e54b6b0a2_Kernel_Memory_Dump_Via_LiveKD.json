@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Kernel Memory Dump Via LiveKD",
+      "description": "Detects execution of LiveKD with the \"-m\" flag to potentially dump the kernel memory",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\livekd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\livekd64\\\\\\.exe$\")) OR process_original_file_name = \"livekd\\.exe\") AND process_command_line = RGX(\".*\\\\ \\\\-m.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f9c490ec-ef8d-4d11-a376-24c6fcfe9e3c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

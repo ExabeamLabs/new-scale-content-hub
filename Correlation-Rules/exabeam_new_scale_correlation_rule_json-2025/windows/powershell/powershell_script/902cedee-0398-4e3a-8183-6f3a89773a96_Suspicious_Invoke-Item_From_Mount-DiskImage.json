@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Invoke-Item From Mount-DiskImage",
+      "description": "Adversaries may abuse container files such as disk image (.iso, .vhd) file formats to deliver malicious payloads that may not be tagged with MOTW. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Mount\\\\-DiskImage\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\-ImagePath\\\\ .*\") AND ScriptBlockText = RGX(\".*Get\\\\-Volume.*\") AND ScriptBlockText = RGX(\".*\\\\\\.DriveLetter.*\") AND ScriptBlockText = RGX(\".*invoke\\\\-item\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\)\\\\:\\\\\\\\.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f920b6dd-65ed-4f8f-b383-d5750319dfb7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

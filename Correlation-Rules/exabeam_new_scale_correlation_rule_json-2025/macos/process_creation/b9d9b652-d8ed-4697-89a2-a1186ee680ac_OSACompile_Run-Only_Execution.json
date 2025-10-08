@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "OSACompile Run-Only Execution",
+      "description": "Detects potential suspicious run-only executions compiled using OSACompile",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*osacompile.*\") AND process_command_line = RGX(\".*\\\\ \\\\-x\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-e\\\\ .*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "951f06d3-e43d-46d5-bd6c-c86a2ce0ca09"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

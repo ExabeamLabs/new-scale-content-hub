@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "CodeIntegrity - Unsigned Kernel Module Loaded",
+      "description": "Detects the presence of a loaded unsigned kernel module on the system.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "event_id = 3001",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "93be7953-ad52-4375-9673-620396416b08"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

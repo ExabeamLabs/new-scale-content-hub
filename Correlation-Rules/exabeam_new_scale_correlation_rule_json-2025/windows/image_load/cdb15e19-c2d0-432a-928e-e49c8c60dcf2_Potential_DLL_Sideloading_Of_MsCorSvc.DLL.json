@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential DLL Sideloading Of MsCorSvc.DLL",
+      "description": "Detects potential DLL sideloading of \"mscorsvc.dll\". Note: Unmapped fields: ImageLoaded",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ImageLoaded = RGX(\"\\\\\\\\mscorsvc\\\\\\.dll$\") AND  NOT ((ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\Microsoft\\\\\\.NET\\\\\\\\Framework\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\Microsoft\\\\\\.NET\\\\\\\\Framework64\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\Microsoft\\\\\\.NET\\\\\\\\FrameworkArm\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\Microsoft\\\\\\.NET\\\\\\\\FrameworkArm64\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\WinSxS\\\\\\\\\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "cbf8512b-b403-415f-bc37-035cfe49e5e5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

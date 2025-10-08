@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New File Association Using Exefile",
+      "description": "Detects the abuse of the exefile handler in new file association. Used for bypass of security products. Note: Unmapped fields: Details",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*Classes\\\\\\\\\\\\\\..*\") AND Details = \"exefile\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "35491ebe-4ab2-4763-86a6-686201c249dc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

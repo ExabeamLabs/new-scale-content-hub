@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Certificate-Based Authentication Enabled",
+      "description": "Detects when certificate based authentication has been enabled in an Azure Active Directory tenant. Note: Unmapped fields: OperationName, TargetResources.modifiedProperties",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(OperationName = \"Authentication\\ Methods\\ Policy\\ Update\" AND TargetResources.modifiedProperties = RGX(\".*AuthenticationMethodsPolicy.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a4aae79c-1faa-4f06-b552-73c102c0bc94"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

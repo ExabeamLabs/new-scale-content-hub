@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "User State Changed From Guest To Member",
+      "description": "Detects the change of user type from \"Guest\" to \"Member\" for potential elevation of privilege. Note: Unmapped fields: Category, OperationName, properties.message",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Category = \"UserManagement\" AND OperationName = \"Update\\ user\" AND properties.message = \"\\\"displayName\\\"\\:\\\"UserType\\\"\\,\\\"oldValue\\\"\\:\\\"\\[\\\\\\\"Guest\\\\\\\"\\]\\\"\\,\\\"newValue\\\"\\:\\\"\\[\\\\\\\"Member\\\\\\\"\\]\\\"\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "866b8c8f-1d51-44bd-97d6-afe19443e8e4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

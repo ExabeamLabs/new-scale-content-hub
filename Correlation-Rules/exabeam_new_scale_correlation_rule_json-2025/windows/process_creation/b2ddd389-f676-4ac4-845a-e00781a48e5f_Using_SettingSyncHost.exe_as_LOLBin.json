@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Using SettingSyncHost.exe as LOLBin",
+      "description": "Detects using SettingSyncHost.exe to run hijacked binary",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": " NOT ((process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\\"))) AND (parent_process_command_line = RGX(\".*cmd\\\\\\.exe\\\\ \\\\/c.*\") AND parent_process_command_line = RGX(\".*RoamDiag\\\\\\.cmd.*\") AND parent_process_command_line = RGX(\".*\\\\-outputpath.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "77d4ba49-955c-4e87-986a-56339540f249"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

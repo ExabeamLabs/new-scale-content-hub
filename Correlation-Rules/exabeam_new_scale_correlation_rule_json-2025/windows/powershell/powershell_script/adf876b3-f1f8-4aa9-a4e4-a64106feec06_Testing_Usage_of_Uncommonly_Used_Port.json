@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Testing Usage of Uncommonly Used Port",
+      "description": "Adversaries may communicate using a protocol and port paring that are typically not associated.\nFor example, HTTPS over port 8088(Citation: Symantec Elfin Mar 2019) or port 587(Citation: Fortinet Agent Tesla April 2018) as opposed to the traditional port 443.\n Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Test\\\\-NetConnection.*\") AND ScriptBlockText = RGX(\".*\\\\-ComputerName\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\-port\\\\ .*\")) AND  NOT ((ScriptBlockText = RGX(\".*\\\\ 443\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\ 80\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c2758fc4-d35f-4108-8357-1c953e60f08e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

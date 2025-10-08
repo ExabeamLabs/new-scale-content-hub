@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - SILENTTRINITY Stager DLL Load",
+      "description": "Detects SILENTTRINITY stager dll loading activity",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_description = RGX(\".*st2stager.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8b8d4b03-2c91-4864-9cb2-8f4fd7003d13"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Child Process Of SQL Server",
+      "description": "Detects suspicious child processes of the SQLServer process. This could indicate potential RCE or SQL Injection.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\sqlservr\\\\\\.exe$\") AND (process_path = RGX(\"\\\\\\\\bash\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\bitsadmin\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\netstat\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\nltest\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\ping\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\sh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\systeminfo\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\tasklist\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wsl\\\\\\.exe$\"))) AND  NOT ((parent_process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Microsoft\\\\ SQL\\\\ Server\\\\\\\\\") AND parent_process_path = RGX(\"DATEV\\\\_DBENGINE\\\\\\\\MSSQL\\\\\\\\Binn\\\\\\\\sqlservr\\\\\\.exe$\") AND process_path = \"C\\:\\\\Windows\\\\System32\\\\cmd\\.exe\" AND process_command_line = RGX(\"^\\\\\"C\\\\:\\\\\\\\Windows\\\\\\\\system32\\\\\\\\cmd\\\\\\.exe\\\\\"\\\\ \")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6995eb53-6bdf-4ff6-ac75-269bc6e6eb45"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

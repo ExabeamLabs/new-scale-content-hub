@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Add Windows Capability Via PowerShell Script",
+      "description": "Detects usage of the \"Add-WindowsCapability\" cmdlet to add Windows capabilities. Notable capabilities could be \"OpenSSH\" and others. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Add\\\\-WindowsCapability\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\-Name\\\\ OpenSSH\\\\\\..*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c6f21d1c-ea92-4303-a2ba-12e5aced00c6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Change to Authentication Method",
+      "description": "Change to authentication method could be an indicator of an attacker adding an auth method to the account so they can have continued access. Note: Unmapped fields: LoggedByService, Category, OperationName",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(LoggedByService = \"Authentication\\ Methods\" AND Category = \"UserManagement\" AND OperationName = \"User\\ registered\\ security\\ info\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "17ac7508-2448-46c9-a6d8-79cf8a6d8003"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

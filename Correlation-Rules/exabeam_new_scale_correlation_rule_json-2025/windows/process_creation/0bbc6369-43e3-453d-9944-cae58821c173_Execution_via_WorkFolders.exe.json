@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Execution via WorkFolders.exe",
+      "description": "Detects using WorkFolders.exe to execute an arbitrary control.exe",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\control\\\\\\.exe$\") AND parent_process_path = RGX(\"\\\\\\\\WorkFolders\\\\\\.exe$\")) AND  NOT (process_path = \"C\\:\\\\Windows\\\\System32\\\\control\\.exe\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c51aec56-b0f0-462e-927e-0766d954b020"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

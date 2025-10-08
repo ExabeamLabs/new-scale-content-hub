@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "UAC Bypass Abusing Winsat Path Parsing - Registry",
+      "description": "Detects the pattern of UAC Bypass using a path parsing issue in winsat.exe (UACMe 52) Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\Root\\\\\\\\InventoryApplicationFile\\\\\\\\winsat\\\\\\.exe\\\\|.*\") AND registry_path = RGX(\"\\\\\\\\LowerCaseLongPath$\") AND Details = RGX(\"^c\\\\:\\\\\\\\users\\\\\\\\\") AND Details = RGX(\"\\\\\\\\appdata\\\\\\\\local\\\\\\\\temp\\\\\\\\system32\\\\\\\\winsat\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e91cdde3-2a1e-4a60-a1f8-5f791d36fabf"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

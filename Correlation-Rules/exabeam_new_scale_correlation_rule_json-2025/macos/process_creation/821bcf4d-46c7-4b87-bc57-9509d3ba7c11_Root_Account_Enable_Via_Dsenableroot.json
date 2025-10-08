@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Root Account Enable Via Dsenableroot",
+      "description": "Detects attempts to enable the root account via \"dsenableroot\"",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_path = RGX(\"\\\\/dsenableroot$\") AND  NOT (process_command_line = RGX(\".*\\\\ \\\\-d\\\\ .*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "41decfe1-c068-4d2b-8eeb-c96e1c27f5d4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

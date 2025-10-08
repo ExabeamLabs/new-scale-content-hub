@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Named Pipe Created Via Mkfifo",
+      "description": "Detects the creation of a new named pipe using the \"mkfifo\" utility",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_path = RGX(\"\\\\/mkfifo$\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "07f87618-58e0-4b50-8cc9-213eee9a1f03"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PCRE.NET Package Image Load",
+      "description": "Detects processes loading modules related to PCRE.NET package Note: Unmapped fields: ImageLoaded",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ImageLoaded = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\ba9ea7344a4a5f591d6e5dc32a13494b\\\\\\\\.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "467d1ea0-ef1a-4836-a9b6-adbec42d0540"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

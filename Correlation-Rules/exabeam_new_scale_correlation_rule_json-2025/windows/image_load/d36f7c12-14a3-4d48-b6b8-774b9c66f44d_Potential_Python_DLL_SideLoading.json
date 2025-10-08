@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Python DLL SideLoading",
+      "description": "Detects potential DLL sideloading of Python DLL files. Note: Unmapped fields: ImageLoaded, Signed",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ImageLoaded = RGX(\"\\\\\\\\python39\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\python310\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\python311\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\python312\\\\\\.dll$\")) AND  NOT (((ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Python3\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Python3\")) OR ImageLoaded = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Programs\\\\\\\\Python\\\\\\\\Python3.*\")) OR (process_product = \"Python\" AND Signed = \"true\" AND process_description = \"Python\" AND process_company = \"Python\\ Software\\ Foundation\")) AND  NOT (ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Microsoft\\\\ Visual\\\\ Studio\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\ProgramData\\\\\\\\Anaconda3\\\\\\\\\") OR (ImageLoaded = RGX(\".*\\\\\\\\cpython\\\\\\\\externals\\\\\\\\.*\") OR ImageLoaded = RGX(\".*\\\\\\\\cpython\\\\\\\\PCbuild\\\\\\\\.*\")) OR (ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Users\") AND ImageLoaded = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\\\\\_MEI.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b60c63dd-cf58-4124-ab3b-4acb9629e96a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

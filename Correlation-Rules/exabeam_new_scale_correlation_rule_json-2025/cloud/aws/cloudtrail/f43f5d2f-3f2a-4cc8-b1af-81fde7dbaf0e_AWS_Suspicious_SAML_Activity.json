@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "AWS Suspicious SAML Activity",
+      "description": "Identifies when suspicious SAML activity has occurred in AWS. An adversary could gain backdoor access via SAML. Note: Unmapped fields: eventSource, eventName",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((eventSource = \"sts\\.amazonaws\\.com\" AND eventName = \"AssumeRoleWithSAML\") OR (eventSource = \"iam\\.amazonaws\\.com\" AND eventName = \"UpdateSAMLProvider\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "24e076e2-e94a-4d7b-bd85-28f0ae5ea948"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Hypervisor Enforced Paging Translation Disabled",
+      "description": "Detects changes to the \"DisableHypervisorEnforcedPagingTranslation\" registry value. Where the it is set to \"1\" in order to disable the Hypervisor Enforced Paging Translation feature.\n Note: Unmapped fields: Details",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\"\\\\\\\\DisableHypervisorEnforcedPagingTranslation$\") AND Details = \"DWORD\\ \\(0x00000001\\)\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3622a999-7dd3-4ac2-8ec1-5322a1501db1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

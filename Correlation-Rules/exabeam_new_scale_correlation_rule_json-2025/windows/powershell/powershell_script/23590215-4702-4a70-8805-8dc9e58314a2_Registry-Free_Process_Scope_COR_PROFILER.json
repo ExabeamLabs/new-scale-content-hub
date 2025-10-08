@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Registry-Free Process Scope COR_PROFILER",
+      "description": "Adversaries may leverage the COR_PROFILER environment variable to hijack the execution flow of programs that load the .NET CLR.\nThe COR_PROFILER is a .NET Framework feature which allows developers to specify an unmanaged (or external of .NET) profiling DLL to be loaded into each .NET process that loads the Common Language Runtime (CLR).\nThese profiliers are designed to monitor, troubleshoot, and debug managed code executed by the .NET CLR.\n(Citation: Microsoft Profiling Mar 2017)\n(Citation: Microsoft COR_PROFILER Feb 2013)\n Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*\\\\$env\\\\:COR\\\\_ENABLE\\\\_PROFILING.*\") AND ScriptBlockText = RGX(\".*\\\\$env\\\\:COR\\\\_PROFILER.*\") AND ScriptBlockText = RGX(\".*\\\\$env\\\\:COR\\\\_PROFILER\\\\_PATH.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ef3db5d2-32ec-4412-8892-9a821af28890"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

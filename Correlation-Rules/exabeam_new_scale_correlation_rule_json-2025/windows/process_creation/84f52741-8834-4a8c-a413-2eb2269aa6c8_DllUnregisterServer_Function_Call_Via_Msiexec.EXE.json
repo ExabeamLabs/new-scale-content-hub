@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "DllUnregisterServer Function Call Via Msiexec.EXE",
+      "description": "Detects MsiExec loading a DLL and calling its DllUnregisterServer function",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\msiexec\\\\\\.exe$\") OR process_original_file_name = \"\\\\msiexec\\.exe\") AND process_command_line = RGX(\".*\\\\ \\\\-z\\\\ .*\") AND process_command_line = RGX(\".*\\\\\\.dll.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "295d22d1-d286-430a-9829-79b7f80a3b2b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

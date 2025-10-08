@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Wmiprvse Wbemcomn DLL Hijack - File",
+      "description": "Detects a threat actor creating a file named `wbemcomn.dll` in the `C:\\Windows\\System32\\wbem\\` directory over the network and loading it for a WMI DLL Hijack scenario.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = \"System\" AND file_path = RGX(\"\\\\\\\\wbem\\\\\\\\wbemcomn\\\\\\.dll$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "84ab37cd-5bee-43e5-9875-d1f6ac81cfe2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

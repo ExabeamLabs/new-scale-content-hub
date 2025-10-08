@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - BabyShark Agent Default URL Pattern",
+      "description": "Detects Baby Shark C2 Framework default communication patterns Note: Unmapped fields: c-uri",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "c-uri = RGX(\".*momyshark\\\\?key\\\\=.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d155fdab-c66e-4dc0-955f-160d86027593"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

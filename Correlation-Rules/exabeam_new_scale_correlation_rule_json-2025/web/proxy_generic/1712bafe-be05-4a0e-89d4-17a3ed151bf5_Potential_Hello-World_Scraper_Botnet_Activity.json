@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Hello-World Scraper Botnet Activity",
+      "description": "Detects network traffic potentially associated with a scraper botnet variant that uses the \"Hello-World/1.0\" user-agent string.\n Note: Unmapped fields: c-useragent, cs-method",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(c-useragent = \"Hello\\-World\\/1\\.0\" AND cs-method = \"GET\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d9345ac1-c143-420c-9d1d-5c050eb90373"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

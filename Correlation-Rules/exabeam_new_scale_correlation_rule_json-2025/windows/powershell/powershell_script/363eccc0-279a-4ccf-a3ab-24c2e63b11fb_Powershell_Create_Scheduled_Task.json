@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Powershell Create Scheduled Task",
+      "description": "Adversaries may abuse the Windows Task Scheduler to perform task scheduling for initial or recurring execution of malicious code Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ScriptBlockText = RGX(\".*New\\\\-ScheduledTaskAction.*\") OR ScriptBlockText = RGX(\".*New\\\\-ScheduledTaskTrigger.*\") OR ScriptBlockText = RGX(\".*New\\\\-ScheduledTaskPrincipal.*\") OR ScriptBlockText = RGX(\".*New\\\\-ScheduledTaskSettingsSet.*\") OR ScriptBlockText = RGX(\".*New\\\\-ScheduledTask.*\") OR ScriptBlockText = RGX(\".*Register\\\\-ScheduledTask.*\")) OR (ScriptBlockText = RGX(\".*Invoke\\\\-CimMethod.*\") AND ScriptBlockText = RGX(\".*\\\\-ClassName.*\") AND ScriptBlockText = RGX(\".*PS\\\\_ScheduledTask.*\") AND ScriptBlockText = RGX(\".*\\\\-NameSpace.*\") AND ScriptBlockText = RGX(\".*Root\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\TaskScheduler.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c98ebf0c-ad67-410d-a3e6-30f3189acb82"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

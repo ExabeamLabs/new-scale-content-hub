@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "LSASS Process Memory Dump Creation Via Taskmgr.EXE",
+      "description": "Detects the creation of an \"lsass.dmp\" file by the taskmgr process. This indicates a manual dumping of the LSASS.exe process memory using Windows Task Manager.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\system32\\\\\\\\taskmgr\\\\\\.exe$\") OR process_path = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\taskmgr\\\\\\.exe$\")) AND (file_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") AND file_path = RGX(\".*\\\\\\\\lsass.*\") AND file_path = RGX(\".*\\\\\\.DMP.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6749320c-56be-4aea-83a5-9f5331d1e36d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

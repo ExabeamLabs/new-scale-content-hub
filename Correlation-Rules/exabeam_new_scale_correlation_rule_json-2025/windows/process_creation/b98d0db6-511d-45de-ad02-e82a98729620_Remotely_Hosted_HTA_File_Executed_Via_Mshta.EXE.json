@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remotely Hosted HTA File Executed Via Mshta.EXE",
+      "description": "Detects execution of the \"mshta\" utility with an argument containing the \"http\" keyword, which could indicate that an attacker is executing a remotely hosted malicious hta file",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR process_original_file_name = \"MSHTA\\.EXE\") AND (process_command_line = RGX(\".*http\\\\:\\\\/\\\\/.*\") OR process_command_line = RGX(\".*https\\\\:\\\\/\\\\/.*\") OR process_command_line = RGX(\".*ftp\\\\:\\\\/\\\\/.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "df1f7798-943a-4ac3-805e-de5d017c96fd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

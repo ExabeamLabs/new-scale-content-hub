@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "System Network Discovery - Linux",
+      "description": "Detects enumeration of local network configuration",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/firewall\\\\-cmd$\") OR process_path = RGX(\"\\\\/ufw$\") OR process_path = RGX(\"\\\\/iptables$\") OR process_path = RGX(\"\\\\/netstat$\") OR process_path = RGX(\"\\\\/ss$\") OR process_path = RGX(\"\\\\/ip$\") OR process_path = RGX(\"\\\\/ifconfig$\") OR process_path = RGX(\"\\\\/systemd\\\\-resolve$\") OR process_path = RGX(\"\\\\/route$\")) OR process_command_line = RGX(\".*\\\\/etc\\\\/resolv\\\\\\.conf.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "43fdf2ac-a5a5-44ed-9442-3fca61fec557"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

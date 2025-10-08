@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Suspicious Child Process Of WinRAR.EXE",
+      "description": "Detects potentially suspicious child processes of WinRAR.exe.",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\WinRAR\\\\\\.exe$\") AND ((process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\")) OR (process_original_file_name = \"Cmd\\.Exe\" OR process_original_file_name = \"cscript\\.exe\" OR process_original_file_name = \"mshta\\.exe\" OR process_original_file_name = \"PowerShell\\.EXE\" OR process_original_file_name = \"pwsh\\.dll\" OR process_original_file_name = \"regsvr32\\.exe\" OR process_original_file_name = \"RUNDLL32\\.EXE\" OR process_original_file_name = \"wscript\\.exe\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1b6d4d8d-ff63-4d95-b338-a19dafaabc89"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

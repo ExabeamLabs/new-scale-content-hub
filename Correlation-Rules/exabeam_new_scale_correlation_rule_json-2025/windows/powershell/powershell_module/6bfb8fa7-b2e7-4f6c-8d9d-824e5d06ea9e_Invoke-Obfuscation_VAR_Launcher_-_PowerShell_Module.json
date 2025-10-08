@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation VAR+ Launcher - PowerShell Module",
+      "description": "Detects Obfuscated use of Environment Variables to execute PowerShell Note: Unmapped fields: Payload",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "Payload = RGX(\"cmd.{0,5}(?:/c|/r)(?:\\s|)\"set\\s[a-zA-Z]{3,6}.*(?:{\\d}){1,}\\\"\\s+?-f(?:.*)){1,}.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "205433e8-76f3-452c-8291-6293c742d105"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

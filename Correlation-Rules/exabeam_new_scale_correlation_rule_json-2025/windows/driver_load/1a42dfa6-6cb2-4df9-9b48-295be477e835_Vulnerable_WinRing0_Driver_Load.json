@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Vulnerable WinRing0 Driver Load",
+      "description": "Detects the load of a signed WinRing0 driver often used by threat actors, crypto miners (XMRIG) or malware for privilege escalation Note: Unmapped fields: ImageLoaded",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_hash = RGX(\".*IMPHASH\\\\=D41FA95D4642DC981F10DE36F4DC8CD7.*\") OR (ImageLoaded = RGX(\"\\\\\\\\WinRing0x64\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\WinRing0\\\\\\.sys$\") OR ImageLoaded = RGX(\"\\\\\\\\WinRing0\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\WinRing0x64\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\winring00x64\\\\\\.sys$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a34d30cb-b202-4f13-828c-ddffed30b1ff"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PrintBrm ZIP Creation of Extraction",
+      "description": "Detects the execution of the LOLBIN PrintBrm.exe, which can be used to create or extract ZIP files. PrintBrm.exe should not be run on a normal workstation.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\PrintBrm\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\ \\\\-f.*\") AND process_command_line = RGX(\".*\\\\\\.zip.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c1cf9da9-39c0-4fe6-89a5-4d2c16e3df3c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows Event Log Access Tampering Via Registry",
+      "description": "Detects changes to the Windows EventLog channel permission values. It focuses on changes to the Security Descriptor Definition Language (SDDL) string, as modifications to these values can restrict access to specific users or groups, potentially aiding in defense evasion by controlling who can view or modify a event log channel. Upon execution, the user shouldn't be able to access the event log channel via the event viewer or via utilities such as \"Get-EventLog\" or \"wevtutil\".\n Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((registry_path = RGX(\".*\\\\\\\\SYSTEM\\\\\\\\CurrentControlSet\\\\\\\\Services\\\\\\\\EventLog\\\\\\\\.*\") AND registry_path = RGX(\"\\\\\\\\CustomSD$\")) OR ((registry_path = RGX(\".*\\\\\\\\Policies\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\EventLog\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\WINEVT\\\\\\\\Channels.*\")) AND registry_path = RGX(\"\\\\\\\\ChannelAccess$\"))) AND (Details = RGX(\".*D\\\\:\\\\(D\\\\;.*\") OR (Details = RGX(\".*D\\\\:\\\\(.*\") AND Details = RGX(\".*\\\\)\\\\(D\\\\;.*\"))) AND  NOT (process_path = \"C\\:\\\\Windows\\\\servicing\\\\TrustedInstaller\\.exe\" OR (process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\WinSxS\\\\\\\\\") AND process_path = RGX(\"\\\\\\\\TiWorker\\\\\\.exe$\"))) AND  NOT (process_path = \"\" OR process_path = \"None\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ac97f8f0-a635-41f4-b290-4225e30fd945"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

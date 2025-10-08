@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation Via Use Clip - PowerShell Module",
+      "description": "Detects Obfuscated Powershell via use Clip.exe in Scripts Note: Unmapped fields: Payload",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "Payload = RGX(\"(?i)echo.*clip.*&&.*(Clipboard|i`?n`?v`?o`?k`?e`?)\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "519b91a7-3b98-4b1d-8fab-60e80c6b78d5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

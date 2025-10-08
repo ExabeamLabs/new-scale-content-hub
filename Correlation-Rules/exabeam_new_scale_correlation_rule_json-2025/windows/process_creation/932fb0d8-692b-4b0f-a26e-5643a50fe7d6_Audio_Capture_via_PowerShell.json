@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Audio Capture via PowerShell",
+      "description": "Detects audio capture via PowerShell Cmdlet.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*WindowsAudioDevice\\\\-Powershell\\\\-Cmdlet.*\") OR process_command_line = RGX(\".*Toggle\\\\-AudioDevice.*\") OR process_command_line = RGX(\".*Get\\\\-AudioDevice\\\\ .*\") OR process_command_line = RGX(\".*Set\\\\-AudioDevice\\\\ .*\") OR process_command_line = RGX(\".*Write\\\\-AudioDevice\\\\ .*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2ede38e0-6088-4cd5-b2e2-2bd532b02dc1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

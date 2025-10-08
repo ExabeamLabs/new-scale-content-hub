@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "DLL Load By System Process From Suspicious Locations",
+      "description": "Detects when a system process (i.e. located in system32, syswow64, etc.) loads a DLL from a suspicious location or a location with permissive permissions such as \"C:\\Users\\Public\" Note: Unmapped fields: ImageLoaded",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\\") AND (ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\PerfLogs\\\\\\\\\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "61ac8b6c-a478-46d1-9876-e25972b7c479"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

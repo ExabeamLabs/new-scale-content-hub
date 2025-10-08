@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Netcat Reverse Shell Execution",
+      "description": "Detects execution of netcat with the \"-e\" flag followed by common shells. This could be a sign of a potential reverse shell setup.",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/nc$\") OR process_path = RGX(\"\\\\/ncat$\")) AND (process_command_line = RGX(\".*\\\\ \\\\-c\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-e\\\\ .*\")) AND (process_command_line = RGX(\".*\\\\ ash.*\") OR process_command_line = RGX(\".*\\\\ bash.*\") OR process_command_line = RGX(\".*\\\\ bsh.*\") OR process_command_line = RGX(\".*\\\\ csh.*\") OR process_command_line = RGX(\".*\\\\ ksh.*\") OR process_command_line = RGX(\".*\\\\ pdksh.*\") OR process_command_line = RGX(\".*\\\\ sh.*\") OR process_command_line = RGX(\".*\\\\ tcsh.*\") OR process_command_line = RGX(\".*\\\\/bin\\\\/ash.*\") OR process_command_line = RGX(\".*\\\\/bin\\\\/bash.*\") OR process_command_line = RGX(\".*\\\\/bin\\\\/bsh.*\") OR process_command_line = RGX(\".*\\\\/bin\\\\/csh.*\") OR process_command_line = RGX(\".*\\\\/bin\\\\/ksh.*\") OR process_command_line = RGX(\".*\\\\/bin\\\\/pdksh.*\") OR process_command_line = RGX(\".*\\\\/bin\\\\/sh.*\") OR process_command_line = RGX(\".*\\\\/bin\\\\/tcsh.*\") OR process_command_line = RGX(\".*\\\\/bin\\\\/zsh.*\") OR process_command_line = RGX(\".*\\\\$IFSash.*\") OR process_command_line = RGX(\".*\\\\$IFSbash.*\") OR process_command_line = RGX(\".*\\\\$IFSbsh.*\") OR process_command_line = RGX(\".*\\\\$IFScsh.*\") OR process_command_line = RGX(\".*\\\\$IFSksh.*\") OR process_command_line = RGX(\".*\\\\$IFSpdksh.*\") OR process_command_line = RGX(\".*\\\\$IFSsh.*\") OR process_command_line = RGX(\".*\\\\$IFStcsh.*\") OR process_command_line = RGX(\".*\\\\$IFSzsh.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c6566f7e-3f99-4073-a722-ee112594b4b3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

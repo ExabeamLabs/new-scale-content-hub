@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Renamed SysInternals DebugView Execution",
+      "description": "Detects suspicious renamed SysInternals DebugView execution",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_product = \"Sysinternals\\ DebugView\" AND  NOT ((process_original_file_name = \"Dbgview\\.exe\" AND process_path = RGX(\"\\\\\\\\Dbgview\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6acb2cb7-d5fe-4aac-ab8f-a64b75902566"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

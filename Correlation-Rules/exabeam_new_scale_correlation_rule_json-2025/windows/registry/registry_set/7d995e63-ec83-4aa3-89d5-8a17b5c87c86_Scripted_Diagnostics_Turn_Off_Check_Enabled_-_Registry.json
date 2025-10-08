@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Scripted Diagnostics Turn Off Check Enabled - Registry",
+      "description": "Detects enabling TurnOffCheck which can be used to bypass defense of MSDT Follina vulnerability Note: Unmapped fields: Details",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\"\\\\\\\\Policies\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\ScriptedDiagnostics\\\\\\\\TurnOffCheck$\") AND Details = \"DWORD\\ \\(0x00000001\\)\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2ac75d44-6340-428d-a449-14237d21c28b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

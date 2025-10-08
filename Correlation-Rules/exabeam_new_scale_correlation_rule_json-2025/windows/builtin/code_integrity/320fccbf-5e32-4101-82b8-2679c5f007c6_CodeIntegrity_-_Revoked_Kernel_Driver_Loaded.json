@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "CodeIntegrity - Revoked Kernel Driver Loaded",
+      "description": "Detects the load of a revoked kernel driver",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 3021 OR event_id = 3022)",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "cf3834ca-0dfd-4aba-a290-3d1e35ea992d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

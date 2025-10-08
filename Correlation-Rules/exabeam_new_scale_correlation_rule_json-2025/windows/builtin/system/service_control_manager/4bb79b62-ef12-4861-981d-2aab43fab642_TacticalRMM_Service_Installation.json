@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "TacticalRMM Service Installation",
+      "description": "Detects a TacticalRMM service installation. Tactical RMM is a remote monitoring & management tool. Note: Unmapped fields: Provider_Name, ImagePath, ServiceName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((Provider_Name = \"Service\\ Control\\ Manager\" AND event_id = 7045) AND (ImagePath = RGX(\".*tacticalrmm\\\\\\.exe.*\") OR ServiceName = RGX(\".*TacticalRMM\\\\ Agent\\\\ Service.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9b5f6f77-d11d-4bc2-bde3-43688e075ae8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Persistence Via DLLPathOverride",
+      "description": "Detects when an attacker adds a new \"DLLPathOverride\" value to the \"Natural Language\" key in order to achieve persistence which will get invoked by \"SearchIndexer.exe\" process",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\SYSTEM\\\\\\\\CurrentControlSet\\\\\\\\Control\\\\\\\\ContentIndex\\\\\\\\Language\\\\\\\\.*\") AND (registry_path = RGX(\".*\\\\\\\\StemmerDLLPathOverride.*\") OR registry_path = RGX(\".*\\\\\\\\WBDLLPathOverride.*\") OR registry_path = RGX(\".*\\\\\\\\StemmerClass.*\") OR registry_path = RGX(\".*\\\\\\\\WBreakerClass.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8ccc5ced-3bcb-4484-8bfe-9da9dc8235a1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

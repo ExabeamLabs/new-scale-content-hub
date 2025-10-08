@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential DLL Sideloading Of DBGHELP.DLL",
+      "description": "Detects potential DLL sideloading of \"dbghelp.dll\" Note: Unmapped fields: ImageLoaded",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ImageLoaded = RGX(\"\\\\\\\\dbghelp\\\\\\.dll$\") AND  NOT ((ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\SoftwareDistribution\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\SystemTemp\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\WinSxS\\\\\\\\\"))) AND  NOT ((ImageLoaded = RGX(\"\\\\\\\\Anaconda3\\\\\\\\Lib\\\\\\\\site\\\\-packages\\\\\\\\vtrace\\\\\\\\platforms\\\\\\\\windll\\\\\\\\amd64\\\\\\\\dbghelp\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\Anaconda3\\\\\\\\Lib\\\\\\\\site\\\\-packages\\\\\\\\vtrace\\\\\\\\platforms\\\\\\\\windll\\\\\\\\i386\\\\\\\\dbghelp\\\\\\.dll$\")) OR (ImageLoaded = RGX(\"\\\\\\\\Epic\\\\ Games\\\\\\\\Launcher\\\\\\\\Engine\\\\\\\\Binaries\\\\\\\\ThirdParty\\\\\\\\DbgHelp\\\\\\\\dbghelp\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\Epic\\\\ Games\\\\\\\\MagicLegends\\\\\\\\x86\\\\\\\\dbghelp\\\\\\.dll$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "13d0e15b-6f6a-4f9a-bdd1-22e381630b14"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Child Process Created as System",
+      "description": "Detection of child processes spawned with SYSTEM privileges by parents with LOCAL SERVICE or NETWORK SERVICE accounts",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((parent_process_user = RGX(\".*AUTHORI.*\") OR parent_process_user = RGX(\".*AUTORI.*\")) AND (parent_process_user = RGX(\"\\\\\\\\NETWORK\\\\ SERVICE$\") OR parent_process_user = RGX(\"\\\\\\\\LOCAL\\\\ SERVICE$\")) AND (user = RGX(\".*AUTHORI.*\") OR user = RGX(\".*AUTORI.*\")) AND (user = RGX(\"\\\\\\\\SYSTEM$\") OR user = RGX(\"\\\\\\\\Syst\u00e8me$\") OR user = RGX(\"\\\\\\\\\u0421\u0418\u0421\u0422\u0415\u041c\u0410$\")) AND (process_integrity_level = \"System\" OR process_integrity_level = \"S\\-1\\-16\\-16384\")) AND  NOT ((process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") AND process_command_line = RGX(\".*DavSetCookie.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a02831e6-f0c6-467e-93c8-e26e967bb689"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

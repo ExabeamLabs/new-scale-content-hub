@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Azure Subscription Permission Elevation Via AuditLogs",
+      "description": "Detects when a user has been elevated to manage all Azure Subscriptions.\nThis change should be investigated immediately if it isn't planned.\nThis setting could allow an attacker access to Azure subscriptions in your environment.\n Note: Unmapped fields: Category, OperationName",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Category = \"Administrative\" AND OperationName = \"Assigns\\ the\\ caller\\ to\\ user\\ access\\ admin\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7fa849cb-f5dc-4997-8aa4-52d23d51e510"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

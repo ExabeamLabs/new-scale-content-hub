@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential WWlib.DLL Sideloading",
+      "description": "Detects potential DLL sideloading of \"wwlib.dll\" Note: Unmapped fields: ImageLoaded",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ImageLoaded = RGX(\"\\\\\\\\wwlib\\\\\\.dll$\") AND  NOT (((process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Microsoft\\\\ Office\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Microsoft\\\\ Office\\\\\\\\\")) AND process_path = RGX(\"\\\\\\\\winword\\\\\\.exe$\") AND (ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Microsoft\\\\ Office\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Microsoft\\\\ Office\\\\\\\\\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5d3a6975-b084-4524-ad94-9c975216f814"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

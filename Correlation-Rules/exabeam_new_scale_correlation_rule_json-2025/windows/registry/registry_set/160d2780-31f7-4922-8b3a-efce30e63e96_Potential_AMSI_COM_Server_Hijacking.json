@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential AMSI COM Server Hijacking",
+      "description": "Detects changes to the AMSI come server registry key in order disable AMSI scanning functionalities. When AMSI attempts to starts its COM component, it will query its registered CLSID and return a non-existent COM server. This causes a load failure and prevents any scanning methods from being accessed, ultimately rendering AMSI useless Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\"\\\\\\\\CLSID\\\\\\\\\\\\{fdb00e52\\\\-a214\\\\-4aa1\\\\-8fba\\\\-4357bb0072ec\\\\}\\\\\\\\InProcServer32\\\\\\\\\\\\(Default\\\\)$\") AND  NOT (Details = \"\\%windir\\%\\\\system32\\\\amsi\\.dll\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b2b5ba1d-c4db-4534-9880-6a29bcd824cf"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Csc.EXE Execution Form Potentially Suspicious Parent",
+      "description": "Detects a potentially suspicious parent of \"csc.exe\", which could be a sign of payload delivery.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\csc\\\\\\.exe$\") OR process_original_file_name = \"csc\\.exe\") AND ((parent_process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\excel\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\onenote\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\outlook\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\powerpnt\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\winword\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\")) OR ((parent_process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\")) AND (parent_process_command_line = RGX(\".*\\\\-Encoded\\\\ .*\") OR parent_process_command_line = RGX(\".*FromBase64String.*\"))) OR (parent_process_command_line = RGX(\"([Pp]rogram[Dd]ata|%([Ll]ocal)?[Aa]pp[Dd]ata%|\\[Aa]pp[Dd]ata\\([Ll]ocal([Ll]ow)?|[Rr]oaming))\\[^\\]{1,256}$\") OR (parent_process_command_line = RGX(\".*\\\\:\\\\\\\\PerfLogs\\\\\\\\.*\") OR parent_process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR parent_process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\") OR parent_process_command_line = RGX(\".*\\\\\\\\Temporary\\\\ Internet.*\")) OR (parent_process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND parent_process_command_line = RGX(\".*\\\\\\\\Favorites\\\\\\\\.*\")) OR (parent_process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND parent_process_command_line = RGX(\".*\\\\\\\\Favourites\\\\\\\\.*\")) OR (parent_process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND parent_process_command_line = RGX(\".*\\\\\\\\Contacts\\\\\\\\.*\")) OR (parent_process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND parent_process_command_line = RGX(\".*\\\\\\\\Pictures\\\\\\\\.*\")))) AND  NOT ((parent_process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\\") OR parent_process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\\")) OR parent_process_path = \"C\\:\\\\Windows\\\\System32\\\\sdiagnhost\\.exe\" OR parent_process_path = \"C\\:\\\\Windows\\\\System32\\\\inetsrv\\\\w3wp\\.exe\") AND  NOT (parent_process_path = \"C\\:\\\\ProgramData\\\\chocolatey\\\\choco\\.exe\" OR parent_process_command_line = RGX(\".*\\\\\\\\ProgramData\\\\\\\\Microsoft\\\\\\\\Windows\\\\ Defender\\\\ Advanced\\\\ Threat\\\\ Protection.*\") OR (parent_process_command_line = RGX(\".*JwB7ACIAZgBhAGkAbABlAGQAIgA6AHQAcgB1AGUALAAiAG0AcwBnACIAOgAiAEEAbgBzAGkAYgBsAGUAIAByAGUAcQB1AGkAcgBlAHMAIABQAG8AdwBlAHIAUwBoAGUAbABsACAAdgAzAC4AMAAgAG8AcgAgAG4AZQB3AGUAcgAiAH0AJw.*\") OR parent_process_command_line = RGX(\".*cAewAiAGYAYQBpAGwAZQBkACIAOgB0AHIAdQBlACwAIgBtAHMAZwAiADoAIgBBAG4AcwBpAGIAbABlACAAcgBlAHEAdQBpAHIAZQBzACAAUABvAHcAZQByAFMAaABlAGwAbAAgAHYAMwAuADAAIABvAHIAIABuAGUAdwBlAHIAIgB9ACcA.*\") OR parent_process_command_line = RGX(\".*nAHsAIgBmAGEAaQBsAGUAZAAiADoAdAByAHUAZQAsACIAbQBzAGcAIgA6ACIAQQBuAHMAaQBiAGwAZQAgAHIAZQBxAHUAaQByAGUAcwAgAFAAbwB3AGUAcgBTAGgAZQBsAGwAIAB2ADMALgAwACAAbwByACAAbgBlAHcAZQByACIAfQAnA.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "59987285-f823-46fa-ae86-2deeee972699"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Uncommon File Creation By Mysql Daemon Process",
+      "description": "Detects the creation of files with scripting or executable extensions by Mysql daemon.\nWhich could be an indicator of \"User Defined Functions\" abuse to download malware.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\mysqld\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mysqld\\\\-nt\\\\\\.exe$\")) AND (file_path = RGX(\"\\\\\\.bat$\") OR file_path = RGX(\"\\\\\\.dat$\") OR file_path = RGX(\"\\\\\\.dll$\") OR file_path = RGX(\"\\\\\\.exe$\") OR file_path = RGX(\"\\\\\\.ps1$\") OR file_path = RGX(\"\\\\\\.psm1$\") OR file_path = RGX(\"\\\\\\.vbe$\") OR file_path = RGX(\"\\\\\\.vbs$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0ae5a94a-6a68-4291-b064-00d2f7209387"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

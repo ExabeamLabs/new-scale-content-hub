@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Execute From Alternate Data Streams",
+      "description": "Detects execution from an Alternate Data Stream (ADS). Adversaries may use NTFS file attributes to hide their malicious data in order to evade detection",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_command_line = RGX(\".*txt\\\\:.*\") AND (((process_command_line = RGX(\".*type\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\>\\\\ .*\")) OR (process_command_line = RGX(\".*makecab\\\\ .*\") AND process_command_line = RGX(\".*\\\\\\.cab.*\")) OR (process_command_line = RGX(\".*reg\\\\ .*\") AND process_command_line = RGX(\".*\\\\ export\\\\ .*\")) OR (process_command_line = RGX(\".*regedit\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\/E\\\\ .*\")) OR (process_command_line = RGX(\".*esentutl\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\/y\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\/d\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\/o\\\\ .*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2709a9de-766a-4286-913a-c77c7f0c99f1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

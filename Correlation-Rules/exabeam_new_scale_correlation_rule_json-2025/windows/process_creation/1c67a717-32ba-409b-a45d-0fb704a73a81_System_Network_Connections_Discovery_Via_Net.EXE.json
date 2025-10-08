@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "System Network Connections Discovery Via Net.EXE",
+      "description": "Adversaries may attempt to get a listing of network connections to or from the compromised system they are currently accessing or from remote systems by querying for information over the network.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\net\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\net1\\\\\\.exe$\")) OR (process_original_file_name = \"net\\.exe\" OR process_original_file_name = \"net1\\.exe\")) AND ((process_command_line = RGX(\"\\\\ use$\") OR process_command_line = RGX(\"\\\\ sessions$\")) OR (process_command_line = RGX(\".*\\\\ use\\\\ .*\") OR process_command_line = RGX(\".*\\\\ sessions\\\\ .*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "cee8a402-8fba-4698-9da6-58a6f78db3ef"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

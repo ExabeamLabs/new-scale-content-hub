@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Uncommon Child Process Of Appvlp.EXE",
+      "description": "Detects uncommon child processes of Appvlp.EXE\nAppvlp or the Application Virtualization Utility is included with Microsoft Office. Attackers are able to abuse \"AppVLP\" to execute shell commands.\nNormally, this binary is used for Application Virtualization, but it can also be abused to circumvent the ASR file path rule folder\nor to mark a file as a system file.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "parent_process_path = RGX(\"\\\\\\\\appvlp\\\\\\.exe$\") AND  NOT ((process_path = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\rundll32\\\\\\.exe$\") OR process_path = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\rundll32\\\\\\.exe$\"))) AND  NOT ((process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Microsoft\\\\ Office.*\") AND process_path = RGX(\"\\\\\\\\msoasb\\\\\\.exe$\")) OR ((process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Microsoft\\\\ Office.*\") AND process_path = RGX(\".*\\\\\\\\SkypeSrv\\\\\\\\.*\")) AND process_path = RGX(\"\\\\\\\\SKYPESERVER\\\\\\.EXE$\")) OR (process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Microsoft\\\\ Office.*\") AND process_path = RGX(\"\\\\\\\\MSOUC\\\\\\.EXE$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "da756324-1cbf-404d-a0a0-f6d52af08327"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "File and Directory Discovery - MacOS",
+      "description": "Detects usage of system utilities to discover files and directories",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = \"\\/usr\\/bin\\/file\" AND process_command_line = RGX(\"(.){200,}\")) OR (process_path = \"\\/bin\\/ls\" AND process_command_line = RGX(\".*\\\\-R.*\")) OR process_path = \"\\/usr\\/bin\\/find\" OR process_path = \"\\/usr\\/bin\\/mdfind\" OR process_path = \"\\/tree\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f3bb4e6b-0790-48d2-8c0f-c79ccb0cfc88"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

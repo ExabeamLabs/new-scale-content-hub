@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows Defender Exclusions Added",
+      "description": "Detects the Setting of Windows Defender Exclusions Note: Unmapped fields: NewValue",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 5007 AND NewValue = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\ Defender\\\\\\\\Exclusions.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "36b2e08f-88e2-43a1-bf23-ec07c6ea03dc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

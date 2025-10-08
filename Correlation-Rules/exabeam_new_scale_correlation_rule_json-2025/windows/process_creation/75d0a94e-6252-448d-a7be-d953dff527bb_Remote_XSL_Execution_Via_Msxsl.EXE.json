@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remote XSL Execution Via Msxsl.EXE",
+      "description": "Detects the execution of the \"msxsl\" binary with an \"http\" keyword in the command line. This might indicate a potential remote execution of XSL files.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\msxsl\\\\\\.exe$\") AND process_command_line = RGX(\".*http.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b7ed73fb-c745-45a2-a143-776b00b13127"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

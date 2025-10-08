@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Use Get-NetTCPConnection - PowerShell Module",
+      "description": "Adversaries may attempt to get a listing of network connections to or from the compromised system they are currently accessing or from remote systems by querying for information over the network. Note: Unmapped fields: ContextInfo",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ContextInfo = RGX(\".*Get\\\\-NetTCPConnection.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8cb63bea-6fd6-454e-8583-af566ad3b5dc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Activity From Anonymous IP Address",
+      "description": "Identifies that users were active from an IP address that has been identified as an anonymous proxy IP address. Note: Unmapped fields: riskEventType",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "riskEventType = \"riskyIPAddress\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7fd61fa6-4963-4736-8c18-bd4f0d4fa760"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

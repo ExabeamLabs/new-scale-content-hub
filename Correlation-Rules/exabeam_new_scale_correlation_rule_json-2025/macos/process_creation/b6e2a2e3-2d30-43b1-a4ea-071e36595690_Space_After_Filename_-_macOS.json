@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Space After Filename - macOS",
+      "description": "Detects attempts to masquerade as legitimate files by adding a space to the end of the filename.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\"\\\\ $\") OR process_path = RGX(\"\\\\ $\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "621ae97a-008f-495b-ab3c-845371c5e7da"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

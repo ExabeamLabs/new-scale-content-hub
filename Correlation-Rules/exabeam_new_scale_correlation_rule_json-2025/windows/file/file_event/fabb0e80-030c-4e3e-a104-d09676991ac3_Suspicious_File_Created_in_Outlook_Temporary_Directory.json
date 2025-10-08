@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious File Created in Outlook Temporary Directory",
+      "description": "Detects the creation of files with suspicious file extensions in the temporary directory that Outlook uses when opening attachments.\nThis can be used to detect spear-phishing campaigns that use suspicious files as attachments, which may contain malicious code.\n",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((file_path = RGX(\"\\\\\\.cpl$\") OR file_path = RGX(\"\\\\\\.hta$\") OR file_path = RGX(\"\\\\\\.iso$\") OR file_path = RGX(\"\\\\\\.rdp$\") OR file_path = RGX(\"\\\\\\.svg$\") OR file_path = RGX(\"\\\\\\.vba$\") OR file_path = RGX(\"\\\\\\.vbe$\") OR file_path = RGX(\"\\\\\\.vbs$\")) AND ((file_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Packages\\\\\\\\Microsoft\\\\\\.Outlook\\\\_.*\") OR file_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Microsoft\\\\\\\\Olk\\\\\\\\Attachments\\\\\\\\.*\")) OR (file_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\.*\") AND file_path = RGX(\".*\\\\\\\\Content\\\\\\.Outlook\\\\\\\\.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "78be66cb-5afd-4e30-81d2-47017eb2b017"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

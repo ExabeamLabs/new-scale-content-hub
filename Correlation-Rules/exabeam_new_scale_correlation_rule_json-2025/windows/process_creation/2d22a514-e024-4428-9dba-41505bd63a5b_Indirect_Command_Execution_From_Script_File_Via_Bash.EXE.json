@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Indirect Command Execution From Script File Via Bash.EXE",
+      "description": "Detects execution of Microsoft bash launcher without any flags to execute the content of a bash script directly.\nThis can be used to potentially bypass defenses and execute Linux or Windows-based binaries directly via bash.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\bash\\\\\\.exe$\") OR process_path = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\bash\\\\\\.exe$\")) OR process_original_file_name = \"Bash\\.exe\") AND  NOT ((process_command_line = RGX(\".*bash\\\\\\.exe\\\\ \\\\-.*\") OR process_command_line = RGX(\".*bash\\\\ \\\\-.*\")) OR process_command_line = \"None\" OR process_command_line = \"\" OR (process_command_line = \"bash\\.exe\" OR process_command_line = \"bash\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7ea9fc22-fc66-47b5-9c90-863c4456743f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

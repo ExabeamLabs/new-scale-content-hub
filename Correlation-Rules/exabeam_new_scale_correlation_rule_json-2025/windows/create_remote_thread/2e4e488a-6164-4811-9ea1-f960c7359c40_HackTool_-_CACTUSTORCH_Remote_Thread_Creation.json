@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - CACTUSTORCH Remote Thread Creation",
+      "description": "Detects remote thread creation from CACTUSTORCH as described in references. Note: Unmapped fields: SourceImage, TargetImage, StartModule",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((SourceImage = RGX(\"\\\\\\\\System32\\\\\\\\cscript\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\System32\\\\\\\\wscript\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\System32\\\\\\\\mshta\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\winword\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\excel\\\\\\.exe$\")) AND TargetImage = RGX(\".*\\\\\\\\SysWOW64\\\\\\\\.*\") AND StartModule = \"None\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ee41bb2d-48d9-4480-bd8c-9116cbc40cb6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

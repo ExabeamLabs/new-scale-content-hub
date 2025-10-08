@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New RUN Key Pointing to Suspicious Folder",
+      "description": "Detects suspicious new RUN key element pointing to an executable in a suspicious folder Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\Software\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Run.*\") OR registry_path = RGX(\".*\\\\\\\\Software\\\\\\\\WOW6432Node\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Run.*\") OR registry_path = RGX(\".*\\\\\\\\Software\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\Explorer\\\\\\\\Run.*\")) AND ((Details = RGX(\".*\\\\:\\\\\\\\Perflogs.*\") OR Details = RGX(\".*\\\\:\\\\\\\\ProgramData\\\\.*\") OR Details = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Temp.*\") OR Details = RGX(\".*\\\\:\\\\\\\\Temp.*\") OR Details = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp.*\") OR Details = RGX(\".*\\\\\\\\AppData\\\\\\\\Roaming.*\") OR Details = RGX(\".*\\\\:\\\\\\\\\\\\$Recycle\\\\\\.bin.*\") OR Details = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\Default.*\") OR Details = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\public.*\") OR Details = RGX(\".*\\\\%temp\\\\%.*\") OR Details = RGX(\".*\\\\%tmp\\\\%.*\") OR Details = RGX(\".*\\\\%Public\\\\%.*\") OR Details = RGX(\".*\\\\%AppData\\\\%.*\")) OR ((Details = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND (Details = RGX(\".*\\\\\\\\Favorites.*\") OR Details = RGX(\".*\\\\\\\\Favourites.*\") OR Details = RGX(\".*\\\\\\\\Contacts.*\") OR Details = RGX(\".*\\\\\\\\Music.*\") OR Details = RGX(\".*\\\\\\\\Pictures.*\") OR Details = RGX(\".*\\\\\\\\Documents.*\") OR Details = RGX(\".*\\\\\\\\Photos.*\"))))) AND  NOT ((registry_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\RunOnce\\\\\\\\.*\") AND process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\SoftwareDistribution\\\\\\\\Download\\\\\\\\\") AND (Details = RGX(\".*rundll32\\\\\\.exe\\\\ .*\") AND Details = RGX(\".*C\\\\:\\\\\\\\WINDOWS\\\\\\\\system32\\\\\\\\advpack\\\\\\.dll\\\\,DelNodeRunDLL32.*\")) AND (Details = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") OR Details = RGX(\".*C\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "be8449d8-151f-4682-a9cb-80a9485b3728"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "AWS STS GetSessionToken Misuse",
+      "description": "Identifies the suspicious use of GetSessionToken. Tokens could be created and used by attackers to move laterally and escalate privileges. Note: Unmapped fields: eventSource, eventName, userIdentity.type",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(eventSource = \"sts\\.amazonaws\\.com\" AND eventName = \"GetSessionToken\" AND userIdentity.type = \"IAMUser\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "50b76bd8-20f1-498d-bfd4-b5697465b53b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

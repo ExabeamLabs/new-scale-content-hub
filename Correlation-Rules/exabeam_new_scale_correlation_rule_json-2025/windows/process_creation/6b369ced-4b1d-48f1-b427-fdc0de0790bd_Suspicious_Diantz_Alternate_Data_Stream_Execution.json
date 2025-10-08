@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Diantz Alternate Data Stream Execution",
+      "description": "Compress target file into a cab file stored in the Alternate Data Stream (ADS) of the target file.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*diantz\\\\\\.exe.*\") AND process_command_line = RGX(\".*\\\\\\.cab.*\")) AND process_command_line = RGX(\":[^\\]\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2adcd8b1-deac-4924-bc27-ea6e9f648f29"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

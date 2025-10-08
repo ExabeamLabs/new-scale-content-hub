@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Discovery Activity Using Find - MacOS",
+      "description": "Detects usage of \"find\" binary in a suspicious manner to perform discovery",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/find$\") AND (process_command_line = RGX(\".*\\\\-perm\\\\ \\\\-4000.*\") OR process_command_line = RGX(\".*\\\\-perm\\\\ \\\\-2000.*\") OR process_command_line = RGX(\".*\\\\-perm\\\\ 0777.*\") OR process_command_line = RGX(\".*\\\\-perm\\\\ \\\\-222.*\") OR process_command_line = RGX(\".*\\\\-perm\\\\ \\\\-o\\\\ w.*\") OR process_command_line = RGX(\".*\\\\-perm\\\\ \\\\-o\\\\ x.*\") OR process_command_line = RGX(\".*\\\\-perm\\\\ \\\\-u\\\\=s.*\") OR process_command_line = RGX(\".*\\\\-perm\\\\ \\\\-g\\\\=s.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "427d78ba-f4be-4613-964d-2bde1deb87f5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

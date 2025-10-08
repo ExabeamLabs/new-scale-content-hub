@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Rundll32 Spawned Via Explorer.EXE",
+      "description": "Detects execution of \"rundll32.exe\" with a parent process of Explorer.exe. This has been observed by variants of Raspberry Robin, as first reported by Red Canary.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\explorer\\\\\\.exe$\") AND (process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_original_file_name = \"RUNDLL32\\.EXE\")) AND  NOT ((process_command_line = RGX(\".*\\\\ C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\.*\") OR process_command_line = RGX(\"\\\\ \\\\-localserver\\\\ 22d8c27b\\\\-47a1\\\\-48d1\\\\-ad08\\\\-7da7abd79617$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9a8270e2-0833-4a40-b6bf-8f21d087219b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Nohup Execution",
+      "description": "Detects usage of nohup which could be leveraged by an attacker to keep a process running or break out from restricted environments",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_path = RGX(\"\\\\/nohup$\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "faf170c9-4d2b-4bb4-bf6b-93e895c942d1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

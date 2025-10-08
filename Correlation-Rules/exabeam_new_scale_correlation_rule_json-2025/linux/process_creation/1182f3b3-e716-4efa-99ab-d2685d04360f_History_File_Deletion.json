@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "History File Deletion",
+      "description": "Detects events in which a history file gets deleted, e.g. the ~/bash_history to remove traces of malicious activity",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/rm$\") OR process_path = RGX(\"\\\\/unlink$\") OR process_path = RGX(\"\\\\/shred$\")) AND ((process_command_line = RGX(\".*\\\\/\\\\\\.bash\\\\_history.*\") OR process_command_line = RGX(\".*\\\\/\\\\\\.zsh\\\\_history.*\")) OR (process_command_line = RGX(\"\\\\_history$\") OR process_command_line = RGX(\"\\\\\\.history$\") OR process_command_line = RGX(\"zhistory$\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7990ac34-a77f-4b34-8cec-6fc2da7a9c22"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

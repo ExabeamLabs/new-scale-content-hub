@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "File Deletion Via Del",
+      "description": "Detects execution of the builtin \"del\"/\"erase\" commands in order to delete files.\nAdversaries may delete files left behind by the actions of their intrusion activity.\nMalware, tools, or other non-native files dropped or created on a system by an adversary may leave traces to indicate to what was done within a network and how.\nRemoval of these files can occur during an intrusion, or as part of a post-intrusion process to minimize the adversary's footprint.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_original_file_name = \"Cmd\\.Exe\") AND (process_command_line = RGX(\".*del\\\\ .*\") OR process_command_line = RGX(\".*erase\\\\ .*\")) AND (process_command_line = RGX(\".*\\\\ \\\\-f.*\") OR process_command_line = RGX(\".*\\\\ \\\\-s.*\") OR process_command_line = RGX(\".*\\\\ \\\\-q.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a27edf5f-bba7-422f-9617-3c264747673d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

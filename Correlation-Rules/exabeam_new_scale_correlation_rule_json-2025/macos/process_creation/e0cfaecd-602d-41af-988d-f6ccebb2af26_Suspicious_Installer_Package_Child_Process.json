@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Installer Package Child Process",
+      "description": "Detects the execution of suspicious child processes from macOS installer package parent process. This includes osascript, JXA, curl and wget amongst other interpreters",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((parent_process_path = RGX(\"\\\\/package\\\\_script\\\\_service$\") OR parent_process_path = RGX(\"\\\\/installer$\")) AND (process_path = RGX(\"\\\\/sh$\") OR process_path = RGX(\"\\\\/bash$\") OR process_path = RGX(\"\\\\/dash$\") OR process_path = RGX(\"\\\\/python$\") OR process_path = RGX(\"\\\\/ruby$\") OR process_path = RGX(\"\\\\/perl$\") OR process_path = RGX(\"\\\\/php$\") OR process_path = RGX(\"\\\\/javascript$\") OR process_path = RGX(\"\\\\/osascript$\") OR process_path = RGX(\"\\\\/tclsh$\") OR process_path = RGX(\"\\\\/curl$\") OR process_path = RGX(\"\\\\/wget$\")) AND (process_command_line = RGX(\".*preinstall.*\") OR process_command_line = RGX(\".*postinstall.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "020f531c-adfa-41d5-b715-845f6c8b29f1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

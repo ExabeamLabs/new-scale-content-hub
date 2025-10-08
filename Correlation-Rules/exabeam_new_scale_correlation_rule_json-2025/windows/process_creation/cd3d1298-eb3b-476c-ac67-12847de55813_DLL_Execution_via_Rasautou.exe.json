@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "DLL Execution via Rasautou.exe",
+      "description": "Detects using Rasautou.exe for loading arbitrary .DLL specified in -d option and executes the export specified in -p.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\rasautou\\\\\\.exe$\") OR process_original_file_name = \"rasdlui\\.exe\") AND (process_command_line = RGX(\".*\\\\ \\\\-d\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-p\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9f8e6d09-c12a-492c-bba3-2b9c12b262b3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

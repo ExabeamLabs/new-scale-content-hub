@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Command Line Path Traversal Evasion Attempt",
+      "description": "Detects potential evasion or obfuscation attempts using bogus path traversal via the commandline",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\".*\\\\\\\\Windows\\\\\\\\.*\") AND (process_command_line = RGX(\".*\\\\\\\\\\\\\\.\\\\\\.\\\\\\\\Windows\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\\\\\\\.\\\\\\.\\\\\\\\System32\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\\\\\\\.\\\\\\.\\\\\\\\\\\\\\.\\\\\\.\\\\\\\\.*\"))) OR process_command_line = RGX(\".*\\\\\\.exe\\\\\\\\\\\\\\.\\\\\\.\\\\\\\\.*\")) AND  NOT (process_command_line = RGX(\".*\\\\\\\\Google\\\\\\\\Drive\\\\\\\\googledrivesync\\\\\\.exe\\\\\\\\\\\\\\.\\\\\\.\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Citrix\\\\\\\\Virtual\\\\ Smart\\\\ Card\\\\\\\\Citrix\\\\\\.Authentication\\\\\\.VirtualSmartcard\\\\\\.Launcher\\\\\\.exe\\\\\\\\\\\\\\.\\\\\\.\\\\\\\\.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5ff4c7c9-fbd4-4e3a-8b88-be765a41a62a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

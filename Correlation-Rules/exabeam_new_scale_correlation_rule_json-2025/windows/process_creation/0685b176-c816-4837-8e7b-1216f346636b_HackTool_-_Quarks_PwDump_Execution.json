@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - Quarks PwDump Execution",
+      "description": "Detects usage of the Quarks PwDump tool via commandline arguments",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\QuarksPwDump\\\\\\.exe$\") OR (process_command_line = \"\\ \\-dhl\" OR process_command_line = \"\\ \\-\\-dump\\-hash\\-local\" OR process_command_line = \"\\ \\-dhdc\" OR process_command_line = \"\\ \\-\\-dump\\-hash\\-domain\\-cached\" OR process_command_line = \"\\ \\-\\-dump\\-bitlocker\" OR process_command_line = \"\\ \\-dhd\\ \" OR process_command_line = \"\\ \\-\\-dump\\-hash\\-domain\\ \" OR process_command_line = \"\\-\\-ntds\\-file\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "51f889fb-d540-4490-8588-a21954190b7c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

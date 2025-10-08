@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious GrpConv Execution",
+      "description": "Detects the suspicious execution of a utility to convert Windows 3.x .grp files or for persistence purposes by malicious software or actors",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*grpconv\\\\\\.exe\\\\ \\\\-o.*\") OR process_command_line = RGX(\".*grpconv\\\\ \\\\-o.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f4f34854-0c89-473f-8df6-85e62a13951c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

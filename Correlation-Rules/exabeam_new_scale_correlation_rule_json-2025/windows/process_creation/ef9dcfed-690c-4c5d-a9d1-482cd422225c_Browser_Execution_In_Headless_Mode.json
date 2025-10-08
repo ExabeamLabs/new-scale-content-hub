@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Browser Execution In Headless Mode",
+      "description": "Detects execution of Chromium based browser in headless mode",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\brave\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\chrome\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msedge\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\opera\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\vivaldi\\\\\\.exe$\")) AND process_command_line = RGX(\".*\\\\-\\\\-headless.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d7b7d4e5-185c-4285-af42-ba8083dbd7c3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

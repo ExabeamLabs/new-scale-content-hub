@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Copy .DMP/.DUMP Files From Remote Share Via Cmd.EXE",
+      "description": "Detects usage of the copy builtin cmd command to copy files with the \".dmp\"/\".dump\" extension from a remote share",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_original_file_name = \"Cmd\\.Exe\") AND ((process_command_line = RGX(\".*copy\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\\\\\\\\\\\\\.*\")) AND (process_command_line = RGX(\".*\\\\\\.dmp.*\") OR process_command_line = RGX(\".*\\\\\\.dump.*\") OR process_command_line = RGX(\".*\\\\\\.hdmp.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "17935459-31d3-4f79-9fa3-afbd7f47ebc9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

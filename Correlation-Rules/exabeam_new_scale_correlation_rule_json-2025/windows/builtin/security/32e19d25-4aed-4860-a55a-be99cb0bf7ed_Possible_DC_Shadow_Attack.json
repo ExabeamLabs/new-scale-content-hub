@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Possible DC Shadow Attack",
+      "description": "Detects DCShadow via create new SPN Note: Unmapped fields: ServicePrincipalNames, AttributeLDAPDisplayName, AttributeValue",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((event_id = 4742 AND ServicePrincipalNames = RGX(\".*GC\\\\/.*\")) OR (event_id = 5136 AND AttributeLDAPDisplayName = \"servicePrincipalName\" AND AttributeValue = RGX(\"^GC\\\\/\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3439c439-9181-49af-8562-174b58756482"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

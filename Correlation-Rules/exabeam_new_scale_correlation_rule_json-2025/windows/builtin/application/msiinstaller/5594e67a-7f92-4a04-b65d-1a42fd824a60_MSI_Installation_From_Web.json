@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "MSI Installation From Web",
+      "description": "Detects installation of a remote msi file from web. Note: Unmapped fields: Provider_Name, Data",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Provider_Name = \"MsiInstaller\" AND (event_id = 1040 OR event_id = 1042) AND Data = RGX(\".*\\\\:\\\\/\\\\/.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9204d951-fb2f-411b-a6ec-c26be111bae7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

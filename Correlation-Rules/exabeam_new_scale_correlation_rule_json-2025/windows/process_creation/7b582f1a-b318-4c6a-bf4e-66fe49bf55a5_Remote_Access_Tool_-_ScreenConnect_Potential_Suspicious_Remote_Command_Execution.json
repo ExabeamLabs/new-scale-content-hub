@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remote Access Tool - ScreenConnect Potential Suspicious Remote Command Execution",
+      "description": "Detects potentially suspicious child processes launched via the ScreenConnect client service.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((parent_process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\TEMP\\\\\\\\ScreenConnect\\\\\\\\.*\") AND parent_process_command_line = RGX(\".*run\\\\\\.cmd.*\")) AND (process_path = RGX(\"\\\\\\\\bitsadmin\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\curl\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\dllhost\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\net\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\nltest\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wevtutil\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4e0f097f-5f66-4230-a59c-4adea7faab6a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

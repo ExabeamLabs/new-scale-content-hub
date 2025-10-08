@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Linux Package Uninstall",
+      "description": "Detects linux package removal using builtin tools such as \"yum\", \"apt\", \"apt-get\" or \"dpkg\".",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/yum$\") AND (process_command_line = RGX(\".*erase.*\") OR process_command_line = RGX(\".*remove.*\"))) OR ((process_path = RGX(\"\\\\/apt$\") OR process_path = RGX(\"\\\\/apt\\\\-get$\")) AND (process_command_line = RGX(\".*remove.*\") OR process_command_line = RGX(\".*purge.*\"))) OR (process_path = RGX(\"\\\\/dpkg$\") AND (process_command_line = RGX(\".*\\\\-\\\\-remove\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-r\\\\ .*\"))) OR (process_path = RGX(\"\\\\/rpm$\") AND process_command_line = RGX(\".*\\\\ \\\\-e\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8c81fa3b-4a3a-4349-b687-f6e723e4ffbc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

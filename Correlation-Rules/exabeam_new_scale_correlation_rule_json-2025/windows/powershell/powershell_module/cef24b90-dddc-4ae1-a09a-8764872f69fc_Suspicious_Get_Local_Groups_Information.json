@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Get Local Groups Information",
+      "description": "Detects the use of PowerShell modules and cmdlets to gather local group information.\nAdversaries may use local system permission groups to determine which groups exist and which users belong to a particular group such as the local administrators group.\n Note: Unmapped fields: Payload, ContextInfo",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((Payload = RGX(\".*get\\\\-localgroup\\\\ .*\") OR Payload = RGX(\".*get\\\\-localgroupmember\\\\ .*\")) OR (ContextInfo = RGX(\".*get\\\\-localgroup\\\\ .*\") OR ContextInfo = RGX(\".*get\\\\-localgroupmember\\\\ .*\"))) OR (((Payload = RGX(\".*get\\\\-wmiobject\\\\ .*\") OR Payload = RGX(\".*gwmi\\\\ .*\") OR Payload = RGX(\".*get\\\\-ciminstance\\\\ .*\") OR Payload = RGX(\".*gcim\\\\ .*\")) OR (ContextInfo = RGX(\".*get\\\\-wmiobject\\\\ .*\") AND ContextInfo = RGX(\".*gwmi\\\\ .*\") AND ContextInfo = RGX(\".*get\\\\-ciminstance\\\\ .*\") AND ContextInfo = RGX(\".*gcim\\\\ .*\"))) AND (Payload = RGX(\".*win32\\\\_group.*\") OR ContextInfo = RGX(\".*win32\\\\_group.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b39ecaaf-3e32-480c-a571-a55f49c36468"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

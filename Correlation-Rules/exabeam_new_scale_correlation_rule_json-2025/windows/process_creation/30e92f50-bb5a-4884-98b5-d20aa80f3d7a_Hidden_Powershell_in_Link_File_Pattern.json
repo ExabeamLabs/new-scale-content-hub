@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Hidden Powershell in Link File Pattern",
+      "description": "Detects events that appear when a user click on a link file with a powershell command in it",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = \"C\\:\\\\Windows\\\\explorer\\.exe\" AND process_path = \"C\\:\\\\Windows\\\\System32\\\\cmd\\.exe\" AND (process_command_line = RGX(\".*powershell.*\") AND process_command_line = RGX(\".*\\\\\\.lnk.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8c7a41f5-2c18-46b0-a16b-da1ec477d505"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

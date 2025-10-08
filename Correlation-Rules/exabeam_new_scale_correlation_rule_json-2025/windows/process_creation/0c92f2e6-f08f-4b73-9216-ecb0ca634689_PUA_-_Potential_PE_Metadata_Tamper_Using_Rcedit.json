@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - Potential PE Metadata Tamper Using Rcedit",
+      "description": "Detects the use of rcedit to potentially alter executable PE metadata properties, which could conceal efforts to rename system utilities for defense evasion.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\rcedit\\\\-x64\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\rcedit\\\\-x86\\\\\\.exe$\")) OR process_description = \"Edit\\ resources\\ of\\ exe\" OR process_product = \"rcedit\") AND process_command_line = RGX(\".*\\\\-\\\\-set\\\\-.*\") AND (process_command_line = RGX(\".*OriginalFileName.*\") OR process_command_line = RGX(\".*CompanyName.*\") OR process_command_line = RGX(\".*FileDescription.*\") OR process_command_line = RGX(\".*ProductName.*\") OR process_command_line = RGX(\".*ProductVersion.*\") OR process_command_line = RGX(\".*LegalCopyright.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "22d11e3b-6fb7-4f58-b4b3-70d8ad31b810"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

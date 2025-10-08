@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious CodePage Switch Via CHCP",
+      "description": "Detects a code page switch in command line or batch scripts to a rare language",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\chcp\\\\\\.com$\") AND (process_command_line = RGX(\"\\\\ 936$\") OR process_command_line = RGX(\"\\\\ 1258$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1c182438-eb1b-4a76-ba23-bbefcdbd5aeb"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

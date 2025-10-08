@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential ClickFix Execution Pattern - Registry",
+      "description": "Detects potential ClickFix malware execution patterns by monitoring registry modifications in RunMRU keys containing HTTP/HTTPS links.\nClickFix is known to be distributed through phishing campaigns and uses techniques like clipboard hijacking and fake CAPTCHA pages.\nThrough the fakecaptcha pages, the adversary tricks users into opening the Run dialog box and pasting clipboard-hijacked content,\nsuch as one-liners that execute remotely hosted malicious files or scripts.\n Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Explorer\\\\\\\\RunMRU\\\\\\\\.*\") AND (Details = RGX(\".*http\\\\:\\\\/\\\\/.*\") OR Details = RGX(\".*https\\\\:\\\\/\\\\/.*\")) AND ((Details = RGX(\".*account.*\") OR Details = RGX(\".*anti\\\\-bot.*\") OR Details = RGX(\".*botcheck.*\") OR Details = RGX(\".*captcha.*\") OR Details = RGX(\".*challenge.*\") OR Details = RGX(\".*confirmation.*\") OR Details = RGX(\".*fraud.*\") OR Details = RGX(\".*human.*\") OR Details = RGX(\".*identificator.*\") OR Details = RGX(\".*identity.*\") OR Details = RGX(\".*robot.*\") OR Details = RGX(\".*validation.*\") OR Details = RGX(\".*verification.*\") OR Details = RGX(\".*verify.*\")) OR (Details = RGX(\".*\\\\%comspec\\\\%.*\") OR Details = RGX(\".*bitsadmin.*\") OR Details = RGX(\".*certutil.*\") OR Details = RGX(\".*cmd.*\") OR Details = RGX(\".*cscript.*\") OR Details = RGX(\".*curl.*\") OR Details = RGX(\".*mshta.*\") OR Details = RGX(\".*powershell.*\") OR Details = RGX(\".*pwsh.*\") OR Details = RGX(\".*regsvr32.*\") OR Details = RGX(\".*rundll32.*\") OR Details = RGX(\".*schtasks.*\") OR Details = RGX(\".*wget.*\") OR Details = RGX(\".*wscript.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "cc7fa360-4a5e-44c5-bcf0-b429e7e5f26f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

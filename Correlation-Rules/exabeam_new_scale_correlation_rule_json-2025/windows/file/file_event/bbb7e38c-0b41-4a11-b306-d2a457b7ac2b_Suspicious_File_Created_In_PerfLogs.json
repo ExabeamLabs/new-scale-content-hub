@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious File Created In PerfLogs",
+      "description": "Detects suspicious file based on their extension being created in \"C:\\PerfLogs\\\". Note that this directory mostly contains \".etl\" files",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(file_path = RGX(\"^C\\\\:\\\\\\\\PerfLogs\\\\\\\\\") AND (file_path = RGX(\"\\\\\\.7z$\") OR file_path = RGX(\"\\\\\\.bat$\") OR file_path = RGX(\"\\\\\\.bin$\") OR file_path = RGX(\"\\\\\\.chm$\") OR file_path = RGX(\"\\\\\\.dll$\") OR file_path = RGX(\"\\\\\\.exe$\") OR file_path = RGX(\"\\\\\\.hta$\") OR file_path = RGX(\"\\\\\\.lnk$\") OR file_path = RGX(\"\\\\\\.ps1$\") OR file_path = RGX(\"\\\\\\.psm1$\") OR file_path = RGX(\"\\\\\\.py$\") OR file_path = RGX(\"\\\\\\.scr$\") OR file_path = RGX(\"\\\\\\.sys$\") OR file_path = RGX(\"\\\\\\.vbe$\") OR file_path = RGX(\"\\\\\\.vbs$\") OR file_path = RGX(\"\\\\\\.zip$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8a75774f-78ad-4a87-901d-e2e0570980ed"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

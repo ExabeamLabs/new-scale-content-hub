@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "File Download with Headless Browser",
+      "description": "Detects execution of chromium based browser in headless mode using the \"dump-dom\" command line to download files",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\brave\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\chrome\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msedge\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\opera\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\vivaldi\\\\\\.exe$\")) AND (process_command_line = RGX(\".*\\\\-\\\\-headless.*\") AND process_command_line = RGX(\".*dump\\\\-dom.*\") AND process_command_line = RGX(\".*http.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8670a022-0cf1-4855-b4da-32abcda816ac"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

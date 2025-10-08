@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - Advanced IP/Port Scanner Update Check",
+      "description": "Detect the update check performed by Advanced IP/Port Scanner utilities. Note: Unmapped fields: c-uri, c-uri-query",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(c-uri = RGX(\".*\\\\/checkupdate\\\\\\.php.*\") AND (c-uri-query = RGX(\".*lng\\\\=.*\") AND c-uri-query = RGX(\".*ver\\\\=.*\") AND c-uri-query = RGX(\".*beta\\\\=.*\") AND c-uri-query = RGX(\".*type\\\\=.*\") AND c-uri-query = RGX(\".*rmode\\\\=.*\") AND c-uri-query = RGX(\".*product\\\\=.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e6e75863-8957-4ca5-8260-ba063a2affc4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

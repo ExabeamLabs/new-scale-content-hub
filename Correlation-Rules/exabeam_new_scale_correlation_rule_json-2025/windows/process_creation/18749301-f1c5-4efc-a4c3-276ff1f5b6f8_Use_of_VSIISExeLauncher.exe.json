@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Use of VSIISExeLauncher.exe",
+      "description": "The \"VSIISExeLauncher.exe\" binary part of the Visual Studio/VS Code can be used to execute arbitrary binaries",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\VSIISExeLauncher\\\\\\.exe$\") OR process_original_file_name = \"VSIISExeLauncher\\.exe\") AND (process_command_line = RGX(\".*\\\\ \\\\-p\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-a\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7f77d3d0-cc24-4f20-a698-bfccb2e98ecd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

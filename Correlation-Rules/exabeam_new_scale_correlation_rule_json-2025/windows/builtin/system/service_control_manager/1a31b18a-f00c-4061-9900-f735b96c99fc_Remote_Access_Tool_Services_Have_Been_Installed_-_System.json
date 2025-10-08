@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remote Access Tool Services Have Been Installed - System",
+      "description": "Detects service installation of different remote access tools software. These software are often abused by threat actors to perform Note: Unmapped fields: Provider_Name, ServiceName",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Provider_Name = \"Service\\ Control\\ Manager\" AND (event_id = 7045 OR event_id = 7036) AND (ServiceName = RGX(\".*AmmyyAdmin.*\") OR ServiceName = RGX(\".*Atera.*\") OR ServiceName = RGX(\".*BASupportExpressSrvcUpdater.*\") OR ServiceName = RGX(\".*BASupportExpressStandaloneService.*\") OR ServiceName = RGX(\".*chromoting.*\") OR ServiceName = RGX(\".*GoToAssist.*\") OR ServiceName = RGX(\".*GoToMyPC.*\") OR ServiceName = RGX(\".*jumpcloud.*\") OR ServiceName = RGX(\".*LMIGuardianSvc.*\") OR ServiceName = RGX(\".*LogMeIn.*\") OR ServiceName = RGX(\".*monblanking.*\") OR ServiceName = RGX(\".*Parsec.*\") OR ServiceName = RGX(\".*RManService.*\") OR ServiceName = RGX(\".*RPCPerformanceService.*\") OR ServiceName = RGX(\".*RPCService.*\") OR ServiceName = RGX(\".*SplashtopRemoteService.*\") OR ServiceName = RGX(\".*SSUService.*\") OR ServiceName = RGX(\".*TeamViewer.*\") OR ServiceName = RGX(\".*TightVNC.*\") OR ServiceName = RGX(\".*vncserver.*\") OR ServiceName = RGX(\".*Zoho.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "49bc1b42-095e-467e-9c45-1d79a075666b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

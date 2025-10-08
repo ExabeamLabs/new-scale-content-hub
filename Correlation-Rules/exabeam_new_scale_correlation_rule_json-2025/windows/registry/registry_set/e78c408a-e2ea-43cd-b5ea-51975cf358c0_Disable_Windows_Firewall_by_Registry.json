@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Disable Windows Firewall by Registry",
+      "description": "Detect set EnableFirewall to 0 to disable the Windows firewall Note: Unmapped fields: Details",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((registry_path = RGX(\"\\\\\\\\SOFTWARE\\\\\\\\Policies\\\\\\\\Microsoft\\\\\\\\WindowsFirewall\\\\\\\\StandardProfile\\\\\\\\EnableFirewall$\") OR registry_path = RGX(\"\\\\\\\\SOFTWARE\\\\\\\\Policies\\\\\\\\Microsoft\\\\\\\\WindowsFirewall\\\\\\\\DomainProfile\\\\\\\\EnableFirewall$\")) AND Details = \"DWORD\\ \\(0x00000000\\)\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "910480fe-c701-4ced-8e8d-bc7c3c0b8e1f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

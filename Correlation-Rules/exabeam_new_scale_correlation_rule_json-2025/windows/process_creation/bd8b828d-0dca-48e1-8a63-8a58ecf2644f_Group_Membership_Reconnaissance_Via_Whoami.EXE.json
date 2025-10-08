@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Group Membership Reconnaissance Via Whoami.EXE",
+      "description": "Detects the execution of whoami.exe with the /group command line flag to show group membership for the current user, account type, security identifiers (SID), and attributes.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\whoami\\\\\\.exe$\") OR process_original_file_name = \"whoami\\.exe\") AND (process_command_line = RGX(\".*\\\\ \\\\/groups.*\") OR process_command_line = RGX(\".*\\\\ \\\\-groups.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d6950f84-b010-4715-9a50-16779537ea3e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

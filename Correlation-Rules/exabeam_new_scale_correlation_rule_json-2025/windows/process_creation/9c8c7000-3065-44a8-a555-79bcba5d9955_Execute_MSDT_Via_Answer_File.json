@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Execute MSDT Via Answer File",
+      "description": "Detects execution of \"msdt.exe\" using an answer file which is simulating the legitimate way of calling msdt via \"pcwrun.exe\" (For example from the compatibility tab)",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\msdt\\\\\\.exe$\") AND process_command_line = RGX(\".*\\\\\\\\WINDOWS\\\\\\\\diagnostics\\\\\\\\index\\\\\\\\PCWDiagnostic\\\\\\.xml.*\")) AND (process_command_line = RGX(\".*\\\\ \\\\-af\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\/af\\\\ .*\"))) AND  NOT (parent_process_path = RGX(\"\\\\\\\\pcwrun\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "99fbebcd-5a60-4d90-bf5a-ac0be2500476"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

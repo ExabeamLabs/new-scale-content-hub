@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Visual Studio Code Tunnel Service Installation",
+      "description": "Detects the installation of VsCode tunnel (code-tunnel) as a service.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*tunnel\\\\ .*\") AND process_command_line = RGX(\".*service.*\") AND process_command_line = RGX(\".*internal\\\\-run.*\") AND process_command_line = RGX(\".*tunnel\\\\-service\\\\\\.log.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8b39be56-7ca5-45a7-9e25-ace4f00b76b5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - XORDump Execution",
+      "description": "Detects suspicious use of XORDump process memory dumping utility",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\xordump\\\\\\.exe$\") OR (process_command_line = RGX(\".*\\\\ \\\\-process\\\\ lsass\\\\\\.exe\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-m\\\\ comsvcs\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-m\\\\ dbghelp\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-m\\\\ dbgcore\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "bec07155-b4ee-4772-ba93-9732a534ec5c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

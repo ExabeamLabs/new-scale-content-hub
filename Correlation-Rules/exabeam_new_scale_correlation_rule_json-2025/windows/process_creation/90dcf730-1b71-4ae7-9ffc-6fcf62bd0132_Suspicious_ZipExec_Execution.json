@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious ZipExec Execution",
+      "description": "ZipExec is a Proof-of-Concept (POC) tool to wrap binary-based tools into a password-protected zip file.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\/generic\\\\:Microsoft\\\\_Windows\\\\_Shell\\\\_ZipFolder\\\\:filename\\\\=.*\") AND process_command_line = RGX(\".*\\\\\\.zip.*\") AND process_command_line = RGX(\".*\\\\/pass\\\\:.*\") AND process_command_line = RGX(\".*\\\\/user\\\\:.*\")) OR (process_command_line = RGX(\".*\\\\/delete.*\") AND process_command_line = RGX(\".*Microsoft\\\\_Windows\\\\_Shell\\\\_ZipFolder\\\\:filename\\\\=.*\") AND process_command_line = RGX(\".*\\\\\\.zip.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "71c9ef03-b247-4687-99a4-59cdb78247d7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

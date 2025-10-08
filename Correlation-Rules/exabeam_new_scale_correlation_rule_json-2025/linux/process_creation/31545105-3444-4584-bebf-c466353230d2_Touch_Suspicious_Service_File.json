@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Touch Suspicious Service File",
+      "description": "Detects usage of the \"touch\" process in service file.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/touch$\") AND process_command_line = RGX(\".*\\\\ \\\\-t\\\\ .*\") AND process_command_line = RGX(\"\\\\\\.service$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ae75165e-d794-41d9-9bd7-10199bccf17d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

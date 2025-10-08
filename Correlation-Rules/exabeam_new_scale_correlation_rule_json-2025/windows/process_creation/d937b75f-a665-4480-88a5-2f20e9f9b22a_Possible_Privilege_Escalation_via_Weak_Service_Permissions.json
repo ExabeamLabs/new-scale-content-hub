@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Possible Privilege Escalation via Weak Service Permissions",
+      "description": "Detection of sc.exe utility spawning by user with Medium integrity level to change service ImagePath or FailureCommand",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\sc\\\\\\.exe$\") AND (process_integrity_level = \"Medium\" OR process_integrity_level = \"S\\-1\\-16\\-8192\")) AND ((process_command_line = RGX(\".*config.*\") AND process_command_line = RGX(\".*binPath.*\")) OR (process_command_line = RGX(\".*failure.*\") AND process_command_line = RGX(\".*command.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "04c204eb-2a81-4810-a582-3b1619c01723"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

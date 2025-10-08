@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious SignIns From A Non Registered Device",
+      "description": "Detects risky authentication from a non AD registered device without MFA being required. Note: Unmapped fields: Status, AuthenticationRequirement, RiskState, DeviceDetail.trusttype",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Status = \"Success\" AND AuthenticationRequirement = \"singleFactorAuthentication\" AND RiskState = \"atRisk\") AND (DeviceDetail.trusttype = \"\" OR DeviceDetail.trusttype = \"None\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e1bb1bd1-2403-4afe-aed0-e06a7c48f9b8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

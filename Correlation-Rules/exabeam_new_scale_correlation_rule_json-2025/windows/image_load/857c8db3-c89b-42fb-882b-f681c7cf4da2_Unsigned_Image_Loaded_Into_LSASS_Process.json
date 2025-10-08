@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Unsigned Image Loaded Into LSASS Process",
+      "description": "Loading unsigned image (DLL, EXE) into LSASS process Note: Unmapped fields: Signed",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\lsass\\\\\\.exe$\") AND Signed = \"false\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a9d125e7-bae6-419d-9a7d-aa3d44d5b02b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

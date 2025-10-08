@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "WinSock2 Autorun Keys Modification",
+      "description": "Detects modification of autostart extensibility point (ASEP) in registry. Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\".*\\\\\\\\System\\\\\\\\CurrentControlSet\\\\\\\\Services\\\\\\\\WinSock2\\\\\\\\Parameters.*\") AND (registry_path = RGX(\".*\\\\\\\\Protocol\\\\_Catalog9\\\\\\\\Catalog\\\\_Entries.*\") OR registry_path = RGX(\".*\\\\\\\\NameSpace\\\\_Catalog5\\\\\\\\Catalog\\\\_Entries.*\")) AND  NOT ((Details = \"\\(Empty\\)\" OR process_path = \"C\\:\\\\Windows\\\\System32\\\\MsiExec\\.exe\" OR process_path = \"C\\:\\\\Windows\\\\syswow64\\\\MsiExec\\.exe\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "57e6b47c-ba9b-4773-ba03-f2dda3080525"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

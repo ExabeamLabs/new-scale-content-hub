@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "DiagTrackEoP Default Login Username",
+      "description": "Detects the default \"UserName\" used by the DiagTrackEoP POC Note: Unmapped fields: LogonType, TargetOutboundUserName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4624 AND LogonType = 9 AND TargetOutboundUserName = \"thisisnotvaliduser\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8853648b-837f-4028-8c9d-1de64b9bbe55"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

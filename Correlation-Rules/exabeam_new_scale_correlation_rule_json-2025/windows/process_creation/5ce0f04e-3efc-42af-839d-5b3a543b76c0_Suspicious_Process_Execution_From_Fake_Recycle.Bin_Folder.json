@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Process Execution From Fake Recycle.Bin Folder",
+      "description": "Detects process execution from a fake recycle bin folder, often used to avoid security solution.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\".*RECYCLERS\\\\\\.BIN\\\\\\\\.*\") OR process_path = RGX(\".*RECYCLER\\\\\\.BIN\\\\\\\\.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5184266e-0ba8-406b-b667-9e8e4ce1372a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Whoami Utility Execution",
+      "description": "Detects the execution of whoami, which is often used by attackers after exploitation / privilege escalation",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\whoami\\\\\\.exe$\") OR process_original_file_name = \"whoami\\.exe\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "094b465c-726a-43ef-9819-4c155b766d9f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

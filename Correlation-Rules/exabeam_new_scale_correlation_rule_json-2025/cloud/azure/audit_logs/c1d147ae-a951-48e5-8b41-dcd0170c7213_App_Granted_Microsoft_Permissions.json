@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "App Granted Microsoft Permissions",
+      "description": "Detects when an application is granted delegated or app role permissions for Microsoft Graph, Exchange, Sharepoint, or Azure AD Note: Unmapped fields: properties.message",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(properties.message = \"Add\\ delegated\\ permission\\ grant\" OR properties.message = \"Add\\ app\\ role\\ assignment\\ to\\ service\\ principal\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9bd8ce1a-7b19-4bbe-96a7-33b59c2ed009"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

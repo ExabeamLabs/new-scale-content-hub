@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Suspicious Usage Of Qemu",
+      "description": "Detects potentially suspicious execution of the Qemu utility in a Windows environment.\nThreat actors have leveraged this utility and this technique for achieving network access as reported by Kaspersky.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*\\\\-m\\\\ 1M.*\") OR process_command_line = RGX(\".*\\\\-m\\\\ 2M.*\") OR process_command_line = RGX(\".*\\\\-m\\\\ 3M.*\")) AND (process_command_line = RGX(\".*restrict\\\\=off.*\") AND process_command_line = RGX(\".*\\\\-netdev\\\\ .*\") AND process_command_line = RGX(\".*connect\\\\=.*\") AND process_command_line = RGX(\".*\\\\-nographic.*\"))) AND  NOT ((process_command_line = RGX(\".*\\\\ \\\\-cdrom\\\\ .*\") OR process_command_line = RGX(\".*\\\\ type\\\\=virt\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-blockdev\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "025c326b-6120-4a8f-bb3d-be45894ec908"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

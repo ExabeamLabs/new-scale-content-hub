@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "SMB Create Remote File Admin Share",
+      "description": "Look for non-system accounts SMB accessing a file with write (0x2) access mask via administrative share (i.e C$). Note: Unmapped fields: ShareName, AccessMask",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 5145 AND ShareName = RGX(\"C\\\\$$\") AND AccessMask = \"0x2\") AND  NOT (user = RGX(\"\\\\$$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "39c8138e-7fe0-444f-a0d7-ff419b5a17a7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

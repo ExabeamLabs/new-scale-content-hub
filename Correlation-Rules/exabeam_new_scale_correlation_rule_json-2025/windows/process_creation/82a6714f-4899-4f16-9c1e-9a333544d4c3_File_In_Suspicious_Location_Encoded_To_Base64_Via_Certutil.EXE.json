@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "File In Suspicious Location Encoded To Base64 Via Certutil.EXE",
+      "description": "Detects the execution of certutil with the \"encode\" flag to encode a file to base64 where the files are located in potentially suspicious locations",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\certutil\\\\\\.exe$\") OR process_original_file_name = \"CertUtil\\.exe\") AND (process_command_line = RGX(\".*\\\\-encode.*\") OR process_command_line = RGX(\".*\\\\/encode.*\")) AND (process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Desktop\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\PerfLogs\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\$Recycle\\\\\\.Bin.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "af23355d-25a3-4928-92ca-040cf1dc968f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

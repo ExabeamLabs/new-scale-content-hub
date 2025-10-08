@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "RDP Connection Allowed Via Netsh.EXE",
+      "description": "Detects usage of the netsh command to open and allow connections to port 3389 (RDP). As seen used by Sarwent Malware",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\netsh\\\\\\.exe$\") OR process_original_file_name = \"netsh\\.exe\") AND ((process_command_line = RGX(\".*firewall\\\\ .*\") AND process_command_line = RGX(\".*add\\\\ .*\") AND process_command_line = RGX(\".*tcp\\\\ .*\") AND process_command_line = RGX(\".*3389.*\")) AND (process_command_line = RGX(\".*portopening.*\") OR process_command_line = RGX(\".*allow.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4be20219-5b35-4b37-9175-2b52779e7694"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

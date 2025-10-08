@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Always Install Elevated Windows Installer",
+      "description": "Detects Windows Installer service (msiexec.exe) trying to install MSI packages with SYSTEM privilege",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\".*\\\\\\\\Windows\\\\\\\\Installer\\\\\\\\.*\") AND process_path = RGX(\".*msi.*\")) AND process_path = RGX(\"tmp$\")) OR (process_path = RGX(\"\\\\\\\\msiexec\\\\\\.exe$\") AND (process_integrity_level = \"System\" OR process_integrity_level = \"S\\-1\\-16\\-16384\"))) AND (user = RGX(\".*AUTHORI.*\") OR user = RGX(\".*AUTORI.*\")) AND  NOT (parent_process_path = \"C\\:\\\\Windows\\\\System32\\\\services\\.exe\" OR (process_command_line = RGX(\"\\\\\\\\system32\\\\\\\\msiexec\\\\\\.exe\\\\ \\\\/V$\") OR parent_process_command_line = RGX(\"\\\\\\\\system32\\\\\\\\msiexec\\\\\\.exe\\\\ \\\\/V$\")) OR parent_process_path = RGX(\"^C\\\\:\\\\\\\\ProgramData\\\\\\\\Sophos\\\\\\\\\") OR parent_process_path = RGX(\"^C\\\\:\\\\\\\\ProgramData\\\\\\\\Avira\\\\\\\\\") OR (parent_process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Avast\\\\ Software\\\\\\\\\") OR parent_process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Avast\\\\ Software\\\\\\\\\")) OR (parent_process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Google\\\\\\\\Update\\\\\\\\\") OR parent_process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Google\\\\\\\\Update\\\\\\\\\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1d433758-10a5-4716-ae23-add72f0db639"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

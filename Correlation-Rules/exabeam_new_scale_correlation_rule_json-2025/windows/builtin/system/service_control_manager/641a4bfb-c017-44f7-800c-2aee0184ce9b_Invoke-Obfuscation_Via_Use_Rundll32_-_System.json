@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation Via Use Rundll32 - System",
+      "description": "Detects Obfuscated Powershell via use Rundll32 in Scripts Note: Unmapped fields: Provider_Name, ImagePath",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Provider_Name = \"Service\\ Control\\ Manager\" AND event_id = 7045 AND (ImagePath = RGX(\".*\\\\&\\\\&.*\") AND ImagePath = RGX(\".*rundll32.*\") AND ImagePath = RGX(\".*shell32\\\\\\.dll.*\") AND ImagePath = RGX(\".*shellexec\\\\_rundll.*\")) AND (ImagePath = RGX(\".*value.*\") OR ImagePath = RGX(\".*invoke.*\") OR ImagePath = RGX(\".*comspec.*\") OR ImagePath = RGX(\".*iex.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "32e3768b-eb6a-4cf5-b9f1-0abc7a893eb3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

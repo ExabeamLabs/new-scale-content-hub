@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious PowerShell In Registry Run Keys",
+      "description": "Detects potential PowerShell commands or code within registry run keys Note: Unmapped fields: Details",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((registry_path = RGX(\".*\\\\\\\\Software\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Run.*\") OR registry_path = RGX(\".*\\\\\\\\Software\\\\\\\\WOW6432Node\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Run.*\") OR registry_path = RGX(\".*\\\\\\\\Software\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\Explorer\\\\\\\\Run.*\")) AND (Details = RGX(\".*powershell.*\") OR Details = RGX(\".*pwsh\\\\ .*\") OR Details = RGX(\".*FromBase64String.*\") OR Details = RGX(\".*\\\\\\.DownloadFile\\\\(.*\") OR Details = RGX(\".*\\\\\\.DownloadString\\\\(.*\") OR Details = RGX(\".*\\\\ \\\\-w\\\\ hidden\\\\ .*\") OR Details = RGX(\".*\\\\ \\\\-w\\\\ 1\\\\ .*\") OR Details = RGX(\".*\\\\-windowstyle\\\\ hidden.*\") OR Details = RGX(\".*\\\\-window\\\\ hidden.*\") OR Details = RGX(\".*\\\\ \\\\-nop\\\\ .*\") OR Details = RGX(\".*\\\\ \\\\-encodedcommand\\\\ .*\") OR Details = RGX(\".*\\\\-ExecutionPolicy\\\\ Bypass.*\") OR Details = RGX(\".*Invoke\\\\-Expression.*\") OR Details = RGX(\".*IEX\\\\ \\\\(.*\") OR Details = RGX(\".*Invoke\\\\-Command.*\") OR Details = RGX(\".*ICM\\\\ \\\\-.*\") OR Details = RGX(\".*Invoke\\\\-WebRequest.*\") OR Details = RGX(\".*IWR\\\\ .*\") OR Details = RGX(\".*Invoke\\\\-RestMethod.*\") OR Details = RGX(\".*IRM\\\\ .*\") OR Details = RGX(\".*\\\\ \\\\-noni\\\\ .*\") OR Details = RGX(\".*\\\\ \\\\-noninteractive\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c28d7fa5-45b8-4d0b-bc90-38117e8a6467"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

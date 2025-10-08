@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New PDQDeploy Service - Client Side",
+      "description": "Detects PDQDeploy service installation on the target system.\nWhen a package is deployed via PDQDeploy it installs a remote service on the target machine with the name \"PDQDeployRunner-X\" where \"X\" is an integer starting from 1\n Note: Unmapped fields: Provider_Name, ImagePath, ServiceName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((Provider_Name = \"Service\\ Control\\ Manager\" AND event_id = 7045) AND (ImagePath = RGX(\".*PDQDeployRunner\\\\-.*\") OR ServiceName = RGX(\"^PDQDeployRunner\\\\-\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "38604798-7128-40bf-94d0-bf4246561870"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

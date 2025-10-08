@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Tamper Windows Defender Remove-MpPreference - ScriptBlockLogging",
+      "description": "Detects attempts to remove Windows Defender configuration using the 'MpPreference' cmdlet Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Remove\\\\-MpPreference.*\") AND (ScriptBlockText = RGX(\".*\\\\-ControlledFolderAccessProtectedFolders\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\-AttackSurfaceReductionRules\\\\_Ids\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\-AttackSurfaceReductionRules\\\\_Actions\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\-CheckForSignaturesBeforeRunningScan\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "09be7892-846a-4c5e-b627-f0b2ef33da1f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

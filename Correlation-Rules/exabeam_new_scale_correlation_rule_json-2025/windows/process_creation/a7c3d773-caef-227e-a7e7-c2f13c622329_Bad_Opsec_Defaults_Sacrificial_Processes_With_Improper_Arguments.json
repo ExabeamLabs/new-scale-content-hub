@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Bad Opsec Defaults Sacrificial Processes With Improper Arguments",
+      "description": "Detects attackers using tooling with bad opsec defaults.\nE.g. spawning a sacrificial process to inject a capability into the process without taking into account how the process is normally run.\nOne trivial example of this is using rundll32.exe without arguments as a sacrificial process (default in CS, now highlighted by c2lint), running WerFault without arguments (Kraken - credit am0nsec), and other examples.\n",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\WerFault\\\\\\.exe$\") AND process_command_line = RGX(\"WerFault\\\\\\.exe$\")) OR (process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") AND process_command_line = RGX(\"rundll32\\\\\\.exe$\")) OR (process_path = RGX(\"\\\\\\\\regsvcs\\\\\\.exe$\") AND process_command_line = RGX(\"regsvcs\\\\\\.exe$\")) OR (process_path = RGX(\"\\\\\\\\regasm\\\\\\.exe$\") AND process_command_line = RGX(\"regasm\\\\\\.exe$\")) OR (process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") AND process_command_line = RGX(\"regsvr32\\\\\\.exe$\"))) AND  NOT ((parent_process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Microsoft\\\\\\\\EdgeUpdate\\\\\\\\Install\\\\\\\\\\\\{.*\") AND process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") AND process_command_line = RGX(\"rundll32\\\\\\.exe$\")) OR ((parent_process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\BraveSoftware\\\\\\\\Brave\\\\-Browser\\\\\\\\Application\\\\\\\\.*\") OR parent_process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Google\\\\\\\\Chrome\\\\\\\\Application\\\\\\\\.*\")) AND parent_process_path = RGX(\"\\\\\\\\Installer\\\\\\\\setup\\\\\\.exe$\") AND parent_process_command_line = RGX(\".*\\\\-\\\\-uninstall\\\\ .*\") AND process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") AND process_command_line = RGX(\"rundll32\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b74e0f6d-2709-4b1e-a503-09c45cf27dc7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

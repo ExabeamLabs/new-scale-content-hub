@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious File Created Via OneNote Application",
+      "description": "Detects suspicious files created via the OneNote application. This could indicate a potential malicious \".one\"/\".onepkg\" file was executed as seen being used in malware activity in the wild",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\onenote\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\onenotem\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\onenoteim\\\\\\.exe$\")) AND file_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\OneNote\\\\\\\\.*\") AND (file_path = RGX(\"\\\\\\.bat$\") OR file_path = RGX(\"\\\\\\.chm$\") OR file_path = RGX(\"\\\\\\.cmd$\") OR file_path = RGX(\"\\\\\\.dll$\") OR file_path = RGX(\"\\\\\\.exe$\") OR file_path = RGX(\"\\\\\\.hta$\") OR file_path = RGX(\"\\\\\\.htm$\") OR file_path = RGX(\"\\\\\\.html$\") OR file_path = RGX(\"\\\\\\.js$\") OR file_path = RGX(\"\\\\\\.lnk$\") OR file_path = RGX(\"\\\\\\.ps1$\") OR file_path = RGX(\"\\\\\\.vbe$\") OR file_path = RGX(\"\\\\\\.vbs$\") OR file_path = RGX(\"\\\\\\.wsf$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6ecf47f4-0b16-4928-8dc1-1a27cde873b6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

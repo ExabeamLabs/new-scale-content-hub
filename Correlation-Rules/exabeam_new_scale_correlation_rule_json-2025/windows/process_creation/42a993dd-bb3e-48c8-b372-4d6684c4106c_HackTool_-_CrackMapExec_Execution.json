@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - CrackMapExec Execution",
+      "description": "This rule detect common flag combinations used by CrackMapExec in order to detect its use even if the binary has been replaced.",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\crackmapexec\\\\\\.exe$\") OR process_command_line = RGX(\".*\\\\ \\\\-M\\\\ pe\\\\_inject\\\\ .*\") OR (process_command_line = RGX(\".*\\\\ \\\\-\\\\-local\\\\-auth.*\") AND process_command_line = RGX(\".*\\\\ \\\\-u\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-x\\\\ .*\")) OR (process_command_line = RGX(\".*\\\\ \\\\-\\\\-local\\\\-auth.*\") AND process_command_line = RGX(\".*\\\\ \\\\-u\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-p\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-H\\\\ \\\\'NTHASH\\\\.*\")) OR (process_command_line = RGX(\".*\\\\ mssql\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-u\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-p\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-M\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-d\\\\ .*\")) OR (process_command_line = RGX(\".*\\\\ smb\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-u\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-H\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-M\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-o\\\\ .*\")) OR (process_command_line = RGX(\".*\\\\ smb\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-u\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-p\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-\\\\-local\\\\-auth.*\"))) OR ((process_command_line = RGX(\".*\\\\ \\\\-\\\\-local\\\\-auth.*\") AND process_command_line = RGX(\".*\\\\ \\\\-u\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-p\\\\ .*\")) AND (process_command_line = RGX(\".*\\\\ 10\\\\\\..*\") AND process_command_line = RGX(\".*\\\\ 192\\\\\\.168\\\\\\..*\") AND process_command_line = RGX(\".*\\\\/24\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ee6729e1-e28b-4641-96f8-2f427bafa3b1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

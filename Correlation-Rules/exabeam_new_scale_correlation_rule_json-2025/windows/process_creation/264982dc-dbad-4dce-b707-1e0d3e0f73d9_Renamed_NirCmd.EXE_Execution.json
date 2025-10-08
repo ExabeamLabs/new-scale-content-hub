@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Renamed NirCmd.EXE Execution",
+      "description": "Detects the execution of a renamed \"NirCmd.exe\" binary based on the PE metadata fields.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_original_file_name = \"NirCmd\\.exe\" AND  NOT ((process_path = RGX(\"\\\\\\\\nircmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\nircmdc\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "26561e00-c713-45cd-b7f5-d7f595c59491"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Screen Capture Activity Via Psr.EXE",
+      "description": "Detects execution of Windows Problem Steps Recorder (psr.exe), a utility used to record the user screen and clicks.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\Psr\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\/start.*\") OR process_command_line = RGX(\".*\\\\-start.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "57b4deaa-7d65-451c-9851-4ff77304a506"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

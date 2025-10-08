@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Rare Remote Thread Creation By Uncommon Source Image",
+      "description": "Detects uncommon processes creating remote threads. Note: Unmapped fields: SourceImage, TargetImage",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(SourceImage = RGX(\"\\\\\\\\bash\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\cvtres\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\defrag\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\dialer\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\dnx\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\esentutl\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\excel\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\expand\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\find\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\findstr\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\forfiles\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\gpupdate\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\hh\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\installutil\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\lync\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\makecab\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\mDNSResponder\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\monitoringhost\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\msbuild\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\mspaint\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\outlook\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\ping\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\provtool\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\python\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\robocopy\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\runonce\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\sapcimc\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\smartscreen\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\spoolsv\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\tstheme\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\userinit\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\vssadmin\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\vssvc\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\w3wp\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\winscp\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\winword\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\wmic\\\\\\.exe$\") OR SourceImage = RGX(\"\\\\\\\\wscript\\\\\\.exe$\")) AND  NOT (((SourceImage = \"C\\:\\\\Windows\\\\System32\\\\Defrag\\.exe\" OR SourceImage = \"C\\:\\\\Windows\\\\System32\\\\makecab\\.exe\") AND TargetImage = \"C\\:\\\\Windows\\\\System32\\\\conhost\\.exe\") OR (SourceImage = \"C\\:\\\\Windows\\\\System32\\\\provtool\\.exe\" AND TargetImage = \"C\\:\\\\Windows\\\\System32\\\\svchost\\.exe\") OR (SourceImage = \"C\\:\\\\Windows\\\\System32\\\\userinit\\.exe\" AND TargetImage = \"C\\:\\\\Windows\\\\explorer\\.exe\") OR (SourceImage = RGX(\"\\\\\\\\WINWORD\\\\\\.EXE$\") AND (TargetImage = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\\") OR TargetImage = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\\")))) AND  NOT ((SourceImage = RGX(\"\\\\\\\\SysWOW64\\\\\\\\explorer\\\\\\.exe$\") AND (TargetImage = \"C\\:\\\\Program\\ Files\\ \\(x86\\)\\\\VMware\\\\VMware\\ Tools\\\\vmtoolsd\\.exe\" OR TargetImage = \"C\\:\\\\Program\\ Files\\\\VMware\\\\VMware\\ Tools\\\\vmtoolsd\\.exe\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "93cf053d-06d2-4b93-ab1f-3267bfffa740"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

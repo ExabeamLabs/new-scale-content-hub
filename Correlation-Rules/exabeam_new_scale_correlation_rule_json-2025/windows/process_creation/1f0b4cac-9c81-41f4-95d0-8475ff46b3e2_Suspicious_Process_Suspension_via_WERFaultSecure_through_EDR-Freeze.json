@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Process Suspension via WERFaultSecure through EDR-Freeze",
+      "description": "Detects attempts to freeze a process likely an EDR or an antimalware service process through EDR-Freeze that abuses the WerFaultSecure.exe process to suspend security software.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = \"C\\:\\\\Windows\\\\System32\\\\WerFaultSecure\\.exe\" AND (process_command_line = RGX(\".*\\\\ \\\\/h\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\/pid\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\/tid\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\/encfile\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\/cancel\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\/type\\\\ .*\") AND process_command_line = RGX(\".*\\\\ 268310.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "211d84e4-5d6f-4b8f-8199-6778f04bf22f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

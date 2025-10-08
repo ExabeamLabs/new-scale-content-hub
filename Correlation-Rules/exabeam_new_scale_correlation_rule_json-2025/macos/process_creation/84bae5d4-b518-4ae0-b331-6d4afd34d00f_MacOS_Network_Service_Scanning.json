@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "MacOS Network Service Scanning",
+      "description": "Detects enumeration of local or remote network services.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/nc$\") OR process_path = RGX(\"\\\\/netcat$\")) AND  NOT (process_command_line = RGX(\".*l.*\"))) OR (process_path = RGX(\"\\\\/nmap$\") OR process_path = RGX(\"\\\\/telnet$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f63a5ab3-60b0-49f6-906c-9bdc9e7593ab"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

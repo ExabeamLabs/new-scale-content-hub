@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PowerShell Downgrade Attack - PowerShell",
+      "description": "Detects PowerShell downgrade attack by comparing the host versions with the actually used engine version 2.0 Note: Unmapped fields: Data",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "Data = RGX(\".*EngineVersion\\\\=2\\\\\\..*\") AND  NOT (Data = RGX(\".*HostVersion\\\\=2\\\\\\..*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4a577345-9e02-43fb-a84a-1dfafafd9993"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

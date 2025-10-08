@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious ShellExec_RunDLL Call Via Ordinal",
+      "description": "Detects suspicious call to the \"ShellExec_RunDLL\" exported function of SHELL32.DLL through the ordinal number to launch other commands.\nAdversary might only use the ordinal number in order to bypass existing detection that alert on usage of ShellExec_RunDLL on CommandLine.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_command_line = RGX(\".*SHELL32\\\\\\.DLL.*\") AND (parent_process_command_line = RGX(\".*\\\\#568.*\") OR parent_process_command_line = RGX(\".*\\\\#570.*\") OR parent_process_command_line = RGX(\".*\\\\#572.*\") OR parent_process_command_line = RGX(\".*\\\\#576.*\"))) AND (((parent_process_command_line = RGX(\".*comspec.*\") OR parent_process_command_line = RGX(\".*iex.*\") OR parent_process_command_line = RGX(\".*Invoke\\\\-.*\") OR parent_process_command_line = RGX(\".*msiexec.*\") OR parent_process_command_line = RGX(\".*odbcconf.*\") OR parent_process_command_line = RGX(\".*regsvr32.*\")) OR (parent_process_command_line = RGX(\".*\\\\\\\\Desktop\\\\\\\\.*\") OR parent_process_command_line = RGX(\".*\\\\\\\\ProgramData\\\\\\\\.*\") OR parent_process_command_line = RGX(\".*\\\\\\\\Temp\\\\\\\\.*\") OR parent_process_command_line = RGX(\".*\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\"))) OR (process_path = RGX(\"\\\\\\\\bash\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\bitsadmin\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\curl\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msiexec\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msxsl\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\odbcconf\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wmic\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "fab1b0a6-6010-40be-8820-a459871bbb40"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

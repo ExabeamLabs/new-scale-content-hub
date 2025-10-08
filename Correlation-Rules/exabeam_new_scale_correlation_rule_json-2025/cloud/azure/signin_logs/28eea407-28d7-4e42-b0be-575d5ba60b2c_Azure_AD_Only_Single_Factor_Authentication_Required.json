@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Azure AD Only Single Factor Authentication Required",
+      "description": "Detect when users are authenticating without MFA being required. Note: Unmapped fields: Status, AuthenticationRequirement",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Status = \"Success\" AND AuthenticationRequirement = \"singleFactorAuthentication\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6c6e8a0d-5d33-476c-aba4-4165fa1c9da2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

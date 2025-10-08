@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Azure Point-to-site VPN Modified or Deleted",
+      "description": "Identifies when a Point-to-site VPN is Modified or Deleted. Note: Unmapped fields: operationName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(operationName = \"MICROSOFT\\.NETWORK\\/P2SVPNGATEWAYS\\/WRITE\" OR operationName = \"MICROSOFT\\.NETWORK\\/P2SVPNGATEWAYS\\/DELETE\" OR operationName = \"MICROSOFT\\.NETWORK\\/P2SVPNGATEWAYS\\/RESET\\/ACTION\" OR operationName = \"MICROSOFT\\.NETWORK\\/P2SVPNGATEWAYS\\/GENERATEVPNPROFILE\\/ACTION\" OR operationName = \"MICROSOFT\\.NETWORK\\/P2SVPNGATEWAYS\\/DISCONNECTP2SVPNCONNECTIONS\\/ACTION\" OR operationName = \"MICROSOFT\\.NETWORK\\/P2SVPNGATEWAYS\\/PROVIDERS\\/MICROSOFT\\.INSIGHTS\\/DIAGNOSTICSETTINGS\\/WRITE\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "772b43b0-a428-487a-9272-fe0f26c2e12e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "RDP Sensitive Settings Changed",
+      "description": "Detects tampering of RDP Terminal Service/Server sensitive settings.\nSuch as allowing unauthorized users access to a system via the 'fAllowUnsolicited' or enabling RDP via 'fDenyTSConnections'...etc\n Note: Unmapped fields: Details",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((registry_path = RGX(\".*\\\\\\\\Control\\\\\\\\Terminal\\\\ Server\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\Windows\\\\ NT\\\\\\\\Terminal\\\\ Services\\\\\\\\.*\")) AND registry_path = RGX(\"\\\\\\\\Shadow$\") AND (Details = \"DWORD\\ \\(0x00000001\\)\" OR Details = \"DWORD\\ \\(0x00000002\\)\" OR Details = \"DWORD\\ \\(0x00000003\\)\" OR Details = \"DWORD\\ \\(0x00000004\\)\")) OR ((registry_path = RGX(\".*\\\\\\\\Control\\\\\\\\Terminal\\\\ Server\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\Windows\\\\ NT\\\\\\\\Terminal\\\\ Services\\\\\\\\.*\")) AND (registry_path = RGX(\"\\\\\\\\DisableRemoteDesktopAntiAlias$\") OR registry_path = RGX(\"\\\\\\\\DisableSecuritySettings$\") OR registry_path = RGX(\"\\\\\\\\fAllowUnsolicited$\") OR registry_path = RGX(\"\\\\\\\\fAllowUnsolicitedFullControl$\")) AND Details = \"DWORD\\ \\(0x00000001\\)\") OR (registry_path = RGX(\".*\\\\\\\\Control\\\\\\\\Terminal\\\\ Server\\\\\\\\InitialProgram.*\") OR registry_path = RGX(\".*\\\\\\\\Control\\\\\\\\Terminal\\\\ Server\\\\\\\\WinStations\\\\\\\\RDP\\\\-Tcp\\\\\\\\InitialProgram.*\") OR registry_path = RGX(\".*\\\\\\\\services\\\\\\\\TermService\\\\\\\\Parameters\\\\\\\\ServiceDll.*\") OR registry_path = RGX(\".*\\\\\\\\Windows\\\\ NT\\\\\\\\Terminal\\\\ Services\\\\\\\\InitialProgram.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b5b0d7c2-4858-401a-af68-fec29d728c30"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Abusable DLL Potential Sideloading From Suspicious Location",
+      "description": "Detects potential DLL sideloading of DLLs that are known to be abused from suspicious locations Note: Unmapped fields: ImageLoaded",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ImageLoaded = RGX(\"\\\\\\\\coreclr\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\facesdk\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\HPCustPartUI\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\libcef\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\ZIPDLL\\\\\\.dll$\")) AND ((ImageLoaded = RGX(\".*\\\\:\\\\\\\\Perflogs\\\\\\\\.*\") OR ImageLoaded = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR ImageLoaded = RGX(\".*\\\\\\\\Temporary\\\\ Internet.*\") OR ImageLoaded = RGX(\".*\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\")) OR ((ImageLoaded = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND ImageLoaded = RGX(\".*\\\\\\\\Favorites\\\\\\\\.*\")) OR (ImageLoaded = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND ImageLoaded = RGX(\".*\\\\\\\\Favourites\\\\\\\\.*\")) OR (ImageLoaded = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND ImageLoaded = RGX(\".*\\\\\\\\Contacts\\\\\\\\.*\")) OR (ImageLoaded = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND ImageLoaded = RGX(\".*\\\\\\\\Pictures\\\\\\\\.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8bf081cf-4a93-4e3c-b228-5f697562f22e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

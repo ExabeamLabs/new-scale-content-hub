@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Security Software Discovery - Linux",
+      "description": "Detects usage of system utilities (only grep and egrep for now) to discover security software discovery",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/grep$\") OR process_path = RGX(\"\\\\/egrep$\")) AND (process_command_line = RGX(\".*nessusd.*\") OR process_command_line = RGX(\".*td\\\\-agent.*\") OR process_command_line = RGX(\".*packetbeat.*\") OR process_command_line = RGX(\".*filebeat.*\") OR process_command_line = RGX(\".*auditbeat.*\") OR process_command_line = RGX(\".*osqueryd.*\") OR process_command_line = RGX(\".*cbagentd.*\") OR process_command_line = RGX(\".*falcond.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b62bb8b3-1d6a-46b1-a562-ff0131ab0f2d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

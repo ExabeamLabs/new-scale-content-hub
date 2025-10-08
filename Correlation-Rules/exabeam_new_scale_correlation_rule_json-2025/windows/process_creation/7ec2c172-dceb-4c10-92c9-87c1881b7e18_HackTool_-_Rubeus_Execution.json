@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - Rubeus Execution",
+      "description": "Detects the execution of the hacktool Rubeus via PE information of command line parameters",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\Rubeus\\\\\\.exe$\") OR process_original_file_name = \"Rubeus\\.exe\" OR process_description = \"Rubeus\" OR (process_command_line = RGX(\".*asreproast\\\\ .*\") OR process_command_line = RGX(\".*dump\\\\ \\\\/service\\\\:krbtgt\\\\ .*\") OR process_command_line = RGX(\".*dump\\\\ \\\\/luid\\\\:0x.*\") OR process_command_line = RGX(\".*kerberoast\\\\ .*\") OR process_command_line = RGX(\".*createnetonly\\\\ \\\\/program\\\\:.*\") OR process_command_line = RGX(\".*ptt\\\\ \\\\/ticket\\\\:.*\") OR process_command_line = RGX(\".*\\\\/impersonateuser\\\\:.*\") OR process_command_line = RGX(\".*renew\\\\ \\\\/ticket\\\\:.*\") OR process_command_line = RGX(\".*asktgt\\\\ \\\\/user\\\\:.*\") OR process_command_line = RGX(\".*harvest\\\\ \\\\/interval\\\\:.*\") OR process_command_line = RGX(\".*s4u\\\\ \\\\/user\\\\:.*\") OR process_command_line = RGX(\".*s4u\\\\ \\\\/ticket\\\\:.*\") OR process_command_line = RGX(\".*hash\\\\ \\\\/password\\\\:.*\") OR process_command_line = RGX(\".*golden\\\\ \\\\/aes256\\\\:.*\") OR process_command_line = RGX(\".*silver\\\\ \\\\/user\\\\:.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a8f7ed5e-fb39-487b-afea-7776469ccf81"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

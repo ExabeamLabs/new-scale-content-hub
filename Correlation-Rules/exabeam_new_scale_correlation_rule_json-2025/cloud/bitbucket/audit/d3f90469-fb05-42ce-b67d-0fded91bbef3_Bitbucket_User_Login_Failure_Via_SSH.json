@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Bitbucket User Login Failure Via SSH",
+      "description": "Detects SSH user login access failures.\nPlease note that this rule can be noisy and is recommended to use with correlation based on \"author.name\" field.\n Note: Unmapped fields: auditType.category, auditType.action",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(auditType.category = \"Authentication\" AND auditType.action = \"User\\ login\\ failed\\(SSH\\)\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2f130c84-5b45-4865-91f0-fb1bef92d215"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - Certipy Execution",
+      "description": "Detects Certipy execution, a tool for Active Directory Certificate Services enumeration and abuse based on PE metadata characteristics and common command line arguments.\n",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\Certipy\\\\\\.exe$\") OR process_original_file_name = \"Certipy\\.exe\" OR process_description = RGX(\".*Certipy.*\")) OR ((process_command_line = RGX(\".*\\\\ account\\\\ .*\") OR process_command_line = RGX(\".*\\\\ auth\\\\ .*\") OR process_command_line = RGX(\".*\\\\ cert\\\\ .*\") OR process_command_line = RGX(\".*\\\\ find\\\\ .*\") OR process_command_line = RGX(\".*\\\\ forge\\\\ .*\") OR process_command_line = RGX(\".*\\\\ ptt\\\\ .*\") OR process_command_line = RGX(\".*\\\\ relay\\\\ .*\") OR process_command_line = RGX(\".*\\\\ req\\\\ .*\") OR process_command_line = RGX(\".*\\\\ shadow\\\\ .*\") OR process_command_line = RGX(\".*\\\\ template\\\\ .*\")) AND (process_command_line = RGX(\".*\\\\ \\\\-bloodhound.*\") OR process_command_line = RGX(\".*\\\\ \\\\-ca\\\\-pfx\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-dc\\\\-ip\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-kirbi.*\") OR process_command_line = RGX(\".*\\\\ \\\\-old\\\\-bloodhound.*\") OR process_command_line = RGX(\".*\\\\ \\\\-pfx\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-target.*\") OR process_command_line = RGX(\".*\\\\ \\\\-template.*\") OR process_command_line = RGX(\".*\\\\ \\\\-username\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-vulnerable.*\") OR process_command_line = RGX(\".*auth\\\\ \\\\-pfx.*\") OR process_command_line = RGX(\".*shadow\\\\ auto.*\") OR process_command_line = RGX(\".*shadow\\\\ list.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "efbea4f4-7344-4ace-a371-835e008fb0f0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

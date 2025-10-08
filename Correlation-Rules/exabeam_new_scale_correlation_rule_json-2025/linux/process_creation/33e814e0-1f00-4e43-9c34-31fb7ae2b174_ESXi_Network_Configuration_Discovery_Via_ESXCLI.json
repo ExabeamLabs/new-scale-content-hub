@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "ESXi Network Configuration Discovery Via ESXCLI",
+      "description": "Detects execution of the \"esxcli\" command with the \"network\" flag in order to retrieve information about the network configuration.",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/esxcli$\") AND process_command_line = RGX(\".*network.*\")) AND (process_command_line = RGX(\".*\\\\ get.*\") OR process_command_line = RGX(\".*\\\\ list.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "bea6584f-1603-43f6-b885-34be35e2e3c6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

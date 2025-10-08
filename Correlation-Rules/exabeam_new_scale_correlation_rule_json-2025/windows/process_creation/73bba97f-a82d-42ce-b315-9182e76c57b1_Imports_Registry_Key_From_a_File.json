@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Imports Registry Key From a File",
+      "description": "Detects the import of the specified file to the registry with regedit.exe.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\regedit\\\\\\.exe$\") OR process_original_file_name = \"REGEDIT\\.EXE\") AND (process_command_line = RGX(\".*\\\\ \\\\/i\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\/s\\\\ .*\") OR process_command_line = RGX(\".*\\\\\\.reg.*\"))) AND  NOT ((process_command_line = RGX(\".*\\\\ \\\\-e\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-a\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-c\\\\ .*\")) AND process_command_line = RGX(\":[^ \\]\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "83b464b9-7550-49e1-9ac6-658dc1f135f0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

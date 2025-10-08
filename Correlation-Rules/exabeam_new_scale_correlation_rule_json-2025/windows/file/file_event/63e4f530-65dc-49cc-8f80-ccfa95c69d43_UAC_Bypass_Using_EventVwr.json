@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "UAC Bypass Using EventVwr",
+      "description": "Detects the pattern of a UAC bypass using Windows Event Viewer",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(file_path = RGX(\"\\\\\\\\Microsoft\\\\\\\\Event\\\\ Viewer\\\\\\\\RecentViews$\") OR file_path = RGX(\"\\\\\\\\Microsoft\\\\\\\\EventV\\\\~1\\\\\\\\RecentViews$\")) AND  NOT ((process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "dd29e13c-26f4-461e-b374-bace969d7b97"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

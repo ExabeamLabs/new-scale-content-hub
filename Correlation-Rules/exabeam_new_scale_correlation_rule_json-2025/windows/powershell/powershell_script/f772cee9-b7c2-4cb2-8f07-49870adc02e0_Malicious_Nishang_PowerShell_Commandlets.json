@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Malicious Nishang PowerShell Commandlets",
+      "description": "Detects Commandlet names and arguments from the Nishang exploitation framework Note: Unmapped fields: ScriptBlockText",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Add\\\\-ConstrainedDelegationBackdoor.*\") OR ScriptBlockText = RGX(\".*Copy\\\\-VSS.*\") OR ScriptBlockText = RGX(\".*Create\\\\-MultipleSessions.*\") OR ScriptBlockText = RGX(\".*DataToEncode.*\") OR ScriptBlockText = RGX(\".*DNS\\\\_TXT\\\\_Pwnage.*\") OR ScriptBlockText = RGX(\".*Do\\\\-Exfiltration\\\\-Dns.*\") OR ScriptBlockText = RGX(\".*Download\\\\_Execute.*\") OR ScriptBlockText = RGX(\".*Download\\\\-Execute\\\\-PS.*\") OR ScriptBlockText = RGX(\".*DownloadAndExtractFromRemoteRegistry.*\") OR ScriptBlockText = RGX(\".*DumpCerts.*\") OR ScriptBlockText = RGX(\".*DumpCreds.*\") OR ScriptBlockText = RGX(\".*DumpHashes.*\") OR ScriptBlockText = RGX(\".*Enable\\\\-DuplicateToken.*\") OR ScriptBlockText = RGX(\".*Enable\\\\-Duplication.*\") OR ScriptBlockText = RGX(\".*Execute\\\\-Command\\\\-MSSQL.*\") OR ScriptBlockText = RGX(\".*Execute\\\\-DNSTXT\\\\-Code.*\") OR ScriptBlockText = RGX(\".*Execute\\\\-OnTime.*\") OR ScriptBlockText = RGX(\".*ExetoText.*\") OR ScriptBlockText = RGX(\".*exfill.*\") OR ScriptBlockText = RGX(\".*ExfilOption.*\") OR ScriptBlockText = RGX(\".*FakeDC.*\") OR ScriptBlockText = RGX(\".*FireBuster.*\") OR ScriptBlockText = RGX(\".*FireListener.*\") OR ScriptBlockText = RGX(\".*Get\\\\-Information\\\\ .*\") OR ScriptBlockText = RGX(\".*Get\\\\-PassHints.*\") OR ScriptBlockText = RGX(\".*Get\\\\-Web\\\\-Credentials.*\") OR ScriptBlockText = RGX(\".*Get\\\\-WebCredentials.*\") OR ScriptBlockText = RGX(\".*Get\\\\-WLAN\\\\-Keys.*\") OR ScriptBlockText = RGX(\".*HTTP\\\\-Backdoor.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-AmsiBypass.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-BruteForce.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-CredentialsPhish.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-Decode.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-Encode.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-Interceptor.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-JSRatRegsvr.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-JSRatRundll.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-MimikatzWDigestDowngrade.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-NetworkRelay.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-PowerShellIcmp.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-PowerShellUdp.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-Prasadhak.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-PSGcat.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-PsGcatAgent.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-SessionGopher.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-SSIDExfil.*\") OR ScriptBlockText = RGX(\".*LoggedKeys.*\") OR ScriptBlockText = RGX(\".*Nishang.*\") OR ScriptBlockText = RGX(\".*NotAllNameSpaces.*\") OR ScriptBlockText = RGX(\".*Out\\\\-CHM.*\") OR ScriptBlockText = RGX(\".*OUT\\\\-DNSTXT.*\") OR ScriptBlockText = RGX(\".*Out\\\\-HTA.*\") OR ScriptBlockText = RGX(\".*Out\\\\-RundllCommand.*\") OR ScriptBlockText = RGX(\".*Out\\\\-SCF.*\") OR ScriptBlockText = RGX(\".*Out\\\\-SCT.*\") OR ScriptBlockText = RGX(\".*Out\\\\-Shortcut.*\") OR ScriptBlockText = RGX(\".*Out\\\\-WebQuery.*\") OR ScriptBlockText = RGX(\".*Out\\\\-Word.*\") OR ScriptBlockText = RGX(\".*Parse\\\\_Keys.*\") OR ScriptBlockText = RGX(\".*Password\\\\-List.*\") OR ScriptBlockText = RGX(\".*Powerpreter.*\") OR ScriptBlockText = RGX(\".*Remove\\\\-Persistence.*\") OR ScriptBlockText = RGX(\".*Remove\\\\-PoshRat.*\") OR ScriptBlockText = RGX(\".*Remove\\\\-Update.*\") OR ScriptBlockText = RGX(\".*Run\\\\-EXEonRemote.*\") OR ScriptBlockText = RGX(\".*Set\\\\-DCShadowPermissions.*\") OR ScriptBlockText = RGX(\".*Set\\\\-RemotePSRemoting.*\") OR ScriptBlockText = RGX(\".*Set\\\\-RemoteWMI.*\") OR ScriptBlockText = RGX(\".*Shellcode32.*\") OR ScriptBlockText = RGX(\".*Shellcode64.*\") OR ScriptBlockText = RGX(\".*StringtoBase64.*\") OR ScriptBlockText = RGX(\".*TexttoExe.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4b46b0c1-27d7-41bf-b99a-561e87097ab1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Renamed VsCode Code Tunnel Execution - File Indicator",
+      "description": "Detects the creation of a file with the name \"code_tunnel.json\" which indicate execution and usage of VsCode tunneling utility by an \"Image\" or \"Process\" other than VsCode.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "file_path = RGX(\"\\\\\\\\code\\\\_tunnel\\\\\\.json$\") AND  NOT ((process_path = RGX(\"\\\\\\\\code\\\\-tunnel\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\code\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9be0daa4-1475-4201-b337-3a6895256581"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

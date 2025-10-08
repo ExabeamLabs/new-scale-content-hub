@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "MSSQL Disable Audit Settings",
+      "description": "Detects when an attacker calls the \"ALTER SERVER AUDIT\" or \"DROP SERVER AUDIT\" transaction in order to delete or disable audit logs on the server Note: Unmapped fields: Provider_Name, Data",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Provider_Name = RGX(\".*MSSQL.*\") AND event_id = 33205 AND (Data = RGX(\".*statement\\\\:ALTER\\\\ SERVER\\\\ AUDIT.*\") OR Data = RGX(\".*statement\\\\:DROP\\\\ SERVER\\\\ AUDIT.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e2b504f0-df3c-4ee6-bd21-0c485a9189b4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

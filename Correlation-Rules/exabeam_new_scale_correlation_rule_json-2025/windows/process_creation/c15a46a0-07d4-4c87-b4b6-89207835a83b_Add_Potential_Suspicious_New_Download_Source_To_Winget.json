@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Add Potential Suspicious New Download Source To Winget",
+      "description": "Detects usage of winget to add new potentially suspicious download sources",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\winget\\\\\\.exe$\") OR process_original_file_name = \"winget\\.exe\") AND (process_command_line = RGX(\".*source\\\\ .*\") AND process_command_line = RGX(\".*add\\\\ .*\")) AND process_command_line = RGX(\"://\\d{1,3}.\\d{1,3}.\\d{1,3}.\\d{1,3}\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6ee579b5-e309-48e2-9146-8acbeefa0e74"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

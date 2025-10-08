@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Driver Load From A Temporary Directory",
+      "description": "Detects a driver load from a temporary directory Note: Unmapped fields: ImageLoaded",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ImageLoaded = RGX(\".*\\\\\\\\Temp\\\\\\\\.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "af21f330-bddc-47d2-88e5-35becd36d4fc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

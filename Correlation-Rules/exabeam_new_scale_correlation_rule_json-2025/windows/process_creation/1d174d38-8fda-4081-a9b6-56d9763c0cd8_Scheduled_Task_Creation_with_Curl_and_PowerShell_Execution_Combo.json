@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Scheduled Task Creation with Curl and PowerShell Execution Combo",
+      "description": "Detects the creation of a scheduled task using schtasks.exe, potentially in combination with curl for downloading payloads and PowerShell for executing them.\nThis facilitates executing malicious payloads or connecting with C&C server persistently without dropping the malware sample on the host.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") AND process_command_line = RGX(\".*\\\\ \\\\/create\\\\ .*\")) AND (process_command_line = RGX(\".*curl\\\\ .*\") AND process_command_line = RGX(\".*http.*\") AND process_command_line = RGX(\".*\\\\-o.*\")) AND process_command_line = RGX(\".*powershell.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6635c4ea-de82-4de3-80b0-ae633f82cd28"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

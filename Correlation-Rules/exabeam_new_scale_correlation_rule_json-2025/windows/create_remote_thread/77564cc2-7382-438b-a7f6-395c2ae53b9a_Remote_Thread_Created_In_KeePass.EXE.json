@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remote Thread Created In KeePass.EXE",
+      "description": "Detects remote thread creation in \"KeePass.exe\" which could indicates potential password dumping activity Note: Unmapped fields: TargetImage",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "TargetImage = RGX(\"\\\\\\\\KeePass\\\\\\.exe$\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0b7e77fa-3e99-4a37-b0d7-e71c3e0ed890"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

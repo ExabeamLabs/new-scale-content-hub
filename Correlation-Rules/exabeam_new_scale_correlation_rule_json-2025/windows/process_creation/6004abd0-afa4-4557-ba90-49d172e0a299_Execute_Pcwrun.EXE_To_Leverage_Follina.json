@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Execute Pcwrun.EXE To Leverage Follina",
+      "description": "Detects indirect command execution via Program Compatibility Assistant \"pcwrun.exe\" leveraging the follina (CVE-2022-30190) vulnerability",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\pcwrun\\\\\\.exe$\") AND process_command_line = RGX(\".*\\\\\\.\\\\\\.\\\\/.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "92df9dd8-f0c0-43cd-a709-b8ff1b955b02"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

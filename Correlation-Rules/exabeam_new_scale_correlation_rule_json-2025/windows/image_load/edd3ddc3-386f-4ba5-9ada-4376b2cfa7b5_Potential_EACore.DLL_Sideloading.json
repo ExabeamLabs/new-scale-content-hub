@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential EACore.DLL Sideloading",
+      "description": "Detects potential DLL sideloading of \"EACore.dll\" Note: Unmapped fields: ImageLoaded",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ImageLoaded = RGX(\"\\\\\\\\EACore\\\\\\.dll$\") AND  NOT (((process_path = RGX(\".*C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Electronic\\\\ Arts\\\\\\\\EA\\\\ Desktop\\\\\\\\.*\") AND process_path = RGX(\".*\\\\\\\\EACoreServer\\\\\\.exe.*\")) AND ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Electronic\\\\ Arts\\\\\\\\EA\\\\ Desktop\\\\\\\\\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "15cbad17-5a0b-452e-aa62-8d8593d258e1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

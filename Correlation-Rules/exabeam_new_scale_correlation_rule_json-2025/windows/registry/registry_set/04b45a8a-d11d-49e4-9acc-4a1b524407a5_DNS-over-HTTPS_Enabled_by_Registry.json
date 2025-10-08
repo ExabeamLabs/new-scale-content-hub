@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "DNS-over-HTTPS Enabled by Registry",
+      "description": "Detects when a user enables DNS-over-HTTPS.\nThis can be used to hide internet activity or be used to hide the process of exfiltrating data.\nWith this enabled organization will lose visibility into data such as query type, response and originating IP that are used to determine bad actors.\n Note: Unmapped fields: Details",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((registry_path = RGX(\"\\\\\\\\SOFTWARE\\\\\\\\Policies\\\\\\\\Microsoft\\\\\\\\Edge\\\\\\\\BuiltInDnsClientEnabled$\") AND Details = \"DWORD\\ \\(0x00000001\\)\") OR (registry_path = RGX(\"\\\\\\\\SOFTWARE\\\\\\\\Google\\\\\\\\Chrome\\\\\\\\DnsOverHttpsMode$\") AND Details = \"secure\") OR (registry_path = RGX(\"\\\\\\\\SOFTWARE\\\\\\\\Policies\\\\\\\\Mozilla\\\\\\\\Firefox\\\\\\\\DNSOverHTTPS\\\\\\\\Enabled$\") AND Details = \"DWORD\\ \\(0x00000001\\)\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "57ed70c2-6b92-4380-a1c8-64166696f9eb"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

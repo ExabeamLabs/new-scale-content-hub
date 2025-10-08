@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Unsigned Thor Scanner Execution",
+      "description": "Detects loading and execution of an unsigned thor scanner binary. Note: Unmapped fields: ImageLoaded, Signed, SignatureStatus, Signature",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\thor\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\thor64\\\\\\.exe$\")) AND (ImageLoaded = RGX(\"\\\\\\\\thor\\\\\\.exe$\") OR ImageLoaded = RGX(\"\\\\\\\\thor64\\\\\\.exe$\"))) AND  NOT ((Signed = \"true\" AND SignatureStatus = \"valid\" AND Signature = \"Nextron\\ Systems\\ GmbH\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9751e90c-dbe6-4d55-be72-fac62a196b25"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Persistence Via Notepad++ Plugins",
+      "description": "Detects creation of new \".dll\" files inside the plugins directory of a notepad++ installation by a process other than \"gup.exe\". Which could indicates possible persistence",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(file_path = RGX(\".*\\\\\\\\Notepad\\\\+\\\\+\\\\\\\\plugins\\\\\\\\.*\") AND file_path = RGX(\"\\\\\\.dll$\")) AND  NOT (process_path = RGX(\"\\\\\\\\Notepad\\\\+\\\\+\\\\\\\\updater\\\\\\\\gup\\\\\\.exe$\") OR (process_path = RGX(\"^C\\\\:\\\\\\\\Users\\\\\\\\\") AND process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") AND (process_path = RGX(\"\\\\\\\\target\\\\\\.exe$\") OR process_path = RGX(\"Installer\\\\\\.x64\\\\\\.exe$\"))) OR (process_path = RGX(\".*\\\\\\\\npp\\\\\\..*\") AND process_path = RGX(\"\\\\\\.exe$\") AND (file_path = \"C\\:\\\\Program\\ Files\\\\Notepad\\+\\+\\\\plugins\\\\NppExport\\\\NppExport\\.dll\" OR file_path = \"C\\:\\\\Program\\ Files\\\\Notepad\\+\\+\\\\plugins\\\\mimeTools\\\\mimeTools\\.dll\" OR file_path = \"C\\:\\\\Program\\ Files\\\\Notepad\\+\\+\\\\plugins\\\\NppConverter\\\\NppConverter\\.dll\" OR file_path = \"C\\:\\\\Program\\ Files\\\\Notepad\\+\\+\\\\plugins\\\\Config\\\\nppPluginList\\.dll\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ebdc420f-94eb-47a4-afa0-83c4b016bb9b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

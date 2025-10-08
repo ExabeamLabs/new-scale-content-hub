@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "ESXi Admin Permission Assigned To Account Via ESXCLI",
+      "description": "Detects execution of the \"esxcli\" command with the \"system\" and \"permission\" flags in order to assign admin permissions to an account.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/esxcli$\") AND process_command_line = RGX(\".*system.*\") AND (process_command_line = RGX(\".*\\\\ permission\\\\ .*\") AND process_command_line = RGX(\".*\\\\ set.*\") AND process_command_line = RGX(\".*Admin.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5156f645-0207-4c62-99e8-0e9c3d8c6374"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

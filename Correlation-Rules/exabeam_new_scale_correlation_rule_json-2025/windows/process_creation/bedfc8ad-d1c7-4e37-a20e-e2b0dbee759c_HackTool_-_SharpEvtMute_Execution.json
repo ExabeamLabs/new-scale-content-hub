@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - SharpEvtMute Execution",
+      "description": "Detects the use of SharpEvtHook, a tool that tampers with the Windows event logs",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\SharpEvtMute\\\\\\.exe$\") OR process_description = \"SharpEvtMute\" OR (process_command_line = RGX(\".*\\\\-\\\\-Filter\\\\ \\\\\"rule\\\\ .*\") OR process_command_line = RGX(\".*\\\\-\\\\-Encoded\\\\ \\\\-\\\\-Filter\\\\ \\\\\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f43f1912-c054-4a3e-9fab-456be46abfb7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

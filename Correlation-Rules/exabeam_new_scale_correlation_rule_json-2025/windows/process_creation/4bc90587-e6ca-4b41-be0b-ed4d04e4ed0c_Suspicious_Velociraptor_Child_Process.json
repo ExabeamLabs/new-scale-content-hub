@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Velociraptor Child Process",
+      "description": "Detects the suspicious use of the Velociraptor DFIR tool to execute other tools or download additional payloads, as seen in a campaign where it was abused for remote access and to stage further attacks.",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "parent_process_path = RGX(\"\\\\\\\\Velociraptor\\\\\\.exe$\") AND ((process_command_line = RGX(\".*code\\\\\\.exe.*\") AND process_command_line = RGX(\".*tunnel.*\") AND process_command_line = RGX(\".*\\\\-\\\\-accept\\\\-server\\\\-license\\\\-terms.*\")) OR (process_command_line = RGX(\".*msiexec.*\") AND process_command_line = RGX(\".*\\\\/i.*\") AND process_command_line = RGX(\".*http.*\")) OR ((process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\_ise\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\")) AND (process_command_line = RGX(\".*Invoke\\\\-WebRequest\\\\ .*\") OR process_command_line = RGX(\".*IWR\\\\ .*\") OR process_command_line = RGX(\".*\\\\\\.DownloadFile.*\") OR process_command_line = RGX(\".*\\\\\\.DownloadString.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "cfdf6212-3b41-4e28-91b8-f24021dba0d6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

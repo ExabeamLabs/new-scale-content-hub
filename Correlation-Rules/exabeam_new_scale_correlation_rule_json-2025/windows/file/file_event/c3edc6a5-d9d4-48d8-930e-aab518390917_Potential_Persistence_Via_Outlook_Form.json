@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Persistence Via Outlook Form",
+      "description": "Detects the creation of a new Outlook form which can contain malicious code",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\outlook\\\\\\.exe$\") AND (file_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Microsoft\\\\\\\\FORMS\\\\\\\\IPM.*\") OR file_path = RGX(\".*\\\\\\\\Local\\\\ Settings\\\\\\\\Application\\\\ Data\\\\\\\\Microsoft\\\\\\\\Forms.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b5b5d0dd-0626-4ab8-ae0a-d489b99f9507"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

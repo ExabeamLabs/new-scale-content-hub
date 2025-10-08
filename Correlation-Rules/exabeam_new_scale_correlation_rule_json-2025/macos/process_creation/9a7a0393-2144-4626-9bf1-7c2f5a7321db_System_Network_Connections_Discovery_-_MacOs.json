@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "System Network Connections Discovery - MacOs",
+      "description": "Detects usage of system utilities to discover system network connections",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/who$\") OR process_path = RGX(\"\\\\/w$\") OR process_path = RGX(\"\\\\/last$\") OR process_path = RGX(\"\\\\/lsof$\") OR process_path = RGX(\"\\\\/netstat$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "cf144f26-0616-4004-93f1-cd79ffd63333"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

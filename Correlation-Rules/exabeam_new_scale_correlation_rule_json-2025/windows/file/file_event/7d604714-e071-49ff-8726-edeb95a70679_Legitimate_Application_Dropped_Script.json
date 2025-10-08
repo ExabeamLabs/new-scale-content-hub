@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Legitimate Application Dropped Script",
+      "description": "Detects programs on a Windows system that should not write scripts to disk",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\eqnedt32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wordpad\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wordview\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\certutil\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\certoc\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\CertReq\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\Desktopimgdownldr\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\esentutl\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\AcroRd32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\RdrCEF\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\hh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\finger\\\\\\.exe$\")) AND (file_path = RGX(\"\\\\\\.ps1$\") OR file_path = RGX(\"\\\\\\.bat$\") OR file_path = RGX(\"\\\\\\.vbs$\") OR file_path = RGX(\"\\\\\\.scf$\") OR file_path = RGX(\"\\\\\\.wsf$\") OR file_path = RGX(\"\\\\\\.wsh$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3afe32ee-fe36-4182-b576-4dacfd2d4616"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

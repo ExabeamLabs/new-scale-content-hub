@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "CodeIntegrity - Unmet WHQL Requirements For Loaded Kernel Module",
+      "description": "Detects loaded kernel modules that did not meet the WHQL signing requirements. Note: Unmapped fields: FileNameBuffer",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 3082 OR event_id = 3083) AND  NOT ((FileNameBuffer = \"system32\\\\drivers\\\\vsock\\.sys\" OR FileNameBuffer = \"System32\\\\drivers\\\\vmci\\.sys\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "dc72fd9e-fa5d-4f5a-b1df-18d59f5187c3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

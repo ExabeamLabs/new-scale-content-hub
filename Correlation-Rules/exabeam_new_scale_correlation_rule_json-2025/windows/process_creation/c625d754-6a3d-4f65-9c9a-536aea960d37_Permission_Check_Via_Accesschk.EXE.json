@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Permission Check Via Accesschk.EXE",
+      "description": "Detects the usage of the \"Accesschk\" utility, an access and privilege audit tool developed by SysInternal and often being abused by attacker to verify process privileges",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_product = RGX(\"AccessChk$\") OR process_description = RGX(\".*Reports\\\\ effective\\\\ permissions.*\") OR (process_path = RGX(\"\\\\\\\\accesschk\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\accesschk64\\\\\\.exe$\")) OR process_original_file_name = \"accesschk\\.exe\") AND (process_command_line = RGX(\".*uwcqv\\\\ .*\") OR process_command_line = RGX(\".*kwsu\\\\ .*\") OR process_command_line = RGX(\".*qwsu\\\\ .*\") OR process_command_line = RGX(\".*uwdqs\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e0a279aa-1167-4a13-91ec-4b31377f6486"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

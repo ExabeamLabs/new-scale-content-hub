@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Important Scheduled Task Deleted",
+      "description": "Detects when adversaries try to stop system services or processes by deleting their respective scheduled tasks in order to conduct data destructive activities\n Note: Unmapped fields: TaskName, UserName",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 141 AND (TaskName = RGX(\".*\\\\\\\\Windows\\\\\\\\SystemRestore\\\\\\\\SR.*\") OR TaskName = RGX(\".*\\\\\\\\Windows\\\\\\\\Windows\\\\ Defender\\\\\\\\.*\") OR TaskName = RGX(\".*\\\\\\\\Windows\\\\\\\\BitLocker.*\") OR TaskName = RGX(\".*\\\\\\\\Windows\\\\\\\\WindowsBackup\\\\\\\\.*\") OR TaskName = RGX(\".*\\\\\\\\Windows\\\\\\\\WindowsUpdate\\\\\\\\.*\") OR TaskName = RGX(\".*\\\\\\\\Windows\\\\\\\\UpdateOrchestrator\\\\\\\\.*\") OR TaskName = RGX(\".*\\\\\\\\Windows\\\\\\\\ExploitGuard.*\"))) AND  NOT ((UserName = RGX(\".*AUTHORI.*\") OR UserName = RGX(\".*AUTORI.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "996b2e04-39cf-438d-a64a-4f47e2691bd0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

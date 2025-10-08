@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Winrar Execution in Non-Standard Folder",
+      "description": "Detects a suspicious winrar execution in a folder which is not the default installation folder",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\rar\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\winrar\\\\\\.exe$\")) OR process_description = \"Command\\ line\\ RAR\") AND  NOT (process_path = RGX(\"\\\\\\\\UnRAR\\\\\\.exe$\") OR (process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\WinRAR\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\WinRAR\\\\\\\\.*\"))) AND  NOT (process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8136432f-a430-46be-94f8-42c921e42d83"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

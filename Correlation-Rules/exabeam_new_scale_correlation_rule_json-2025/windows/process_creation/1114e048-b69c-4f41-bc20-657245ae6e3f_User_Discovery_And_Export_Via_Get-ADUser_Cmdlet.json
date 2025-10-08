@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "User Discovery And Export Via Get-ADUser Cmdlet",
+      "description": "Detects usage of the Get-ADUser cmdlet to collect user information and output it to a file",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\")) OR (process_original_file_name = \"PowerShell\\.EXE\" OR process_original_file_name = \"pwsh\\.dll\")) AND ((process_command_line = RGX(\".*Get\\\\-ADUser\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-Filter\\\\ \\\\*.*\")) AND (process_command_line = RGX(\".*\\\\ \\\\>\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\|\\\\ Select\\\\ .*\") OR process_command_line = RGX(\".*Out\\\\-File.*\") OR process_command_line = RGX(\".*Set\\\\-Content.*\") OR process_command_line = RGX(\".*Add\\\\-Content.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "451f580c-ff1c-4267-844a-d9f86d70817c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

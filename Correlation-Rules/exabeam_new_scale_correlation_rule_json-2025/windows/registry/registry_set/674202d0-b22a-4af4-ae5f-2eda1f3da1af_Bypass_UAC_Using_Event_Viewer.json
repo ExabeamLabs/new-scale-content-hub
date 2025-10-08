@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Bypass UAC Using Event Viewer",
+      "description": "Bypasses User Account Control using Event Viewer and a relevant Windows Registry modification Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\"\\\\_Classes\\\\\\\\mscfile\\\\\\\\shell\\\\\\\\open\\\\\\\\command\\\\\\\\\\\\(Default\\\\)$\") AND  NOT (Details = RGX(\"^\\\\%SystemRoot\\\\%\\\\\\\\system32\\\\\\\\mmc\\\\\\.exe\\\\ \\\\\"\\\\%1\\\\\"\\\\ \\\\%\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "10f2e8ae-58ac-4569-aafe-ba2998d1e749"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Mavinject Inject DLL Into Running Process",
+      "description": "Detects process injection using the signed Windows tool \"Mavinject\" via the \"INJECTRUNNING\" flag",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_command_line = RGX(\".*\\\\ \\\\/INJECTRUNNING\\\\ .*\") AND  NOT (parent_process_path = \"C\\:\\\\Windows\\\\System32\\\\AppVClient\\.exe\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5b2144da-e427-4cf8-a145-deaddbc2ccdf"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

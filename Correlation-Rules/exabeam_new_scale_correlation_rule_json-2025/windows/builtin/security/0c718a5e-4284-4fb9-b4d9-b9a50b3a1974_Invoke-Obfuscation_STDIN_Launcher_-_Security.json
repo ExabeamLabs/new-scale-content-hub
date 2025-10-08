@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation STDIN+ Launcher - Security",
+      "description": "Detects Obfuscated use of stdin to execute PowerShell Note: Unmapped fields: ServiceFileName",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((event_id = 4697 AND (ServiceFileName = RGX(\".*cmd.*\") AND ServiceFileName = RGX(\".*powershell.*\"))) AND (ServiceFileName = RGX(\".*\\\\$\\\\{input\\\\}.*\") OR ServiceFileName = RGX(\".*noexit.*\")) AND (ServiceFileName = RGX(\".*\\\\ \\\\/c\\\\ .*\") OR ServiceFileName = RGX(\".*\\\\ \\\\/r\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2b81f86b-d62c-40f7-b207-5cfda8c4e82e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

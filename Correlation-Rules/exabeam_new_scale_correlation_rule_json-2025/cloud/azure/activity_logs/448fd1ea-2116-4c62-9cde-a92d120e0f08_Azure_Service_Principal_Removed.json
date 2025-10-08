@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Azure Service Principal Removed",
+      "description": "Identifies when a service principal was removed in Azure. Note: Unmapped fields: properties.message",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "properties.message = \"Remove\\ service\\ principal\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9dc21988-0543-4ffb-9b0b-b2a33a4b2628"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

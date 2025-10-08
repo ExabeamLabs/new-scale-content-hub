@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "UAC Bypass Using Event Viewer RecentViews",
+      "description": "Detects the pattern of UAC Bypass using Event Viewer RecentViews",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*\\\\\\\\Event\\\\ Viewer\\\\\\\\RecentViews.*\") OR process_command_line = RGX(\".*\\\\\\\\EventV\\\\~1\\\\\\\\RecentViews.*\")) AND process_command_line = RGX(\".*\\\\>.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6bff238f-396d-48e9-9d25-ee578fff9c75"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

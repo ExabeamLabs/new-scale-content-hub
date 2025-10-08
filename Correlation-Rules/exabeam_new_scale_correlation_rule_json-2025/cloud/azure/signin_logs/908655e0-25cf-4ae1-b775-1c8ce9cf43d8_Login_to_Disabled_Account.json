@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Login to Disabled Account",
+      "description": "Detect failed attempts to sign in to disabled accounts. Note: Unmapped fields: ResultType, ResultDescription",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ResultType = 50057 AND ResultDescription = \"User\\ account\\ is\\ disabled\\.\\ The\\ account\\ has\\ been\\ disabled\\ by\\ an\\ administrator\\.\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ca9edb37-0b0f-4274-a278-1ad928464ce3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

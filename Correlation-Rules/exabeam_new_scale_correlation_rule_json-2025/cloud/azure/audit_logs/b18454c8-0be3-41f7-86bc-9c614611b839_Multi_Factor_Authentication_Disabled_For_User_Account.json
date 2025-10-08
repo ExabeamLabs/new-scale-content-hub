@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Multi Factor Authentication Disabled For User Account",
+      "description": "Detects changes to the \"StrongAuthenticationRequirement\" value, where the state is set to \"0\" or \"Disabled\".\nThreat actors were seen disabling multi factor authentication for users in order to maintain or achieve access to the account. Also see in SIM Swap attacks.\n Note: Unmapped fields: LoggedByService, Category, OperationName, TargetResources.ModifiedProperties.DisplayName, TargetResources.ModifiedProperties.NewValue",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(LoggedByService = \"Core\\ Directory\" AND Category = \"UserManagement\" AND OperationName = \"Update\\ user\" AND TargetResources.ModifiedProperties.DisplayName = \"StrongAuthenticationRequirement\" AND TargetResources.ModifiedProperties.NewValue = RGX(\".*State\\\\\"\\\\:0.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b598e6c5-9fef-4784-a428-56b0b67b48de"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

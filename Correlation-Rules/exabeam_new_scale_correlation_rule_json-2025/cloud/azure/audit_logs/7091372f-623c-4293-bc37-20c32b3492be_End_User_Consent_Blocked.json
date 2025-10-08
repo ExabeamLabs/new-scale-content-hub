@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "End User Consent Blocked",
+      "description": "Detects when end user consent is blocked due to risk-based consent. Note: Unmapped fields: failure_status_reason",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "failure_status_reason = \"Microsoft\\.online\\.Security\\.userConsentBlockedForRiskyAppsExceptions\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3bc75828-201f-4ed3-ad3f-dff57a423fb6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

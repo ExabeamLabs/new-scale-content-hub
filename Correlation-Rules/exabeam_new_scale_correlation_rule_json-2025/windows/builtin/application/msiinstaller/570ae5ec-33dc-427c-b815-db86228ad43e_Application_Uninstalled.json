@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Application Uninstalled",
+      "description": "An application has been removed. Check if it is critical. Note: Unmapped fields: Provider_Name",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Provider_Name = \"MsiInstaller\" AND (event_id = 1034 OR event_id = 11724))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c8748747-b02a-4513-8db0-8dcc1d4e18bc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

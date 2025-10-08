@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Register new Logon Process by Rubeus",
+      "description": "Detects potential use of Rubeus via registered new trusted logon process Note: Unmapped fields: LogonProcessName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4611 AND LogonProcessName = \"User32LogonProcesss\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9590368b-5226-45ae-8756-6bada948ae45"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

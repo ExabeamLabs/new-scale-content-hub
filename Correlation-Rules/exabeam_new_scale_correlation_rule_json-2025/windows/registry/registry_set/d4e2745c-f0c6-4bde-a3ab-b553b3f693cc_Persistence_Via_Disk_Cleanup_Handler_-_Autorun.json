@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Persistence Via Disk Cleanup Handler - Autorun",
+      "description": "Detects when an attacker modifies values of the Disk Cleanup Handler in the registry to achieve persistence via autorun.\nThe disk cleanup manager is part of the operating system.\nIt displays the dialog box [\u2026] The user has the option of enabling or disabling individual handlers by selecting or clearing their check box in the disk cleanup manager's UI.\nAlthough Windows comes with a number of disk cleanup handlers, they aren't designed to handle files produced by other applications.\nInstead, the disk cleanup manager is designed to be flexible and extensible by enabling any developer to implement and register their own disk cleanup handler.\nAny developer can extend the available disk cleanup services by implementing and registering a disk cleanup handler.\n Note: Unmapped fields: Details",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Explorer\\\\\\\\VolumeCaches\\\\\\\\.*\") AND ((registry_path = RGX(\".*\\\\\\\\Autorun.*\") AND Details = \"DWORD\\ \\(0x00000001\\)\") OR ((registry_path = RGX(\".*\\\\\\\\CleanupString.*\") OR registry_path = RGX(\".*\\\\\\\\PreCleanupString.*\")) AND (Details = RGX(\".*cmd.*\") OR Details = RGX(\".*powershell.*\") OR Details = RGX(\".*rundll32.*\") OR Details = RGX(\".*mshta.*\") OR Details = RGX(\".*cscript.*\") OR Details = RGX(\".*wscript.*\") OR Details = RGX(\".*wsl.*\") OR Details = RGX(\".*\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR Details = RGX(\".*\\\\\\\\Windows\\\\\\\\TEMP\\\\\\\\.*\") OR Details = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\Start\\\\ Menu\\\\\\\\Programs\\\\\\\\Startup\\\\\\\\.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6e983ee2-b8ed-4ecc-8f78-7e24bf837480"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

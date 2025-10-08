@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Possible PetitPotam Coerce Authentication Attempt",
+      "description": "Detect PetitPotam coerced authentication activity. Note: Unmapped fields: ShareName, RelativeTargetName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 5145 AND ShareName = RGX(\"^\\\\\\\\\\\\\\\\\") AND ShareName = RGX(\"\\\\\\\\IPC\\\\$$\") AND RelativeTargetName = \"lsarpc\" AND user = \"ANONYMOUS\\ LOGON\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7cbc581c-8438-4d08-b462-f23941a4e7a6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

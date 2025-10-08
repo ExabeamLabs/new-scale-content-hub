@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "UAC Bypass via Sdclt",
+      "description": "Detects the pattern of UAC Bypass using registry key manipulation of sdclt.exe (e.g. UACMe 53) Note: Unmapped fields: Details",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\"Software\\\\\\\\Classes\\\\\\\\exefile\\\\\\\\shell\\\\\\\\runas\\\\\\\\command\\\\\\\\isolatedCommand$\") OR (registry_path = RGX(\"Software\\\\\\\\Classes\\\\\\\\Folder\\\\\\\\shell\\\\\\\\open\\\\\\\\command\\\\\\\\SymbolicLinkValue$\") AND Details = RGX(\"-1[0-9]{3}\\Software\\Classes\\\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9c8e465b-93ff-4e78-8df5-40f1c5568ea1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

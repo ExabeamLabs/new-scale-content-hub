@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remote Thread Creation Ttdinject.exe Proxy",
+      "description": "Detects a remote thread creation of Ttdinject.exe used as proxy Note: Unmapped fields: SourceImage",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "SourceImage = RGX(\"\\\\\\\\ttdinject\\\\\\.exe$\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b592a8b6-b991-4df1-aa8b-248369052fea"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Perl Inline Command Execution",
+      "description": "Detects execution of perl using the \"-e\"/\"-E\" flags. This is could be used as a way to launch a reverse shell or execute live perl code.",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\perl\\\\\\.exe$\") OR process_original_file_name = \"perl\\.exe\") AND process_command_line = RGX(\".*\\\\ \\\\-e.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3271b4d8-7022-4012-8682-d781b4e38767"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

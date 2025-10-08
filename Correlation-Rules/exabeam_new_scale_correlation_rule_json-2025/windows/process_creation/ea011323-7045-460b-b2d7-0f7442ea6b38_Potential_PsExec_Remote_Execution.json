@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential PsExec Remote Execution",
+      "description": "Detects potential psexec command that initiate execution on a remote systems via common commandline flags used by the utility",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*accepteula.*\") AND process_command_line = RGX(\".*\\\\ \\\\-u\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-p\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\\\\\\\\\\\\\.*\")) AND  NOT ((process_command_line = RGX(\".*\\\\\\\\\\\\\\\\localhost.*\") OR process_command_line = RGX(\".*\\\\\\\\\\\\\\\\127\\\\\\..*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "dd670918-ce42-4ae9-a542-cc42d79256f7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Disable Windows IIS HTTP Logging",
+      "description": "Disables HTTP logging on a Windows IIS web server as seen by Threat Group 3390 (Bronze Union)",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\appcmd\\\\\\.exe$\") OR process_original_file_name = \"appcmd\\.exe\") AND (process_command_line = RGX(\".*set.*\") AND process_command_line = RGX(\".*config.*\") AND process_command_line = RGX(\".*section\\\\:httplogging.*\") AND process_command_line = RGX(\".*dontLog\\\\:true.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "51d769b6-4d5a-48c9-8d96-6bd7ef2fc57f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

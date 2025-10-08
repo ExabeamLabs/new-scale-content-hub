@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Non-privileged Usage of Reg or Powershell",
+      "description": "Search for usage of reg or Powershell by non-privileged users to modify service configuration in registry",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_command_line = RGX(\".*reg\\\\ .*\") AND process_command_line = RGX(\".*add.*\")) OR (process_command_line = RGX(\".*powershell.*\") OR process_command_line = RGX(\".*set\\\\-itemproperty.*\") OR process_command_line = RGX(\".*\\\\ sp\\\\ .*\") OR process_command_line = RGX(\".*new\\\\-itemproperty.*\"))) AND ((process_integrity_level = \"Medium\" OR process_integrity_level = \"S\\-1\\-16\\-8192\") AND (process_command_line = RGX(\".*ControlSet.*\") AND process_command_line = RGX(\".*Services.*\")) AND (process_command_line = RGX(\".*ImagePath.*\") OR process_command_line = RGX(\".*FailureCommand.*\") OR process_command_line = RGX(\".*ServiceDLL.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "37e835dd-4215-4be8-8554-d3ffb47cfd1d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

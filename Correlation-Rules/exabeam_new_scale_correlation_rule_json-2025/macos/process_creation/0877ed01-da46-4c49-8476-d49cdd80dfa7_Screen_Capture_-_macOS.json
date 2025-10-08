@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Screen Capture - macOS",
+      "description": "Detects attempts to use screencapture to collect macOS screenshots",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_path = \"\\/usr\\/sbin\\/screencapture\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "34fd6b5d-5274-4121-81d5-54904cfe0476"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

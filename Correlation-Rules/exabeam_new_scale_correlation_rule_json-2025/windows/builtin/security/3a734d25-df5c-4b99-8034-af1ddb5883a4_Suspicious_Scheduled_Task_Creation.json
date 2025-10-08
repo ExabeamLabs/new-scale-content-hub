@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Scheduled Task Creation",
+      "description": "Detects suspicious scheduled task creation events. Based on attributes such as paths, commands line flags, etc. Note: Unmapped fields: TaskContent",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4698 AND (TaskContent = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") OR TaskContent = RGX(\".*\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\.*\") OR TaskContent = RGX(\".*\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR TaskContent = RGX(\".*\\\\\\\\WINDOWS\\\\\\\\Temp\\\\\\\\.*\") OR TaskContent = RGX(\".*C\\\\:\\\\\\\\Temp\\\\\\\\.*\") OR TaskContent = RGX(\".*\\\\\\\\Desktop\\\\\\\\.*\") OR TaskContent = RGX(\".*\\\\\\\\Downloads\\\\\\\\.*\") OR TaskContent = RGX(\".*\\\\\\\\Temporary\\\\ Internet.*\") OR TaskContent = RGX(\".*C\\\\:\\\\\\\\ProgramData\\\\\\\\.*\") OR TaskContent = RGX(\".*C\\\\:\\\\\\\\Perflogs\\\\\\\\.*\")) AND (TaskContent = RGX(\".*regsvr32.*\") OR TaskContent = RGX(\".*rundll32.*\") OR TaskContent = RGX(\".*cmd\\\\\\.exe\\\\<\\\\/Command\\\\>.*\") OR TaskContent = RGX(\".*cmd\\\\<\\\\/Command\\\\>.*\") OR TaskContent = RGX(\".*\\\\<Arguments\\\\>\\\\/c\\\\ .*\") OR TaskContent = RGX(\".*\\\\<Arguments\\\\>\\\\/k\\\\ .*\") OR TaskContent = RGX(\".*\\\\<Arguments\\\\>\\\\/r\\\\ .*\") OR TaskContent = RGX(\".*powershell.*\") OR TaskContent = RGX(\".*pwsh.*\") OR TaskContent = RGX(\".*mshta.*\") OR TaskContent = RGX(\".*wscript.*\") OR TaskContent = RGX(\".*cscript.*\") OR TaskContent = RGX(\".*certutil.*\") OR TaskContent = RGX(\".*bitsadmin.*\") OR TaskContent = RGX(\".*bash\\\\\\.exe.*\") OR TaskContent = RGX(\".*bash\\\\ .*\") OR TaskContent = RGX(\".*scrcons.*\") OR TaskContent = RGX(\".*wmic\\\\ .*\") OR TaskContent = RGX(\".*wmic\\\\\\.exe.*\") OR TaskContent = RGX(\".*forfiles.*\") OR TaskContent = RGX(\".*scriptrunner.*\") OR TaskContent = RGX(\".*hh\\\\\\.exe.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "07d6c7fa-08c7-4b58-bd0b-1c3e8ab7b2c5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

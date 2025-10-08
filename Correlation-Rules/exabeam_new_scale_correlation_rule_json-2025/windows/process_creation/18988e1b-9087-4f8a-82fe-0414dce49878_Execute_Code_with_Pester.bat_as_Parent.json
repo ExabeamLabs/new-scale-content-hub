@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Execute Code with Pester.bat as Parent",
+      "description": "Detects code execution via Pester.bat (Pester - Powershell Modulte for testing)",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((parent_process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\")) AND parent_process_command_line = RGX(\".*\\\\\\\\WindowsPowerShell\\\\\\\\Modules\\\\\\\\Pester\\\\\\\\.*\")) AND (parent_process_command_line = RGX(\".*\\\\{\\\\ Invoke\\\\-Pester\\\\ \\\\-EnableExit\\\\ \\\\;.*\") OR parent_process_command_line = RGX(\".*\\\\{\\\\ Get\\\\-Help\\\\ \\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6e1fd36b-940e-4fd2-b0f7-bbf96268c09c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

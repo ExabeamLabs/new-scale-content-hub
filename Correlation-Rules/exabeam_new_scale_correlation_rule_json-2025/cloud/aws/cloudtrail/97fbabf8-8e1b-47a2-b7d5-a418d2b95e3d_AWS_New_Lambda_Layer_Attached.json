@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "AWS New Lambda Layer Attached",
+      "description": "Detects when a user attached a Lambda layer to an existing Lambda function.\nA malicious Lambda layer could execute arbitrary code in the context of the function's IAM role.\nThis would give an adversary access to resources that the function has access to.\n Note: Unmapped fields: eventSource, eventName, requestParameters.layers",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(eventSource = \"lambda\\.amazonaws\\.com\" AND eventName = RGX(\"^UpdateFunctionConfiguration\") AND requestParameters.layers = RGX(\".**.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "723074cb-3cf1-48e6-acf6-df84499e24ba"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

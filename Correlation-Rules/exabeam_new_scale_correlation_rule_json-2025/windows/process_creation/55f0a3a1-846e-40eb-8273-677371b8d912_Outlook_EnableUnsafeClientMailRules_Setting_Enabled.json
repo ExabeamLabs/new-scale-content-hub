@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Outlook EnableUnsafeClientMailRules Setting Enabled",
+      "description": "Detects an attacker trying to enable the outlook security setting \"EnableUnsafeClientMailRules\" which allows outlook to run applications or execute macros",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_command_line = RGX(\".*\\\\\\\\Outlook\\\\\\\\Security\\\\\\\\EnableUnsafeClientMailRules.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "116d2290-e7cb-4198-8199-963a5468e6be"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remote PowerShell Session (PS Classic)",
+      "description": "Detects remote PowerShell sessions Note: Unmapped fields: Data",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Data = RGX(\".*HostName\\\\=ServerRemoteHost.*\") AND Data = RGX(\".*wsmprovhost\\\\\\.exe.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7d25baf5-1598-47e7-bcdd-ef31990e3bac"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

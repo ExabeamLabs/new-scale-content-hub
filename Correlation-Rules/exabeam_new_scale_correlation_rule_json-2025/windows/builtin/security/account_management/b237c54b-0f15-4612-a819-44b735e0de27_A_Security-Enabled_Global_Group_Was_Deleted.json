@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "A Security-Enabled Global Group Was Deleted",
+      "description": "Detects activity when a security-enabled global group is deleted",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4730 OR event_id = 634)",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "531f9f85-3074-4a8e-85d5-ef47e66b87cb"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

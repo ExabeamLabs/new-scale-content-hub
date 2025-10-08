@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "AWS GuardDuty Important Change",
+      "description": "Detects updates of the GuardDuty list of trusted IPs, perhaps to disable security alerts against malicious IPs. Note: Unmapped fields: eventSource, eventName",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(eventSource = \"guardduty\\.amazonaws\\.com\" AND eventName = \"CreateIPSet\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ca006425-4959-4fcc-9071-c518ef03a263"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

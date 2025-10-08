@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Winrar Compressing Dump Files",
+      "description": "Detects execution of WinRAR in order to compress a file with a \".dmp\"/\".dump\" extension, which could be a step in a process of dump file exfiltration.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\rar\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\winrar\\\\\\.exe$\")) OR process_description = \"Command\\ line\\ RAR\") AND (process_command_line = RGX(\".*\\\\\\.dmp.*\") OR process_command_line = RGX(\".*\\\\\\.dump.*\") OR process_command_line = RGX(\".*\\\\\\.hdmp.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5b24a175-df90-4f7f-8c93-7ac6c9018746"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

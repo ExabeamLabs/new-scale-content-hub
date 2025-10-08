@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "User Risk and MFA Registration Policy Updated",
+      "description": "Detects changes and updates to the user risk and MFA registration policy.\nAttackers can modified the policies to Bypass MFA, weaken security thresholds, facilitate further attacks, maintain persistence.\n Note: Unmapped fields: LoggedByService, Category, OperationName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(LoggedByService = \"AAD\\ Management\\ UX\" AND Category = \"Policy\" AND OperationName = \"Update\\ User\\ Risk\\ and\\ MFA\\ Registration\\ Policy\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e96db242-5701-43d5-aa98-dc76d54d3bcb"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - winPEAS Execution",
+      "description": "WinPEAS is a script that search for possible paths to escalate privileges on Windows hosts. The checks are explained on book.hacktricks.xyz",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_original_file_name = \"winPEAS\\.exe\" OR (process_path = RGX(\"\\\\\\\\winPEASany\\\\_ofs\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\winPEASany\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\winPEASx64\\\\_ofs\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\winPEASx64\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\winPEASx86\\\\_ofs\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\winPEASx86\\\\\\.exe$\"))) OR (process_command_line = RGX(\".*\\\\ applicationsinfo.*\") OR process_command_line = RGX(\".*\\\\ browserinfo.*\") OR process_command_line = RGX(\".*\\\\ eventsinfo.*\") OR process_command_line = RGX(\".*\\\\ fileanalysis.*\") OR process_command_line = RGX(\".*\\\\ filesinfo.*\") OR process_command_line = RGX(\".*\\\\ processinfo.*\") OR process_command_line = RGX(\".*\\\\ servicesinfo.*\") OR process_command_line = RGX(\".*\\\\ windowscreds.*\")) OR process_command_line = RGX(\".*https\\\\:\\\\/\\\\/github\\\\\\.com\\\\/carlospolop\\\\/PEASS\\\\-ng\\\\/releases\\\\/latest\\\\/download\\\\/.*\") OR (parent_process_command_line = RGX(\"\\\\ \\\\-linpeas$\") OR process_command_line = RGX(\"\\\\ \\\\-linpeas$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3df966d7-7eca-465e-8e8c-72729a77dd84"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

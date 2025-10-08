@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Modification Of Scheduled Tasks",
+      "description": "Detects when an attacker tries to modify an already existing scheduled tasks to run from a suspicious location\nAttackers can create a simple looking task in order to avoid detection on creation as it's often the most focused on\nInstead they modify the task after creation to include their malicious payload\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\ \\\\/Change\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\/TN\\\\ .*\"))) AND (process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp.*\") OR process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\WINDOWS\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Desktop\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Downloads\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Temporary\\\\ Internet.*\") OR process_command_line = RGX(\".*C\\\\:\\\\\\\\ProgramData\\\\\\\\.*\") OR process_command_line = RGX(\".*C\\\\:\\\\\\\\Perflogs\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\%ProgramData\\\\%.*\") OR process_command_line = RGX(\".*\\\\%appdata\\\\%.*\") OR process_command_line = RGX(\".*\\\\%comspec\\\\%.*\") OR process_command_line = RGX(\".*\\\\%localappdata\\\\%.*\")) AND (process_command_line = RGX(\".*regsvr32.*\") OR process_command_line = RGX(\".*rundll32.*\") OR process_command_line = RGX(\".*cmd\\\\ \\\\/c\\\\ .*\") OR process_command_line = RGX(\".*cmd\\\\ \\\\/k\\\\ .*\") OR process_command_line = RGX(\".*cmd\\\\ \\\\/r\\\\ .*\") OR process_command_line = RGX(\".*cmd\\\\\\.exe\\\\ \\\\/c\\\\ .*\") OR process_command_line = RGX(\".*cmd\\\\\\.exe\\\\ \\\\/k\\\\ .*\") OR process_command_line = RGX(\".*cmd\\\\\\.exe\\\\ \\\\/r\\\\ .*\") OR process_command_line = RGX(\".*powershell.*\") OR process_command_line = RGX(\".*mshta.*\") OR process_command_line = RGX(\".*wscript.*\") OR process_command_line = RGX(\".*cscript.*\") OR process_command_line = RGX(\".*certutil.*\") OR process_command_line = RGX(\".*bitsadmin.*\") OR process_command_line = RGX(\".*bash\\\\\\.exe.*\") OR process_command_line = RGX(\".*bash\\\\ .*\") OR process_command_line = RGX(\".*scrcons.*\") OR process_command_line = RGX(\".*wmic\\\\ .*\") OR process_command_line = RGX(\".*wmic\\\\\\.exe.*\") OR process_command_line = RGX(\".*forfiles.*\") OR process_command_line = RGX(\".*scriptrunner.*\") OR process_command_line = RGX(\".*hh\\\\\\.exe.*\") OR process_command_line = RGX(\".*hh\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e3e18bf1-08fa-45b4-92c9-cecf74b34453"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

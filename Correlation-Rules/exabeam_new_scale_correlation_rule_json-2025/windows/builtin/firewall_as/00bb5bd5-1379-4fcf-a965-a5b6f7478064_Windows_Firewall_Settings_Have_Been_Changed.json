@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows Firewall Settings Have Been Changed",
+      "description": "Detects activity when the settings of the Windows firewall have been changed",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 2002 OR event_id = 2083 OR event_id = 2003 OR event_id = 2082 OR event_id = 2008)",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b69fd286-5e3a-4112-88f1-aec8bfc53340"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Registry Modification to Hidden File Extension",
+      "description": "Hides the file extension through modification of the registry Note: Unmapped fields: Details",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((registry_path = RGX(\"\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Explorer\\\\\\\\Advanced\\\\\\\\HideFileExt$\") AND Details = \"DWORD\\ \\(0x00000001\\)\") OR (registry_path = RGX(\"\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Explorer\\\\\\\\Advanced\\\\\\\\Hidden$\") AND Details = \"DWORD\\ \\(0x00000002\\)\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8a01f43e-10df-42c8-8218-051e6e5b43d3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

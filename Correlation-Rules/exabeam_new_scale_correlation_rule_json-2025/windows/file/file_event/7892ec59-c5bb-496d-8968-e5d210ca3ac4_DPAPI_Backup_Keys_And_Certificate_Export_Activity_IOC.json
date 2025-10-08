@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "DPAPI Backup Keys And Certificate Export Activity IOC",
+      "description": "Detects file names with specific patterns seen generated and used by tools such as Mimikatz and DSInternals related to exported or stolen DPAPI backup keys and certificates.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((file_path = RGX(\".*ntds\\\\_capi\\\\_.*\") OR file_path = RGX(\".*ntds\\\\_legacy\\\\_.*\") OR file_path = RGX(\".*ntds\\\\_unknown\\\\_.*\")) AND (file_path = RGX(\"\\\\\\.cer$\") OR file_path = RGX(\"\\\\\\.key$\") OR file_path = RGX(\"\\\\\\.pfx$\") OR file_path = RGX(\"\\\\\\.pvk$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "31408816-09da-40a2-ad63-54c562377c17"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

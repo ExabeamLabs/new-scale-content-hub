@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Fax Service DLL Search Order Hijack",
+      "description": "The Fax service attempts to load ualapi.dll, which is non-existent. An attacker can then (side)load their own malicious DLL using this service. Note: Unmapped fields: ImageLoaded",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\fxssvc\\\\\\.exe$\") AND ImageLoaded = RGX(\"ualapi\\\\\\.dll$\")) AND  NOT (ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\WinSxS\\\\\\\\\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "66b90099-c948-4db1-8a86-d60237cb08e9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

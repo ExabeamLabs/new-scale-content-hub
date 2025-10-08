@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "MMC Executing Files with Reversed Extensions Using RTLO Abuse",
+      "description": "Detects malicious behavior where the MMC utility (`mmc.exe`) executes files with reversed extensions caused by Right-to-Left Override (RLO) abuse, disguising them as document formats.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\mmc\\\\\\.exe$\") OR process_original_file_name = \"MMC\\.exe\") AND (process_command_line = RGX(\".*cod\\\\\\.msc.*\") OR process_command_line = RGX(\".*fdp\\\\\\.msc.*\") OR process_command_line = RGX(\".*ftr\\\\\\.msc.*\") OR process_command_line = RGX(\".*lmth\\\\\\.msc.*\") OR process_command_line = RGX(\".*slx\\\\\\.msc.*\") OR process_command_line = RGX(\".*tdo\\\\\\.msc.*\") OR process_command_line = RGX(\".*xcod\\\\\\.msc.*\") OR process_command_line = RGX(\".*xslx\\\\\\.msc.*\") OR process_command_line = RGX(\".*xtpp\\\\\\.msc.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9f477a82-527b-4414-b9a6-c36392735c84"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

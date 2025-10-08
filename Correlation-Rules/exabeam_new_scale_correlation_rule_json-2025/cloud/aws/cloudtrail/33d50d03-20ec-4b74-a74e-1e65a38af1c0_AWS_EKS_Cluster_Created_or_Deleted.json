@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "AWS EKS Cluster Created or Deleted",
+      "description": "Identifies when an EKS cluster is created or deleted. Note: Unmapped fields: eventSource, eventName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(eventSource = \"eks\\.amazonaws\\.com\" AND (eventName = \"CreateCluster\" OR eventName = \"DeleteCluster\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "13933a22-988b-4e9f-ac75-6de6dcf5cc65"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

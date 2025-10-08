@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Change the Fax Dll",
+      "description": "Detect possible persistence using Fax DLL load when service restart Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\Software\\\\\\\\Microsoft\\\\\\\\Fax\\\\\\\\Device\\\\ Providers\\\\\\\\.*\") AND registry_path = RGX(\".*\\\\\\\\ImageName.*\")) AND  NOT (Details = \"\\%systemroot\\%\\\\system32\\\\fxst30\\.dll\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d4d263ac-2b46-4a36-a64d-cbd437e74a96"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

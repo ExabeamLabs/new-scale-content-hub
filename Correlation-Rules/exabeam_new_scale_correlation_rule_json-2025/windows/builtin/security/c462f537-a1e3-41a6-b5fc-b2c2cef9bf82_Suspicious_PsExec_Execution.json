@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious PsExec Execution",
+      "description": "detects execution of psexec or paexec with renamed service name, this rule helps to filter out the noise if psexec is used for legit purposes or if attacker uses a different psexec client other than sysinternal one Note: Unmapped fields: ShareName, RelativeTargetName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 5145 AND ShareName = \"\\\\\\\\\\*\\\\IPC\\$\" AND (RelativeTargetName = RGX(\"\\\\-stdin$\") OR RelativeTargetName = RGX(\"\\\\-stdout$\") OR RelativeTargetName = RGX(\"\\\\-stderr$\"))) AND  NOT (RelativeTargetName = RGX(\"^PSEXESVC\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "60eb477e-a9a2-42c4-96f8-88ac77ced5f8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

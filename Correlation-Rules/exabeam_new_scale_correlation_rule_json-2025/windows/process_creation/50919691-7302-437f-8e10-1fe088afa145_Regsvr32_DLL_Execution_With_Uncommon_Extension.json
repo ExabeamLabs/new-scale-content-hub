@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Regsvr32 DLL Execution With Uncommon Extension",
+      "description": "Detects a \"regsvr32\" execution where the DLL doesn't contain a common file extension.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR process_original_file_name = \"REGSVR32\\.EXE\") AND  NOT ((process_command_line = RGX(\".*\\\\\\.ax.*\") OR process_command_line = RGX(\".*\\\\\\.cpl.*\") OR process_command_line = RGX(\".*\\\\\\.dll.*\") OR process_command_line = RGX(\".*\\\\\\.ocx.*\")) OR process_command_line = \"None\" OR process_command_line = \"\") AND  NOT (process_command_line = RGX(\".*\\\\\\.ppl.*\") OR process_command_line = RGX(\".*\\\\\\.bav.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "808e689b-0417-4713-a553-af5732c8b57b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious PowerShell Invocations - Specific",
+      "description": "Detects suspicious PowerShell invocation command parameters Note: Unmapped fields: ScriptBlockText",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ScriptBlockText = RGX(\".*\\\\-nop.*\") AND ScriptBlockText = RGX(\".*\\\\ \\\\-w\\\\ .*\") AND ScriptBlockText = RGX(\".*hidden.*\") AND ScriptBlockText = RGX(\".*\\\\ \\\\-c\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\[Convert\\\\]\\\\:\\\\:FromBase64String.*\")) OR (ScriptBlockText = RGX(\".*\\\\ \\\\-w\\\\ .*\") AND ScriptBlockText = RGX(\".*hidden.*\") AND ScriptBlockText = RGX(\".*\\\\-noni.*\") AND ScriptBlockText = RGX(\".*\\\\-nop.*\") AND ScriptBlockText = RGX(\".*\\\\ \\\\-c\\\\ .*\") AND ScriptBlockText = RGX(\".*iex.*\") AND ScriptBlockText = RGX(\".*New\\\\-Object.*\")) OR (ScriptBlockText = RGX(\".*\\\\ \\\\-w\\\\ .*\") AND ScriptBlockText = RGX(\".*hidden.*\") AND ScriptBlockText = RGX(\".*\\\\-ep.*\") AND ScriptBlockText = RGX(\".*bypass.*\") AND ScriptBlockText = RGX(\".*\\\\-Enc.*\")) OR ((ScriptBlockText = RGX(\".*powershell.*\") AND ScriptBlockText = RGX(\".*reg.*\") AND ScriptBlockText = RGX(\".*add.*\")) AND (ScriptBlockText = RGX(\".*\\\\\\\\software\\\\\\\\microsoft\\\\\\\\windows\\\\\\\\currentversion\\\\\\\\run.*\") OR ScriptBlockText = RGX(\".*\\\\\\\\software\\\\\\\\wow6432node\\\\\\\\microsoft\\\\\\\\windows\\\\\\\\currentversion\\\\\\\\run.*\") OR ScriptBlockText = RGX(\".*\\\\\\\\software\\\\\\\\microsoft\\\\\\\\windows\\\\\\\\currentversion\\\\\\\\policies\\\\\\\\explorer\\\\\\\\run.*\"))) OR (ScriptBlockText = RGX(\".*bypass.*\") AND ScriptBlockText = RGX(\".*\\\\-noprofile.*\") AND ScriptBlockText = RGX(\".*\\\\-windowstyle.*\") AND ScriptBlockText = RGX(\".*hidden.*\") AND ScriptBlockText = RGX(\".*new\\\\-object.*\") AND ScriptBlockText = RGX(\".*system\\\\\\.net\\\\\\.webclient.*\") AND ScriptBlockText = RGX(\".*\\\\\\.download.*\")) OR (ScriptBlockText = RGX(\".*iex.*\") AND ScriptBlockText = RGX(\".*New\\\\-Object.*\") AND ScriptBlockText = RGX(\".*Net\\\\\\.WebClient.*\") AND ScriptBlockText = RGX(\".*\\\\\\.Download.*\"))) AND  NOT ((ScriptBlockText = RGX(\".*\\\\(New\\\\-Object\\\\ System\\\\\\.Net\\\\\\.WebClient\\\\)\\\\\\.DownloadString\\\\(\\\\'https\\\\:\\\\/\\\\/community\\\\\\.chocolatey\\\\\\.org\\\\/install\\\\\\.ps1.*\") OR ScriptBlockText = RGX(\".*\\\\(New\\\\-Object\\\\ System\\\\\\.Net\\\\\\.WebClient\\\\)\\\\\\.DownloadString\\\\(\\\\'https\\\\:\\\\/\\\\/chocolatey\\\\\\.org\\\\/install\\\\\\.ps1\\\\'\\\\).*\") OR ScriptBlockText = RGX(\".*Write\\\\-ChocolateyWarning.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c4313374-9f33-4b08-8abd-9f48afdcc46c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

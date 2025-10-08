@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Fake Instance Of Hxtsr.EXE Executed",
+      "description": "HxTsr.exe is a Microsoft compressed executable file called Microsoft Outlook Communications.\nHxTsr.exe is part of Outlook apps, because it resides in a hidden \"WindowsApps\" subfolder of \"C:\\Program Files\".\nAny instances of hxtsr.exe not in this folder may be malware camouflaging itself as HxTsr.exe\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_path = RGX(\"\\\\\\\\hxtsr\\\\\\.exe$\") AND  NOT ((process_path = RGX(\".*\\\\:\\\\\\\\program\\\\ files\\\\\\\\windowsapps\\\\\\\\microsoft\\\\\\.windowscommunicationsapps\\\\_.*\") AND process_path = RGX(\"\\\\\\\\hxtsr\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5069a8fb-0386-4dfa-8a00-a5e888983bee"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

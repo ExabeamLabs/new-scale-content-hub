@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "File Decoded From Base64/Hex Via Certutil.EXE",
+      "description": "Detects the execution of certutil with either the \"decode\" or \"decodehex\" flags to decode base64 or hex encoded files. This can be abused by attackers to decode an encoded payload before execution",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\certutil\\\\\\.exe$\") OR process_original_file_name = \"CertUtil\\.exe\") AND ((process_command_line = RGX(\".*\\\\-decode\\\\ .*\") OR process_command_line = RGX(\".*\\\\/decode\\\\ .*\")) OR (process_command_line = RGX(\".*\\\\-decodehex\\\\ .*\") OR process_command_line = RGX(\".*\\\\/decodehex\\\\ .*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "37e0dc38-faf8-44a1-9bfd-1ab5339e803c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

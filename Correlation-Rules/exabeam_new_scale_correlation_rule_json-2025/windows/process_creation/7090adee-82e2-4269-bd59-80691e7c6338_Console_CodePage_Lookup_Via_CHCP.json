@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Console CodePage Lookup Via CHCP",
+      "description": "Detects use of chcp to look up the system locale value as part of host discovery",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") AND (parent_process_command_line = RGX(\".*\\\\ \\\\-c\\\\ .*\") OR parent_process_command_line = RGX(\".*\\\\ \\\\-r\\\\ .*\") OR parent_process_command_line = RGX(\".*\\\\ \\\\-k\\\\ .*\")) AND process_path = RGX(\"\\\\\\\\chcp\\\\\\.com$\") AND (process_command_line = RGX(\"chcp$\") OR process_command_line = RGX(\"chcp\\\\ $\") OR process_command_line = RGX(\"chcp\\\\ \\\\ $\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "bf25d3ae-2a21-4f2d-ba95-e6a9dfb182d0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

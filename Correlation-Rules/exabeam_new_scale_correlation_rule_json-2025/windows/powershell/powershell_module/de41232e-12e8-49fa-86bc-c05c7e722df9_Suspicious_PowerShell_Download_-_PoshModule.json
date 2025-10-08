@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious PowerShell Download - PoshModule",
+      "description": "Detects suspicious PowerShell download command Note: Unmapped fields: ContextInfo",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ContextInfo = RGX(\".*System\\\\\\.Net\\\\\\.WebClient.*\") AND (ContextInfo = RGX(\".*\\\\\\.DownloadFile\\\\(.*\") OR ContextInfo = RGX(\".*\\\\\\.DownloadString\\\\(.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "83c9c592-e0f0-4880-8499-c36f2e399d64"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - SharpDPAPI Execution",
+      "description": "Detects the execution of the SharpDPAPI tool based on CommandLine flags and PE metadata.\nSharpDPAPI is a C# port of some DPAPI functionality from the Mimikatz project.\n",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\SharpDPAPI\\\\\\.exe$\") OR process_original_file_name = \"SharpDPAPI\\.exe\") OR ((process_command_line = RGX(\".*\\\\ backupkey\\\\ .*\") OR process_command_line = RGX(\".*\\\\ blob\\\\ .*\") OR process_command_line = RGX(\".*\\\\ certificates\\\\ .*\") OR process_command_line = RGX(\".*\\\\ credentials\\\\ .*\") OR process_command_line = RGX(\".*\\\\ keepass\\\\ .*\") OR process_command_line = RGX(\".*\\\\ masterkeys\\\\ .*\") OR process_command_line = RGX(\".*\\\\ rdg\\\\ .*\") OR process_command_line = RGX(\".*\\\\ vaults\\\\ .*\")) AND ((process_command_line = RGX(\".*\\\\ \\\\{.*\") AND process_command_line = RGX(\".*\\\\}\\\\:.*\")) OR (process_command_line = RGX(\".*\\\\ \\\\/file\\\\:.*\") OR process_command_line = RGX(\".*\\\\ \\\\/machine.*\") OR process_command_line = RGX(\".*\\\\ \\\\/mkfile\\\\:.*\") OR process_command_line = RGX(\".*\\\\ \\\\/password\\\\:.*\") OR process_command_line = RGX(\".*\\\\ \\\\/pvk\\\\:.*\") OR process_command_line = RGX(\".*\\\\ \\\\/server\\\\:.*\") OR process_command_line = RGX(\".*\\\\ \\\\/target\\\\:.*\") OR process_command_line = RGX(\".*\\\\ \\\\/unprotect.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "08d711d1-82f0-4441-8dcb-d825e36d26ef"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

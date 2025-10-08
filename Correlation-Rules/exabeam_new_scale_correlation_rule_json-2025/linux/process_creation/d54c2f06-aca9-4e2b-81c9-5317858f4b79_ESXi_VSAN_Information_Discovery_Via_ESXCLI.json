@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "ESXi VSAN Information Discovery Via ESXCLI",
+      "description": "Detects execution of the \"esxcli\" command with the \"vsan\" flag in order to retrieve information about virtual storage. Seen used by malware such as DarkSide.",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/esxcli$\") AND process_command_line = RGX(\".*vsan.*\")) AND (process_command_line = RGX(\".*\\\\ get.*\") OR process_command_line = RGX(\".*\\\\ list.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "cc70cfb3-f6ba-44b3-9df7-719b0e2d76d8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

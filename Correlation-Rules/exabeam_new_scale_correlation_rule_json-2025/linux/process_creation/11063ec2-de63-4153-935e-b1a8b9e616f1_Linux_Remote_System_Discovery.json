@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Linux Remote System Discovery",
+      "description": "Detects the enumeration of other remote systems.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/arp$\") AND process_command_line = RGX(\".*\\\\-a.*\")) OR (process_path = RGX(\"\\\\/ping$\") AND (process_command_line = RGX(\".*\\\\ 10\\\\\\..*\") OR process_command_line = RGX(\".*\\\\ 192\\\\\\.168\\\\\\..*\") OR process_command_line = RGX(\".*\\\\ 172\\\\\\.16\\\\\\..*\") OR process_command_line = RGX(\".*\\\\ 172\\\\\\.17\\\\\\..*\") OR process_command_line = RGX(\".*\\\\ 172\\\\\\.18\\\\\\..*\") OR process_command_line = RGX(\".*\\\\ 172\\\\\\.19\\\\\\..*\") OR process_command_line = RGX(\".*\\\\ 172\\\\\\.20\\\\\\..*\") OR process_command_line = RGX(\".*\\\\ 172\\\\\\.21\\\\\\..*\") OR process_command_line = RGX(\".*\\\\ 172\\\\\\.22\\\\\\..*\") OR process_command_line = RGX(\".*\\\\ 172\\\\\\.23\\\\\\..*\") OR process_command_line = RGX(\".*\\\\ 172\\\\\\.24\\\\\\..*\") OR process_command_line = RGX(\".*\\\\ 172\\\\\\.25\\\\\\..*\") OR process_command_line = RGX(\".*\\\\ 172\\\\\\.26\\\\\\..*\") OR process_command_line = RGX(\".*\\\\ 172\\\\\\.27\\\\\\..*\") OR process_command_line = RGX(\".*\\\\ 172\\\\\\.28\\\\\\..*\") OR process_command_line = RGX(\".*\\\\ 172\\\\\\.29\\\\\\..*\") OR process_command_line = RGX(\".*\\\\ 172\\\\\\.30\\\\\\..*\") OR process_command_line = RGX(\".*\\\\ 172\\\\\\.31\\\\\\..*\") OR process_command_line = RGX(\".*\\\\ 127\\\\\\..*\") OR process_command_line = RGX(\".*\\\\ 169\\\\\\.254\\\\\\..*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d498699b-147f-43cf-aeab-4cf23e95cf9e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

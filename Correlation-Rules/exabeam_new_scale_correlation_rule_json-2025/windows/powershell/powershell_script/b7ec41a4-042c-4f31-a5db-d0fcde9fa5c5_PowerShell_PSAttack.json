@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PowerShell PSAttack",
+      "description": "Detects the use of PSAttack PowerShell hack tool Note: Unmapped fields: ScriptBlockText",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ScriptBlockText = RGX(\".*PS\\\\ ATTACK\\\\!\\\\!\\\\!.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b750d346-7820-4f2f-af9f-dcf70f7f9bfb"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

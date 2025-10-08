@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Privilege Escalation via Service Permissions Weakness",
+      "description": "Detect modification of services configuration (ImagePath, FailureCommand and ServiceDLL) in registry by processes with Medium integrity level",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_integrity_level = \"Medium\" OR process_integrity_level = \"S\\-1\\-16\\-8192\") AND (process_command_line = RGX(\".*ControlSet.*\") AND process_command_line = RGX(\".*services.*\")) AND (process_command_line = RGX(\".*\\\\\\\\ImagePath.*\") OR process_command_line = RGX(\".*\\\\\\\\FailureCommand.*\") OR process_command_line = RGX(\".*\\\\\\\\ServiceDll.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f86027af-9f93-484d-97b0-31865c53da38"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

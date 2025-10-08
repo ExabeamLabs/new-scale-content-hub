@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Copy From Or To Admin Share Or Sysvol Folder",
+      "description": "Detects a copy command or a copy utility execution to or from an Admin share or remote",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\\\\\\\\\\\\\*\\\\$.*\") OR process_command_line = RGX(\".*\\\\\\\\Sysvol\\\\\\\\.*\")) AND (((process_path = RGX(\"\\\\\\\\robocopy\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\xcopy\\\\\\.exe$\")) OR (process_original_file_name = \"robocopy\\.exe\" OR process_original_file_name = \"XCOPY\\.EXE\")) OR ((process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_original_file_name = \"Cmd\\.Exe\") AND process_command_line = RGX(\".*copy.*\")) OR (((process_path = RGX(\".*\\\\\\\\powershell\\\\\\.exe.*\") OR process_path = RGX(\".*\\\\\\\\pwsh\\\\\\.exe.*\")) OR (process_original_file_name = \"PowerShell\\.EXE\" OR process_original_file_name = \"pwsh\\.dll\")) AND (process_command_line = RGX(\".*copy\\\\-item.*\") OR process_command_line = RGX(\".*copy\\\\ .*\") OR process_command_line = RGX(\".*cpi\\\\ .*\") OR process_command_line = RGX(\".*\\\\ cp\\\\ .*\") OR process_command_line = RGX(\".*move\\\\ .*\") OR process_command_line = RGX(\".*move\\\\-item.*\") OR process_command_line = RGX(\".*\\\\ mi\\\\ .*\") OR process_command_line = RGX(\".*\\\\ mv\\\\ .*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "906f2ba0-b86c-408e-8f1a-33f1d4bc6b2d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "VHD Image Download Via Browser",
+      "description": "Detects creation of \".vhd\"/\".vhdx\" files by browser processes.\nMalware can use mountable Virtual Hard Disk \".vhd\" files to encapsulate payloads and evade security controls.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\brave\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\chrome\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\firefox\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\iexplore\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\maxthon\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\MicrosoftEdge\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msedge\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msedgewebview2\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\opera\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\safari\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\seamonkey\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\vivaldi\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\whale\\\\\\.exe$\")) AND file_path = RGX(\".*\\\\\\.vhd.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e78498b2-dd24-4149-8555-3f8e59dc24eb"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

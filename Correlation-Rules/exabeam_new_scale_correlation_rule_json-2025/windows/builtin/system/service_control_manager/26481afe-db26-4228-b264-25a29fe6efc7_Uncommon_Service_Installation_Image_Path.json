@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Uncommon Service Installation Image Path",
+      "description": "Detects uncommon service installation commands by looking at suspicious or uncommon image path values containing references to encoded powershell commands, temporary paths, etc.\n Note: Unmapped fields: Provider_Name, ImagePath",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Provider_Name = \"Service\\ Control\\ Manager\" AND event_id = 7045) AND ((ImagePath = RGX(\".*\\\\\\\\\\\\\\\\\\\\\\.\\\\\\\\pipe.*\") OR ImagePath = RGX(\".*\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR ImagePath = RGX(\".*\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\")) OR (ImagePath = RGX(\".*\\\\ \\\\-e.*\") AND (ImagePath = RGX(\".*\\\\ aQBlAHgA.*\") OR ImagePath = RGX(\".*\\\\ aWV4I.*\") OR ImagePath = RGX(\".*\\\\ IAB.*\") OR ImagePath = RGX(\".*\\\\ JAB.*\") OR ImagePath = RGX(\".*\\\\ PAA.*\") OR ImagePath = RGX(\".*\\\\ SQBFAFgA.*\") OR ImagePath = RGX(\".*\\\\ SUVYI.*\")))) AND  NOT (ImagePath = RGX(\"^C\\\\:\\\\\\\\ProgramData\\\\\\\\Microsoft\\\\\\\\Windows\\\\ Defender\\\\\\\\Definition\\\\ Updates\\\\\\\\\")) AND  NOT (ImagePath = RGX(\"^C\\\\:\\\\\\\\WINDOWS\\\\\\\\TEMP\\\\\\\\thor10\\\\-remote\\\\\\\\thor64\\\\\\.exe\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e22c2a4b-d4af-4d7c-a98b-43f863adcf33"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

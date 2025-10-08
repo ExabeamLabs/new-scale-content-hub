@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Arbitrary DLL or Csproj Code Execution Via Dotnet.EXE",
+      "description": "Detects execution of arbitrary DLLs or unsigned code via a \".csproj\" files via Dotnet.EXE.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\dotnet\\\\\\.exe$\") OR process_original_file_name = \"\\.NET\\ Host\") AND (process_command_line = RGX(\"\\\\\\.csproj$\") OR process_command_line = RGX(\"\\\\\\.csproj\\\\$\") OR process_command_line = RGX(\"\\\\\\.dll$\") OR process_command_line = RGX(\"\\\\\\.dll\\\\$\") OR process_command_line = RGX(\"\\\\\\.csproj\\\\$\") OR process_command_line = RGX(\"\\\\\\.dll\\\\$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "199305ea-13fa-4b53-bbbe-aae3692e77fa"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

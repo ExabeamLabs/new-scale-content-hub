@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Autorun Registry Modified via WMI",
+      "description": "Detects suspicious activity where the WMIC process is used to create an autorun registry entry via reg.exe, which is often indicative of persistence mechanisms employed by malware.\n",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\wmic\\\\\\.exe$\") OR process_original_file_name = \"wmic\\.exe\" OR parent_process_path = RGX(\"\\\\\\\\wmiprvse\\\\\\.exe$\")) AND ((process_command_line = RGX(\".*reg.*\") AND process_command_line = RGX(\".*\\\\ add\\\\ .*\")) AND (process_command_line = RGX(\".*\\\\\\\\Software\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Run.*\") OR process_command_line = RGX(\".*\\\\\\\\Software\\\\\\\\WOW6432Node\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Run.*\") OR process_command_line = RGX(\".*\\\\\\\\Software\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\Explorer\\\\\\\\Run.*\")))) AND ((process_command_line = RGX(\".*\\\\:\\\\\\\\Perflogs.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\ProgramData\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Temp.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Temp.*\") OR process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp.*\") OR process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Roaming.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\\\\\$Recycle\\\\\\.bin.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\Default.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\public.*\") OR process_command_line = RGX(\".*\\\\%temp\\\\%.*\") OR process_command_line = RGX(\".*\\\\%tmp\\\\%.*\") OR process_command_line = RGX(\".*\\\\%Public\\\\%.*\") OR process_command_line = RGX(\".*\\\\%AppData\\\\%.*\")) OR ((process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND (process_command_line = RGX(\".*\\\\\\\\Favorites.*\") OR process_command_line = RGX(\".*\\\\\\\\Favourites.*\") OR process_command_line = RGX(\".*\\\\\\\\Contacts.*\") OR process_command_line = RGX(\".*\\\\\\\\Music.*\") OR process_command_line = RGX(\".*\\\\\\\\Pictures.*\") OR process_command_line = RGX(\".*\\\\\\\\Documents.*\") OR process_command_line = RGX(\".*\\\\\\\\Photos.*\")))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d93ecee8-d407-4265-8f6c-46a273be4cfd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

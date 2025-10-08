@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Metasploit SMB Authentication",
+      "description": "Alerts on Metasploit host's authentications on the domain. Note: Unmapped fields: LogonType, AuthenticationPackageName, WorkstationName, Workstation",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((event_id = 4625 OR event_id = 4624) AND LogonType = 3 AND AuthenticationPackageName = \"NTLM\" AND WorkstationName = RGX(\"^[A-Za-z0-9]{16}$\")) OR (event_id = 4776 AND Workstation = RGX(\"^[A-Za-z0-9]{16}$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c4b201be-b6cb-42e6-93db-6c20dd456fdd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

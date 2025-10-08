@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Suspicious Inline JavaScript Execution via NodeJS Binary",
+      "description": "Detects potentially suspicious inline JavaScript execution using Node.js with specific keywords in the command line.",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\node\\\\\\.exe$\") OR process_original_file_name = \"node\\.exe\" OR process_product = \"Node\\.js\") AND (process_command_line = RGX(\".*http.*\") AND process_command_line = RGX(\".*execSync.*\") AND process_command_line = RGX(\".*spawn.*\") AND process_command_line = RGX(\".*fs.*\") AND process_command_line = RGX(\".*path.*\") AND process_command_line = RGX(\".*zlib.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d6d6a1be-ea88-4076-b581-d3ccb401542e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

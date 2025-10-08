@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "VsCode Powershell Profile Modification",
+      "description": "Detects the creation or modification of a vscode related powershell profile which could indicate suspicious activity as the profile can be used as a mean of persistence",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "file_path = RGX(\"\\\\\\\\Microsoft\\\\\\.VSCode\\\\_profile\\\\\\.ps1$\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1a4b183c-69a5-4149-af1d-34a70469f02d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

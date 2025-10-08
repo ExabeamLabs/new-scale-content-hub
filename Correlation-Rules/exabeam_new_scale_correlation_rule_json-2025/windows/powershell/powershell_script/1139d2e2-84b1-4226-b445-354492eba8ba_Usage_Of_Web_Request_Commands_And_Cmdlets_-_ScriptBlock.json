@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Usage Of Web Request Commands And Cmdlets - ScriptBlock",
+      "description": "Detects the use of various web request commands with commandline tools and Windows PowerShell cmdlets (including aliases) via PowerShell scriptblock logs Note: Unmapped fields: ScriptBlockText, Path",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*\\\\[System\\\\\\.Net\\\\\\.WebRequest\\\\]\\\\:\\\\:create.*\") OR ScriptBlockText = RGX(\".*curl\\\\ .*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-RestMethod.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-WebRequest.*\") OR ScriptBlockText = RGX(\".*\\\\ irm\\\\ .*\") OR ScriptBlockText = RGX(\".*iwr\\\\ .*\") OR ScriptBlockText = RGX(\".*Net\\\\\\.WebClient.*\") OR ScriptBlockText = RGX(\".*Resume\\\\-BitsTransfer.*\") OR ScriptBlockText = RGX(\".*Start\\\\-BitsTransfer.*\") OR ScriptBlockText = RGX(\".*wget\\\\ .*\") OR ScriptBlockText = RGX(\".*WinHttp\\\\\\.WinHttpRequest.*\")) AND  NOT (Path = RGX(\"^C\\\\:\\\\\\\\Packages\\\\\\\\Plugins\\\\\\\\Microsoft\\\\\\.GuestConfiguration\\\\\\.ConfigurationforWindows\\\\\\\\\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "675e3fda-98cb-49bf-a525-f55bbaa19eff"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

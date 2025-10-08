@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Python Image Load By Non-Python Process",
+      "description": "Detects the image load of \"Python Core\" by a non-Python process. This might be indicative of a execution of executable that has been bundled from Python code.\nVarious tools like Py2Exe, PyInstaller, and cx_Freeze are used to bundle Python code into standalone executables.\nThreat actors often use these tools to bundle malicious Python scripts into executables, sometimes to obfuscate the code or to bypass security measures.\n",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_description = \"Python\\ Core\" AND  NOT ((process_path = RGX(\".*Python.*\") OR (process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\ProgramData\\\\\\\\Anaconda3\\\\\\\\\")))) AND  NOT (process_path = \"None\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "80abf217-d0fe-4a37-bd8a-cc73b8061ecf"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

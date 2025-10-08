@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "First Time Seen Remote Named Pipe",
+      "description": "This detection excludes known namped pipes accessible remotely and notify on newly observed ones, may help to detect lateral movement and remote exec using named pipes Note: Unmapped fields: ShareName, RelativeTargetName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 5145 AND ShareName = \"\\\\\\\\\\*\\\\IPC\\$\") AND  NOT ((RelativeTargetName = \"atsvc\" OR RelativeTargetName = \"samr\" OR RelativeTargetName = \"lsarpc\" OR RelativeTargetName = \"lsass\" OR RelativeTargetName = \"winreg\" OR RelativeTargetName = \"netlogon\" OR RelativeTargetName = \"srvsvc\" OR RelativeTargetName = \"protected\\_storage\" OR RelativeTargetName = \"wkssvc\" OR RelativeTargetName = \"browser\" OR RelativeTargetName = \"netdfs\" OR RelativeTargetName = \"svcctl\" OR RelativeTargetName = \"spoolss\" OR RelativeTargetName = \"ntsvcs\" OR RelativeTargetName = \"LSM\\_API\\_service\" OR RelativeTargetName = \"HydraLsPipe\" OR RelativeTargetName = \"TermSrv\\_API\\_service\" OR RelativeTargetName = \"MsFteWds\" OR RelativeTargetName = \"sql\\\\query\" OR RelativeTargetName = \"eventlog\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "45224aca-d484-401a-b78c-ef4e0525979b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

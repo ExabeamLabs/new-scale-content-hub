@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious User-Agents Related To Recon Tools",
+      "description": "Detects known suspicious (default) user-agents related to scanning/recon tools Note: Unmapped fields: cs-user-agent",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(cs-user-agent = RGX(\".*Wfuzz\\\\/.*\") OR cs-user-agent = RGX(\".*WPScan\\\\ v.*\") OR cs-user-agent = RGX(\".*Recon\\\\-ng\\\\/v.*\") OR cs-user-agent = RGX(\".*GIS\\\\ \\\\-\\\\ AppSec\\\\ Team\\\\ \\\\-\\\\ Project\\\\ Vision.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c29b4141-03cc-4631-a46c-daf97cf170c2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

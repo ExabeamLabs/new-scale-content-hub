@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "DNS TXT Answer with Possible Execution Strings",
+      "description": "Detects strings used in command execution in DNS TXT Answer Note: Unmapped fields: record_type, answer",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(record_type = \"TXT\" AND (answer = RGX(\".*IEX.*\") OR answer = RGX(\".*Invoke\\\\-Expression.*\") OR answer = RGX(\".*cmd\\\\\\.exe.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "fa718765-ed92-4558-9294-47f4f5dd036c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

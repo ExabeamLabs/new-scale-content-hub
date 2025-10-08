@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Lolbas OneDriveStandaloneUpdater.exe Proxy Download",
+      "description": "Detects setting a custom URL for OneDriveStandaloneUpdater.exe to download a file from the Internet without executing any\nanomalous executables with suspicious arguments. The downloaded file will be in C:\\Users\\redacted\\AppData\\Local\\Microsoft\\OneDrive\\StandaloneUpdaterreSignInSettingsConfig.json\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\OneDrive\\\\\\\\UpdateOfficeConfig\\\\\\\\UpdateRingSettingURLFromOC.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5decf687-6d0d-414a-8b27-5ed238ad0b12"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Compressed File Extraction Via Tar.EXE",
+      "description": "Detects execution of \"tar.exe\" in order to extract compressed file.\nAdversaries may abuse various utilities in order to decompress data to avoid detection.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\tar\\\\\\.exe$\") OR process_original_file_name = \"bsdtar\") AND process_command_line = RGX(\".*\\\\-x.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5e5e289f-e4ef-4dac-b1af-1ec3fc1519ea"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

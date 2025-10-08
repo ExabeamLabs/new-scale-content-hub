@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Homoglyph Attack Using Lookalike Characters",
+      "description": "Detects the presence of unicode characters which are homoglyphs, or identical in appearance, to ASCII letter characters.\nThis is used as an obfuscation and masquerading techniques. Only \"perfect\" homoglyphs are included; these are characters that\nare indistinguishable from ASCII characters and thus may make excellent candidates for homoglyph attack characters.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*\u0410.*\") OR process_command_line = RGX(\".*\u0412.*\") OR process_command_line = RGX(\".*\u0415.*\") OR process_command_line = RGX(\".*\u041a.*\") OR process_command_line = RGX(\".*\u041c.*\") OR process_command_line = RGX(\".*\u041d.*\") OR process_command_line = RGX(\".*\u041e.*\") OR process_command_line = RGX(\".*\u0420.*\") OR process_command_line = RGX(\".*\u0421.*\") OR process_command_line = RGX(\".*\u0422.*\") OR process_command_line = RGX(\".*\u0425.*\") OR process_command_line = RGX(\".*\u0405.*\") OR process_command_line = RGX(\".*\u0406.*\") OR process_command_line = RGX(\".*\u0408.*\") OR process_command_line = RGX(\".*\u04ae.*\") OR process_command_line = RGX(\".*\u04c0.*\") OR process_command_line = RGX(\".*\u050c.*\") OR process_command_line = RGX(\".*\u051a.*\") OR process_command_line = RGX(\".*\u051c.*\") OR process_command_line = RGX(\".*\u0391.*\") OR process_command_line = RGX(\".*\u0392.*\") OR process_command_line = RGX(\".*\u0395.*\") OR process_command_line = RGX(\".*\u0396.*\") OR process_command_line = RGX(\".*\u0397.*\") OR process_command_line = RGX(\".*\u0399.*\") OR process_command_line = RGX(\".*\u039a.*\") OR process_command_line = RGX(\".*\u039c.*\") OR process_command_line = RGX(\".*\u039d.*\") OR process_command_line = RGX(\".*\u039f.*\") OR process_command_line = RGX(\".*\u03a1.*\") OR process_command_line = RGX(\".*\u03a4.*\") OR process_command_line = RGX(\".*\u03a5.*\") OR process_command_line = RGX(\".*\u03a7.*\")) OR (process_command_line = RGX(\".*\u0430.*\") OR process_command_line = RGX(\".*\u0435.*\") OR process_command_line = RGX(\".*\u043e.*\") OR process_command_line = RGX(\".*\u0440.*\") OR process_command_line = RGX(\".*\u0441.*\") OR process_command_line = RGX(\".*\u0445.*\") OR process_command_line = RGX(\".*\u0455.*\") OR process_command_line = RGX(\".*\u0456.*\") OR process_command_line = RGX(\".*\u04cf.*\") OR process_command_line = RGX(\".*\u0458.*\") OR process_command_line = RGX(\".*\u04bb.*\") OR process_command_line = RGX(\".*\u0501.*\") OR process_command_line = RGX(\".*\u051b.*\") OR process_command_line = RGX(\".*\u051d.*\") OR process_command_line = RGX(\".*\u03bf.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ea73b3dc-576a-45eb-86a1-e3335f6a234f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

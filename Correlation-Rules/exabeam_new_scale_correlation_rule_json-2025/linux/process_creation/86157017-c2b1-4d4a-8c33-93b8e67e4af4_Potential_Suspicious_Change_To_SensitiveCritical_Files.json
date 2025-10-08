@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Suspicious Change To Sensitive/Critical Files",
+      "description": "Detects changes of sensitive and critical files. Monitors files that you don't expect to change without planning on Linux system.",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\/cat$\") OR process_path = RGX(\"\\\\/echo$\") OR process_path = RGX(\"\\\\/grep$\") OR process_path = RGX(\"\\\\/head$\") OR process_path = RGX(\"\\\\/more$\") OR process_path = RGX(\"\\\\/tail$\")) AND process_command_line = RGX(\".*\\\\>.*\")) OR (process_path = RGX(\"\\\\/emacs$\") OR process_path = RGX(\"\\\\/nano$\") OR process_path = RGX(\"\\\\/sed$\") OR process_path = RGX(\"\\\\/vi$\") OR process_path = RGX(\"\\\\/vim$\"))) AND (process_command_line = RGX(\".*\\\\/bin\\\\/login.*\") OR process_command_line = RGX(\".*\\\\/bin\\\\/passwd.*\") OR process_command_line = RGX(\".*\\\\/boot\\\\/.*\") OR process_command_line = RGX(\".*\\\\/etc\\\\/*\\\\\\.conf.*\") OR process_command_line = RGX(\".*\\\\/etc\\\\/cron\\\\\\..*\") OR process_command_line = RGX(\".*\\\\/etc\\\\/crontab.*\") OR process_command_line = RGX(\".*\\\\/etc\\\\/hosts.*\") OR process_command_line = RGX(\".*\\\\/etc\\\\/init\\\\\\.d.*\") OR process_command_line = RGX(\".*\\\\/etc\\\\/sudoers.*\") OR process_command_line = RGX(\".*\\\\/opt\\\\/bin\\\\/.*\") OR process_command_line = RGX(\".*\\\\/sbin.*\") OR process_command_line = RGX(\".*\\\\/usr\\\\/bin\\\\/.*\") OR process_command_line = RGX(\".*\\\\/usr\\\\/local\\\\/bin\\\\/.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "029ac09a-bf68-4b49-89f5-a226d4918abf"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

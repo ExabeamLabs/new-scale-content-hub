@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Renamed Mavinject.EXE Execution",
+      "description": "Detects the execution of a renamed version of the \"Mavinject\" process. Which can be abused to perform process injection using the \"/INJECTRUNNING\" flag",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_original_file_name = \"mavinject32\\.exe\" OR process_original_file_name = \"mavinject64\\.exe\") AND  NOT ((process_path = RGX(\"\\\\\\\\mavinject32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mavinject64\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "979142b2-3332-4a8f-ae9e-e0ab97816a4a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

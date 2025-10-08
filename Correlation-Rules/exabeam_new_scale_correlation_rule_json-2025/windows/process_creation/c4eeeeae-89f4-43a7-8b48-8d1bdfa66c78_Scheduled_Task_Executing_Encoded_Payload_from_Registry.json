@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Scheduled Task Executing Encoded Payload from Registry",
+      "description": "Detects the creation of a schtask that potentially executes a base64 encoded payload stored in the Windows Registry using PowerShell.",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") OR process_original_file_name = \"schtasks\\.exe\") AND process_command_line = RGX(\".*\\\\/Create.*\") AND (process_command_line = RGX(\".*FromBase64String.*\") OR process_command_line = RGX(\".*encodedcommand.*\")) AND (process_command_line = RGX(\".*Get\\\\-ItemProperty.*\") OR process_command_line = RGX(\".*\\\\ gp\\\\ .*\")) AND (process_command_line = RGX(\".*HKCU\\\\:.*\") OR process_command_line = RGX(\".*HKLM\\\\:.*\") OR process_command_line = RGX(\".*registry\\\\:\\\\:.*\") OR process_command_line = RGX(\".*HKEY\\\\_.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "44646c3f-2497-4d18-bcb6-538238fe22bb"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

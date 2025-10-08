@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Atbroker Registry Change",
+      "description": "Detects creation/modification of Assistive Technology applications and persistence with usage of 'at' Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*Software\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\Accessibility\\\\\\\\ATs.*\") OR registry_path = RGX(\".*Software\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\Accessibility\\\\\\\\Configuration.*\")) AND  NOT ((process_path = \"C\\:\\\\Windows\\\\system32\\\\atbroker\\.exe\" AND registry_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\Accessibility\\\\\\\\Configuration.*\") AND Details = \"\\(Empty\\)\") OR (process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\Installer\\\\\\\\MSI\") AND registry_path = RGX(\".*Software\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\Accessibility\\\\\\\\ATs.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4333c6da-3163-4625-a3c6-a8378251272c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

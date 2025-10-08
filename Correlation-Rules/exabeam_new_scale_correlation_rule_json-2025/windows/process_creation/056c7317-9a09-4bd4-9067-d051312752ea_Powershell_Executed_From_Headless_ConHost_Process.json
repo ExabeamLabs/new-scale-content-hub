@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Powershell Executed From Headless ConHost Process",
+      "description": "Detects the use of powershell commands from headless ConHost window.\nThe \"--headless\" flag hides the windows from the user upon execution.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\conhost\\\\\\.exe$\") OR process_original_file_name = \"CONHOST\\.EXE\") AND (process_command_line = RGX(\".*\\\\-\\\\-headless.*\") AND process_command_line = RGX(\".*powershell.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c300098d-1703-42f8-8401-bfa00eb62904"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

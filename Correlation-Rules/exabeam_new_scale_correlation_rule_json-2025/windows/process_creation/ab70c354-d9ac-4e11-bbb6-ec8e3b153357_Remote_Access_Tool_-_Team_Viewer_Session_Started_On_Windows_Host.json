@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remote Access Tool - Team Viewer Session Started On Windows Host",
+      "description": "Detects the command line executed when TeamViewer starts a session started by a remote host.\nOnce a connection has been started, an investigator can verify the connection details by viewing the \"incoming_connections.txt\" log file in the TeamViewer folder.\n",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = \"TeamViewer\\_Desktop\\.exe\" AND parent_process_path = \"TeamViewer\\_Service\\.exe\" AND process_command_line = RGX(\"TeamViewer\\\\_Desktop\\\\\\.exe\\\\ \\\\-\\\\-IPCport\\\\ 5939\\\\ \\\\-\\\\-Module\\\\ 1$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5ef79116-81af-4a4d-aa6c-033c0b9cbe82"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

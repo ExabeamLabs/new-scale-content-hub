@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious File Encoded To Base64 Via Certutil.EXE",
+      "description": "Detects the execution of certutil with the \"encode\" flag to encode a file to base64 where the extensions of the file is suspicious",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\certutil\\\\\\.exe$\") OR process_original_file_name = \"CertUtil\\.exe\") AND (process_command_line = RGX(\".*\\\\-encode.*\") OR process_command_line = RGX(\".*\\\\/encode.*\")) AND (process_command_line = RGX(\".*\\\\\\.acl.*\") OR process_command_line = RGX(\".*\\\\\\.bat.*\") OR process_command_line = RGX(\".*\\\\\\.doc.*\") OR process_command_line = RGX(\".*\\\\\\.gif.*\") OR process_command_line = RGX(\".*\\\\\\.jpeg.*\") OR process_command_line = RGX(\".*\\\\\\.jpg.*\") OR process_command_line = RGX(\".*\\\\\\.mp3.*\") OR process_command_line = RGX(\".*\\\\\\.pdf.*\") OR process_command_line = RGX(\".*\\\\\\.png.*\") OR process_command_line = RGX(\".*\\\\\\.ppt.*\") OR process_command_line = RGX(\".*\\\\\\.tmp.*\") OR process_command_line = RGX(\".*\\\\\\.xls.*\") OR process_command_line = RGX(\".*\\\\\\.xml.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ce04975d-b2ba-4b5b-9608-2c36b5c200ce"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

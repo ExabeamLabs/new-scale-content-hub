@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Azure Key Vault Modified or Deleted",
+      "description": "Identifies when a key vault is modified or deleted. Note: Unmapped fields: operationName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(operationName = \"MICROSOFT\\.KEYVAULT\\/VAULTS\\/WRITE\" OR operationName = \"MICROSOFT\\.KEYVAULT\\/VAULTS\\/DELETE\" OR operationName = \"MICROSOFT\\.KEYVAULT\\/VAULTS\\/DEPLOY\\/ACTION\" OR operationName = \"MICROSOFT\\.KEYVAULT\\/VAULTS\\/ACCESSPOLICIES\\/WRITE\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4ab3562a-0d7b-472c-a134-fd8ee98ba84f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

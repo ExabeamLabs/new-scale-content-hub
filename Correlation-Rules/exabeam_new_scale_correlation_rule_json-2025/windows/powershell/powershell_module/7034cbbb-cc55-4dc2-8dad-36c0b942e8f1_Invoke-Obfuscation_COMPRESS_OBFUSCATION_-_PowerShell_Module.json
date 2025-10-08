@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation COMPRESS OBFUSCATION - PowerShell Module",
+      "description": "Detects Obfuscated Powershell via COMPRESS OBFUSCATION Note: Unmapped fields: Payload",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((Payload = RGX(\".*new\\\\-object.*\") AND Payload = RGX(\".*text\\\\\\.encoding\\\\]\\\\:\\\\:ascii.*\")) AND (Payload = RGX(\".*system\\\\\\.io\\\\\\.compression\\\\\\.deflatestream.*\") OR Payload = RGX(\".*system\\\\\\.io\\\\\\.streamreader.*\")) AND Payload = RGX(\"readtoend$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8f2fcace-f922-4649-9d24-0ad1a48601f4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

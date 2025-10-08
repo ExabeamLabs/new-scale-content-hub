@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "MSSQL Server Failed Logon",
+      "description": "Detects failed logon attempts from clients to MSSQL server. Note: Unmapped fields: Provider_Name",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Provider_Name = RGX(\".*MSSQL.*\") AND event_id = 18456)",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "17cc62f1-4158-4d14-b3f4-b5f95dca95eb"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

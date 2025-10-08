@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Where Execution",
+      "description": "Adversaries may enumerate browser bookmarks to learn more about compromised hosts.\nBrowser bookmarks may reveal personal information about users (ex: banking sites, interests, social media, etc.) as well as details about\ninternal network resources such as servers, tools/dashboards, or other related infrastructure.\n",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\where\\\\\\.exe$\") OR process_original_file_name = \"where\\.exe\") AND (process_command_line = RGX(\".*places\\\\\\.sqlite.*\") OR process_command_line = RGX(\".*cookies\\\\\\.sqlite.*\") OR process_command_line = RGX(\".*formhistory\\\\\\.sqlite.*\") OR process_command_line = RGX(\".*logins\\\\\\.json.*\") OR process_command_line = RGX(\".*key4\\\\\\.db.*\") OR process_command_line = RGX(\".*key3\\\\\\.db.*\") OR process_command_line = RGX(\".*sessionstore\\\\\\.jsonlz4.*\") OR process_command_line = RGX(\".*History.*\") OR process_command_line = RGX(\".*Bookmarks.*\") OR process_command_line = RGX(\".*Cookies.*\") OR process_command_line = RGX(\".*Login\\\\ Data.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "33278af2-f281-4e76-a629-f3e95cc60c30"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

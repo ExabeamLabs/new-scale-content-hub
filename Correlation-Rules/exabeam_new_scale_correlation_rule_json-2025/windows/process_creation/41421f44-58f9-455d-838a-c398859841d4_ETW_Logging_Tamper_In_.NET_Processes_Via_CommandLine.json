@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "ETW Logging Tamper In .NET Processes Via CommandLine",
+      "description": "Detects changes to environment variables related to ETW logging via the CommandLine.\nThis could indicate potential adversaries stopping ETW providers recording loaded .NET assemblies.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*COMPlus\\\\_ETWEnabled.*\") OR process_command_line = RGX(\".*COMPlus\\\\_ETWFlags.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "24a1a7d8-48c2-4cbb-bbed-d313a4e40997"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

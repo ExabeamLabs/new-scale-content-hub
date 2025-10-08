@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Wannacry Killswitch Domain",
+      "description": "Detects wannacry killswitch domain dns queries Note: Unmapped fields: query",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(query = \"ifferfsodp9ifjaposdfjhgosurijfaewrwergwea\\.testing\" OR query = \"ifferfsodp9ifjaposdfjhgosurijfaewrwergwea\\.test\" OR query = \"ifferfsodp9ifjaposdfjhgosurijfaewrwergwea\\.com\" OR query = \"ayylmaotjhsstasdfasdfasdfasdfasdfasdfasdf\\.com\" OR query = \"iuqssfsodp9ifjaposdfjhgosurijfaewrwergwea\\.com\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3991ce17-5bfa-4afa-b9b5-7ed9c4443ca6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

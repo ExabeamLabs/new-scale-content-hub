@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation Via Use Clip - Security",
+      "description": "Detects Obfuscated Powershell via use Clip.exe in Scripts Note: Unmapped fields: ServiceFileName",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4697 AND ServiceFileName = RGX(\".*\\\\(Clipboard\\\\|i.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "48c3c76f-a473-4ced-8f04-d80a499bb867"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

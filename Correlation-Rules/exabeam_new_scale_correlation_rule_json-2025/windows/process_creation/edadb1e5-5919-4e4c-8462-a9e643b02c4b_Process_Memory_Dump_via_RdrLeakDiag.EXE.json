@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Process Memory Dump via RdrLeakDiag.EXE",
+      "description": "Detects the use of the Microsoft Windows Resource Leak Diagnostic tool \"rdrleakdiag.exe\" to dump process memory",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\rdrleakdiag\\\\\\.exe$\") OR process_original_file_name = \"RdrLeakDiag\\.exe\") AND ((process_command_line = RGX(\".*\\\\/memdmp.*\") OR process_command_line = RGX(\".*\\\\-memdmp.*\")) OR process_command_line = RGX(\".*fullmemdmp.*\")) AND (process_command_line = RGX(\".*\\\\ \\\\/o\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\/p\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a97cb603-f8a4-4052-92d4-18cea3598172"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

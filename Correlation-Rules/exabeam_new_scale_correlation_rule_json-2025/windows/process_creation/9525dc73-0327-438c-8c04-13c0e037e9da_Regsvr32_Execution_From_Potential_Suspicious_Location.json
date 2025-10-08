@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Regsvr32 Execution From Potential Suspicious Location",
+      "description": "Detects execution of regsvr32 where the DLL is located in a potentially suspicious location.",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR process_original_file_name = \"REGSVR32\\.EXE\") AND (process_command_line = RGX(\".*\\\\:\\\\\\\\ProgramData\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a136683b-b644-4fa4-80a5-0543919fa212"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

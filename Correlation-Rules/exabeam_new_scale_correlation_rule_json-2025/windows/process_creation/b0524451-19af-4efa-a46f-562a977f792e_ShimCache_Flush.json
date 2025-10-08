@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "ShimCache Flush",
+      "description": "Detects actions that clear the local ShimCache and remove forensic evidence",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*rundll32.*\") AND process_command_line = RGX(\".*apphelp\\\\\\.dll.*\")) AND (process_command_line = RGX(\".*ShimFlushCache.*\") OR process_command_line = RGX(\".*\\\\#250.*\"))) OR ((process_command_line = RGX(\".*rundll32.*\") AND process_command_line = RGX(\".*kernel32\\\\\\.dll.*\")) AND (process_command_line = RGX(\".*BaseFlushAppcompatCache.*\") OR process_command_line = RGX(\".*\\\\#46.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a6f41015-4632-4885-84cc-e5b2e522a6b3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

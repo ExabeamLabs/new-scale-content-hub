@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Use of OpenConsole",
+      "description": "Detects usage of OpenConsole binary as a LOLBIN to launch other binaries to bypass application Whitelisting",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_original_file_name = \"OpenConsole\\.exe\" OR process_path = RGX(\"\\\\\\\\OpenConsole\\\\\\.exe$\")) AND  NOT (process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\WindowsApps\\\\\\\\Microsoft\\\\\\.WindowsTerminal\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "af3d873a-7a2d-421f-a618-2879229829ac"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

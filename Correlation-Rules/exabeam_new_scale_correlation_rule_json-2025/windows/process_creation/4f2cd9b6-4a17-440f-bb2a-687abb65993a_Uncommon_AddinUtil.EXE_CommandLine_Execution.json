@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Uncommon AddinUtil.EXE CommandLine Execution",
+      "description": "Detects execution of the Add-In deployment cache updating utility (AddInutil.exe) with uncommon Addinroot or Pipelineroot paths. An adversary may execute AddinUtil.exe with uncommon Addinroot/Pipelineroot paths that point to the adversaries Addins.Store payload.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\addinutil\\\\\\.exe$\") OR process_original_file_name = \"AddInUtil\\.exe\") AND (process_command_line = RGX(\".*\\\\-AddInRoot\\\\:.*\") OR process_command_line = RGX(\".*\\\\-PipelineRoot\\\\:.*\"))) AND  NOT ((process_command_line = RGX(\".*\\\\-AddInRoot\\\\:\\\\\"C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Common\\\\ Files\\\\\\\\Microsoft\\\\ Shared\\\\\\\\VSTA.*\") OR process_command_line = RGX(\".*\\\\-AddInRoot\\\\:C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Common\\\\ Files\\\\\\\\Microsoft\\\\ Shared\\\\\\\\VSTA.*\") OR process_command_line = RGX(\".*\\\\-PipelineRoot\\\\:\\\\\"C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Common\\\\ Files\\\\\\\\Microsoft\\\\ Shared\\\\\\\\VSTA.*\") OR process_command_line = RGX(\".*\\\\-PipelineRoot\\\\:C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Common\\\\ Files\\\\\\\\Microsoft\\\\ Shared\\\\\\\\VSTA.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e94de697-ef03-44c1-a71c-d66936019675"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

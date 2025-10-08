@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Antivirus Software DLL Sideloading",
+      "description": "Detects potential DLL sideloading of DLLs that are part of antivirus software suchas McAfee, Symantec...etc Note: Unmapped fields: ImageLoaded",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ImageLoaded = RGX(\"\\\\\\\\log\\\\\\.dll$\") AND  NOT ((ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Bitdefender\\\\ Antivirus\\\\ Free\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Bitdefender\\\\ Antivirus\\\\ Free\\\\\\\\\")) OR (process_path = \"C\\:\\\\Program\\ Files\\\\Dell\\\\SARemediation\\\\audit\\\\TelemetryUtility\\.exe\" AND (ImageLoaded = \"C\\:\\\\Program\\ Files\\\\Dell\\\\SARemediation\\\\plugin\\\\log\\.dll\" OR ImageLoaded = \"C\\:\\\\Program\\ Files\\\\Dell\\\\SARemediation\\\\audit\\\\log\\.dll\")) OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Canon\\\\\\\\MyPrinter\\\\\\\\\"))) OR (ImageLoaded = RGX(\"\\\\\\\\qrt\\\\\\.dll$\") AND  NOT ((ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\F\\\\-Secure\\\\\\\\Anti\\\\-Virus\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\F\\\\-Secure\\\\\\\\Anti\\\\-Virus\\\\\\\\\")))) OR ((ImageLoaded = RGX(\"\\\\\\\\ashldres\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\lockdown\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\vsodscpl\\\\\\.dll$\")) AND  NOT ((ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\McAfee\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\McAfee\\\\\\\\\")))) OR (ImageLoaded = RGX(\"\\\\\\\\vftrace\\\\\\.dll$\") AND  NOT ((ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\CyberArk\\\\\\\\Endpoint\\\\ Privilege\\\\ Manager\\\\\\\\Agent\\\\\\\\x32\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\CyberArk\\\\\\\\Endpoint\\\\ Privilege\\\\ Manager\\\\\\\\Agent\\\\\\\\x32\\\\\\\\\")))) OR (ImageLoaded = RGX(\"\\\\\\\\wsc\\\\\\.dll$\") AND  NOT ((ImageLoaded = RGX(\"^C\\\\:\\\\\\\\program\\\\ Files\\\\\\\\AVAST\\\\ Software\\\\\\\\Avast\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\AVAST\\\\ Software\\\\\\\\Avast\\\\\\\\\")))) OR (ImageLoaded = RGX(\"\\\\\\\\tmdbglog\\\\\\.dll$\") AND  NOT ((ImageLoaded = RGX(\"^C\\\\:\\\\\\\\program\\\\ Files\\\\\\\\Trend\\\\ Micro\\\\\\\\Titanium\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Trend\\\\ Micro\\\\\\\\Titanium\\\\\\\\\")))) OR (ImageLoaded = RGX(\"\\\\\\\\DLPPREM32\\\\\\.dll$\") AND  NOT ((ImageLoaded = RGX(\"^C\\\\:\\\\\\\\program\\\\ Files\\\\\\\\ESET\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\ESET\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "575fa61e-58fb-40a2-8a32-c15aa1502956"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

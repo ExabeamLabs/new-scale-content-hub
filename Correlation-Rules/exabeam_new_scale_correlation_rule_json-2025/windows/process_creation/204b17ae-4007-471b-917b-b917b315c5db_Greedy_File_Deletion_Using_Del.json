@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Greedy File Deletion Using Del",
+      "description": "Detects execution of the \"del\" builtin command to remove files using greedy/wildcard expression. This is often used by malware to delete content of folders that perhaps contains the initial malware infection or to delete evidence.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_original_file_name = \"Cmd\\.Exe\") AND (process_command_line = RGX(\".*del\\\\ .*\") OR process_command_line = RGX(\".*erase\\\\ .*\")) AND (process_command_line = RGX(\".*\\\\\\\\\\\\*\\\\\\.au3.*\") OR process_command_line = RGX(\".*\\\\\\\\\\\\*\\\\\\.dll.*\") OR process_command_line = RGX(\".*\\\\\\\\\\\\*\\\\\\.exe.*\") OR process_command_line = RGX(\".*\\\\\\\\\\\\*\\\\\\.js.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "22b0e819-f128-4f3f-a5da-73539f22071d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

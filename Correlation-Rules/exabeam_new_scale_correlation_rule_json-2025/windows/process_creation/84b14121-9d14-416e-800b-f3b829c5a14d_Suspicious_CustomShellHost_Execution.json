@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious CustomShellHost Execution",
+      "description": "Detects the execution of CustomShellHost binary where the child isn't located in 'C:\\Windows\\explorer.exe'",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "parent_process_path = RGX(\"\\\\\\\\CustomShellHost\\\\\\.exe$\") AND  NOT (process_path = \"C\\:\\\\Windows\\\\explorer\\.exe\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "66b451a5-7037-4a6c-97f5-e725aa463c13"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

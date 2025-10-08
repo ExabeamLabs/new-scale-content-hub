@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "User Couldn't Call a Privileged Service 'LsaRegisterLogonProcess'",
+      "description": "The 'LsaRegisterLogonProcess' function verifies that the application making the function call is a logon process by checking that it has the SeTcbPrivilege privilege set. Possible Rubeus tries to get a handle to LSA. Note: Unmapped fields: Service, Keywords",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4673 AND Service = \"LsaRegisterLogonProcess\\(\\)\" AND Keywords = \"0x8010000000000000\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "97581c45-94bb-4cb4-9d62-9b76b997c2c5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

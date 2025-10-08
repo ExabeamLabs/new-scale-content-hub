@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Office Autorun Keys Modification",
+      "description": "Detects modification of autostart extensibility point (ASEP) in registry. Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\Software\\\\\\\\Wow6432Node\\\\\\\\Microsoft\\\\\\\\Office.*\") OR registry_path = RGX(\".*\\\\\\\\Software\\\\\\\\Microsoft\\\\\\\\Office.*\")) AND (registry_path = RGX(\".*\\\\\\\\Word\\\\\\\\Addins.*\") OR registry_path = RGX(\".*\\\\\\\\PowerPoint\\\\\\\\Addins.*\") OR registry_path = RGX(\".*\\\\\\\\Outlook\\\\\\\\Addins.*\") OR registry_path = RGX(\".*\\\\\\\\Onenote\\\\\\\\Addins.*\") OR registry_path = RGX(\".*\\\\\\\\Excel\\\\\\\\Addins.*\") OR registry_path = RGX(\".*\\\\\\\\Access\\\\\\\\Addins.*\") OR registry_path = RGX(\".*test\\\\\\\\Special\\\\\\\\Perf.*\")) AND  NOT (Details = \"\\(Empty\\)\" OR ((process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Microsoft\\\\ Office\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Microsoft\\\\ Office\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\msiexec\\\\\\.exe\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\regsvr32\\\\\\.exe\")) AND (registry_path = RGX(\".*\\\\\\\\Excel\\\\\\\\Addins\\\\\\\\AdHocReportingExcelClientLib\\\\\\.AdHocReportingExcelClientAddIn\\\\\\.1\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\Excel\\\\\\\\Addins\\\\\\\\ExcelPlugInShell\\\\\\.PowerMapConnect\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\Excel\\\\\\\\Addins\\\\\\\\NativeShim\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\Excel\\\\\\\\Addins\\\\\\\\NativeShim\\\\\\.InquireConnector\\\\\\.1\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\Excel\\\\\\\\Addins\\\\\\\\PowerPivotExcelClientAddIn\\\\\\.NativeEntry\\\\\\.1\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\Outlook\\\\\\\\AddIns\\\\\\\\AccessAddin\\\\\\.DC\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\Outlook\\\\\\\\AddIns\\\\\\\\ColleagueImport\\\\\\.ColleagueImportAddin\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\Outlook\\\\\\\\AddIns\\\\\\\\EvernoteCC\\\\\\.EvernoteContactConnector\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\Outlook\\\\\\\\AddIns\\\\\\\\EvernoteOLRD\\\\\\.Connect\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\Outlook\\\\\\\\Addins\\\\\\\\Microsoft\\\\\\.VbaAddinForOutlook\\\\\\.1\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\Outlook\\\\\\\\Addins\\\\\\\\OcOffice\\\\\\.OcForms\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\Outlook\\\\\\\\Addins\\\\\\\\OneNote\\\\\\.OutlookAddin.*\") OR registry_path = RGX(\".*\\\\\\\\Outlook\\\\\\\\Addins\\\\\\\\OscAddin\\\\\\.Connect\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\Outlook\\\\\\\\Addins\\\\\\\\OutlookChangeNotifier\\\\\\.Connect\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\Outlook\\\\\\\\Addins\\\\\\\\UCAddin\\\\\\.LyncAddin\\\\\\.1.*\") OR registry_path = RGX(\".*\\\\\\\\Outlook\\\\\\\\Addins\\\\\\\\UCAddin\\\\\\.UCAddin\\\\\\.1.*\") OR registry_path = RGX(\".*\\\\\\\\Outlook\\\\\\\\Addins\\\\\\\\UmOutlookAddin\\\\\\.FormRegionAddin\\\\\\\\.*\"))) OR ((process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Common\\\\ Files\\\\\\\\Microsoft\\\\ Shared\\\\\\\\ClickToRun\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Common\\\\ Files\\\\\\\\Microsoft\\\\ Shared\\\\\\\\ClickToRun\\\\\\\\Updates\\\\\\\\\")) AND process_path = RGX(\"\\\\\\\\OfficeClickToRun\\\\\\.exe$\")) OR (process_path = \"C\\:\\\\Program\\ Files\\\\AVG\\\\Antivirus\\\\RegSvr\\.exe\" AND registry_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Office\\\\\\\\Outlook\\\\\\\\Addins\\\\\\\\Antivirus\\\\\\.AsOutExt\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a15b1b47-520e-46fe-a26a-948d9f79d768"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Process Memory Dump Via Comsvcs.DLL",
+      "description": "Detects a process memory dump via \"comsvcs.dll\" using rundll32, covering multiple different techniques (ordinal, minidump function, etc.)",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_original_file_name = \"RUNDLL32\\.EXE\" OR process_command_line = RGX(\".*rundll32.*\")) AND (((process_command_line = RGX(\".*comsvcs.*\") AND process_command_line = RGX(\".*full.*\")) AND (process_command_line = RGX(\".*\\\\#\\\\-.*\") OR process_command_line = RGX(\".*\\\\#\\\\+.*\") OR process_command_line = RGX(\".*\\\\#24.*\") OR process_command_line = RGX(\".*24\\\\ .*\") OR process_command_line = RGX(\".*MiniDump.*\") OR process_command_line = RGX(\".*\\\\#65560.*\"))))) OR ((process_command_line = RGX(\".*24.*\") AND process_command_line = RGX(\".*comsvcs.*\") AND process_command_line = RGX(\".*full.*\")) AND (process_command_line = RGX(\".*\\\\ \\\\#.*\") OR process_command_line = RGX(\".*\\\\,\\\\#.*\") OR process_command_line = RGX(\".*\\\\,\\\\ \\\\#.*\") OR process_command_line = RGX(\".*\\\\\"\\\\#.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "bb835afb-3420-4d5d-b0cf-346081a363ba"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

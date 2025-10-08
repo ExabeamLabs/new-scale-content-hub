@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Microsoft Excel Add-In Loaded From Uncommon Location",
+      "description": "Detects Microsoft Excel loading an Add-In (.xll) file from an uncommon location Note: Unmapped fields: ImageLoaded",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\excel\\\\\\.exe$\") AND (ImageLoaded = RGX(\".*\\\\\\\\Desktop\\\\\\\\.*\") OR ImageLoaded = RGX(\".*\\\\\\\\Downloads\\\\\\\\.*\") OR ImageLoaded = RGX(\".*\\\\\\\\Perflogs\\\\\\\\.*\") OR ImageLoaded = RGX(\".*\\\\\\\\Temp\\\\\\\\.*\") OR ImageLoaded = RGX(\".*\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR ImageLoaded = RGX(\".*\\\\\\\\Windows\\\\\\\\Tasks\\\\\\\\.*\")) AND ImageLoaded = RGX(\"\\\\\\.xll$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "33685011-d065-4a1f-a57f-3c3c8b3d30ca"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

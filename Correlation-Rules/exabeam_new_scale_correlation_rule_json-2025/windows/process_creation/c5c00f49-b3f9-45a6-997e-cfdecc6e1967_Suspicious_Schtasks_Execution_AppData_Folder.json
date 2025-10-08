@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Schtasks Execution AppData Folder",
+      "description": "Detects the creation of a schtask that executes a file from C:\\Users\\<USER>\\AppData\\Local",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") AND (process_command_line = RGX(\".*\\\\/Create.*\") AND process_command_line = RGX(\".*\\\\/RU.*\") AND process_command_line = RGX(\".*\\\\/TR.*\") AND process_command_line = RGX(\".*C\\\\:\\\\\\\\Users\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\.*\")) AND (process_command_line = RGX(\".*NT\\\\ AUT.*\") OR process_command_line = RGX(\".*\\\\ SYSTEM\\\\ .*\"))) AND  NOT (((parent_process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") AND parent_process_path = RGX(\".*TeamViewer\\\\_\\\\\\.exe.*\")) AND process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") AND process_command_line = RGX(\".*\\\\/TN\\\\ TVInstallRestore.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "064cb942-8d23-4a77-8203-1c152be5dd34"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Shell Process Spawned by Java.EXE",
+      "description": "Detects shell spawned from Java host process, which could be a sign of exploitation (e.g. log4j exploitation)",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\java\\\\\\.exe$\") AND (process_path = RGX(\"\\\\\\\\bash\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\"))) AND  NOT ((parent_process_path = RGX(\".*build.*\") AND process_command_line = RGX(\".*build.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "dc4812e8-d0c3-4b99-8b69-547055a05b16"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

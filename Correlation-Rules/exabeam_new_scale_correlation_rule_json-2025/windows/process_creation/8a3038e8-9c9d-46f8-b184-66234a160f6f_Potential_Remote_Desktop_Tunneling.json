@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Remote Desktop Tunneling",
+      "description": "Detects potential use of an SSH utility to establish RDP over a reverse SSH Tunnel. This can be used by attackers to enable routing of network packets that would otherwise not reach their intended destination.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\:3389.*\") AND (process_command_line = RGX(\".*\\\\ \\\\-L\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-P\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-R\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-pw\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-ssh\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "95a69d93-3ee0-4004-b845-59a26356c118"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

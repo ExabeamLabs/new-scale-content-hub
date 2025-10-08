@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Powershell Install a DLL in System Directory",
+      "description": "Uses PowerShell to install/copy a file into a system directory such as \"System32\" or \"SysWOW64\" Note: Unmapped fields: ScriptBlockText",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ScriptBlockText = RGX(\"(Copy-Item|cpi) .{2,128} -Destination .{1,32}\\Windows\\(System32|SysWOW64)\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e7bcdc56-91ae-49a8-b955-a4ba19b2062b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

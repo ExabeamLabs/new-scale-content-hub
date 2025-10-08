@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New Service Creation Using Sc.EXE",
+      "description": "Detects the creation of a new service using the \"sc.exe\" utility.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\sc\\\\\\.exe$\") AND (process_command_line = RGX(\".*create.*\") AND process_command_line = RGX(\".*binPath.*\"))) AND  NOT (((parent_process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Dropbox\\\\\\\\Client\\\\\\\\\") OR parent_process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Dropbox\\\\\\\\Client\\\\\\\\\")) AND parent_process_path = RGX(\"\\\\\\\\Dropbox\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "da1e438c-298b-4c0b-b4a4-b6f4c54519ed"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

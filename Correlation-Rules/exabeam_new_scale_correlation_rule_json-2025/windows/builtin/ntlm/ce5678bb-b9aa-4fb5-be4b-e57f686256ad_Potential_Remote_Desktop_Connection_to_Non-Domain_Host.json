@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Remote Desktop Connection to Non-Domain Host",
+      "description": "Detects logons using NTLM to hosts that are potentially not part of the domain. Note: Unmapped fields: TargetName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 8001 AND TargetName = RGX(\"^TERMSRV\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9a336640-915c-47ad-9e5a-ae50daf919a3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

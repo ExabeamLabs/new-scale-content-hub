@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Msiexec Quiet Installation",
+      "description": "Adversaries may abuse msiexec.exe to proxy execution of malicious payloads.\nMsiexec.exe is the command-line utility for the Windows Installer and is thus commonly associated with executing installation packages (.msi)\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\msiexec\\\\\\.exe$\") OR process_original_file_name = \"msiexec\\.exe\") AND ((process_command_line = RGX(\".*\\\\-i.*\") OR process_command_line = RGX(\".*\\\\/i.*\")) OR (process_command_line = RGX(\".*\\\\-package.*\") OR process_command_line = RGX(\".*\\\\/package.*\")) OR (process_command_line = RGX(\".*\\\\-a.*\") OR process_command_line = RGX(\".*\\\\/a.*\")) OR (process_command_line = RGX(\".*\\\\-j.*\") OR process_command_line = RGX(\".*\\\\/j.*\"))) AND (process_command_line = RGX(\".*\\\\-q.*\") OR process_command_line = RGX(\".*\\\\/q.*\"))) AND  NOT ((parent_process_path = RGX(\"^C\\\\:\\\\\\\\Users\\\\\\\\\") AND parent_process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\")) OR parent_process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\\") OR (parent_process_path = \"C\\:\\\\Windows\\\\CCM\\\\Ccm32BitLauncher\\.exe\" AND (process_integrity_level = \"System\" OR process_integrity_level = \"S\\-1\\-16\\-16384\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "41763c80-2c12-4af5-88b5-f5963578e448"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

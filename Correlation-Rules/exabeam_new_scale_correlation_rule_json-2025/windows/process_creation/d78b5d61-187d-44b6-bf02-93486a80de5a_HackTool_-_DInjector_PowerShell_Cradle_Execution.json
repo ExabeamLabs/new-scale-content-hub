@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - DInjector PowerShell Cradle Execution",
+      "description": "Detects the use of the Dinject PowerShell cradle based on the specific flags",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\ \\\\/am51.*\") AND process_command_line = RGX(\".*\\\\ \\\\/password.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a00780a8-01e3-4885-98cb-af32135bf8ad"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

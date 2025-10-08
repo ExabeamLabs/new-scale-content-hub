@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious DotNET CLR Usage Log Artifact",
+      "description": "Detects the creation of Usage Log files by the CLR (clr.dll). These files are named after the executing process once the assembly is finished executing for the first time in the (user) session context.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(file_path = RGX(\"\\\\\\\\UsageLogs\\\\\\\\cmstp\\\\\\.exe\\\\\\.log$\") OR file_path = RGX(\"\\\\\\\\UsageLogs\\\\\\\\cscript\\\\\\.exe\\\\\\.log$\") OR file_path = RGX(\"\\\\\\\\UsageLogs\\\\\\\\mshta\\\\\\.exe\\\\\\.log$\") OR file_path = RGX(\"\\\\\\\\UsageLogs\\\\\\\\msxsl\\\\\\.exe\\\\\\.log$\") OR file_path = RGX(\"\\\\\\\\UsageLogs\\\\\\\\regsvr32\\\\\\.exe\\\\\\.log$\") OR file_path = RGX(\"\\\\\\\\UsageLogs\\\\\\\\rundll32\\\\\\.exe\\\\\\.log$\") OR file_path = RGX(\"\\\\\\\\UsageLogs\\\\\\\\svchost\\\\\\.exe\\\\\\.log$\") OR file_path = RGX(\"\\\\\\\\UsageLogs\\\\\\\\wscript\\\\\\.exe\\\\\\.log$\") OR file_path = RGX(\"\\\\\\\\UsageLogs\\\\\\\\wmic\\\\\\.exe\\\\\\.log$\")) AND  NOT ((parent_process_path = RGX(\"\\\\\\\\MsiExec\\\\\\.exe$\") AND parent_process_command_line = RGX(\".*\\\\ \\\\-Embedding.*\") AND process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") AND (process_command_line = RGX(\".*Temp.*\") AND process_command_line = RGX(\".*zzzzInvokeManagedCustomActionOutOfProc.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3dd96f6a-5906-4176-8af6-2e0bf4f37b2f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

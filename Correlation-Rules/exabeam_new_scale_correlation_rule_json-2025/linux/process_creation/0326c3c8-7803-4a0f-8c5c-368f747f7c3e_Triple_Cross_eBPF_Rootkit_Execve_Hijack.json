@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Triple Cross eBPF Rootkit Execve Hijack",
+      "description": "Detects execution of a the file \"execve_hijack\" which is used by the Triple Cross rootkit as a way to elevate privileges",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/sudo$\") AND process_command_line = RGX(\".*execve\\\\_hijack.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b1ca7774-4d05-4805-9ecd-af7a61aa4994"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

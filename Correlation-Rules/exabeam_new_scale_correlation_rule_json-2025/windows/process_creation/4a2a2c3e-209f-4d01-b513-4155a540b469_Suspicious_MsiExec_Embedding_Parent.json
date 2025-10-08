@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious MsiExec Embedding Parent",
+      "description": "Adversaries may abuse msiexec.exe to proxy the execution of malicious payloads",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\")) AND (parent_process_command_line = RGX(\".*MsiExec\\\\\\.exe.*\") AND parent_process_command_line = RGX(\".*\\\\-Embedding\\\\ .*\"))) AND  NOT ((process_path = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\cmd\\\\\\.exe$\") AND process_command_line = RGX(\".*C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\SplunkUniversalForwarder\\\\\\\\bin\\\\\\\\.*\")) OR (process_command_line = RGX(\".*\\\\\\\\DismFoDInstall\\\\\\.cmd.*\") OR (parent_process_command_line = RGX(\".*\\\\\\\\MsiExec\\\\\\.exe\\\\ \\\\-Embedding\\\\ .*\") AND parent_process_command_line = RGX(\".*Global\\\\\\\\MSI0000.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "022b211a-d6bb-4c82-8f59-5ff35ef1c7a2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

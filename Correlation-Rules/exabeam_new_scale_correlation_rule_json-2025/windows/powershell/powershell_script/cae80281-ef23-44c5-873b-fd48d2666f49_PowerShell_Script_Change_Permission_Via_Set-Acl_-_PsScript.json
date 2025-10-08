@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PowerShell Script Change Permission Via Set-Acl - PsScript",
+      "description": "Detects PowerShell scripts set ACL to of a file or a folder Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Set\\\\-Acl\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\-AclObject\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\-Path\\\\ .*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3a34d0c3-6ad6-4de6-8b49-e23803ecd560"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

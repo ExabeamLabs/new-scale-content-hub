@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Suspicious Regsvr32 HTTP IP Pattern",
+      "description": "Detects regsvr32 execution to download and install DLLs located remotely where the address is an IP address.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR process_original_file_name = \"REGSVR32\\.EXE\") AND (process_command_line = RGX(\".*\\\\ \\\\/i\\\\:http\\\\:\\\\/\\\\/1.*\") OR process_command_line = RGX(\".*\\\\ \\\\/i\\\\:http\\\\:\\\\/\\\\/2.*\") OR process_command_line = RGX(\".*\\\\ \\\\/i\\\\:http\\\\:\\\\/\\\\/3.*\") OR process_command_line = RGX(\".*\\\\ \\\\/i\\\\:http\\\\:\\\\/\\\\/4.*\") OR process_command_line = RGX(\".*\\\\ \\\\/i\\\\:http\\\\:\\\\/\\\\/5.*\") OR process_command_line = RGX(\".*\\\\ \\\\/i\\\\:http\\\\:\\\\/\\\\/6.*\") OR process_command_line = RGX(\".*\\\\ \\\\/i\\\\:http\\\\:\\\\/\\\\/7.*\") OR process_command_line = RGX(\".*\\\\ \\\\/i\\\\:http\\\\:\\\\/\\\\/8.*\") OR process_command_line = RGX(\".*\\\\ \\\\/i\\\\:http\\\\:\\\\/\\\\/9.*\") OR process_command_line = RGX(\".*\\\\ \\\\/i\\\\:https\\\\:\\\\/\\\\/1.*\") OR process_command_line = RGX(\".*\\\\ \\\\/i\\\\:https\\\\:\\\\/\\\\/2.*\") OR process_command_line = RGX(\".*\\\\ \\\\/i\\\\:https\\\\:\\\\/\\\\/3.*\") OR process_command_line = RGX(\".*\\\\ \\\\/i\\\\:https\\\\:\\\\/\\\\/4.*\") OR process_command_line = RGX(\".*\\\\ \\\\/i\\\\:https\\\\:\\\\/\\\\/5.*\") OR process_command_line = RGX(\".*\\\\ \\\\/i\\\\:https\\\\:\\\\/\\\\/6.*\") OR process_command_line = RGX(\".*\\\\ \\\\/i\\\\:https\\\\:\\\\/\\\\/7.*\") OR process_command_line = RGX(\".*\\\\ \\\\/i\\\\:https\\\\:\\\\/\\\\/8.*\") OR process_command_line = RGX(\".*\\\\ \\\\/i\\\\:https\\\\:\\\\/\\\\/9.*\") OR process_command_line = RGX(\".*\\\\ \\\\-i\\\\:http\\\\:\\\\/\\\\/1.*\") OR process_command_line = RGX(\".*\\\\ \\\\-i\\\\:http\\\\:\\\\/\\\\/2.*\") OR process_command_line = RGX(\".*\\\\ \\\\-i\\\\:http\\\\:\\\\/\\\\/3.*\") OR process_command_line = RGX(\".*\\\\ \\\\-i\\\\:http\\\\:\\\\/\\\\/4.*\") OR process_command_line = RGX(\".*\\\\ \\\\-i\\\\:http\\\\:\\\\/\\\\/5.*\") OR process_command_line = RGX(\".*\\\\ \\\\-i\\\\:http\\\\:\\\\/\\\\/6.*\") OR process_command_line = RGX(\".*\\\\ \\\\-i\\\\:http\\\\:\\\\/\\\\/7.*\") OR process_command_line = RGX(\".*\\\\ \\\\-i\\\\:http\\\\:\\\\/\\\\/8.*\") OR process_command_line = RGX(\".*\\\\ \\\\-i\\\\:http\\\\:\\\\/\\\\/9.*\") OR process_command_line = RGX(\".*\\\\ \\\\-i\\\\:https\\\\:\\\\/\\\\/1.*\") OR process_command_line = RGX(\".*\\\\ \\\\-i\\\\:https\\\\:\\\\/\\\\/2.*\") OR process_command_line = RGX(\".*\\\\ \\\\-i\\\\:https\\\\:\\\\/\\\\/3.*\") OR process_command_line = RGX(\".*\\\\ \\\\-i\\\\:https\\\\:\\\\/\\\\/4.*\") OR process_command_line = RGX(\".*\\\\ \\\\-i\\\\:https\\\\:\\\\/\\\\/5.*\") OR process_command_line = RGX(\".*\\\\ \\\\-i\\\\:https\\\\:\\\\/\\\\/6.*\") OR process_command_line = RGX(\".*\\\\ \\\\-i\\\\:https\\\\:\\\\/\\\\/7.*\") OR process_command_line = RGX(\".*\\\\ \\\\-i\\\\:https\\\\:\\\\/\\\\/8.*\") OR process_command_line = RGX(\".*\\\\ \\\\-i\\\\:https\\\\:\\\\/\\\\/9.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "722f28ac-907b-418d-8e43-743bf67fee25"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

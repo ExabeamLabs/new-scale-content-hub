@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Monero Crypto Coin Mining Pool Lookup",
+      "description": "Detects suspicious DNS queries to Monero mining pools Note: Unmapped fields: query",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(query = RGX(\".*pool\\\\\\.minexmr\\\\\\.com.*\") OR query = RGX(\".*fr\\\\\\.minexmr\\\\\\.com.*\") OR query = RGX(\".*de\\\\\\.minexmr\\\\\\.com.*\") OR query = RGX(\".*sg\\\\\\.minexmr\\\\\\.com.*\") OR query = RGX(\".*ca\\\\\\.minexmr\\\\\\.com.*\") OR query = RGX(\".*us\\\\-west\\\\\\.minexmr\\\\\\.com.*\") OR query = RGX(\".*pool\\\\\\.supportxmr\\\\\\.com.*\") OR query = RGX(\".*mine\\\\\\.c3pool\\\\\\.com.*\") OR query = RGX(\".*xmr\\\\-eu1\\\\\\.nanopool\\\\\\.org.*\") OR query = RGX(\".*xmr\\\\-eu2\\\\\\.nanopool\\\\\\.org.*\") OR query = RGX(\".*xmr\\\\-us\\\\-east1\\\\\\.nanopool\\\\\\.org.*\") OR query = RGX(\".*xmr\\\\-us\\\\-west1\\\\\\.nanopool\\\\\\.org.*\") OR query = RGX(\".*xmr\\\\-asia1\\\\\\.nanopool\\\\\\.org.*\") OR query = RGX(\".*xmr\\\\-jp1\\\\\\.nanopool\\\\\\.org.*\") OR query = RGX(\".*xmr\\\\-au1\\\\\\.nanopool\\\\\\.org.*\") OR query = RGX(\".*xmr\\\\\\.2miners\\\\\\.com.*\") OR query = RGX(\".*xmr\\\\\\.hashcity\\\\\\.org.*\") OR query = RGX(\".*xmr\\\\\\.f2pool\\\\\\.com.*\") OR query = RGX(\".*xmrpool\\\\\\.eu.*\") OR query = RGX(\".*pool\\\\\\.hashvault\\\\\\.pro.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "efa479c0-7fb2-4389-acff-0e5e5a26920a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

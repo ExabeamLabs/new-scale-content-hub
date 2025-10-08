@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "SQLite Firefox Profile Data DB Access",
+      "description": "Detect usage of the \"sqlite\" binary to query databases in Firefox and other Gecko-based browsers for potential data stealing.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_product = \"SQLite\" OR (process_path = RGX(\"\\\\\\\\sqlite\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\sqlite3\\\\\\.exe$\"))) AND (process_command_line = RGX(\".*cookies\\\\\\.sqlite.*\") OR process_command_line = RGX(\".*places\\\\\\.sqlite.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c6607468-1cc8-464f-8e22-59d1a470b09e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

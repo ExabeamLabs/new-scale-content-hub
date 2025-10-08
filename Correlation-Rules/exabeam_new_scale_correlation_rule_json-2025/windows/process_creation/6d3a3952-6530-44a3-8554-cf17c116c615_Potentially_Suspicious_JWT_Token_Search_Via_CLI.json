@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Suspicious JWT Token Search Via CLI",
+      "description": "Detects possible search for JWT tokens via CLI by looking for the string \"eyJ0eX\" or \"eyJhbG\".\nThis string is used as an anchor to look for the start of the JWT token used by microsoft office and similar apps.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*eyJ0eXAiOi.*\") OR process_command_line = RGX(\".*eyJhbGciOi.*\") OR process_command_line = RGX(\".*\\\\ eyJ0eX.*\") OR process_command_line = RGX(\".*\\\\ \\\\\"eyJ0eX\\\\.*\") OR process_command_line = RGX(\".*\\\\ \\\\'eyJ0eX\\\\.*\") OR process_command_line = RGX(\".*\\\\ eyJhbG.*\") OR process_command_line = RGX(\".*\\\\ \\\\\"eyJhbG\\\\.*\") OR process_command_line = RGX(\".*\\\\ \\\\'eyJhbG\\\\.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "592d13fc-d2b0-42a2-bff4-bb97a2999e74"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

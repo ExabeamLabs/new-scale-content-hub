@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential DCOM InternetExplorer.Application DLL Hijack - Image Load",
+      "description": "Detects potential DLL hijack of \"iertutil.dll\" found in the DCOM InternetExplorer.Application Class Note: Unmapped fields: ImageLoaded",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\Internet\\\\ Explorer\\\\\\\\iexplore\\\\\\.exe$\") AND ImageLoaded = RGX(\"\\\\\\\\Internet\\\\ Explorer\\\\\\\\iertutil\\\\\\.dll$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7c5fc749-9404-445b-8a2a-029dd9c36406"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

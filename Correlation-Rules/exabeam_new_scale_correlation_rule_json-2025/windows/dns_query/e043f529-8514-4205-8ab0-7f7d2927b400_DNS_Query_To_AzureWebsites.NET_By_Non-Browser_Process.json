@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "DNS Query To AzureWebsites.NET By Non-Browser Process",
+      "description": "Detects a DNS query by a non browser process on the system to \"azurewebsites.net\". The latter was often used by threat actors as a malware hosting and exfiltration site.\n Note: Unmapped fields: QueryName",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "QueryName = RGX(\"azurewebsites\\\\\\.net$\") AND  NOT ((process_path = \"C\\:\\\\Program\\ Files\\\\Google\\\\Chrome\\\\Application\\\\chrome\\.exe\" OR process_path = \"C\\:\\\\Program\\ Files\\ \\(x86\\)\\\\Google\\\\Chrome\\\\Application\\\\chrome\\.exe\") OR (process_path = \"C\\:\\\\Program\\ Files\\\\Mozilla\\ Firefox\\\\firefox\\.exe\" OR process_path = \"C\\:\\\\Program\\ Files\\ \\(x86\\)\\\\Mozilla\\ Firefox\\\\firefox\\.exe\") OR (process_path = \"C\\:\\\\Program\\ Files\\ \\(x86\\)\\\\Internet\\ Explorer\\\\iexplore\\.exe\" OR process_path = \"C\\:\\\\Program\\ Files\\\\Internet\\ Explorer\\\\iexplore\\.exe\") OR (process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Microsoft\\\\\\\\EdgeWebView\\\\\\\\Application\\\\\\\\\") OR process_path = RGX(\"\\\\\\\\WindowsApps\\\\\\\\MicrosoftEdge\\\\\\.exe$\") OR (process_path = \"C\\:\\\\Program\\ Files\\ \\(x86\\)\\\\Microsoft\\\\Edge\\\\Application\\\\msedge\\.exe\" OR process_path = \"C\\:\\\\Program\\ Files\\\\Microsoft\\\\Edge\\\\Application\\\\msedge\\.exe\")) OR ((process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Microsoft\\\\\\\\EdgeCore\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Microsoft\\\\\\\\EdgeCore\\\\\\\\\")) AND (process_path = RGX(\"\\\\\\\\msedge\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msedgewebview2\\\\\\.exe$\"))) OR process_path = RGX(\"\\\\\\\\safari\\\\\\.exe$\") OR (process_path = RGX(\"\\\\\\\\MsMpEng\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\MsSense\\\\\\.exe$\")) OR (process_path = RGX(\"\\\\\\\\brave\\\\\\.exe$\") AND process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\BraveSoftware\\\\\\\\\")) OR (process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Maxthon\\\\\\\\.*\") AND process_path = RGX(\"\\\\\\\\maxthon\\\\\\.exe$\")) OR (process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Programs\\\\\\\\Opera\\\\\\\\.*\") AND process_path = RGX(\"\\\\\\\\opera\\\\\\.exe$\")) OR ((process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\SeaMonkey\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\SeaMonkey\\\\\\\\\")) AND process_path = RGX(\"\\\\\\\\seamonkey\\\\\\.exe$\")) OR (process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Vivaldi\\\\\\\\.*\") AND process_path = RGX(\"\\\\\\\\vivaldi\\\\\\.exe$\")) OR ((process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Naver\\\\\\\\Naver\\\\ Whale\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Naver\\\\\\\\Naver\\\\ Whale\\\\\\\\\")) AND process_path = RGX(\"\\\\\\\\whale\\\\\\.exe$\")) OR process_path = RGX(\".*\\\\\\\\Tor\\\\ Browser\\\\\\\\.*\") OR ((process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Waterfox\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Waterfox\\\\\\\\\")) AND process_path = RGX(\"\\\\\\\\Waterfox\\\\\\.exe$\")) OR (process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Programs\\\\\\\\midori\\\\-ng\\\\\\\\.*\") AND process_path = RGX(\"\\\\\\\\Midori\\\\ Next\\\\ Generation\\\\\\.exe$\")) OR ((process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\SlimBrowser\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\SlimBrowser\\\\\\\\\")) AND process_path = RGX(\"\\\\\\\\slimbrowser\\\\\\.exe$\")) OR (process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Flock\\\\\\\\.*\") AND process_path = RGX(\"\\\\\\\\Flock\\\\\\.exe$\")) OR (process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Phoebe\\\\\\\\.*\") AND process_path = RGX(\"\\\\\\\\Phoebe\\\\\\.exe$\")) OR ((process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Falkon\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Falkon\\\\\\\\\")) AND process_path = RGX(\"\\\\\\\\falkon\\\\\\.exe$\")) OR ((process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Avant\\\\ Browser\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Avant\\\\ Browser\\\\\\\\\")) AND process_path = RGX(\"\\\\\\\\avant\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7cc1a52e-5a37-424f-af6d-07b0ea604111"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation STDIN+ Launcher - Powershell",
+      "description": "Detects Obfuscated use of stdin to execute PowerShell Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ScriptBlockText = RGX(\"cmd.{0,5}(?:/c|/r).+powershell.+(?:$?{?input}?|noexit).+\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "608f51dc-f5fd-4f7b-9092-fdbf88fe369b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

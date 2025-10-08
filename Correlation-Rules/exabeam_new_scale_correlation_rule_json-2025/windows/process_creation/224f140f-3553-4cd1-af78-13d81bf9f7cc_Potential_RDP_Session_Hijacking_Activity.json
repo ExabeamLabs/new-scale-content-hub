@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential RDP Session Hijacking Activity",
+      "description": "Detects potential RDP Session Hijacking activity on Windows systems",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\tscon\\\\\\.exe$\") OR process_original_file_name = \"tscon\\.exe\") AND (process_integrity_level = \"System\" OR process_integrity_level = \"S\\-1\\-16\\-16384\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "006fe2de-a22c-40ac-9532-542276cd8826"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

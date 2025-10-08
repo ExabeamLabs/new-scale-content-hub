@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Automated Collection Command Prompt",
+      "description": "Once established within a system or network, an adversary may use automated techniques for collecting internal data.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\\\.doc.*\") OR process_command_line = RGX(\".*\\\\\\.docx.*\") OR process_command_line = RGX(\".*\\\\\\.xls.*\") OR process_command_line = RGX(\".*\\\\\\.xlsx.*\") OR process_command_line = RGX(\".*\\\\\\.ppt.*\") OR process_command_line = RGX(\".*\\\\\\.pptx.*\") OR process_command_line = RGX(\".*\\\\\\.rtf.*\") OR process_command_line = RGX(\".*\\\\\\.pdf.*\") OR process_command_line = RGX(\".*\\\\\\.txt.*\")) AND ((process_command_line = RGX(\".*dir\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\/b\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\/s\\\\ .*\")) OR (process_original_file_name = \"FINDSTR\\.EXE\" AND (process_command_line = RGX(\".*\\\\ \\\\/e\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\/si\\\\ .*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8ebe6aa9-7d0a-49ed-9ef9-1d91ae493f82"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Memory Dumping Activity Via LiveKD",
+      "description": "Detects execution of LiveKD based on PE metadata or image name",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\livekd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\livekd64\\\\\\.exe$\")) OR process_original_file_name = \"livekd\\.exe\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e71dd331-58b9-49ff-bbb7-24fb1f4736ce"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Recon Activity Using DriverQuery.EXE",
+      "description": "Detect usage of the \"driverquery\" utility to perform reconnaissance on installed drivers",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"driverquery\\\\\\.exe$\") OR process_original_file_name = \"drvqry\\.exe\") AND ((parent_process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\")) OR (parent_process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\.*\") OR parent_process_path = RGX(\".*\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR parent_process_path = RGX(\".*\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "618228b6-f9fb-4922-bcdd-5fef03060c86"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

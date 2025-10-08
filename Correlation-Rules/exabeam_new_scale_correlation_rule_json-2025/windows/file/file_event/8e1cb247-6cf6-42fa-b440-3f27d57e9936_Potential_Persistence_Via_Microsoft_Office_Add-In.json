@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Persistence Via Microsoft Office Add-In",
+      "description": "Detects potential persistence activity via startup add-ins that load when Microsoft Office starts (.wll/.xll are simply .dll fit for Word or Excel).",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((file_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Word\\\\\\\\Startup\\\\\\\\.*\") AND file_path = RGX(\"\\\\\\.wll$\")) OR (file_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Excel\\\\\\\\Startup\\\\\\\\.*\") AND file_path = RGX(\"\\\\\\.xll$\")) OR (file_path = RGX(\".*Microsoft\\\\\\\\Excel\\\\\\\\XLSTART\\\\\\\\.*\") AND file_path = RGX(\"\\\\\\.xlam$\")) OR (file_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Addins\\\\\\\\.*\") AND (file_path = RGX(\"\\\\\\.xlam$\") OR file_path = RGX(\"\\\\\\.xla$\") OR file_path = RGX(\"\\\\\\.ppam$\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "782814a3-38e3-48b9-96fb-42f52e9f5489"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

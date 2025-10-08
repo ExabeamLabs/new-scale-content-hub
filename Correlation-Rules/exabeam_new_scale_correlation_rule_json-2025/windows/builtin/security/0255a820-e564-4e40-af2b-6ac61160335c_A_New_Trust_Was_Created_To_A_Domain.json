@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "A New Trust Was Created To A Domain",
+      "description": "Addition of domains is seldom and should be verified for legitimacy.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "event_id = 4706",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "44edec28-0247-40a2-962c-ee8e0719973c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

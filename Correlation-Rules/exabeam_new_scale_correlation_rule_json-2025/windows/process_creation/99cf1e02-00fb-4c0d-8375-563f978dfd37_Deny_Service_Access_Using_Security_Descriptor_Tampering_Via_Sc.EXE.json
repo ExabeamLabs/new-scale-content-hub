@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Deny Service Access Using Security Descriptor Tampering Via Sc.EXE",
+      "description": "Detects suspicious DACL modifications to deny access to a service that affects critical trustees. This can be used to hide services or make them unstoppable.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\sc\\\\\\.exe$\") OR process_original_file_name = \"sc\\.exe\") AND (process_command_line = RGX(\".*sdset.*\") AND process_command_line = RGX(\".*D\\\\;.*\")) AND (process_command_line = RGX(\".*\\\\;IU.*\") OR process_command_line = RGX(\".*\\\\;SU.*\") OR process_command_line = RGX(\".*\\\\;BA.*\") OR process_command_line = RGX(\".*\\\\;SY.*\") OR process_command_line = RGX(\".*\\\\;WD.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f4b2e889-9641-422b-bc20-679986b03163"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

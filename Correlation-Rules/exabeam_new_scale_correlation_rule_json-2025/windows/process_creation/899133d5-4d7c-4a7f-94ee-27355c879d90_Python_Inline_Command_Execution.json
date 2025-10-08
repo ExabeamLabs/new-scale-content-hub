@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Python Inline Command Execution",
+      "description": "Detects execution of python using the \"-c\" flag. This is could be used as a way to launch a reverse shell or execute live python code.",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_original_file_name = \"python\\.exe\" OR (process_path = RGX(\"python\\\\\\.exe$\") OR process_path = RGX(\"python3\\\\\\.exe$\") OR process_path = RGX(\"python2\\\\\\.exe$\"))) AND process_command_line = RGX(\".*\\\\ \\\\-c.*\")) AND  NOT ((parent_process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Python\") AND parent_process_path = RGX(\"\\\\\\\\python\\\\\\.exe$\") AND parent_process_command_line = RGX(\".*\\\\-E\\\\ \\\\-s\\\\ \\\\-m\\\\ ensurepip\\\\ \\\\-U\\\\ \\\\-\\\\-default\\\\-pip.*\"))) AND  NOT (parent_process_path = RGX(\"\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Programs\\\\\\\\Microsoft\\\\ VS\\\\ Code\\\\\\\\Code\\\\\\.exe$\") OR (process_command_line = RGX(\".*\\\\<pip\\\\-setuptools\\\\-caller\\\\>.*\") AND process_command_line = RGX(\".*exec\\\\(compile\\\\(.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d75de17a-7652-47a0-aace-1ec2c68485fb"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

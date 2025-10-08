@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "UAC Bypass Using Consent and Comctl32 - File",
+      "description": "Detects the pattern of UAC Bypass using consent.exe and comctl32.dll (UACMe 22)",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(file_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\consent\\\\\\.exe\\\\\\.\\\\@\") AND file_path = RGX(\"\\\\\\\\comctl32\\\\\\.dll$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "dbba5ca8-8743-478f-8dff-dde3174bc379"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

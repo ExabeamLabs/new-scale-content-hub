@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Reg Add Open Command",
+      "description": "Threat actors performed dumping of SAM, SECURITY and SYSTEM registry hives using DelegateExecute key",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*reg.*\") AND process_command_line = RGX(\".*add.*\") AND process_command_line = RGX(\".*hkcu\\\\\\\\software\\\\\\\\classes\\\\\\\\ms\\\\-settings\\\\\\\\shell\\\\\\\\open\\\\\\\\command.*\") AND process_command_line = RGX(\".*\\\\/ve\\\\ .*\") AND process_command_line = RGX(\".*\\\\/d.*\")) OR (process_command_line = RGX(\".*reg.*\") AND process_command_line = RGX(\".*add.*\") AND process_command_line = RGX(\".*hkcu\\\\\\\\software\\\\\\\\classes\\\\\\\\ms\\\\-settings\\\\\\\\shell\\\\\\\\open\\\\\\\\command.*\") AND process_command_line = RGX(\".*\\\\/v.*\") AND process_command_line = RGX(\".*DelegateExecute.*\")) OR (process_command_line = RGX(\".*reg.*\") AND process_command_line = RGX(\".*delete.*\") AND process_command_line = RGX(\".*hkcu\\\\\\\\software\\\\\\\\classes\\\\\\\\ms\\\\-settings.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "70b8f813-dece-4b4f-8b77-443112a5e406"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

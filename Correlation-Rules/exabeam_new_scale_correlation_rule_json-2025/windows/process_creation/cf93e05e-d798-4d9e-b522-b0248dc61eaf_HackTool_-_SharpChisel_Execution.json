@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - SharpChisel Execution",
+      "description": "Detects usage of the Sharp Chisel via the commandline arguments",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\SharpChisel\\\\\\.exe$\") OR process_product = \"SharpChisel\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1e54d10a-46d6-4c9d-a178-3237ec80a8bd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

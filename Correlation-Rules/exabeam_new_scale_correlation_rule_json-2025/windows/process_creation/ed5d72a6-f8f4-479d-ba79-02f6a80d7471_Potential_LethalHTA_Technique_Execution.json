@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential LethalHTA Technique Execution",
+      "description": "Detects potential LethalHTA technique where the \"mshta.exe\" is spawned by an \"svchost.exe\" process",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\svchost\\\\\\.exe$\") AND process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "592c02cd-475c-4dbe-bbff-a99e414571df"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

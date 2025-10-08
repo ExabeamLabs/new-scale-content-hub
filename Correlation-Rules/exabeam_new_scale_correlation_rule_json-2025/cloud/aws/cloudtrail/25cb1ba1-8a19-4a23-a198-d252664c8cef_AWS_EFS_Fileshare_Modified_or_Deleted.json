@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "AWS EFS Fileshare Modified or Deleted",
+      "description": "Detects when a EFS Fileshare is modified or deleted.\nYou can't delete a file system that is in use.\nIf the file system has any mount targets, the adversary must first delete them, so deletion of a mount will occur before deletion of a fileshare.\n Note: Unmapped fields: eventSource, eventName",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(eventSource = \"elasticfilesystem\\.amazonaws\\.com\" AND eventName = \"DeleteFileSystem\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b043db56-ca55-48c3-832e-ecc0202e8e88"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

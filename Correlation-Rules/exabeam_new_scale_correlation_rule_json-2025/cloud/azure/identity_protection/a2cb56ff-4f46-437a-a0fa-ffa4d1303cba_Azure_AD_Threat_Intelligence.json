@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Azure AD Threat Intelligence",
+      "description": "Indicates user activity that is unusual for the user or consistent with known attack patterns. Note: Unmapped fields: riskEventType",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "riskEventType = \"investigationsThreatIntelligence\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7c8378fc-dc31-4198-b93e-d8f7559570d0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

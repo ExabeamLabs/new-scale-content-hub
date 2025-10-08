@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "CMSTP Execution Process Access",
+      "description": "Detects various indicators of Microsoft Connection Manager Profile Installer execution Note: Unmapped fields: CallTrace",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "CallTrace = RGX(\".*cmlua\\\\\\.dll.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b5d0e46a-d8c1-46bf-9cd9-8ebd100b575a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

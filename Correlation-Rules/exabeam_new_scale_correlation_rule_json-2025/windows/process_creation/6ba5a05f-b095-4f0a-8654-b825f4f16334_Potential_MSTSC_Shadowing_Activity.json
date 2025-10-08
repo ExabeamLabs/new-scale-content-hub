@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential MSTSC Shadowing Activity",
+      "description": "Detects RDP session hijacking by using MSTSC shadowing",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*noconsentprompt.*\") AND process_command_line = RGX(\".*shadow\\\\:.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "766aebce-0f73-4bd4-b86f-ffd8c764dcb4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

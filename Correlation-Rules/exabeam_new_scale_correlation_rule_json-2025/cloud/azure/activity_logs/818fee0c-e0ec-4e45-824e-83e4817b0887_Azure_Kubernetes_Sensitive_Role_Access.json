@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Azure Kubernetes Sensitive Role Access",
+      "description": "Identifies when ClusterRoles/Roles are being modified or deleted. Note: Unmapped fields: operationName",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(operationName = \"MICROSOFT\\.KUBERNETES\\/CONNECTEDCLUSTERS\\/RBAC\\.AUTHORIZATION\\.K8S\\.IO\\/ROLES\\/WRITE\" OR operationName = \"MICROSOFT\\.KUBERNETES\\/CONNECTEDCLUSTERS\\/RBAC\\.AUTHORIZATION\\.K8S\\.IO\\/ROLES\\/DELETE\" OR operationName = \"MICROSOFT\\.KUBERNETES\\/CONNECTEDCLUSTERS\\/RBAC\\.AUTHORIZATION\\.K8S\\.IO\\/ROLES\\/BIND\\/ACTION\" OR operationName = \"MICROSOFT\\.KUBERNETES\\/CONNECTEDCLUSTERS\\/RBAC\\.AUTHORIZATION\\.K8S\\.IO\\/ROLES\\/ESCALATE\\/ACTION\" OR operationName = \"MICROSOFT\\.KUBERNETES\\/CONNECTEDCLUSTERS\\/RBAC\\.AUTHORIZATION\\.K8S\\.IO\\/CLUSTERROLES\\/WRITE\" OR operationName = \"MICROSOFT\\.KUBERNETES\\/CONNECTEDCLUSTERS\\/RBAC\\.AUTHORIZATION\\.K8S\\.IO\\/CLUSTERROLES\\/DELETE\" OR operationName = \"MICROSOFT\\.KUBERNETES\\/CONNECTEDCLUSTERS\\/RBAC\\.AUTHORIZATION\\.K8S\\.IO\\/CLUSTERROLES\\/BIND\\/ACTION\" OR operationName = \"MICROSOFT\\.KUBERNETES\\/CONNECTEDCLUSTERS\\/RBAC\\.AUTHORIZATION\\.K8S\\.IO\\/CLUSTERROLES\\/ESCALATE\\/ACTION\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3804d5e0-65a4-450c-9739-c64ff3ecd8f5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

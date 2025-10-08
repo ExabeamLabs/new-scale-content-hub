@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Winget Admin Settings Modification",
+      "description": "Detects changes to the AppInstaller (winget) admin settings. Such as enabling local manifest installations or disabling installer hash checks",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\winget\\\\\\.exe$\") AND registry_path = RGX(\"^\\\\\\\\REGISTRY\\\\\\\\A\\\\\\\\\") AND registry_path = RGX(\"\\\\\\\\LocalState\\\\\\\\admin\\\\_settings$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9ccf10f0-0cac-4d72-baef-056d3d00c111"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New Application in AppCompat",
+      "description": "A General detection for a new application in AppCompat. This indicates an application executing for the first time on an endpoint.",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\".*\\\\\\\\AppCompatFlags\\\\\\\\Compatibility\\\\ Assistant\\\\\\\\Store\\\\\\\\.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "be056837-4187-4019-8f8b-d08876503b84"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

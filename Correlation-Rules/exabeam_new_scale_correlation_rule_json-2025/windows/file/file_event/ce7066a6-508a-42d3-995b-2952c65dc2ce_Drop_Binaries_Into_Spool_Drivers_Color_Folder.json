@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Drop Binaries Into Spool Drivers Color Folder",
+      "description": "Detects the creation of suspcious binary files inside the \"\\windows\\system32\\spool\\drivers\\color\\\" as seen in the blog referenced below",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(file_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\spool\\\\\\\\drivers\\\\\\\\color\\\\\\\\\") AND (file_path = RGX(\"\\\\\\.dll$\") OR file_path = RGX(\"\\\\\\.exe$\") OR file_path = RGX(\"\\\\\\.sys$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "703926ea-bb92-473b-9aa5-d3ab287d94d0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

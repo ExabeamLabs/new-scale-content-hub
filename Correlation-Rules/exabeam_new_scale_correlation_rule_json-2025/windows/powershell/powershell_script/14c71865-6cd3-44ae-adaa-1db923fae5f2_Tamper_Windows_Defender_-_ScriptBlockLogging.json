@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Tamper Windows Defender - ScriptBlockLogging",
+      "description": "Detects PowerShell scripts attempting to disable scheduled scanning and other parts of Windows Defender ATP or set default actions to allow. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Set\\\\-MpPreference.*\") AND (ScriptBlockText = RGX(\".*\\\\-dbaf\\\\ \\\\$true.*\") OR ScriptBlockText = RGX(\".*\\\\-dbaf\\\\ 1.*\") OR ScriptBlockText = RGX(\".*\\\\-dbm\\\\ \\\\$true.*\") OR ScriptBlockText = RGX(\".*\\\\-dbm\\\\ 1.*\") OR ScriptBlockText = RGX(\".*\\\\-dips\\\\ \\\\$true.*\") OR ScriptBlockText = RGX(\".*\\\\-dips\\\\ 1.*\") OR ScriptBlockText = RGX(\".*\\\\-DisableArchiveScanning\\\\ \\\\$true.*\") OR ScriptBlockText = RGX(\".*\\\\-DisableArchiveScanning\\\\ 1.*\") OR ScriptBlockText = RGX(\".*\\\\-DisableBehaviorMonitoring\\\\ \\\\$true.*\") OR ScriptBlockText = RGX(\".*\\\\-DisableBehaviorMonitoring\\\\ 1.*\") OR ScriptBlockText = RGX(\".*\\\\-DisableBlockAtFirstSeen\\\\ \\\\$true.*\") OR ScriptBlockText = RGX(\".*\\\\-DisableBlockAtFirstSeen\\\\ 1.*\") OR ScriptBlockText = RGX(\".*\\\\-DisableCatchupFullScan\\\\ \\\\$true.*\") OR ScriptBlockText = RGX(\".*\\\\-DisableCatchupFullScan\\\\ 1.*\") OR ScriptBlockText = RGX(\".*\\\\-DisableCatchupQuickScan\\\\ \\\\$true.*\") OR ScriptBlockText = RGX(\".*\\\\-DisableCatchupQuickScan\\\\ 1.*\") OR ScriptBlockText = RGX(\".*\\\\-DisableIntrusionPreventionSystem\\\\ \\\\$true.*\") OR ScriptBlockText = RGX(\".*\\\\-DisableIntrusionPreventionSystem\\\\ 1.*\") OR ScriptBlockText = RGX(\".*\\\\-DisableIOAVProtection\\\\ \\\\$true.*\") OR ScriptBlockText = RGX(\".*\\\\-DisableIOAVProtection\\\\ 1.*\") OR ScriptBlockText = RGX(\".*\\\\-DisableRealtimeMonitoring\\\\ \\\\$true.*\") OR ScriptBlockText = RGX(\".*\\\\-DisableRealtimeMonitoring\\\\ 1.*\") OR ScriptBlockText = RGX(\".*\\\\-DisableRemovableDriveScanning\\\\ \\\\$true.*\") OR ScriptBlockText = RGX(\".*\\\\-DisableRemovableDriveScanning\\\\ 1.*\") OR ScriptBlockText = RGX(\".*\\\\-DisableScanningMappedNetworkDrivesForFullScan\\\\ \\\\$true.*\") OR ScriptBlockText = RGX(\".*\\\\-DisableScanningMappedNetworkDrivesForFullScan\\\\ 1.*\") OR ScriptBlockText = RGX(\".*\\\\-DisableScanningNetworkFiles\\\\ \\\\$true.*\") OR ScriptBlockText = RGX(\".*\\\\-DisableScanningNetworkFiles\\\\ 1.*\") OR ScriptBlockText = RGX(\".*\\\\-DisableScriptScanning\\\\ \\\\$true.*\") OR ScriptBlockText = RGX(\".*\\\\-DisableScriptScanning\\\\ 1.*\") OR ScriptBlockText = RGX(\".*\\\\-MAPSReporting\\\\ \\\\$false.*\") OR ScriptBlockText = RGX(\".*\\\\-MAPSReporting\\\\ 0.*\") OR ScriptBlockText = RGX(\".*\\\\-drdsc\\\\ \\\\$true.*\") OR ScriptBlockText = RGX(\".*\\\\-drdsc\\\\ 1.*\") OR ScriptBlockText = RGX(\".*\\\\-drtm\\\\ \\\\$true.*\") OR ScriptBlockText = RGX(\".*\\\\-drtm\\\\ 1.*\") OR ScriptBlockText = RGX(\".*\\\\-dscrptsc\\\\ \\\\$true.*\") OR ScriptBlockText = RGX(\".*\\\\-dscrptsc\\\\ 1.*\") OR ScriptBlockText = RGX(\".*\\\\-dsmndf\\\\ \\\\$true.*\") OR ScriptBlockText = RGX(\".*\\\\-dsmndf\\\\ 1.*\") OR ScriptBlockText = RGX(\".*\\\\-dsnf\\\\ \\\\$true.*\") OR ScriptBlockText = RGX(\".*\\\\-dsnf\\\\ 1.*\") OR ScriptBlockText = RGX(\".*\\\\-dss\\\\ \\\\$true.*\") OR ScriptBlockText = RGX(\".*\\\\-dss\\\\ 1.*\"))) OR (ScriptBlockText = RGX(\".*Set\\\\-MpPreference.*\") AND (ScriptBlockText = RGX(\".*HighThreatDefaultAction\\\\ Allow.*\") OR ScriptBlockText = RGX(\".*htdefac\\\\ Allow.*\") OR ScriptBlockText = RGX(\".*LowThreatDefaultAction\\\\ Allow.*\") OR ScriptBlockText = RGX(\".*ltdefac\\\\ Allow.*\") OR ScriptBlockText = RGX(\".*ModerateThreatDefaultAction\\\\ Allow.*\") OR ScriptBlockText = RGX(\".*mtdefac\\\\ Allow.*\") OR ScriptBlockText = RGX(\".*SevereThreatDefaultAction\\\\ Allow.*\") OR ScriptBlockText = RGX(\".*stdefac\\\\ Allow.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "39449d7d-4de5-4d39-b4e8-a9c14699dbd1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

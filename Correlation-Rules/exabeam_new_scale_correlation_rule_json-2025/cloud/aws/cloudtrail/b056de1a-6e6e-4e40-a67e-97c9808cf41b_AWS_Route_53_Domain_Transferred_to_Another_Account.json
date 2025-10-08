@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "AWS Route 53 Domain Transferred to Another Account",
+      "description": "Detects when a request has been made to transfer a Route 53 domain to another AWS account. Note: Unmapped fields: eventSource, eventName",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(eventSource = \"route53\\.amazonaws\\.com\" AND eventName = \"TransferDomainToAnotherAwsAccount\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "63a352ce-e1cf-4446-b283-7660f741be0b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

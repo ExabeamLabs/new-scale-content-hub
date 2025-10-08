@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Vivaldi_elf.DLL Sideloading",
+      "description": "Detects potential DLL sideloading of \"vivaldi_elf.dll\" Note: Unmapped fields: ImageLoaded",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ImageLoaded = RGX(\"\\\\\\\\vivaldi\\\\_elf\\\\\\.dll$\") AND  NOT ((process_path = RGX(\"\\\\\\\\Vivaldi\\\\\\\\Application\\\\\\\\vivaldi\\\\\\.exe$\") AND ImageLoaded = RGX(\".*\\\\\\\\Vivaldi\\\\\\\\Application\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c6579751-3f3f-4567-be43-573b89357198"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

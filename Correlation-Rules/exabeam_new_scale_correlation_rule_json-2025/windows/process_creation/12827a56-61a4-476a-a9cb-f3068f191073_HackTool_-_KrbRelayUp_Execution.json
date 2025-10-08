@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - KrbRelayUp Execution",
+      "description": "Detects KrbRelayUp used to perform a universal no-fix local privilege escalation in Windows domain environments where LDAP signing is not enforced",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\KrbRelayUp\\\\\\.exe$\") OR process_original_file_name = \"KrbRelayUp\\.exe\") OR (process_command_line = RGX(\".*\\\\ relay\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-Domain\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-ComputerName\\\\ .*\")) OR (process_command_line = RGX(\".*\\\\ krbscm\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-sc\\\\ .*\")) OR (process_command_line = RGX(\".*\\\\ spawn\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-d\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-cn\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-cp\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "72e99cd7-1035-4178-a439-b6b4decad8a7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "LiveKD Driver Creation",
+      "description": "Detects the creation of the LiveKD driver, which is used for live kernel debugging",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(file_path = \"C\\:\\\\Windows\\\\System32\\\\drivers\\\\LiveKdD\\.SYS\" AND (process_path = RGX(\"\\\\\\\\livekd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\livek64\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "78ddf7fc-241c-4aca-9d14-93c7ca1d6747"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "File Encoded To Base64 Via Certutil.EXE",
+      "description": "Detects the execution of certutil with the \"encode\" flag to encode a file to base64. This can be abused by threat actors and attackers for data exfiltration",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\certutil\\\\\\.exe$\") OR process_original_file_name = \"CertUtil\\.exe\") AND (process_command_line = RGX(\".*\\\\-encode.*\") OR process_command_line = RGX(\".*\\\\/encode.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1ad7e88b-8570-4948-9662-22bdfb68255d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

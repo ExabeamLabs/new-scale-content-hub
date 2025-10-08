@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious GetTypeFromCLSID ShellExecute",
+      "description": "Detects suspicious Powershell code that execute COM Objects Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*\\\\:\\\\:GetTypeFromCLSID\\\\(.*\") AND ScriptBlockText = RGX(\".*\\\\\\.ShellExecute\\\\(.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c7255dea-e149-4d03-af54-7917cb43059f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

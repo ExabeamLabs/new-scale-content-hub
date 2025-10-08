@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New BgInfo.EXE Custom WMI Query Registry Configuration",
+      "description": "Detects setting of a new registry value related to BgInfo configuration, which can be abused to execute custom WMI query via \"BgInfo.exe\" Note: Unmapped fields: Details",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\Software\\\\\\\\Winternals\\\\\\\\BGInfo\\\\\\\\UserFields\\\\\\\\.*\") AND Details = RGX(\"^6\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "96e632da-e08c-4d63-a803-f23111040acf"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

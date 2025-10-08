@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Impacket PsExec Execution",
+      "description": "Detects execution of Impacket's psexec.py. Note: Unmapped fields: ShareName, RelativeTargetName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 5145 AND ShareName = \"\\\\\\\\\\*\\\\IPC\\$\" AND (RelativeTargetName = RGX(\".*RemCom\\\\_stdin.*\") OR RelativeTargetName = RGX(\".*RemCom\\\\_stdout.*\") OR RelativeTargetName = RGX(\".*RemCom\\\\_stderr.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "656ebaa9-c992-42a4-b226-09a9d284d145"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

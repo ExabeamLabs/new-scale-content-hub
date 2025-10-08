@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Vim GTFOBin Abuse - Linux",
+      "description": "Detects the use of \"vim\" and it's siblings commands to execute a shell or proxy commands.\nSuch behavior may be associated with privilege escalation, unauthorized command execution, or to break out from restricted environments.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\/rvim$\") OR process_path = RGX(\"\\\\/vim$\") OR process_path = RGX(\"\\\\/vimdiff$\")) AND (process_command_line = RGX(\".*\\\\ \\\\-\\\\-cmd.*\") OR process_command_line = RGX(\".*\\\\ \\\\-c\\\\ .*\"))) AND (process_command_line = RGX(\".*\\\\:\\\\!\\\\/.*\") OR process_command_line = RGX(\".*\\\\:lua\\\\ .*\") OR process_command_line = RGX(\".*\\\\:py\\\\ .*\") OR process_command_line = RGX(\".*\\\\/bin\\\\/bash.*\") OR process_command_line = RGX(\".*\\\\/bin\\\\/dash.*\") OR process_command_line = RGX(\".*\\\\/bin\\\\/fish.*\") OR process_command_line = RGX(\".*\\\\/bin\\\\/sh.*\") OR process_command_line = RGX(\".*\\\\/bin\\\\/zsh.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9d30e390-b759-40ea-b752-dbdce80bf6af"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

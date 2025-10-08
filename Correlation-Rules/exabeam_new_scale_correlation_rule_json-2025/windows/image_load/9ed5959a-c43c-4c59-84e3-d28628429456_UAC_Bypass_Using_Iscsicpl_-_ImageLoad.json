@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "UAC Bypass Using Iscsicpl - ImageLoad",
+      "description": "Detects the \"iscsicpl.exe\" UAC bypass technique that leverages a DLL Search Order hijacking technique to load a custom DLL's from temp or a any user controlled location in the users %PATH% Note: Unmapped fields: ImageLoaded",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = \"C\\:\\\\Windows\\\\SysWOW64\\\\iscsicpl\\.exe\" AND ImageLoaded = RGX(\"\\\\\\\\iscsiexe\\\\\\.dll$\")) AND  NOT ((ImageLoaded = RGX(\".*C\\\\:\\\\\\\\Windows\\\\\\\\.*\") AND ImageLoaded = RGX(\".*iscsiexe\\\\\\.dll.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "fe979bc9-701a-4f31-acd5-cd2f38620512"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Bypass UAC via WSReset.exe",
+      "description": "Detects use of WSReset.exe to bypass User Account Control (UAC). Adversaries use this technique to execute privileged processes.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "parent_process_path = RGX(\"\\\\\\\\wsreset\\\\\\.exe$\") AND  NOT ((process_path = RGX(\"\\\\\\\\conhost\\\\\\.exe$\") OR process_original_file_name = \"CONHOST\\.EXE\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f43b204a-b6bd-4add-babe-b5999e804695"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

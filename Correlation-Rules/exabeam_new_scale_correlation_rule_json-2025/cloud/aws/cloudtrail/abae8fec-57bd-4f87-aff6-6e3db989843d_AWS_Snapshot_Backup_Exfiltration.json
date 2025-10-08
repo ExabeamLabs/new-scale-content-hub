@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "AWS Snapshot Backup Exfiltration",
+      "description": "Detects the modification of an EC2 snapshot's permissions to enable access from another account Note: Unmapped fields: eventSource, eventName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(eventSource = \"ec2\\.amazonaws\\.com\" AND eventName = \"ModifySnapshotAttribute\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "63351007-4213-4091-a1bd-49420757526b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

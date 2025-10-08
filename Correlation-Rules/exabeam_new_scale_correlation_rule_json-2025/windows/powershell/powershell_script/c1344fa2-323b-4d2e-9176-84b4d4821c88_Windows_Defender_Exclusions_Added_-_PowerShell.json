@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows Defender Exclusions Added - PowerShell",
+      "description": "Detects modifications to the Windows Defender configuration settings using PowerShell to add exclusions Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ScriptBlockText = RGX(\".*\\\\ \\\\-ExclusionPath\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\ \\\\-ExclusionExtension\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\ \\\\-ExclusionProcess\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\ \\\\-ExclusionIpAddress\\\\ .*\")) AND (ScriptBlockText = RGX(\".*Add\\\\-MpPreference\\\\ .*\") OR ScriptBlockText = RGX(\".*Set\\\\-MpPreference\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f1ee7f6e-54d3-402b-b947-58eae8d4b4d8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation Via Use Rundll32 - PowerShell Module",
+      "description": "Detects Obfuscated Powershell via use Rundll32 in Scripts Note: Unmapped fields: Payload",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((Payload = RGX(\".*\\\\&\\\\&.*\") AND Payload = RGX(\".*rundll32.*\") AND Payload = RGX(\".*shell32\\\\\\.dll.*\") AND Payload = RGX(\".*shellexec\\\\_rundll.*\")) AND (Payload = RGX(\".*value.*\") OR Payload = RGX(\".*invoke.*\") OR Payload = RGX(\".*comspec.*\") OR Payload = RGX(\".*iex.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "83237049-9209-4ea0-92bf-81baf7596aff"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

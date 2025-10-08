@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Disable Microsoft Defender Firewall via Registry",
+      "description": "Adversaries may disable or modify system firewalls in order to bypass controls limiting network usage Note: Unmapped fields: Details",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\Services\\\\\\\\SharedAccess\\\\\\\\Parameters\\\\\\\\FirewallPolicy\\\\\\\\.*\") AND registry_path = RGX(\"\\\\\\\\EnableFirewall$\") AND Details = \"DWORD\\ \\(0x00000000\\)\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7cf9baac-4c47-41ff-a1a1-3fa88d981019"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

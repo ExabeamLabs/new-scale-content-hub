@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Powershell Token Obfuscation - Process Creation",
+      "description": "Detects TOKEN OBFUSCATION technique from Invoke-Obfuscation",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\"\\w+`(\\w+|-|.)`[\\w+|\\s]\") OR process_command_line = RGX(\"({\\d})+\"\\s*-f\") OR process_command_line = RGX(\"(?i)${`?e`?n`?v`?:`?p`?a`?t`?h`?}\")) AND  NOT (process_command_line = RGX(\".*\\\\$\\\\{env\\\\:path\\\\}.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c612653b-5f10-4a82-a22b-ed9a558731df"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

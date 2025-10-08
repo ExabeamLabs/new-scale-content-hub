@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "DNS Query Request By QuickAssist.EXE",
+      "description": "Detects DNS queries initiated by \"QuickAssist.exe\" to Microsoft Quick Assist primary endpoint that is used to establish a session.\n Note: Unmapped fields: QueryName",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\QuickAssist\\\\\\.exe$\") AND QueryName = RGX(\"remoteassistance\\\\\\.support\\\\\\.services\\\\\\.microsoft\\\\\\.com$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6f45a52e-cb6f-4801-86c4-490d68201374"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

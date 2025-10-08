@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Persistence Via Shim Database In Uncommon Location",
+      "description": "Detects the installation of a new shim database where the file is located in a non-default location Note: Unmapped fields: Details",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\AppCompatFlags\\\\\\\\InstalledSDB\\\\\\\\.*\") AND registry_path = RGX(\".*\\\\\\\\DatabasePath.*\")) AND  NOT (Details = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\AppPatch\\\\\\\\Custom.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5deb41f1-efa1-4ab2-99c0-b5c80bb35087"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Unsigned DLL Loaded by Windows Utility",
+      "description": "Detects windows utilities loading an unsigned or untrusted DLL.\nAdversaries often abuse those programs to proxy execution of malicious code.\n Note: Unmapped fields: Signed, SignatureStatus",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\InstallUtil\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\RegAsm\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\RegSvcs\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\")) AND  NOT (Signed = \"true\" OR (SignatureStatus = \"errorChaining\" OR SignatureStatus = \"errorCode\\_endpoint\" OR SignatureStatus = \"errorExpired\" OR SignatureStatus = \"trusted\" OR SignatureStatus = \"Valid\") OR Signed = \"None\" OR (Signed = \"\" OR Signed = \"\\-\") OR SignatureStatus = \"None\" OR (SignatureStatus = \"\" OR SignatureStatus = \"\\-\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9731e1e3-ba67-491f-b6bd-7626ce6f6d39"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

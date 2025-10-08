@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Win Defender Restored Quarantine File",
+      "description": "Detects the restoration of files from the defender quarantine",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "event_id = 1009",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "054ca7cd-aceb-4e6e-ae03-37a0b2662a38"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

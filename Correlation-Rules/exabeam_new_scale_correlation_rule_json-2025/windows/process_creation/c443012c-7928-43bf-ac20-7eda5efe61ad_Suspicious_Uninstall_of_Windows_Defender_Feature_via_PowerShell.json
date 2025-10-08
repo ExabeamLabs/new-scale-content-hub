@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Uninstall of Windows Defender Feature via PowerShell",
+      "description": "Detects the use of PowerShell with Uninstall-WindowsFeature or Remove-WindowsFeature cmdlets to disable or remove the Windows Defender GUI feature, a common technique used by adversaries to evade defenses.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\powershell\\\\_ise\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\")) OR (process_original_file_name = \"PowerShell\\_ISE\\.EXE\" OR process_original_file_name = \"PowerShell\\.EXE\" OR process_original_file_name = \"pwsh\\.dll\")) AND (process_command_line = RGX(\".*Uninstall\\\\-WindowsFeature.*\") OR process_command_line = RGX(\".*Remove\\\\-WindowsFeature.*\")) AND process_command_line = RGX(\".*Windows\\\\-Defender.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e1ee964e-8e41-4a26-8f38-fae84db082af"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

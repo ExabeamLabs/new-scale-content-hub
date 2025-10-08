@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Sysmon Configuration Update",
+      "description": "Detects updates to Sysmon's configuration. Attackers might update or replace the Sysmon configuration with a bare bone one to avoid monitoring without shutting down the service completely",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\Sysmon64\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\Sysmon\\\\\\.exe$\")) OR process_description = \"System\\ activity\\ monitor\") AND (process_command_line = RGX(\".*\\\\-c.*\") OR process_command_line = RGX(\".*\\\\/c.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f1bfd640-5520-4b95-a73d-357a4f723783"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

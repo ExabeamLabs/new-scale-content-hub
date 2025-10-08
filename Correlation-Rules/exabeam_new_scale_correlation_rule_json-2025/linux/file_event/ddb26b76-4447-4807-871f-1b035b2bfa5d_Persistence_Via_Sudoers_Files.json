@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Persistence Via Sudoers Files",
+      "description": "Detects creation of sudoers file or files in \"sudoers.d\" directory which can be used a potential method to persiste privileges for a specific user.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "file_path = RGX(\"^\\\\/etc\\\\/sudoers\\\\\\.d\\\\/\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d75c7cc2-9dd2-4123-81d6-68c6582d0a81"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

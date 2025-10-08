@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Scheduled Task Name As GUID",
+      "description": "Detects creation of a scheduled task with a GUID like name",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") AND process_command_line = RGX(\".*\\\\/Create\\\\ .*\")) AND (process_command_line = RGX(\".*\\\\/TN\\\\ \\\\\"\\\\{.*\") OR process_command_line = RGX(\".*\\\\/TN\\\\ \\\\'\\\\{.*\") OR process_command_line = RGX(\".*\\\\/TN\\\\ \\\\{.*\")) AND (process_command_line = RGX(\".*\\\\}\\\\.*\") OR process_command_line = RGX(\".*\\\\}\\\\.*\") OR process_command_line = RGX(\".*\\\\}\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8ac5ed9e-666b-4747-8610-c0ed20818d4b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

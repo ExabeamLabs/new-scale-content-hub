@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Hack Tool User Agent",
+      "description": "Detects suspicious user agent strings user by hack tools in proxy logs Note: Unmapped fields: c-useragent",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(c-useragent = RGX(\".*\\\\(hydra\\\\).*\") OR c-useragent = RGX(\".*\\\\ arachni\\\\/.*\") OR c-useragent = RGX(\".*\\\\ BFAC\\\\ .*\") OR c-useragent = RGX(\".*\\\\ brutus\\\\ .*\") OR c-useragent = RGX(\".*\\\\ cgichk\\\\ .*\") OR c-useragent = RGX(\".*core\\\\-project\\\\/1\\\\\\.0.*\") OR c-useragent = RGX(\".*\\\\ crimscanner\\\\/.*\") OR c-useragent = RGX(\".*datacha0s.*\") OR c-useragent = RGX(\".*dirbuster.*\") OR c-useragent = RGX(\".*domino\\\\ hunter.*\") OR c-useragent = RGX(\".*dotdotpwn.*\") OR c-useragent = RGX(\".*FHScan\\\\ Core.*\") OR c-useragent = RGX(\".*floodgate.*\") OR c-useragent = RGX(\".*get\\\\-minimal.*\") OR c-useragent = RGX(\".*gootkit\\\\ auto\\\\-rooter\\\\ scanner.*\") OR c-useragent = RGX(\".*grendel\\\\-scan.*\") OR c-useragent = RGX(\".*\\\\ inspath\\\\ .*\") OR c-useragent = RGX(\".*internet\\\\ ninja.*\") OR c-useragent = RGX(\".*jaascois.*\") OR c-useragent = RGX(\".*\\\\ zmeu\\\\ .*\") OR c-useragent = RGX(\".*masscan.*\") OR c-useragent = RGX(\".*\\\\ metis\\\\ .*\") OR c-useragent = RGX(\".*morfeus\\\\ fucking\\\\ scanner.*\") OR c-useragent = RGX(\".*n\\\\-stealth.*\") OR c-useragent = RGX(\".*nsauditor.*\") OR c-useragent = RGX(\".*pmafind.*\") OR c-useragent = RGX(\".*security\\\\ scan.*\") OR c-useragent = RGX(\".*springenwerk.*\") OR c-useragent = RGX(\".*teh\\\\ forest\\\\ lobster.*\") OR c-useragent = RGX(\".*toata\\\\ dragostea.*\") OR c-useragent = RGX(\".*\\\\ vega\\\\/.*\") OR c-useragent = RGX(\".*voideye.*\") OR c-useragent = RGX(\".*webshag.*\") OR c-useragent = RGX(\".*webvulnscan.*\") OR c-useragent = RGX(\".*\\\\ whcc\\\\/.*\") OR c-useragent = RGX(\".*\\\\ Havij.*\") OR c-useragent = RGX(\".*absinthe.*\") OR c-useragent = RGX(\".*bsqlbf.*\") OR c-useragent = RGX(\".*mysqloit.*\") OR c-useragent = RGX(\".*pangolin.*\") OR c-useragent = RGX(\".*sql\\\\ power\\\\ injector.*\") OR c-useragent = RGX(\".*sqlmap.*\") OR c-useragent = RGX(\".*sqlninja.*\") OR c-useragent = RGX(\".*uil2pn.*\") OR c-useragent = RGX(\".*ruler.*\") OR c-useragent = RGX(\".*Mozilla\\\\/5\\\\\\.0\\\\ \\\\(Windows\\\\;\\\\ U\\\\;\\\\ Windows\\\\ NT\\\\ 5\\\\\\.1\\\\;\\\\ pt\\\\-PT\\\\;\\\\ rv\\\\:1\\\\\\.9\\\\\\.1\\\\\\.2\\\\)\\\\ Gecko\\\\/20090729\\\\ Firefox\\\\/3\\\\\\.5\\\\\\.2\\\\ \\\\(\\\\\\.NET\\\\ CLR\\\\ 3\\\\\\.5\\\\\\.30729\\\\).*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e80ac6f9-ba19-4419-942c-ca12ce15d9e0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

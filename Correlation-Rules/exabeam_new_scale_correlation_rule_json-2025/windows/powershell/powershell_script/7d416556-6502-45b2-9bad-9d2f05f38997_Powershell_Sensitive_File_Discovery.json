@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Powershell Sensitive File Discovery",
+      "description": "Detect adversaries enumerate sensitive files Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ScriptBlockText = RGX(\".*ls.*\") OR ScriptBlockText = RGX(\".*get\\\\-childitem.*\") OR ScriptBlockText = RGX(\".*gci.*\")) AND ScriptBlockText = RGX(\".*\\\\-recurse.*\") AND (ScriptBlockText = RGX(\".*\\\\\\.pass.*\") OR ScriptBlockText = RGX(\".*\\\\\\.kdbx.*\") OR ScriptBlockText = RGX(\".*\\\\\\.kdb.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "de5fa4e5-88f5-4ac5-bdb4-8855eb7ddb5b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

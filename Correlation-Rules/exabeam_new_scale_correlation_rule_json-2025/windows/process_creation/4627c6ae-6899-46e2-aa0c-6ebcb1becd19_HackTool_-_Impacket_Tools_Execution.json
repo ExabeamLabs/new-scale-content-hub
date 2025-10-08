@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - Impacket Tools Execution",
+      "description": "Detects the execution of different compiled Windows binaries of the impacket toolset (based on names or part of their names - could lead to false positives)",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\".*\\\\\\\\goldenPac.*\") OR process_path = RGX(\".*\\\\\\\\karmaSMB.*\") OR process_path = RGX(\".*\\\\\\\\kintercept.*\") OR process_path = RGX(\".*\\\\\\\\ntlmrelayx.*\") OR process_path = RGX(\".*\\\\\\\\rpcdump.*\") OR process_path = RGX(\".*\\\\\\\\samrdump.*\") OR process_path = RGX(\".*\\\\\\\\secretsdump.*\") OR process_path = RGX(\".*\\\\\\\\smbexec.*\") OR process_path = RGX(\".*\\\\\\\\smbrelayx.*\") OR process_path = RGX(\".*\\\\\\\\wmiexec.*\") OR process_path = RGX(\".*\\\\\\\\wmipersist.*\")) OR (process_path = RGX(\"\\\\\\\\atexec\\\\_windows\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\dcomexec\\\\_windows\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\dpapi\\\\_windows\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\findDelegation\\\\_windows\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\GetADUsers\\\\_windows\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\GetNPUsers\\\\_windows\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\getPac\\\\_windows\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\getST\\\\_windows\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\getTGT\\\\_windows\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\GetUserSPNs\\\\_windows\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\ifmap\\\\_windows\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mimikatz\\\\_windows\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\netview\\\\_windows\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\nmapAnswerMachine\\\\_windows\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\opdump\\\\_windows\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\psexec\\\\_windows\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\rdp\\\\_check\\\\_windows\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\sambaPipe\\\\_windows\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\smbclient\\\\_windows\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\smbserver\\\\_windows\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\sniff\\\\_windows\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\sniffer\\\\_windows\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\split\\\\_windows\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\ticketer\\\\_windows\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "89c53cb4-d615-4e2a-87c8-d1383815fc27"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "SyncAppvPublishingServer Execute Arbitrary PowerShell Code",
+      "description": "Executes arbitrary PowerShell code using SyncAppvPublishingServer.exe.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\SyncAppvPublishingServer\\\\\\.exe$\") OR process_original_file_name = \"syncappvpublishingserver\\.exe\") AND process_command_line = RGX(\".*\\\\\"n\\\\;\\\\ .*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c55c8da4-49df-4a35-af38-6262fb23a65c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

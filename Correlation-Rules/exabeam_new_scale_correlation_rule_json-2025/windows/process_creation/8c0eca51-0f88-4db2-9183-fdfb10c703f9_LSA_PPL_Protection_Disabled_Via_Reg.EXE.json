@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "LSA PPL Protection Disabled Via Reg.EXE",
+      "description": "Detects the usage of the \"reg.exe\" utility to disable PPL protection on the LSA process",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\reg\\\\\\.exe$\") OR process_original_file_name = \"reg\\.exe\") AND (process_command_line = RGX(\".*SYSTEM\\\\\\\\CurrentControlSet\\\\\\\\Control\\\\\\\\Lsa.*\") AND (process_command_line = RGX(\".*\\\\ add\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\/d\\\\ 0.*\") AND process_command_line = RGX(\".*\\\\ \\\\/v\\\\ RunAsPPL\\\\ .*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "dc7aad96-cf70-46c6-8f5f-b3b5da448ed5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Session Manager Autorun Keys Modification",
+      "description": "Detects modification of autostart extensibility point (ASEP) in registry. Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\".*\\\\\\\\System\\\\\\\\CurrentControlSet\\\\\\\\Control\\\\\\\\Session\\\\ Manager.*\") AND (registry_path = RGX(\".*\\\\\\\\SetupExecute.*\") OR registry_path = RGX(\".*\\\\\\\\S0InitialCommand.*\") OR registry_path = RGX(\".*\\\\\\\\KnownDlls.*\") OR registry_path = RGX(\".*\\\\\\\\Execute.*\") OR registry_path = RGX(\".*\\\\\\\\BootExecute.*\") OR registry_path = RGX(\".*\\\\\\\\AppCertDlls.*\")) AND  NOT (Details = \"\\(Empty\\)\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5165b9e8-032d-4d41-889e-f28ea2db90d3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

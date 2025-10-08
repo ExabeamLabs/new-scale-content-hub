@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Sysmon Configuration Change",
+      "description": "Detects a Sysmon configuration change, which could be the result of a legitimate reconfiguration or someone trying manipulate the configuration",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "event_id = 16",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "231c7f69-d6b6-44d0-b2b8-bd2a0ed6c29e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

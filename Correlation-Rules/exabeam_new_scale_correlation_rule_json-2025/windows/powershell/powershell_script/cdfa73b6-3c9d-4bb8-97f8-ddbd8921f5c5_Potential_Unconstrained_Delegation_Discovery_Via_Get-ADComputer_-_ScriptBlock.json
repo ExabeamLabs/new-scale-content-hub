@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Unconstrained Delegation Discovery Via Get-ADComputer - ScriptBlock",
+      "description": "Detects the use of the \"Get-ADComputer\" cmdlet in order to identify systems which are configured for unconstrained delegation. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*\\\\-Properties*TrustedForDelegation.*\") OR ScriptBlockText = RGX(\".*\\\\-Properties*TrustedToAuthForDelegation.*\") OR ScriptBlockText = RGX(\".*\\\\-Properties*msDS\\\\-AllowedToDelegateTo.*\") OR ScriptBlockText = RGX(\".*\\\\-Properties*PrincipalsAllowedToDelegateToAccount.*\") OR ScriptBlockText = RGX(\".*\\\\-LDAPFilter*\\\\(userAccountControl\\\\:1\\\\\\.2\\\\\\.840\\\\\\.113556\\\\\\.1\\\\\\.4\\\\\\.803\\\\:\\\\=524288\\\\).*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "23511e24-d95a-4b29-912b-07261e71db3b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

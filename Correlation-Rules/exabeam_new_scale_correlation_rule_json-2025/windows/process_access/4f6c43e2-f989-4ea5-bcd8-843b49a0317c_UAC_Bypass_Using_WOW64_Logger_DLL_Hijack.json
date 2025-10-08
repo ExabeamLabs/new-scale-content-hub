@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "UAC Bypass Using WOW64 Logger DLL Hijack",
+      "description": "Detects the pattern of UAC Bypass using a WoW64 logger DLL hijack (UACMe 30) Note: Unmapped fields: SourceImage, GrantedAccess, CallTrace",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(SourceImage = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\.*\") AND GrantedAccess = \"0x1fffff\" AND CallTrace = RGX(\"^UNKNOWN\\\\(0000000000000000\\\\)\\\\|UNKNOWN\\\\(0000000000000000\\\\)\\\\|\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c73f9aa6-dfe3-4202-87de-3db45f13eff2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

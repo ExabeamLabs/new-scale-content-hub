@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious IO.FileStream",
+      "description": "Open a handle on the drive volume via the \\\\.\\ DOS device path specifier and perform direct access read of the first few bytes of the volume. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*New\\\\-Object.*\") AND ScriptBlockText = RGX(\".*IO\\\\\\.FileStream.*\") AND ScriptBlockText = RGX(\".*\\\\\\\\\\\\\\\\\\\\\\.\\\\\\\\.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d3f0db67-94a2-49d8-8ca8-e57f9f8cd875"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

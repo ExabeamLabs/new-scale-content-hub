@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential AutoLogger Sessions Tampering",
+      "description": "Detects tampering with autologger trace sessions which is a technique used by attackers to disable logging Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\System\\\\\\\\CurrentControlSet\\\\\\\\Control\\\\\\\\WMI\\\\\\\\Autologger\\\\\\\\.*\") AND ((registry_path = RGX(\".*\\\\\\\\EventLog\\\\-.*\") OR registry_path = RGX(\".*\\\\\\\\Defender.*\")) AND (registry_path = RGX(\"\\\\\\\\Enable$\") OR registry_path = RGX(\"\\\\\\\\Start$\")) AND Details = \"DWORD\\ \\(0x00000000\\)\")) AND  NOT (process_path = \"C\\:\\\\Windows\\\\system32\\\\wevtutil\\.exe\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ef45d229-3b46-4043-876b-69a2b9f2af88"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

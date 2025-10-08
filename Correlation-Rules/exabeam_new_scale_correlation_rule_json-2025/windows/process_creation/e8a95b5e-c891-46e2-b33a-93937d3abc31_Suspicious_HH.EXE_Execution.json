@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious HH.EXE Execution",
+      "description": "Detects a suspicious execution of a Microsoft HTML Help (HH.exe)",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_original_file_name = \"HH\\.exe\" OR process_path = RGX(\"\\\\\\\\hh\\\\\\.exe$\")) AND (process_command_line = RGX(\".*\\\\\\.application.*\") OR process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Content\\\\\\.Outlook\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Downloads\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3a13244e-1d9c-4f0e-848c-f859021796e1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "7Zip Compressing Dump Files",
+      "description": "Detects execution of 7z in order to compress a file with a \".dmp\"/\".dump\" extension, which could be a step in a process of dump file exfiltration.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_description = RGX(\".*7\\\\-Zip.*\") OR (process_path = RGX(\"\\\\\\\\7z\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\7zr\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\7za\\\\\\.exe$\")) OR (process_original_file_name = \"7z\\.exe\" OR process_original_file_name = \"7za\\.exe\")) AND (process_command_line = RGX(\".*\\\\\\.dmp.*\") OR process_command_line = RGX(\".*\\\\\\.dump.*\") OR process_command_line = RGX(\".*\\\\\\.hdmp.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9645d2f1-fe8e-4eb6-8a54-a92c7957d2a4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

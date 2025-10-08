@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Suspicious Rundll32 Activity",
+      "description": "Detects suspicious execution of rundll32, with specific calls to some DLLs with known LOLBIN functionalities",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*javascript\\\\:.*\") AND process_command_line = RGX(\".*\\\\\\.RegisterXLL.*\")) OR (process_command_line = RGX(\".*url\\\\\\.dll.*\") AND process_command_line = RGX(\".*OpenURL.*\")) OR (process_command_line = RGX(\".*url\\\\\\.dll.*\") AND process_command_line = RGX(\".*OpenURLA.*\")) OR (process_command_line = RGX(\".*url\\\\\\.dll.*\") AND process_command_line = RGX(\".*FileProtocolHandler.*\")) OR (process_command_line = RGX(\".*zipfldr\\\\\\.dll.*\") AND process_command_line = RGX(\".*RouteTheCall.*\")) OR (process_command_line = RGX(\".*shell32\\\\\\.dll.*\") AND process_command_line = RGX(\".*Control\\\\_RunDLL.*\")) OR (process_command_line = RGX(\".*shell32\\\\\\.dll.*\") AND process_command_line = RGX(\".*ShellExec\\\\_RunDLL.*\")) OR (process_command_line = RGX(\".*mshtml\\\\\\.dll.*\") AND process_command_line = RGX(\".*PrintHTML.*\")) OR (process_command_line = RGX(\".*advpack\\\\\\.dll.*\") AND process_command_line = RGX(\".*LaunchINFSection.*\")) OR (process_command_line = RGX(\".*advpack\\\\\\.dll.*\") AND process_command_line = RGX(\".*RegisterOCX.*\")) OR (process_command_line = RGX(\".*ieadvpack\\\\\\.dll.*\") AND process_command_line = RGX(\".*LaunchINFSection.*\")) OR (process_command_line = RGX(\".*ieadvpack\\\\\\.dll.*\") AND process_command_line = RGX(\".*RegisterOCX.*\")) OR (process_command_line = RGX(\".*ieframe\\\\\\.dll.*\") AND process_command_line = RGX(\".*OpenURL.*\")) OR (process_command_line = RGX(\".*shdocvw\\\\\\.dll.*\") AND process_command_line = RGX(\".*OpenURL.*\")) OR (process_command_line = RGX(\".*syssetup\\\\\\.dll.*\") AND process_command_line = RGX(\".*SetupInfObjectInstallAction.*\")) OR (process_command_line = RGX(\".*setupapi\\\\\\.dll.*\") AND process_command_line = RGX(\".*InstallHinfSection.*\")) OR (process_command_line = RGX(\".*pcwutl\\\\\\.dll.*\") AND process_command_line = RGX(\".*LaunchApplication.*\")) OR (process_command_line = RGX(\".*dfshim\\\\\\.dll.*\") AND process_command_line = RGX(\".*ShOpenVerbApplication.*\")) OR (process_command_line = RGX(\".*dfshim\\\\\\.dll.*\") AND process_command_line = RGX(\".*ShOpenVerbShortcut.*\")) OR (process_command_line = RGX(\".*scrobj\\\\\\.dll.*\") AND process_command_line = RGX(\".*GenerateTypeLib.*\") AND process_command_line = RGX(\".*http.*\")) OR (process_command_line = RGX(\".*shimgvw\\\\\\.dll.*\") AND process_command_line = RGX(\".*ImageView\\\\_Fullscreen.*\") AND process_command_line = RGX(\".*http.*\")) OR (process_command_line = RGX(\".*comsvcs\\\\\\.dll.*\") AND process_command_line = RGX(\".*MiniDump.*\"))) AND  NOT (process_command_line = RGX(\".*shell32\\\\\\.dll\\\\,Control\\\\_RunDLL\\\\ desk\\\\\\.cpl\\\\,screensaver\\\\,\\\\@screensaver.*\") OR (parent_process_path = \"C\\:\\\\Windows\\\\System32\\\\control\\.exe\" AND parent_process_command_line = RGX(\".*\\\\\\.cpl.*\") AND (process_command_line = RGX(\".*Shell32\\\\\\.dll.*\") AND process_command_line = RGX(\".*Control\\\\_RunDLL.*\") AND process_command_line = RGX(\".*\\\\\\.cpl.*\"))) OR (parent_process_path = \"C\\:\\\\Windows\\\\System32\\\\control\\.exe\" AND process_command_line = RGX(\"^\\\\\"C\\\\:\\\\\\\\Windows\\\\\\\\system32\\\\\\\\rundll32\\\\\\.exe\\\\\"\\\\ Shell32\\\\\\.dll\\\\,Control\\\\_RunDLL\\\\ \\\\\"C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\\") AND process_command_line = RGX(\"\\\\\\.cpl\\\\\"\\\\,$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8f081acd-e800-4bc8-8a4c-8a6044ff26fc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

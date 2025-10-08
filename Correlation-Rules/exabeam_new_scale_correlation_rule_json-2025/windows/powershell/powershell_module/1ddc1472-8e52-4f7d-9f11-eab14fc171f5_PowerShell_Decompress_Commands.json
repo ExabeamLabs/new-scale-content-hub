@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PowerShell Decompress Commands",
+      "description": "A General detection for specific decompress commands in PowerShell logs. This could be an adversary decompressing files. Note: Unmapped fields: Payload",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "Payload = RGX(\".*Expand\\\\-Archive.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a9ab9754-ce58-4f4d-92ad-e1cd9d02b7cd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

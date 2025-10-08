@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PIM Approvals And Deny Elevation",
+      "description": "Detects when a PIM elevation is approved or denied. Outside of normal operations should be investigated. Note: Unmapped fields: properties.message",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "properties.message = \"Request\\ Approved\\/Denied\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a141e92c-a6f6-4a5e-baf8-7095d282cf18"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

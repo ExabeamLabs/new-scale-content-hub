@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "MacOS Emond Launch Daemon",
+      "description": "Detects additions to the Emond Launch Daemon that adversaries may use to gain persistence and elevate privileges.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((file_path = RGX(\".*\\\\/etc\\\\/emond\\\\\\.d\\\\/rules\\\\/.*\") AND file_path = RGX(\"\\\\\\.plist$\")) OR file_path = RGX(\".*\\\\/private\\\\/var\\\\/db\\\\/emondClients\\\\/.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9ff1871b-ef21-4801-853d-f56ba3bf25f9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

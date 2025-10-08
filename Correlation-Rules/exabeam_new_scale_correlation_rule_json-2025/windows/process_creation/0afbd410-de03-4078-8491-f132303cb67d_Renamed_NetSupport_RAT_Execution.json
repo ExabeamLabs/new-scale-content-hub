@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Renamed NetSupport RAT Execution",
+      "description": "Detects the execution of a renamed \"client32.exe\" (NetSupport RAT) via Imphash, Product and OriginalFileName strings",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_product = RGX(\".*NetSupport\\\\ Remote\\\\ Control.*\") OR process_original_file_name = RGX(\".*client32\\\\\\.exe.*\") OR process_hash = RGX(\".*IMPHASH\\\\=A9D50692E95B79723F3E76FCF70D023E.*\")) AND  NOT (process_path = RGX(\"\\\\\\\\client32\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f65a85b2-3310-4893-aec8-cc0119e56268"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

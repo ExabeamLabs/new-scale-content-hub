@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Cloudflared Tunnel Connections Cleanup",
+      "description": "Detects execution of the \"cloudflared\" tool with the tunnel \"cleanup\" flag in order to cleanup tunnel connections.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*\\\\ tunnel\\\\ .*\") AND process_command_line = RGX(\".*cleanup\\\\ .*\")) AND (process_command_line = RGX(\".*\\\\-config\\\\ .*\") OR process_command_line = RGX(\".*\\\\-connector\\\\-id\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "00e36239-2d26-4ac7-be85-5803d8f5f13e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

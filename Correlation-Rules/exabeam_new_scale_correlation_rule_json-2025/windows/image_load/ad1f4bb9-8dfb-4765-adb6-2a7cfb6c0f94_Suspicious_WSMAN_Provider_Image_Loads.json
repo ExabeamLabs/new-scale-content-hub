@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious WSMAN Provider Image Loads",
+      "description": "Detects signs of potential use of the WSMAN provider from uncommon processes locally and remote execution. Note: Unmapped fields: ImageLoaded",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((ImageLoaded = RGX(\"\\\\\\\\WsmSvc\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\WsmAuto\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\Microsoft\\\\\\.WSMan\\\\\\.Management\\\\\\.ni\\\\\\.dll$\")) OR (process_original_file_name = \"WsmSvc\\.dll\" OR process_original_file_name = \"WSMANAUTOMATION\\.DLL\" OR process_original_file_name = \"Microsoft\\.WSMan\\.Management\\.dll\")) OR (process_path = RGX(\"\\\\\\\\svchost\\\\\\.exe$\") AND process_original_file_name = \"WsmWmiPl\\.dll\")) AND  NOT ((process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\sdiagnhost\\\\\\.exe$\") OR process_path = RGX(\"C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\services\\\\\\.exe$\")) OR (process_command_line = RGX(\".*svchost\\\\\\.exe\\\\ \\\\-k\\\\ netsvcs\\\\ \\\\-p\\\\ \\\\-s\\\\ BITS.*\") OR process_command_line = RGX(\".*svchost\\\\\\.exe\\\\ \\\\-k\\\\ GraphicsPerfSvcGroup\\\\ \\\\-s\\\\ GraphicsPerfSvc.*\") OR process_command_line = RGX(\".*svchost\\\\\\.exe\\\\ \\\\-k\\\\ NetworkService\\\\ \\\\-p\\\\ \\\\-s\\\\ Wecsvc.*\") OR process_command_line = RGX(\".*svchost\\\\\\.exe\\\\ \\\\-k\\\\ netsvcs.*\")) OR ((process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\Microsoft\\\\\\.NET\\\\\\\\Framework64\\\\\\\\v\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\Microsoft\\\\\\.NET\\\\\\\\Framework\\\\\\\\v\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\Microsoft\\\\\\.NET\\\\\\\\FrameworkArm\\\\\\\\v\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\Microsoft\\\\\\.NET\\\\\\\\FrameworkArm64\\\\\\\\v\")) AND process_path = RGX(\"\\\\\\\\mscorsvw\\\\\\.exe$\")) OR (process_path = \"C\\:\\\\Windows\\\\System32\\\\Configure\\-SMRemoting\\.exe\" OR process_path = \"C\\:\\\\Windows\\\\System32\\\\ServerManager\\.exe\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\asgard2\\\\-agent\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Citrix\\\\\\\\\") OR process_path = RGX(\"\\\\\\\\powershell\\\\_ise\\\\\\.exe$\") OR process_path = RGX(\"^C\\\\:\\\\\\\\\\\\$WINDOWS\\\\\\.\\\\~BT\\\\\\\\Sources\\\\\\\\\")) AND  NOT (process_path = RGX(\"\\\\\\\\svchost\\\\\\.exe$\") AND process_command_line = \"None\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e45ff3ad-83d4-4e26-86a1-c3f8b73d2972"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

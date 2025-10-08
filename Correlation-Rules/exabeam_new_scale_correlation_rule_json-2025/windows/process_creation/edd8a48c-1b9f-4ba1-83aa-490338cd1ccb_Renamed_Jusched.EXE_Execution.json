@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Renamed Jusched.EXE Execution",
+      "description": "Detects the execution of a renamed \"jusched.exe\" as seen used by the cobalt group",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_description = \"Java\\ Update\\ Scheduler\" OR process_description = \"Java\\(TM\\)\\ Update\\ Scheduler\") AND  NOT (process_path = RGX(\"\\\\\\\\jusched\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d0800ecb-ba06-4320-b4bf-07c1b6abd3ec"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

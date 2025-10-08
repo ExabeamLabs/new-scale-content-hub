@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "ETW Logging/Processing Option Disabled On IIS Server",
+      "description": "Detects changes to of the IIS server configuration in order to disable/remove the ETW logging/processing option. Note: Unmapped fields: Configuration, OldValue, NewValue",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 29 AND Configuration = RGX(\"\\\\@logTargetW3C$\") AND OldValue = RGX(\".*ETW.*\")) AND  NOT (NewValue = RGX(\".*ETW.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9b1a621c-8db2-480d-b321-4e7729492cdd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

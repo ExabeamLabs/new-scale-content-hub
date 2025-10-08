@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - SILENTTRINITY Stager Execution",
+      "description": "Detects SILENTTRINITY stager use via PE metadata",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_description = RGX(\".*st2stager.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a6b1fbdd-dd44-4241-9165-15007c05ba5d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

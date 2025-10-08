@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Start Windows Service Via Net.EXE",
+      "description": "Detects the usage of the \"net.exe\" command to start a service using the \"start\" flag",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\net\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\net1\\\\\\.exe$\")) OR (process_original_file_name = \"net\\.exe\" OR process_original_file_name = \"net1\\.exe\")) AND process_command_line = RGX(\".*\\\\ start\\\\ .*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "af54c3b1-a10e-4c76-a029-46d18ac9aefa"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Reg Add Suspicious Paths",
+      "description": "Detects when an adversary uses the reg.exe utility to add or modify new keys or subkeys",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\reg\\\\\\.exe$\") OR process_original_file_name = \"reg\\.exe\") AND (process_command_line = RGX(\".*\\\\\\\\AppDataLow\\\\\\\\Software\\\\\\\\Microsoft\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Policies\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\OOBE.*\") OR process_command_line = RGX(\".*\\\\\\\\Policies\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\Winlogon.*\") OR process_command_line = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\Currentversion\\\\\\\\Winlogon.*\") OR process_command_line = RGX(\".*\\\\\\\\CurrentControlSet\\\\\\\\Control\\\\\\\\SecurityProviders\\\\\\\\WDigest.*\") OR process_command_line = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\ Defender\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a26b3f63-a04e-4c62-8c00-db47372dc778"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

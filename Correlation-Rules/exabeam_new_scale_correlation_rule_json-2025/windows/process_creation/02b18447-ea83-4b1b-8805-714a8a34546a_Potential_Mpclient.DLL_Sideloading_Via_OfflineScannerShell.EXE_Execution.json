@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Mpclient.DLL Sideloading Via OfflineScannerShell.EXE Execution",
+      "description": "Detects execution of Windows Defender \"OfflineScannerShell.exe\" from its non standard directory.\nThe \"OfflineScannerShell.exe\" binary is vulnerable to DLL side loading and will load any DLL named \"mpclient.dll\" from the current working directory.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\OfflineScannerShell\\\\\\.exe$\") OR process_original_file_name = \"OfflineScannerShell\\.exe\") AND  NOT (process_working_directory = \"C\\:\\\\Program\\ Files\\\\Windows\\ Defender\\\\Offline\\\\\" OR process_working_directory = \"\" OR process_working_directory = \"None\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "69c078e7-d8c6-4499-a559-ee4a797d1c65"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation STDIN+ Launcher - PowerShell Module",
+      "description": "Detects Obfuscated use of stdin to execute PowerShell Note: Unmapped fields: Payload",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "Payload = RGX(\"cmd.{0,5}(?:/c|/r).+powershell.+(?:${?input}?|noexit).+\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "36272b08-7da9-4adf-91ae-89966dde09a5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

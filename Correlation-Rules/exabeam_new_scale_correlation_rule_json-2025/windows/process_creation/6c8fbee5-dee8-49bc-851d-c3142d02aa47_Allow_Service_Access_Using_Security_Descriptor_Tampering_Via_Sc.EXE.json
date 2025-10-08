@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Allow Service Access Using Security Descriptor Tampering Via Sc.EXE",
+      "description": "Detects suspicious DACL modifications to allow access to a service from a suspicious trustee. This can be used to override access restrictions set by previous ACLs.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\sc\\\\\\.exe$\") OR process_original_file_name = \"sc\\.exe\") AND (process_command_line = RGX(\".*sdset.*\") AND process_command_line = RGX(\".*A\\\\;.*\")) AND (process_command_line = RGX(\".*\\\\;IU.*\") OR process_command_line = RGX(\".*\\\\;SU.*\") OR process_command_line = RGX(\".*\\\\;BA.*\") OR process_command_line = RGX(\".*\\\\;SY.*\") OR process_command_line = RGX(\".*\\\\;WD.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8f7f5d7c-2b63-445d-a5ba-c0a236d766d7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

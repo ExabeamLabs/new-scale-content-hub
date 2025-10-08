@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation CLIP+ Launcher - PowerShell",
+      "description": "Detects Obfuscated use of Clip.exe to execute PowerShell Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ScriptBlockText = RGX(\"cmd.{0,5}(?:/c|/r).+clip(?:.exe)?.{0,4}&&.+clipboard]::(\\s\\\"{\\d}.+-f.+\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2294be15-c750-4588-a1c4-2de9ab262c4f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

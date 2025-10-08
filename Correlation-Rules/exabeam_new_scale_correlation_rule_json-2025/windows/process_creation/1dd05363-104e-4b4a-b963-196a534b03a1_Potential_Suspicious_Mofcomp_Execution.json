@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Suspicious Mofcomp Execution",
+      "description": "Detects execution of the \"mofcomp\" utility as a child of a suspicious shell or script running utility or by having a suspicious path in the commandline.\nThe \"mofcomp\" utility parses a file containing MOF statements and adds the classes and class instances defined in the file to the WMI repository.\nAttackers abuse this utility to install malicious MOF scripts\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\mofcomp\\\\\\.exe$\") OR process_original_file_name = \"mofcomp\\.exe\") AND ((parent_process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\wsl\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\")) OR (process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp.*\") OR process_command_line = RGX(\".*\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\WINDOWS\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\%temp\\\\%.*\") OR process_command_line = RGX(\".*\\\\%tmp\\\\%.*\") OR process_command_line = RGX(\".*\\\\%appdata\\\\%.*\")))) AND  NOT ((parent_process_path = \"C\\:\\\\Windows\\\\System32\\\\wbem\\\\WmiPrvSE\\.exe\" AND process_command_line = RGX(\".*C\\\\:\\\\\\\\Windows\\\\\\\\TEMP\\\\\\\\.*\") AND process_command_line = RGX(\"\\\\\\.mof$\"))) AND  NOT ((process_command_line = RGX(\".*C\\\\:\\\\\\\\Windows\\\\\\\\TEMP\\\\\\\\.*\") AND process_command_line = RGX(\"\\\\\\.mof$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0abb3b0c-8c16-46dc-8dd3-7f40ecca841d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

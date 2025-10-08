@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "DLL Sideloading Of ShellChromeAPI.DLL",
+      "description": "Detects processes loading the non-existent DLL \"ShellChromeAPI\". One known example is the \"DeviceEnroller\" binary in combination with the \"PhoneDeepLink\" flag tries to load this DLL.\nAdversaries can drop their own renamed DLL and execute it via DeviceEnroller.exe using this parameter\n Note: Unmapped fields: ImageLoaded",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ImageLoaded = RGX(\"\\\\\\\\ShellChromeAPI\\\\\\.dll$\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a0410d3a-4ddc-4513-ab68-dfcc776642b9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

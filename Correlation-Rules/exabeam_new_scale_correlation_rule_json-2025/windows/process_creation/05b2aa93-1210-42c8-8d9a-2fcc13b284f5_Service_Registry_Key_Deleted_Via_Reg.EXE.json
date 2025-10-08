@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Service Registry Key Deleted Via Reg.EXE",
+      "description": "Detects execution of \"reg.exe\" commands with the \"delete\" flag on services registry key. Often used by attacker to remove AV software services",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"reg\\\\\\.exe$\") OR process_original_file_name = \"reg\\.exe\") AND process_command_line = RGX(\".*\\\\ delete\\\\ .*\") AND process_command_line = RGX(\".*\\\\\\\\SYSTEM\\\\\\\\CurrentControlSet\\\\\\\\services\\\\\\\\.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1b341539-9b11-48a9-a839-960c6430114d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

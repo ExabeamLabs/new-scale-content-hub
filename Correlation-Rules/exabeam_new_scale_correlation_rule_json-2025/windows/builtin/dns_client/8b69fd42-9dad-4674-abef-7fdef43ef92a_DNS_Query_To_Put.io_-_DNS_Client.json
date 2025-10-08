@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "DNS Query To Put.io - DNS Client",
+      "description": "Detects DNS queries for subdomains related to \"Put.io\" sharing website. Note: Unmapped fields: QueryName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 3008 AND (QueryName = RGX(\".*api\\\\\\.put\\\\\\.io.*\") OR QueryName = RGX(\".*upload\\\\\\.put\\\\\\.io.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "680c0698-dc4c-4724-bb3a-e5c73d75e2b4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

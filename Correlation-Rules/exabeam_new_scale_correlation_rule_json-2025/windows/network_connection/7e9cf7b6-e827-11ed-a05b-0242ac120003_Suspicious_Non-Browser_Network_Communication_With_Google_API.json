@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Non-Browser Network Communication With Google API",
+      "description": "Detects a non-browser process interacting with the Google API which could indicate the use of a covert C2 such as Google Sheet C2 (GC2-sheet)\n Note: Unmapped fields: DestinationHostname",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(DestinationHostname = RGX(\".*drive\\\\\\.googleapis\\\\\\.com.*\") OR DestinationHostname = RGX(\".*oauth2\\\\\\.googleapis\\\\\\.com.*\") OR DestinationHostname = RGX(\".*sheets\\\\\\.googleapis\\\\\\.com.*\") OR DestinationHostname = RGX(\".*www\\\\\\.googleapis\\\\\\.com.*\")) AND  NOT (process_path = \"None\" OR process_path = \"\") AND  NOT (process_path = RGX(\"\\\\\\\\brave\\\\\\.exe$\") OR (process_path = RGX(\"\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Google\\\\\\\\Chrome\\\\\\\\Application\\\\\\\\chrome\\\\\\.exe$\") OR process_path = RGX(\"\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Google\\\\\\\\Chrome\\\\\\\\Application\\\\\\\\chrome\\\\\\.exe$\")) OR (process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Google\\\\\\\\Drive\\\\ File\\\\ Stream\\\\\\\\.*\") AND process_path = RGX(\"\\\\\\\\GoogleDriveFS\\\\\\.exe$\")) OR (process_path = RGX(\"\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Mozilla\\\\ Firefox\\\\\\\\firefox\\\\\\.exe$\") OR process_path = RGX(\"\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Mozilla\\\\ Firefox\\\\\\\\firefox\\\\\\.exe$\")) OR (process_path = RGX(\"\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Internet\\\\ Explorer\\\\\\\\iexplore\\\\\\.exe$\") OR process_path = RGX(\"\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Internet\\\\ Explorer\\\\\\\\iexplore\\\\\\.exe$\")) OR process_path = RGX(\"\\\\\\\\maxthon\\\\\\.exe$\") OR (process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Microsoft\\\\\\\\EdgeWebView\\\\\\\\Application\\\\\\\\.*\") OR (process_path = RGX(\"\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Microsoft\\\\\\\\Edge\\\\\\\\Application\\\\\\\\msedge\\\\\\.exe$\") OR process_path = RGX(\"\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Microsoft\\\\\\\\Edge\\\\\\\\Application\\\\\\\\msedge\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\WindowsApps\\\\\\\\MicrosoftEdge\\\\\\.exe$\"))) OR ((process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Microsoft\\\\\\\\EdgeCore\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Microsoft\\\\\\\\EdgeCore\\\\\\\\.*\")) AND (process_path = RGX(\"\\\\\\\\msedge\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msedgewebview2\\\\\\.exe$\"))) OR process_path = RGX(\"\\\\\\\\opera\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\safari\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\seamonkey\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\vivaldi\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\whale\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\GoogleUpdate\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\outlook\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "cf7db861-960c-4924-8881-8a67bc1f1da7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

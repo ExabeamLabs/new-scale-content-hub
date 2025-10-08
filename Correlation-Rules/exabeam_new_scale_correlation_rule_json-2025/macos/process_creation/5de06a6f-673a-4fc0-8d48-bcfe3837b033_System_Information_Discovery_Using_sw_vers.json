@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "System Information Discovery Using sw_vers",
+      "description": "Detects the use of \"sw_vers\" for system information discovery",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/sw\\\\_vers$\") AND (process_command_line = RGX(\".*\\\\-buildVersion.*\") OR process_command_line = RGX(\".*\\\\-productName.*\") OR process_command_line = RGX(\".*\\\\-productVersion.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "551d5a2a-cafc-4cec-9734-605f48bb4749"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

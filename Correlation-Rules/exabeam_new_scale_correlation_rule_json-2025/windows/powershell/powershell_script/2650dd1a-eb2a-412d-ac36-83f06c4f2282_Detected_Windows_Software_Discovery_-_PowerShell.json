@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Detected Windows Software Discovery - PowerShell",
+      "description": "Adversaries may attempt to enumerate software for a variety of reasons, such as figuring out what security measures are present or if the compromised system has a version of software that is vulnerable. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*get\\\\-itemProperty.*\") AND ScriptBlockText = RGX(\".*\\\\\\\\software\\\\\\\\.*\") AND ScriptBlockText = RGX(\".*select\\\\-object.*\") AND ScriptBlockText = RGX(\".*format\\\\-table.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "77af568b-b07c-4840-b92d-0ae691ebeda6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

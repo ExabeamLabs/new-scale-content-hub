@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Azure Domain Federation Settings Modified",
+      "description": "Identifies when an user or application modified the federation settings on the domain. Note: Unmapped fields: ActivityDisplayName",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ActivityDisplayName = \"Set\\ federation\\ settings\\ on\\ domain\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0cd8bfbd-903f-4669-ad4b-a990e89a9642"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

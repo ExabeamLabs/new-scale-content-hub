@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Use of Remote.exe",
+      "description": "Remote.exe is part of WinDbg in the Windows SDK and can be used for AWL bypass and running remote files.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\remote\\\\\\.exe$\") OR process_original_file_name = \"remote\\.exe\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a7f828c0-0abb-4bf6-a439-2482fc14c3b3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

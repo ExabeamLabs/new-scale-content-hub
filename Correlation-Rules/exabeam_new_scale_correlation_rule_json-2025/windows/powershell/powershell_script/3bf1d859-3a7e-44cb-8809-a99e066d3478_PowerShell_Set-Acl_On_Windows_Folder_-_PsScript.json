@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PowerShell Set-Acl On Windows Folder - PsScript",
+      "description": "Detects PowerShell scripts to set the ACL to a file in the Windows folder Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ScriptBlockText = RGX(\".*Set\\\\-Acl\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\-AclObject\\\\ .*\")) AND (ScriptBlockText = RGX(\".*\\\\-Path\\\\ \\\\\"C\\\\:\\\\\\\\Windows.*\") OR ScriptBlockText = RGX(\".*\\\\-Path\\\\ \\\\\"C\\\\:\\\\/Windows.*\") OR ScriptBlockText = RGX(\".*\\\\-Path\\\\ \\\\'C\\\\:\\\\\\\\Windows.*\") OR ScriptBlockText = RGX(\".*\\\\-Path\\\\ \\\\'C\\\\:\\\\/Windows.*\") OR ScriptBlockText = RGX(\".*\\\\-Path\\\\ C\\\\:\\\\\\\\Windows.*\") OR ScriptBlockText = RGX(\".*\\\\-Path\\\\ C\\\\:\\\\/Windows.*\") OR ScriptBlockText = RGX(\".*\\\\-Path\\\\ \\\\$env\\\\:windir.*\") OR ScriptBlockText = RGX(\".*\\\\-Path\\\\ \\\\\"\\\\$env\\\\:windir.*\") OR ScriptBlockText = RGX(\".*\\\\-Path\\\\ \\\\'\\\\$env\\\\:windir.*\")) AND (ScriptBlockText = RGX(\".*FullControl.*\") OR ScriptBlockText = RGX(\".*Allow.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "17ec3297-c5e6-4f40-9655-f398da57f053"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

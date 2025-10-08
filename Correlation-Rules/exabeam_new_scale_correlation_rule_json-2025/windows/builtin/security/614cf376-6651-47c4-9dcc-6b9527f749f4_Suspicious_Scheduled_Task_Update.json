@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Scheduled Task Update",
+      "description": "Detects update to a scheduled task event that contain suspicious keywords. Note: Unmapped fields: TaskContentNew",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4702 AND (TaskContentNew = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") OR TaskContentNew = RGX(\".*\\\\\\\\AppData\\\\\\\\Roaming\\\\\\\\.*\") OR TaskContentNew = RGX(\".*\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR TaskContentNew = RGX(\".*\\\\\\\\WINDOWS\\\\\\\\Temp\\\\\\\\.*\") OR TaskContentNew = RGX(\".*C\\\\:\\\\\\\\Temp\\\\\\\\.*\") OR TaskContentNew = RGX(\".*\\\\\\\\Desktop\\\\\\\\.*\") OR TaskContentNew = RGX(\".*\\\\\\\\Downloads\\\\\\\\.*\") OR TaskContentNew = RGX(\".*\\\\\\\\Temporary\\\\ Internet.*\") OR TaskContentNew = RGX(\".*C\\\\:\\\\\\\\ProgramData\\\\\\\\.*\") OR TaskContentNew = RGX(\".*C\\\\:\\\\\\\\Perflogs\\\\\\\\.*\")) AND (TaskContentNew = RGX(\".*regsvr32.*\") OR TaskContentNew = RGX(\".*rundll32.*\") OR TaskContentNew = RGX(\".*cmd\\\\\\.exe\\\\<\\\\/Command\\\\>.*\") OR TaskContentNew = RGX(\".*cmd\\\\<\\\\/Command\\\\>.*\") OR TaskContentNew = RGX(\".*\\\\<Arguments\\\\>\\\\/c\\\\ .*\") OR TaskContentNew = RGX(\".*\\\\<Arguments\\\\>\\\\/k\\\\ .*\") OR TaskContentNew = RGX(\".*\\\\<Arguments\\\\>\\\\/r\\\\ .*\") OR TaskContentNew = RGX(\".*powershell.*\") OR TaskContentNew = RGX(\".*pwsh.*\") OR TaskContentNew = RGX(\".*mshta.*\") OR TaskContentNew = RGX(\".*wscript.*\") OR TaskContentNew = RGX(\".*cscript.*\") OR TaskContentNew = RGX(\".*certutil.*\") OR TaskContentNew = RGX(\".*bitsadmin.*\") OR TaskContentNew = RGX(\".*bash\\\\\\.exe.*\") OR TaskContentNew = RGX(\".*bash\\\\ .*\") OR TaskContentNew = RGX(\".*scrcons.*\") OR TaskContentNew = RGX(\".*wmic\\\\ .*\") OR TaskContentNew = RGX(\".*wmic\\\\\\.exe.*\") OR TaskContentNew = RGX(\".*forfiles.*\") OR TaskContentNew = RGX(\".*scriptrunner.*\") OR TaskContentNew = RGX(\".*hh\\\\\\.exe.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "18e022f7-e743-4f4e-af92-8c80ab8085cd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

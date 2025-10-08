@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - SharpLdapWhoami Execution",
+      "description": "Detects SharpLdapWhoami, a whoami alternative that queries the LDAP service on a domain controller",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\SharpLdapWhoami\\\\\\.exe$\") OR (process_original_file_name = RGX(\".*SharpLdapWhoami.*\") OR process_product = \"SharpLdapWhoami\") OR (process_command_line = RGX(\"\\\\ \\\\/method\\\\:ntlm$\") OR process_command_line = RGX(\"\\\\ \\\\/method\\\\:kerb$\") OR process_command_line = RGX(\"\\\\ \\\\/method\\\\:nego$\") OR process_command_line = RGX(\"\\\\ \\\\/m\\\\:nego$\") OR process_command_line = RGX(\"\\\\ \\\\/m\\\\:ntlm$\") OR process_command_line = RGX(\"\\\\ \\\\/m\\\\:kerb$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c3357038-0bb6-44c2-b248-445c62a5e696"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Suspicious Child Processes Spawned by ConHost",
+      "description": "Detects suspicious child processes related to Windows Shell utilities spawned by `conhost.exe`, which could indicate malicious activity using trusted system components.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\conhost\\\\\\.exe$\") AND ((process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\_ise\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\")) OR (process_original_file_name = \"cmd\\.exe\" OR process_original_file_name = \"cscript\\.exe\" OR process_original_file_name = \"mshta\\.exe\" OR process_original_file_name = \"powershell\\_ise\\.exe\" OR process_original_file_name = \"powershell\\.exe\" OR process_original_file_name = \"pwsh\\.dll\" OR process_original_file_name = \"regsvr32\\.exe\" OR process_original_file_name = \"wscript\\.exe\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b4e73ccb-4c2c-4ddc-b9ed-40f2a8584e9f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

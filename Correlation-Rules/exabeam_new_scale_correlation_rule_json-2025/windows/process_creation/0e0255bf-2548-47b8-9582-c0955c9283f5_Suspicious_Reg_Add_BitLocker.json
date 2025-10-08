@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Reg Add BitLocker",
+      "description": "Detects suspicious addition to BitLocker related registry keys via the reg.exe utility",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*REG.*\") AND process_command_line = RGX(\".*ADD.*\") AND process_command_line = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Policies\\\\\\\\Microsoft\\\\\\\\FVE.*\") AND process_command_line = RGX(\".*\\\\/v.*\") AND process_command_line = RGX(\".*\\\\/f.*\")) AND (process_command_line = RGX(\".*EnableBDEWithNoTPM.*\") OR process_command_line = RGX(\".*UseAdvancedStartup.*\") OR process_command_line = RGX(\".*UseTPM.*\") OR process_command_line = RGX(\".*UseTPMKey.*\") OR process_command_line = RGX(\".*UseTPMKeyPIN.*\") OR process_command_line = RGX(\".*RecoveryKeyMessageSource.*\") OR process_command_line = RGX(\".*UseTPMPIN.*\") OR process_command_line = RGX(\".*RecoveryKeyMessage.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "875ca23e-eb5e-4247-9206-3d89feb0d828"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "COM Hijack via Sdclt",
+      "description": "Detects changes to 'HKCU\\Software\\Classes\\Folder\\shell\\open\\command\\DelegateExecute'",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\".*\\\\\\\\Software\\\\\\\\Classes\\\\\\\\Folder\\\\\\\\shell\\\\\\\\open\\\\\\\\command\\\\\\\\DelegateExecute.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "86616026-153e-45d7-aba2-ae2b725c8648"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspect Svchost Activity",
+      "description": "It is extremely abnormal for svchost.exe to spawn without any CLI arguments and is normally observed when a malicious process spawns the process and injects code into the process memory space.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\"svchost\\\\\\.exe$\") AND process_path = RGX(\"\\\\\\\\svchost\\\\\\.exe$\")) AND  NOT (((parent_process_path = RGX(\"\\\\\\\\rpcnet\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\rpcnetp\\\\\\.exe$\")) OR process_command_line = \"None\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ae5ef7d4-b684-4615-a523-1c9f3d219678"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

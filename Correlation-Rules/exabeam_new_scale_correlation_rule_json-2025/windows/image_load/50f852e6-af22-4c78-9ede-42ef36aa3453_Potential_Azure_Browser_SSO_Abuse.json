@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Azure Browser SSO Abuse",
+      "description": "Detects abusing Azure Browser SSO by requesting OAuth 2.0 refresh tokens for an Azure-AD-authenticated Windows user (i.e. the machine is joined to Azure AD and a user logs in with their Azure AD account) wanting to perform SSO authentication in the browser.\nAn attacker can use this to authenticate to Azure AD in a browser as that user.\n Note: Unmapped fields: ImageLoaded",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ImageLoaded = \"C\\:\\\\Windows\\\\System32\\\\MicrosoftAccountTokenProvider\\.dll\" AND  NOT (((process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\\")) AND process_path = RGX(\"\\\\\\\\BackgroundTaskHost\\\\\\.exe$\"))) AND  NOT (((process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Microsoft\\\\ Visual\\\\ Studio\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Microsoft\\\\ Visual\\\\ Studio\\\\\\\\\")) AND process_path = RGX(\"\\\\\\\\IDE\\\\\\\\devenv\\\\\\.exe$\")) OR (process_path = \"C\\:\\\\Program\\ Files\\ \\(x86\\)\\\\Internet\\ Explorer\\\\iexplore\\.exe\" OR process_path = \"C\\:\\\\Program\\ Files\\\\Internet\\ Explorer\\\\iexplore\\.exe\") OR (process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Microsoft\\\\\\\\EdgeWebView\\\\\\\\Application\\\\\\\\\") OR process_path = RGX(\"\\\\\\\\WindowsApps\\\\\\\\MicrosoftEdge\\\\\\.exe$\") OR (process_path = \"C\\:\\\\Program\\ Files\\ \\(x86\\)\\\\Microsoft\\\\Edge\\\\Application\\\\msedge\\.exe\" OR process_path = \"C\\:\\\\Program\\ Files\\\\Microsoft\\\\Edge\\\\Application\\\\msedge\\.exe\")) OR ((process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Microsoft\\\\\\\\EdgeCore\\\\\\\\\") OR process_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Microsoft\\\\\\\\EdgeCore\\\\\\\\\")) AND (process_path = RGX(\"\\\\\\\\msedge\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msedgewebview2\\\\\\.exe$\"))) OR process_path = RGX(\"\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Microsoft\\\\\\\\OneDrive\\\\\\\\OneDrive\\\\\\.exe$\") OR process_path = \"None\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "93b6bf48-19ee-493f-953b-ddf58b31ee34"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

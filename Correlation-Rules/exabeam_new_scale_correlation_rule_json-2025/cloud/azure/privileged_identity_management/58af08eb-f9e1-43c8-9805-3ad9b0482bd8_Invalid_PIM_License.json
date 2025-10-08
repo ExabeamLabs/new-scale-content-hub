@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invalid PIM License",
+      "description": "Identifies when an organization doesn't have the proper license for PIM and is out of compliance. Note: Unmapped fields: riskEventType",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "riskEventType = \"invalidLicenseAlertIncident\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1051666d-c6b5-418b-a1c5-4ad73e8a2dd5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

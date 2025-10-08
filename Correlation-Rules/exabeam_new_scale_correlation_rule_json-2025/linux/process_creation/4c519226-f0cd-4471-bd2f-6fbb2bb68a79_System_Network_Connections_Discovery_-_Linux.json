@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "System Network Connections Discovery - Linux",
+      "description": "Detects usage of system utilities to discover system network connections",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/who$\") OR process_path = RGX(\"\\\\/w$\") OR process_path = RGX(\"\\\\/last$\") OR process_path = RGX(\"\\\\/lsof$\") OR process_path = RGX(\"\\\\/netstat$\")) AND  NOT ((parent_process_command_line = RGX(\".*\\\\/usr\\\\/bin\\\\/landscape\\\\-sysinfo.*\") AND process_path = RGX(\"\\\\/who$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "347e2399-cf8a-456d-a57f-e200c516ba7a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

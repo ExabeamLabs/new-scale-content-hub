@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PowerShell Scripts Installed as Services - Security",
+      "description": "Detects powershell script installed as a Service Note: Unmapped fields: ServiceFileName",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4697 AND (ServiceFileName = RGX(\".*powershell.*\") OR ServiceFileName = RGX(\".*pwsh.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1b968f23-ee1b-4acd-852f-aeb8983701c0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

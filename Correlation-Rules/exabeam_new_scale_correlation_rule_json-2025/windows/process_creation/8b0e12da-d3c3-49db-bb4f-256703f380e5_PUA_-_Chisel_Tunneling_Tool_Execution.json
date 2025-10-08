@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - Chisel Tunneling Tool Execution",
+      "description": "Detects usage of the Chisel tunneling tool via the commandline arguments",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_path = RGX(\"\\\\\\\\chisel\\\\\\.exe$\") OR ((process_command_line = RGX(\".*exe\\\\ client\\\\ .*\") OR process_command_line = RGX(\".*exe\\\\ server\\\\ .*\")) AND (process_command_line = RGX(\".*\\\\-socks5.*\") OR process_command_line = RGX(\".*\\\\-reverse.*\") OR process_command_line = RGX(\".*\\\\ r\\\\:.*\") OR process_command_line = RGX(\".*\\\\:127\\\\\\.0\\\\\\.0\\\\\\.1\\\\:.*\") OR process_command_line = RGX(\".*\\\\-tls\\\\-skip\\\\-verify\\\\ .*\") OR process_command_line = RGX(\".*\\\\:socks.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "805b1b3d-f954-40ac-806a-102ea496db9b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

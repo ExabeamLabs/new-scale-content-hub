@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Powershell Suspicious Win32_PnPEntity",
+      "description": "Adversaries may attempt to gather information about attached peripheral devices and components connected to a computer system. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ScriptBlockText = RGX(\".*Win32\\\\_PnPEntity.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6f95e5df-b4f0-4909-8aa2-8a59c5b19bdc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

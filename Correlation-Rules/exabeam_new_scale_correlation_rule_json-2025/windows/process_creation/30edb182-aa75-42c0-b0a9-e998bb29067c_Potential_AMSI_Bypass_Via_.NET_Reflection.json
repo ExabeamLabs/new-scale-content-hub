@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential AMSI Bypass Via .NET Reflection",
+      "description": "Detects Request to \"amsiInitFailed\" that can be used to disable AMSI Scanning",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*System\\\\\\.Management\\\\\\.Automation\\\\\\.AmsiUtils.*\") AND process_command_line = RGX(\".*amsiInitFailed.*\")) OR (process_command_line = RGX(\".*\\\\[Ref\\\\]\\\\\\.Assembly\\\\\\.GetType.*\") AND process_command_line = RGX(\".*SetValue\\\\(\\\\$null\\\\,\\\\$true\\\\).*\") AND process_command_line = RGX(\".*NonPublic\\\\,Static.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "da1a3dc8-b880-4ed2-ba78-4f7f87fd86cd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

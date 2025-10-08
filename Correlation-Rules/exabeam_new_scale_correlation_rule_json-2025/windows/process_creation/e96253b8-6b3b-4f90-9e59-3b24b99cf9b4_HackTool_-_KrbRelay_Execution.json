@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - KrbRelay Execution",
+      "description": "Detects the use of KrbRelay, a Kerberos relaying tool",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\KrbRelay\\\\\\.exe$\") OR process_original_file_name = \"KrbRelay\\.exe\") OR (process_command_line = RGX(\".*\\\\ \\\\-spn\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-clsid\\\\ .*\") AND process_command_line = RGX(\".*\\\\ \\\\-rbcd\\\\ .*\")) OR (process_command_line = RGX(\".*shadowcred.*\") AND process_command_line = RGX(\".*clsid.*\") AND process_command_line = RGX(\".*spn.*\")) OR (process_command_line = RGX(\".*spn\\\\ .*\") AND process_command_line = RGX(\".*session\\\\ .*\") AND process_command_line = RGX(\".*clsid\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6918ed75-1b2e-482d-9c0d-7c64cbca1c2f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

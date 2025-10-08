@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - Koadic Execution",
+      "description": "Detects command line parameters used by Koadic hack tool",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_original_file_name = \"Cmd\\.Exe\") AND (process_command_line = RGX(\".*\\\\/q.*\") AND process_command_line = RGX(\".*\\\\/c.*\") AND process_command_line = RGX(\".*chcp.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "784dde6e-c923-4564-97e8-cfcc67d03b0d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

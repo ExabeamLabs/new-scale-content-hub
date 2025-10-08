@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Persistence Via AppCompat RegisterAppRestart Layer",
+      "description": "Detects the setting of the REGISTERAPPRESTART compatibility layer on an application.\nThis compatibility layer allows an application to register for restart using the \"RegisterApplicationRestart\" API.\nThis can be potentially abused as a persistence mechanism.\n Note: Unmapped fields: Details",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\AppCompatFlags\\\\\\\\Layers\\\\\\\\.*\") AND Details = RGX(\".*REGISTERAPPRESTART.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "cfe79911-83c9-4140-aa88-0d0587e825a7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

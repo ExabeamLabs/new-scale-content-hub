@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Keyboard Layout Load",
+      "description": "Detects the keyboard preload installation with a suspicious keyboard layout, e.g. Chinese, Iranian or Vietnamese layout load in user session on systems maintained by US staff only Note: Unmapped fields: Details",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((registry_path = RGX(\".*\\\\\\\\Keyboard\\\\ Layout\\\\\\\\Preload\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\Keyboard\\\\ Layout\\\\\\\\Substitutes\\\\\\\\.*\")) AND (Details = RGX(\".*00000429.*\") OR Details = RGX(\".*00050429.*\") OR Details = RGX(\".*0000042a.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "517eed18-6369-4a47-8a3c-ba98ea7fbfe8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Gpscript Execution",
+      "description": "Detects the execution of the LOLBIN gpscript, which executes logon or startup scripts configured in Group Policy",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\gpscript\\\\\\.exe$\") OR process_original_file_name = \"GPSCRIPT\\.EXE\") AND (process_command_line = RGX(\".*\\\\ \\\\/logon.*\") OR process_command_line = RGX(\".*\\\\ \\\\/startup.*\"))) AND  NOT (parent_process_command_line = \"C\\:\\\\windows\\\\system32\\\\svchost\\.exe\\ \\-k\\ netsvcs\\ \\-p\\ \\-s\\ gpsvc\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "73b7523e-4722-4bc8-b1d1-7232364eb8a0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

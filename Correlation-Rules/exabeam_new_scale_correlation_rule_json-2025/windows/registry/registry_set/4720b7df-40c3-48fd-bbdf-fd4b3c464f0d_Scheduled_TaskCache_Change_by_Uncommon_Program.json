@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Scheduled TaskCache Change by Uncommon Program",
+      "description": "Monitor the creation of a new key under 'TaskCache' when a new scheduled task is registered by a process that is not svchost.exe, which is suspicious",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\".*SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\Schedule\\\\\\\\TaskCache\\\\\\\\.*\") AND  NOT ((registry_path = RGX(\".*Microsoft\\\\\\\\Windows\\\\\\\\UpdateOrchestrator.*\") OR registry_path = RGX(\".*Microsoft\\\\\\\\Windows\\\\\\\\SoftwareProtectionPlatform\\\\\\\\SvcRestartTask\\\\\\\\Index.*\") OR registry_path = RGX(\".*Microsoft\\\\\\\\Windows\\\\\\\\Flighting\\\\\\\\OneSettings\\\\\\\\RefreshCache\\\\\\\\Index.*\")) OR (process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\\") AND process_path = RGX(\"\\\\\\\\TiWorker\\\\\\.exe$\")) OR process_path = \"C\\:\\\\WINDOWS\\\\system32\\\\svchost\\.exe\" OR (process_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\Microsoft\\\\\\.NET\\\\\\\\Framework\") AND process_path = RGX(\"\\\\\\\\ngen\\\\\\.exe$\") AND (registry_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\Schedule\\\\\\\\TaskCache\\\\\\\\Tasks\\\\\\\\\\\\{B66B135D\\\\-DA06\\\\-4FC4\\\\-95F8\\\\-7458E1D10129\\\\}.*\") OR registry_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\Schedule\\\\\\\\TaskCache\\\\\\\\Tree\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\\\\\\\.NET\\\\ Framework\\\\\\\\\\\\\\.NET\\\\ Framework\\\\ NGEN.*\"))) OR (process_path = \"C\\:\\\\Program\\ Files\\\\Microsoft\\ Office\\\\root\\\\Integration\\\\Integrator\\.exe\" OR process_path = \"C\\:\\\\Program\\ Files\\ \\(x86\\)\\\\Microsoft\\ Office\\\\root\\\\Integration\\\\Integrator\\.exe\") OR process_path = \"C\\:\\\\Windows\\\\System32\\\\msiexec\\.exe\" OR (process_path = \"C\\:\\\\Windows\\\\explorer\\.exe\" AND registry_path = RGX(\".*\\\\\\\\Microsoft\\\\\\\\Windows\\\\ NT\\\\\\\\CurrentVersion\\\\\\\\Schedule\\\\\\\\TaskCache\\\\\\\\Tree\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\PLA\\\\\\\\Server\\\\ Manager\\\\ Performance\\\\ Monitor\\\\\\\\.*\")) OR process_path = \"System\" OR process_path = \"C\\:\\\\Windows\\\\System32\\\\RuntimeBroker\\.exe\" OR (process_path = \"C\\:\\\\Program\\ Files\\ \\(x86\\)\\\\Dropbox\\\\Update\\\\DropboxUpdate\\.exe\" OR process_path = \"C\\:\\\\Program\\ Files\\\\Dropbox\\\\Update\\\\DropboxUpdate\\.exe\") OR process_path = RGX(\"\\\\\\\\MicrosoftEdgeUpdate\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9beaae17-f687-4062-ba1c-0e0073b6e3bf"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

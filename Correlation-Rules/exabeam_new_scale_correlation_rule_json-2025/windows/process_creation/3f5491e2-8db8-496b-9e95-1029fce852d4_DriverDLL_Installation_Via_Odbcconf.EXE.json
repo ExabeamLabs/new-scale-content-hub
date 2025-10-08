@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Driver/DLL Installation Via Odbcconf.EXE",
+      "description": "Detects execution of \"odbcconf\" with \"INSTALLDRIVER\" which installs a new ODBC driver. Attackers abuse this to install and run malicious DLLs.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\odbcconf\\\\\\.exe$\") OR process_original_file_name = \"odbcconf\\.exe\") AND (process_command_line = RGX(\".*INSTALLDRIVER\\\\ .*\") AND process_command_line = RGX(\".*\\\\\\.dll.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8a7d043c-5e1f-485a-9532-351a591674ca"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

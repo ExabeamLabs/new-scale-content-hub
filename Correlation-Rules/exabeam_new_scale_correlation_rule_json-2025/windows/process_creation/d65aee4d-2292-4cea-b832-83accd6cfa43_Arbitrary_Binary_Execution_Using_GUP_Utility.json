@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Arbitrary Binary Execution Using GUP Utility",
+      "description": "Detects execution of the Notepad++ updater (gup) to launch other commands or executables",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\gup\\\\\\.exe$\") AND process_path = RGX(\"\\\\\\\\explorer\\\\\\.exe$\")) AND  NOT ((process_path = RGX(\"\\\\\\\\explorer\\\\\\.exe$\") AND process_command_line = RGX(\".*\\\\\\\\Notepad\\\\+\\\\+\\\\\\\\notepad\\\\+\\\\+\\\\\\.exe.*\")) OR parent_process_path = RGX(\".*\\\\\\\\Notepad\\\\+\\\\+\\\\\\\\updater\\\\\\\\.*\") OR process_command_line = \"None\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4bb6536b-5d90-44f0-a870-0840efa664e7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

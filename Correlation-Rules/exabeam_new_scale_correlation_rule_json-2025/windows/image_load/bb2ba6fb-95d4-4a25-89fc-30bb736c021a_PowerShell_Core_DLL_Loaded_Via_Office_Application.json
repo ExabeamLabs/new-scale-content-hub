@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PowerShell Core DLL Loaded Via Office Application",
+      "description": "Detects PowerShell core DLL being loaded by an Office Product Note: Unmapped fields: ImageLoaded",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\excel\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mspub\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\outlook\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\onenote\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\onenoteim\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powerpnt\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\winword\\\\\\.exe$\")) AND (ImageLoaded = RGX(\".*\\\\\\\\System\\\\\\.Management\\\\\\.Automation\\\\\\.Dll.*\") OR ImageLoaded = RGX(\".*\\\\\\\\System\\\\\\.Management\\\\\\.Automation\\\\\\.ni\\\\\\.Dll.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "497822b9-4f3f-4eda-99f0-1dd7b599efcc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

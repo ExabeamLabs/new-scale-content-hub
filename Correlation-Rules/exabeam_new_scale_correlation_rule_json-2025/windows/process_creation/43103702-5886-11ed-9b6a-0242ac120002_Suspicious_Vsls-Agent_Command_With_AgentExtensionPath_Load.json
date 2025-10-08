@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Vsls-Agent Command With AgentExtensionPath Load",
+      "description": "Detects Microsoft Visual Studio vsls-agent.exe lolbin execution with a suspicious library load using the --agentExtensionPath parameter",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\vsls\\\\-agent\\\\\\.exe$\") AND process_command_line = RGX(\".*\\\\-\\\\-agentExtensionPath.*\")) AND  NOT (process_command_line = RGX(\".*Microsoft\\\\\\.VisualStudio\\\\\\.LiveShare\\\\\\.Agent\\\\\\..*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a7f2ec47-a7ee-4bdd-b98d-e47a677fcd65"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

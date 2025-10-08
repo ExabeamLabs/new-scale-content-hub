@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - SoftPerfect Netscan Execution",
+      "description": "Detects usage of SoftPerfect's \"netscan.exe\". An application for scanning networks.\nIt is actively used in-the-wild by threat actors to inspect and understand the network architecture of a victim.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\netscan\\\\\\.exe$\") OR process_product = \"Network\\ Scanner\" OR process_description = \"Application\\ for\\ scanning\\ networks\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6c5c491c-76b4-46f9-ac98-f151549169ec"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

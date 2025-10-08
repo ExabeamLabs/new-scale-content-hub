@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "DNS Query To Visual Studio Code Tunnels Domain",
+      "description": "Detects DNS query requests to Visual Studio Code tunnel domains. Attackers can abuse that feature to establish a reverse shell or persistence on a machine.\n Note: Unmapped fields: QueryName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "QueryName = RGX(\"\\\\\\.tunnels\\\\\\.api\\\\\\.visualstudio\\\\\\.com$\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9f69dc90-e037-4c2e-a711-b785f3e81d14"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

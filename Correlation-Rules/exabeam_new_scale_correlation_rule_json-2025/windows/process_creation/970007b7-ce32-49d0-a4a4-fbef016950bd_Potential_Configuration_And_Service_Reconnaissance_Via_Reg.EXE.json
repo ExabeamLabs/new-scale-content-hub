@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Configuration And Service Reconnaissance Via Reg.EXE",
+      "description": "Detects the usage of \"reg.exe\" in order to query reconnaissance information from the registry. Adversaries may interact with the Windows registry to gather information about credentials, the system, configuration, and installed software.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\reg\\\\\\.exe$\") OR process_original_file_name = \"reg\\.exe\") AND process_command_line = RGX(\".*query.*\") AND (process_command_line = RGX(\".*currentVersion\\\\\\\\windows.*\") OR process_command_line = RGX(\".*winlogon\\\\\\\\.*\") OR process_command_line = RGX(\".*currentVersion\\\\\\\\shellServiceObjectDelayLoad.*\") OR process_command_line = RGX(\".*currentVersion\\\\\\\\run.*\") OR process_command_line = RGX(\".*currentVersion\\\\\\\\policies\\\\\\\\explorer\\\\\\\\run.*\") OR process_command_line = RGX(\".*currentcontrolset\\\\\\\\services.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "27690f43-aac1-4bc9-827f-ed65b8bb3e84"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

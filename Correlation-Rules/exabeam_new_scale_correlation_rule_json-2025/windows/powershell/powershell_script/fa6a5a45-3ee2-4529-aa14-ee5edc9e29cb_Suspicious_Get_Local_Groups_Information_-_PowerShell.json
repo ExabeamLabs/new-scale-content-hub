@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Get Local Groups Information - PowerShell",
+      "description": "Detects the use of PowerShell modules and cmdlets to gather local group information.\nAdversaries may use local system permission groups to determine which groups exist and which users belong to a particular group such as the local administrators group.\n Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*get\\\\-localgroup\\\\ .*\") OR ScriptBlockText = RGX(\".*get\\\\-localgroupmember\\\\ .*\")) OR ((ScriptBlockText = RGX(\".*get\\\\-wmiobject\\\\ .*\") OR ScriptBlockText = RGX(\".*gwmi\\\\ .*\") OR ScriptBlockText = RGX(\".*get\\\\-ciminstance\\\\ .*\") OR ScriptBlockText = RGX(\".*gcim\\\\ .*\")) AND ScriptBlockText = RGX(\".*win32\\\\_group.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "918fbc71-df02-4b38-8a07-cfaf5665dc63"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

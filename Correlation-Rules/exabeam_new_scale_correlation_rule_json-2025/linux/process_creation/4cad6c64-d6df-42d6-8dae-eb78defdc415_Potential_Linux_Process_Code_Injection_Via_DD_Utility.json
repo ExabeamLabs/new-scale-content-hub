@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Linux Process Code Injection Via DD Utility",
+      "description": "Detects the injection of code by overwriting the memory map of a Linux process using the \"dd\" Linux command.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/dd$\") AND (process_command_line = RGX(\".*of\\\\=.*\") AND process_command_line = RGX(\".*\\\\/proc\\\\/.*\") AND process_command_line = RGX(\".*\\\\/mem.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "03fd1df7-b5b7-491d-9e0b-4b2f7b03f496"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

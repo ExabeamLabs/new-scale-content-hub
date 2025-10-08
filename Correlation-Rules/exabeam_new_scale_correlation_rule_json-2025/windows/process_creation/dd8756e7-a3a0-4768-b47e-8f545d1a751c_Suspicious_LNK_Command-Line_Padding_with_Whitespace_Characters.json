@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious LNK Command-Line Padding with Whitespace Characters",
+      "description": "Detects exploitation of LNK file command-line length discrepancy, where attackers hide malicious commands beyond the 260-character UI limit while the actual command-line argument field supports 4096 characters using whitespace padding (e.g., 0x20, 0x09-0x0D).\nAdversaries insert non-printable whitespace characters (e.g., Line Feed \\x0A, Carriage Return \\x0D) to pad the visible section of the LNK file, pushing malicious commands past the UI-visible boundary.\nThe hidden payload, executed at runtime but invisible in Windows Explorer properties, enables stealthy execution and evasion\u2014commonly used for social engineering attacks.\nThis rule flags suspicious use of such padding observed in real-world attacks.\n",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((parent_process_path = RGX(\"\\\\\\\\explorer\\\\\\.exe$\") OR parent_process_command_line = RGX(\".*\\\\\\.lnk.*\")) AND ((process_command_line = RGX(\".*\\\\ \\\\ \\\\ \\\\ \\\\ \\\\ \\\\ \\\\ \\\\ \\\\ \\\\ \\\\ \\\\ \\\\ \\\\ \\\\ \\\\ .*\") OR process_command_line = RGX(\".*\\\\\\\\u0009.*\") OR process_command_line = RGX(\".*\\\\\\\\u000A.*\") OR process_command_line = RGX(\".*\\\\\\\\u0011.*\") OR process_command_line = RGX(\".*\\\\\\\\u0012.*\") OR process_command_line = RGX(\".*\\\\\\\\u0013.*\") OR process_command_line = RGX(\".*\\\\\\\\u000B.*\") OR process_command_line = RGX(\".*\\\\\\\\u000C.*\") OR process_command_line = RGX(\".*\\\\\\\\u000D.*\")) OR process_command_line = RGX(\"nnnnnn\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f57b3687-1792-4979-a556-0cbb7eb1c9d6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

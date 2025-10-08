@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential SolidPDFCreator.DLL Sideloading",
+      "description": "Detects potential DLL sideloading of \"SolidPDFCreator.dll\" Note: Unmapped fields: ImageLoaded",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ImageLoaded = RGX(\"\\\\\\\\SolidPDFCreator\\\\\\.dll$\") AND  NOT ((process_path = RGX(\"\\\\\\\\SolidPDFCreator\\\\\\.exe$\") AND (ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\SolidDocuments\\\\\\\\SolidPDFCreator\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\SolidDocuments\\\\\\\\SolidPDFCreator\\\\\\\\\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2182ef77-38ae-4930-9a8b-c9eabb274df7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

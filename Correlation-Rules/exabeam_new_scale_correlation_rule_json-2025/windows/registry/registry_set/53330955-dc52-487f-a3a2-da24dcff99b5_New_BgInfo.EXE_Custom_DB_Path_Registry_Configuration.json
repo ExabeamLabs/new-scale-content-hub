@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New BgInfo.EXE Custom DB Path Registry Configuration",
+      "description": "Detects setting of a new registry database value related to BgInfo configuration. Attackers can for example set this value to save the results of the commands executed by BgInfo in order to exfiltrate information.",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\"\\\\\\\\Software\\\\\\\\Winternals\\\\\\\\BGInfo\\\\\\\\Database$\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "df2e886b-d26b-469a-846d-4e21f30d5eb8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

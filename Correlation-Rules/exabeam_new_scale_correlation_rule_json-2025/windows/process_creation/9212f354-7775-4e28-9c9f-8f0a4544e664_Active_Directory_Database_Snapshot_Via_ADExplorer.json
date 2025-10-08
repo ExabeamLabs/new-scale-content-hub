@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Active Directory Database Snapshot Via ADExplorer",
+      "description": "Detects the execution of Sysinternals ADExplorer with the \"-snapshot\" flag in order to save a local copy of the active directory database. This can be used by attackers to extract data for Bloodhound, usernames for password spraying or use the meta data for social engineering. The snapshot doesn't contain password hashes but there have been cases, where administrators put passwords in the comment field.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\ADExp\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\ADExplorer\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\ADExplorer64\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\ADExplorer64a\\\\\\.exe$\")) OR process_original_file_name = \"AdExp\" OR process_description = \"Active\\ Directory\\ Editor\" OR process_product = \"Sysinternals\\ ADExplorer\") AND process_command_line = RGX(\".*snapshot.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "626f4bff-c02a-4003-8025-0fa67067d795"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

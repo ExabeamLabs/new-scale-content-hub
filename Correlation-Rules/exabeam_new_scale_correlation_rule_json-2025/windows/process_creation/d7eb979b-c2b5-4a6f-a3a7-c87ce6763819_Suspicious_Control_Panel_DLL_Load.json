@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Control Panel DLL Load",
+      "description": "Detects suspicious Rundll32 execution from control.exe as used by Equation Group and Exploit Kits",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\System32\\\\\\\\control\\\\\\.exe$\") AND (process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_original_file_name = \"RUNDLL32\\.EXE\")) AND  NOT (process_command_line = RGX(\".*Shell32\\\\\\.dll.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3b5f2a53-3296-4b59-b9b3-2f953a7f18be"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

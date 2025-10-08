@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - CreateMiniDump Execution",
+      "description": "Detects the use of CreateMiniDump hack tool used to dump the LSASS process memory for credential extraction on the attacker's machine",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\CreateMiniDump\\\\\\.exe$\") OR process_hash = RGX(\".*IMPHASH\\\\=4a07f944a83e8a7c2525efa35dd30e2f.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ec684a39-96d6-4237-af0d-da217b553555"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

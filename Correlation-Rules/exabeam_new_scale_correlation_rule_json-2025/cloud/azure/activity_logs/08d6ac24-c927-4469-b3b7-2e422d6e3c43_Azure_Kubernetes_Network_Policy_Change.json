@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Azure Kubernetes Network Policy Change",
+      "description": "Identifies when a Azure Kubernetes network policy is modified or deleted. Note: Unmapped fields: operationName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(operationName = \"MICROSOFT\\.KUBERNETES\\/CONNECTEDCLUSTERS\\/NETWORKING\\.K8S\\.IO\\/NETWORKPOLICIES\\/WRITE\" OR operationName = \"MICROSOFT\\.KUBERNETES\\/CONNECTEDCLUSTERS\\/NETWORKING\\.K8S\\.IO\\/NETWORKPOLICIES\\/DELETE\" OR operationName = \"MICROSOFT\\.KUBERNETES\\/CONNECTEDCLUSTERS\\/EXTENSIONS\\/NETWORKPOLICIES\\/WRITE\" OR operationName = \"MICROSOFT\\.KUBERNETES\\/CONNECTEDCLUSTERS\\/EXTENSIONS\\/NETWORKPOLICIES\\/DELETE\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "48463255-abd6-4382-b5d1-1c9747d2b953"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

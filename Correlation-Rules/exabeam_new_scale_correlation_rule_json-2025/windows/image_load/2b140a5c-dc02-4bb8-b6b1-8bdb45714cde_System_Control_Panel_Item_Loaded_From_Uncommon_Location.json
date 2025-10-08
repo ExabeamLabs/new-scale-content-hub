@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "System Control Panel Item Loaded From Uncommon Location",
+      "description": "Detects image load events of system control panel items (.cpl) from uncommon or non-system locations which might be the result of sideloading. Note: Unmapped fields: ImageLoaded",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ImageLoaded = RGX(\"\\\\\\\\hdwwiz\\\\\\.cpl$\") OR ImageLoaded = RGX(\"\\\\\\\\appwiz\\\\\\.cpl$\")) AND  NOT ((ImageLoaded = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\.*\") OR ImageLoaded = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\.*\") OR ImageLoaded = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\WinSxS\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2bf96868-77d0-4115-a43f-d3d4f1d0d906"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

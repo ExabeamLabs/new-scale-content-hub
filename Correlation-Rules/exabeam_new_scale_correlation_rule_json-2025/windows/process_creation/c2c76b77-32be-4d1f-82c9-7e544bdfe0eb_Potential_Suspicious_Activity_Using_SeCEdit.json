@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Suspicious Activity Using SeCEdit",
+      "description": "Detects potential suspicious behaviour using secedit.exe. Such as exporting or modifying the security policy",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\secedit\\\\\\.exe$\") OR process_original_file_name = \"SeCEdit\") AND (((process_command_line = RGX(\".*\\\\/export.*\") AND process_command_line = RGX(\".*\\\\/cfg.*\")) OR (process_command_line = RGX(\".*\\\\/configure.*\") AND process_command_line = RGX(\".*\\\\/db.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "909c0cfd-cb8e-45af-82c3-d3a99f9f630a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

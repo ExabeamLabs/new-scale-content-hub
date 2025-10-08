@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "CA Policy Updated by Non Approved Actor",
+      "description": "Monitor and alert on conditional access changes. Is Initiated by (actor) approved to make changes? Review Modified Properties and compare \"old\" vs \"new\" value. Note: Unmapped fields: properties.message",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "properties.message = \"Update\\ conditional\\ access\\ policy\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "93a8e536-270e-49f6-bd68-f26f8186fbc5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

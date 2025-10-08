@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows Service Terminated With Error",
+      "description": "Detects Windows services that got terminated for whatever reason Note: Unmapped fields: Provider_Name",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Provider_Name = \"Service\\ Control\\ Manager\" AND event_id = 7023)",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "84c77093-d7ce-47cd-9c56-1c6fc388f986"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

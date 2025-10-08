@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Uncommon Outbound Kerberos Connection - Security",
+      "description": "Detects uncommon outbound network activity via Kerberos default port indicating possible lateral movement or first stage PrivEsc via delegation.\n Note: Unmapped fields: DestPort, Application",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 5156 AND DestPort = 88) AND  NOT (((Application = RGX(\"^\\\\\\\\device\\\\\\\\harddiskvolume\") OR Application = RGX(\"^C\\\\:\")) AND Application = RGX(\"\\\\\\\\Windows\\\\\\\\System32\\\\\\\\lsass\\\\\\.exe$\"))) AND  NOT (((Application = RGX(\"^\\\\\\\\device\\\\\\\\harddiskvolume\") OR Application = RGX(\"^C\\\\:\")) AND (Application = RGX(\"\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Google\\\\\\\\Chrome\\\\\\\\Application\\\\\\\\chrome\\\\\\.exe$\") OR Application = RGX(\"\\\\\\\\Program\\\\ Files\\\\\\\\Google\\\\\\\\Chrome\\\\\\\\Application\\\\\\\\chrome\\\\\\.exe$\"))) OR ((Application = RGX(\"^\\\\\\\\device\\\\\\\\harddiskvolume\") OR Application = RGX(\"^C\\\\:\")) AND (Application = RGX(\"\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Mozilla\\\\ Firefox\\\\\\\\firefox\\\\\\.exe$\") OR Application = RGX(\"\\\\\\\\Program\\\\ Files\\\\\\\\Mozilla\\\\ Firefox\\\\\\\\firefox\\\\\\.exe$\"))) OR Application = RGX(\"\\\\\\\\tomcat\\\\\\\\bin\\\\\\\\tomcat8\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "81cb145a-661b-4362-a33c-cd9e7fb46ded"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

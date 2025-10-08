@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "User Removed From Group With CA Policy Modification Access",
+      "description": "Monitor and alert on group membership removal of groups that have CA policy modification access Note: Unmapped fields: properties.message",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "properties.message = \"Remove\\ member\\ from\\ group\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "16388350-77c8-4fdc-8d73-e23707e8652e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

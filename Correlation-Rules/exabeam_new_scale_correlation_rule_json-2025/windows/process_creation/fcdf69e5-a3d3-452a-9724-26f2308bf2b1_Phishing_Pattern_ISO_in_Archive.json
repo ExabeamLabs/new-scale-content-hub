@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Phishing Pattern ISO in Archive",
+      "description": "Detects cases in which an ISO files is opend within an archiver like 7Zip or Winrar, which is a sign of phishing as threat actors put small ISO files in archives as email attachments to bypass certain filters and protective measures (mark of web)",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((parent_process_path = RGX(\"\\\\\\\\Winrar\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\7zFM\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\peazip\\\\\\.exe$\")) AND (process_path = RGX(\"\\\\\\\\isoburn\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\PowerISO\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\ImgBurn\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e4205982-408d-420c-acb5-df532aaad830"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

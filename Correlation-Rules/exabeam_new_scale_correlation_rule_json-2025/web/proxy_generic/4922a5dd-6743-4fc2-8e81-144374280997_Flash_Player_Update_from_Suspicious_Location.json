@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Flash Player Update from Suspicious Location",
+      "description": "Detects a flashplayer update from an unofficial location Note: Unmapped fields: c-uri, cs-host",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(c-uri = RGX(\".*\\\\/flash\\\\_install\\\\\\.php.*\") OR c-uri = RGX(\"\\\\/install\\\\_flash\\\\_player\\\\\\.exe$\")) AND  NOT (cs-host = RGX(\"\\\\\\.adobe\\\\\\.com$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "05f62891-168c-4fc2-b7b4-961ba665412e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

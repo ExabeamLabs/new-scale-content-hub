@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Tap Installer Execution",
+      "description": "Well-known TAP software installation. Possible preparation for data exfiltration using tunneling techniques",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_path = RGX(\"\\\\\\\\tapinstall\\\\\\.exe$\") AND  NOT ((process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Avast\\\\ Software\\\\\\\\SecureLine\\\\ VPN\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Avast\\\\ Software\\\\\\\\SecureLine\\\\ VPN\\\\\\\\.*\")) OR process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\OpenVPN\\\\ Connect\\\\\\\\drivers\\\\\\\\tap\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\Proton\\\\ Technologies\\\\\\\\ProtonVPNTap\\\\\\\\installer\\\\\\\\.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "51223d4d-0acb-446e-928f-cf974f97057e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

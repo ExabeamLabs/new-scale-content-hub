@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Start-Process PassThru",
+      "description": "Powershell use PassThru option to start in background Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Start\\\\-Process.*\") AND ScriptBlockText = RGX(\".*\\\\-PassThru\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\-FilePath\\\\ .*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "efef553a-9bd8-45cf-bff1-42eb7b5f5744"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

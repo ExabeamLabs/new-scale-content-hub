@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "LSASS Dump Keyword In CommandLine",
+      "description": "Detects the presence of the keywords \"lsass\" and \".dmp\" in the commandline, which could indicate a potential attempt to dump or create a dump of the lsass process.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*lsass\\\\\\.dmp.*\") OR process_command_line = RGX(\".*lsass\\\\\\.zip.*\") OR process_command_line = RGX(\".*lsass\\\\\\.rar.*\") OR process_command_line = RGX(\".*Andrew\\\\\\.dmp.*\") OR process_command_line = RGX(\".*Coredump\\\\\\.dmp.*\") OR process_command_line = RGX(\".*NotLSASS\\\\\\.zip.*\") OR process_command_line = RGX(\".*lsass\\\\_2.*\") OR process_command_line = RGX(\".*lsassdump.*\") OR process_command_line = RGX(\".*lsassdmp.*\")) OR (process_command_line = RGX(\".*lsass.*\") AND process_command_line = RGX(\".*\\\\\\.dmp.*\")) OR (process_command_line = RGX(\".*SQLDmpr.*\") AND process_command_line = RGX(\".*\\\\\\.mdmp.*\")) OR (process_command_line = RGX(\".*nanodump.*\") AND process_command_line = RGX(\".*\\\\\\.dmp.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6c1e785c-f622-41c1-b1fa-3b3305dc0ecd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Account Created And Deleted Within A Close Time Frame",
+      "description": "Detects when an account was created and deleted in a short period of time. Note: Unmapped fields: properties.message, Status",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((properties.message = \"Add\\ user\" OR properties.message = \"Delete\\ user\") AND Status = \"Success\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "de408116-10eb-45e0-98c5-6ee1add2a834"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

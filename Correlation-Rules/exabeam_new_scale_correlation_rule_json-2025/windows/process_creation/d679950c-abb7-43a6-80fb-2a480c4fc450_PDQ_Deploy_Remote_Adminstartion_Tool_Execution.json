@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PDQ Deploy Remote Adminstartion Tool Execution",
+      "description": "Detect use of PDQ Deploy remote admin tool",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_description = \"PDQ\\ Deploy\\ Console\" OR process_product = \"PDQ\\ Deploy\" OR process_company = \"PDQ\\.com\" OR process_original_file_name = \"PDQDeployConsole\\.exe\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "80a2b98e-01c9-4c3f-a09a-9e4a735ee61f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

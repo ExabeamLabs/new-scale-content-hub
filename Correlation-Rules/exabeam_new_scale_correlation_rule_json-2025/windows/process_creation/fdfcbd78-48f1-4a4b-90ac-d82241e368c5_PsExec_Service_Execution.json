@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PsExec Service Execution",
+      "description": "Detects launch of the PSEXESVC service, which means that this system was the target of a psexec remote execution",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = \"C\\:\\\\Windows\\\\PSEXESVC\\.exe\" OR process_original_file_name = \"psexesvc\\.exe\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f5712092-fbfb-48f5-baef-e9a136eb4fe7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

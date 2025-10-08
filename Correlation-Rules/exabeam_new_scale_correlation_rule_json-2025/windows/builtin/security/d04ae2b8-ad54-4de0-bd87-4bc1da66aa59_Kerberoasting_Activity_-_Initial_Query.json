@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Kerberoasting Activity - Initial Query",
+      "description": "This rule will collect the data needed to start looking into possible kerberoasting activity.\nFurther analysis or computation within the query is needed focusing on requests from one specific host/IP towards multiple service names within a time period of 5 seconds.\nYou can then set a threshold for the number of requests and time between the requests to turn this into an alert.\n Note: Unmapped fields: Status, TicketEncryptionType, ServiceName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4769 AND Status = \"0x0\" AND TicketEncryptionType = \"0x17\") AND  NOT (((ServiceName = RGX(\"krbtgt$\") OR ServiceName = RGX(\"\\\\$$\")) AND dest_user = RGX(\".*\\\\$\\\\@.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8164b0fc-6451-411b-81fe-89aabbb68f84"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

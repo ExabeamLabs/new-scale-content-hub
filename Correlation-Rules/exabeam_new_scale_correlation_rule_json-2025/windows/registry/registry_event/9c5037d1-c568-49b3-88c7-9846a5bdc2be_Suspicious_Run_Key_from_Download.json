@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Run Key from Download",
+      "description": "Detects the suspicious RUN keys created by software located in Download or temporary Outlook/Internet Explorer directories",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Packages\\\\\\\\Microsoft\\\\\\.Outlook\\\\_.*\") OR process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Microsoft\\\\\\\\Olk\\\\\\\\Attachments\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\Downloads\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\Temporary\\\\ Internet\\\\ Files\\\\\\\\Content\\\\\\.Outlook\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\Local\\\\ Settings\\\\\\\\Temporary\\\\ Internet\\\\ Files\\\\\\\\.*\")) AND (registry_path = RGX(\".*\\\\\\\\Software\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Run.*\") OR registry_path = RGX(\".*\\\\\\\\Software\\\\\\\\WOW6432Node\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Run.*\") OR registry_path = RGX(\".*\\\\\\\\Software\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\Explorer\\\\\\\\Run.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9f46e3ef-7c0f-4cd5-a6a6-48a01f914c4e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

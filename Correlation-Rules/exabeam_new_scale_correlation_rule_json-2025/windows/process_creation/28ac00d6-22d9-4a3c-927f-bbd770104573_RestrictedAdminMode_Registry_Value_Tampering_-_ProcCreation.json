@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "RestrictedAdminMode Registry Value Tampering - ProcCreation",
+      "description": "Detects changes to the \"DisableRestrictedAdmin\" registry value in order to disable or enable RestrictedAdmin mode.\nRestrictedAdmin mode prevents the transmission of reusable credentials to the remote system to which you connect using Remote Desktop.\nThis prevents your credentials from being harvested during the initial connection process if the remote server has been compromise\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\\\\\System\\\\\\\\CurrentControlSet\\\\\\\\Control\\\\\\\\Lsa.*\") AND process_command_line = RGX(\".*DisableRestrictedAdmin.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "70f52228-ed9c-4adc-96d3-f0d115adbb06"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

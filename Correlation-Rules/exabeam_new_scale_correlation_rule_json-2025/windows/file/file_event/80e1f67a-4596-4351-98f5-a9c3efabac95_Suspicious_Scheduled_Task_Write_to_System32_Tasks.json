@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Scheduled Task Write to System32 Tasks",
+      "description": "Detects the creation of tasks from processes executed from suspicious locations",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(file_path = RGX(\".*\\\\\\\\Windows\\\\\\\\System32\\\\\\\\Tasks.*\") AND (process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\.*\") OR process_path = RGX(\".*C\\\\:\\\\\\\\PerfLogs.*\") OR process_path = RGX(\".*\\\\\\\\Windows\\\\\\\\System32\\\\\\\\config\\\\\\\\systemprofile.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "019a49b6-46fb-4a25-93c6-69abca929a36"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

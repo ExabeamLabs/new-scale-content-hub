@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Suspicious Electron Application CommandLine",
+      "description": "Detects potentially suspicious CommandLine of electron apps (teams, discord, slack, etc.). This could be a sign of abuse to proxy execution through a signed binary.",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\chrome\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\code\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\discord\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\GitHubDesktop\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\keybase\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msedge\\\\_proxy\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msedge\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msedgewebview2\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msteams\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\slack\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\Teams\\\\\\.exe$\")) OR (process_original_file_name = \"chrome\\.exe\" OR process_original_file_name = \"code\\.exe\" OR process_original_file_name = \"discord\\.exe\" OR process_original_file_name = \"GitHubDesktop\\.exe\" OR process_original_file_name = \"keybase\\.exe\" OR process_original_file_name = \"msedge\\_proxy\\.exe\" OR process_original_file_name = \"msedge\\.exe\" OR process_original_file_name = \"msedgewebview2\\.exe\" OR process_original_file_name = \"msteams\\.exe\" OR process_original_file_name = \"slack\\.exe\" OR process_original_file_name = \"Teams\\.exe\")) AND (process_command_line = RGX(\".*\\\\-\\\\-browser\\\\-subprocess\\\\-path.*\") OR process_command_line = RGX(\".*\\\\-\\\\-gpu\\\\-launcher.*\") OR process_command_line = RGX(\".*\\\\-\\\\-renderer\\\\-cmd\\\\-prefix.*\") OR process_command_line = RGX(\".*\\\\-\\\\-utility\\\\-cmd\\\\-prefix.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c8a0d605-7ad1-4f39-8940-1eefe98e382d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

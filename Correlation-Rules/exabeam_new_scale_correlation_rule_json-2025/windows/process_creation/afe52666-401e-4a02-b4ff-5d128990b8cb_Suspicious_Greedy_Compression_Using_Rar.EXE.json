@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Greedy Compression Using Rar.EXE",
+      "description": "Detects RAR usage that creates an archive from a suspicious folder, either a system folder or one of the folders often used by attackers for staging purposes",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\rar\\\\\\.exe$\") OR process_description = \"Command\\ line\\ RAR\") OR (process_command_line = RGX(\".*\\\\\\.exe\\\\ a\\\\ .*\") OR process_command_line = RGX(\".*\\\\ a\\\\ \\\\-m.*\"))) AND ((process_command_line = RGX(\".*\\\\ \\\\-hp.*\") AND process_command_line = RGX(\".*\\\\ \\\\-r\\\\ .*\")) AND (process_command_line = RGX(\".*\\\\ ?\\\\:\\\\\\\\\\\\*\\\\\\..*\") OR process_command_line = RGX(\".*\\\\ ?\\\\:\\\\\\\\\\\\\\\\\\\\*\\\\\\..*\") OR process_command_line = RGX(\".*\\\\ ?\\\\:\\\\\\\\\\\\$Recycle\\\\\\.bin\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\ ?\\\\:\\\\\\\\PerfLogs\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\ ?\\\\:\\\\\\\\Temp.*\") OR process_command_line = RGX(\".*\\\\ ?\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\ ?\\\\:\\\\\\\\Windows\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\ \\\\%public\\\\%.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "65004495-0976-49f5-836c-fbdad47bafaf"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

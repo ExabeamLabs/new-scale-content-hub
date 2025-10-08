@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Rundll32 Execution With Image Extension",
+      "description": "Detects the execution of Rundll32.exe with DLL files masquerading as image files",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_original_file_name = \"RUNDLL32\\.exe\") AND (process_command_line = RGX(\".*\\\\\\.bmp.*\") OR process_command_line = RGX(\".*\\\\\\.cr2.*\") OR process_command_line = RGX(\".*\\\\\\.eps.*\") OR process_command_line = RGX(\".*\\\\\\.gif.*\") OR process_command_line = RGX(\".*\\\\\\.ico.*\") OR process_command_line = RGX(\".*\\\\\\.jpeg.*\") OR process_command_line = RGX(\".*\\\\\\.jpg.*\") OR process_command_line = RGX(\".*\\\\\\.nef.*\") OR process_command_line = RGX(\".*\\\\\\.orf.*\") OR process_command_line = RGX(\".*\\\\\\.png.*\") OR process_command_line = RGX(\".*\\\\\\.raw.*\") OR process_command_line = RGX(\".*\\\\\\.sr2.*\") OR process_command_line = RGX(\".*\\\\\\.tif.*\") OR process_command_line = RGX(\".*\\\\\\.tiff.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "28b54e85-bcec-44ff-aab5-99b962e5aa8d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

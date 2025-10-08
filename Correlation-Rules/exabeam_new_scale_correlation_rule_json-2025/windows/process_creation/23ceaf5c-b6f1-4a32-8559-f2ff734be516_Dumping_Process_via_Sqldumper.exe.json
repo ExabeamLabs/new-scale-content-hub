@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Dumping Process via Sqldumper.exe",
+      "description": "Detects process dump via legitimate sqldumper.exe binary",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\sqldumper\\\\\\.exe$\") AND (process_command_line = RGX(\".*0x0110.*\") OR process_command_line = RGX(\".*0x01100\\\\:40.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "09551672-cca1-480a-a267-94d90ab84a2c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

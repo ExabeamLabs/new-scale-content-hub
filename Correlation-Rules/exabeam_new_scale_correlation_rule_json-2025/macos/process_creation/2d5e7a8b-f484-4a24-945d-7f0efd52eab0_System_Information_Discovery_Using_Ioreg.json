@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "System Information Discovery Using Ioreg",
+      "description": "Detects the use of \"ioreg\" which will show I/O Kit registry information.\nThis process is used for system information discovery.\nIt has been observed in-the-wild by calling this process directly or using bash and grep to look for specific strings.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/ioreg$\") OR process_command_line = RGX(\".*ioreg.*\")) AND (process_command_line = RGX(\".*\\\\-l.*\") OR process_command_line = RGX(\".*\\\\-c.*\")) AND (process_command_line = RGX(\".*AppleAHCIDiskDriver.*\") OR process_command_line = RGX(\".*IOPlatformExpertDevice.*\") OR process_command_line = RGX(\".*Oracle.*\") OR process_command_line = RGX(\".*Parallels.*\") OR process_command_line = RGX(\".*USB\\\\ Vendor\\\\ Name.*\") OR process_command_line = RGX(\".*VirtualBox.*\") OR process_command_line = RGX(\".*VMware.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8f1545f2-9219-4c03-bd91-8857c3d70a73"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

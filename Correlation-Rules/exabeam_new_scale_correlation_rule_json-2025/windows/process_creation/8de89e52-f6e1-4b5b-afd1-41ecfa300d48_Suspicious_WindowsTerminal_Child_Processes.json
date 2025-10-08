@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious WindowsTerminal Child Processes",
+      "description": "Detects suspicious children spawned via the Windows Terminal application which could be a sign of persistence via WindowsTerminal (see references section)",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((parent_process_path = RGX(\"\\\\\\\\WindowsTerminal\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\wt\\\\\\.exe$\")) AND ((process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\certutil\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\csc\\\\\\.exe$\")) OR (process_path = RGX(\".*C\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\Downloads\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\Desktop\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\Windows\\\\\\\\TEMP\\\\\\\\.*\")) OR (process_command_line = RGX(\".*\\\\ iex\\\\ .*\") OR process_command_line = RGX(\".*\\\\ icm.*\") OR process_command_line = RGX(\".*Invoke\\\\-.*\") OR process_command_line = RGX(\".*Import\\\\-Module\\\\ .*\") OR process_command_line = RGX(\".*ipmo\\\\ .*\") OR process_command_line = RGX(\".*DownloadString\\\\(.*\") OR process_command_line = RGX(\".*\\\\ \\\\/c\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\/k\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\/r\\\\ .*\")))) AND  NOT ((process_command_line = RGX(\".*Import\\\\-Module.*\") AND process_command_line = RGX(\".*Microsoft\\\\\\.VisualStudio\\\\\\.DevShell\\\\\\.dll.*\") AND process_command_line = RGX(\".*Enter\\\\-VsDevShell.*\")) OR (process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Packages\\\\\\\\Microsoft\\\\\\.WindowsTerminal\\\\_.*\") AND process_command_line = RGX(\".*\\\\\\\\LocalState\\\\\\\\settings\\\\\\.json.*\")) OR (process_command_line = RGX(\".*C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Microsoft\\\\ Visual\\\\ Studio\\\\\\\\.*\") AND process_command_line = RGX(\".*\\\\\\\\Common7\\\\\\\\Tools\\\\\\\\VsDevCmd\\\\\\.bat.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "73b521ca-ceb0-4e6a-83bc-06a6e9ded868"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

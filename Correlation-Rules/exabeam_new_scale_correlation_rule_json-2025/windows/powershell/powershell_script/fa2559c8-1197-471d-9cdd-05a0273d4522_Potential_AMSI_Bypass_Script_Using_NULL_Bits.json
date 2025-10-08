@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential AMSI Bypass Script Using NULL Bits",
+      "description": "Detects usage of special strings/null bits in order to potentially bypass AMSI functionalities Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*if\\\\(0\\\\)\\\\{\\\\{\\\\{0\\\\}\\\\}\\\\}\\\\'\\\\ \\\\-f\\\\ \\\\$\\\\(0\\\\ \\\\-as\\\\ \\\\[char\\\\]\\\\)\\\\ \\\\+.*\") OR ScriptBlockText = RGX(\".*\\\\#\\\\<NULL\\\\>.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "68c56733-883e-4212-ab6b-034645a5880f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

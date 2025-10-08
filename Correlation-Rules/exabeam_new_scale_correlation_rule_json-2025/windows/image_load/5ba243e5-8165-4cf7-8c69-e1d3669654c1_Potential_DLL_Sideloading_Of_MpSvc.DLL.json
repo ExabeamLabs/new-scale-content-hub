@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential DLL Sideloading Of MpSvc.DLL",
+      "description": "Detects potential DLL sideloading of \"MpSvc.dll\". Note: Unmapped fields: ImageLoaded",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ImageLoaded = RGX(\"\\\\\\\\MpSvc\\\\\\.dll$\") AND  NOT ((ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Windows\\\\ Defender\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\ProgramData\\\\\\\\Microsoft\\\\\\\\Windows\\\\ Defender\\\\\\\\Platform\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\WinSxS\\\\\\\\\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0ef6a875-7d19-439d-b011-ad02f6e5fd58"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

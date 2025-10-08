@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Restore Public AWS RDS Instance",
+      "description": "Detects the recovery of a new public database instance from a snapshot. It may be a part of data exfiltration. Note: Unmapped fields: eventSource, responseElements.publiclyAccessible, eventName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(eventSource = \"rds\\.amazonaws\\.com\" AND responseElements.publiclyAccessible = \"true\" AND eventName = \"RestoreDBInstanceFromDBSnapshot\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "32ba549c-5af3-41ac-b600-9a6a93db60f6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Use of Legacy Authentication Protocols",
+      "description": "Alert on when legacy authentication has been used on an account Note: Unmapped fields: ActivityDetails, ClientApp, Username",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ActivityDetails = \"Sign\\-ins\" AND (ClientApp = \"Other\\ client\" OR ClientApp = \"IMAP\" OR ClientApp = \"POP3\" OR ClientApp = \"MAPI\" OR ClientApp = \"SMTP\" OR ClientApp = \"Exchange\\ ActiveSync\" OR ClientApp = \"Exchange\\ Web\\ Services\") AND Username = \"UPN\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a52220da-6951-4acd-a130-1f047615883c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "AWS EC2 Startup Shell Script Change",
+      "description": "Detects changes to the EC2 instance startup script. The shell script will be executed as root/SYSTEM every time the specific instances are booted up. Note: Unmapped fields: eventSource, requestParameters.attribute, eventName",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(eventSource = \"ec2\\.amazonaws\\.com\" AND requestParameters.attribute = \"userData\" AND eventName = \"ModifyInstanceAttribute\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "bdbb4b81-1973-4106-b785-c2a550e898b9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

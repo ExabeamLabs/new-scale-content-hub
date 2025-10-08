@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "WebDav Client Execution Via Rundll32.EXE",
+      "description": "Detects \"svchost.exe\" spawning \"rundll32.exe\" with command arguments like \"C:\\windows\\system32\\davclnt.dll,DavSetCookie\".\nThis could be an indicator of exfiltration or use of WebDav to launch code (hosted on a WebDav server).\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\"\\\\\\\\svchost\\\\\\.exe$\") AND (process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_original_file_name = \"RUNDLL32\\.EXE\") AND process_command_line = RGX(\".*C\\\\:\\\\\\\\windows\\\\\\\\system32\\\\\\\\davclnt\\\\\\.dll\\\\,DavSetCookie.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1e36da9f-8158-40d5-9a58-0a83f7f096c1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Failed DNS Zone Transfer",
+      "description": "Detects when a DNS zone transfer failed.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "event_id = 6004",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "52679d99-22c9-4b2d-a6ab-1cc311a9367b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

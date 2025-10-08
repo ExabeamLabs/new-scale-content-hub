@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Security Service Disabled Via Reg.EXE",
+      "description": "Detects execution of \"reg.exe\" to disable security services such as Windows Defender.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*reg.*\") AND process_command_line = RGX(\".*add.*\")) AND ((process_command_line = RGX(\".*d\\\\ 4.*\") AND process_command_line = RGX(\".*v\\\\ Start.*\")) AND (process_command_line = RGX(\".*\\\\\\\\AppIDSvc.*\") OR process_command_line = RGX(\".*\\\\\\\\MsMpSvc.*\") OR process_command_line = RGX(\".*\\\\\\\\NisSrv.*\") OR process_command_line = RGX(\".*\\\\\\\\SecurityHealthService.*\") OR process_command_line = RGX(\".*\\\\\\\\Sense.*\") OR process_command_line = RGX(\".*\\\\\\\\UsoSvc.*\") OR process_command_line = RGX(\".*\\\\\\\\WdBoot.*\") OR process_command_line = RGX(\".*\\\\\\\\WdFilter.*\") OR process_command_line = RGX(\".*\\\\\\\\WdNisDrv.*\") OR process_command_line = RGX(\".*\\\\\\\\WdNisSvc.*\") OR process_command_line = RGX(\".*\\\\\\\\WinDefend.*\") OR process_command_line = RGX(\".*\\\\\\\\wscsvc.*\") OR process_command_line = RGX(\".*\\\\\\\\wuauserv.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7e94b224-c306-47c0-bf1d-7255b313745b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

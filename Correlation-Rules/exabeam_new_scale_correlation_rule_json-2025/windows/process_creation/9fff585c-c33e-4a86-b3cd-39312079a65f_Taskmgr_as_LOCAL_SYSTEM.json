@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Taskmgr as LOCAL_SYSTEM",
+      "description": "Detects the creation of taskmgr.exe process in context of LOCAL_SYSTEM",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((user = RGX(\".*AUTHORI.*\") OR user = RGX(\".*AUTORI.*\")) AND process_path = RGX(\"\\\\\\\\taskmgr\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4e09b62a-43da-4a39-84cc-d8b83141c710"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

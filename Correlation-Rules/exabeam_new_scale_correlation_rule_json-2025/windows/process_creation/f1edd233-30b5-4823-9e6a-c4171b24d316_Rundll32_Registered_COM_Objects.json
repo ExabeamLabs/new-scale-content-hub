@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Rundll32 Registered COM Objects",
+      "description": "load malicious registered COM objects",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_original_file_name = \"RUNDLL32\\.EXE\") AND ((process_command_line = RGX(\".*\\\\-sta\\\\ .*\") OR process_command_line = RGX(\".*\\\\-localserver\\\\ .*\")) AND (process_command_line = RGX(\".*\\\\{.*\") AND process_command_line = RGX(\".*\\\\}.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4b487926-95df-44d6-bbbb-ccb24b2ab857"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

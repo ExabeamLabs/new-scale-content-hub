@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Boot Configuration Tampering Via Bcdedit.EXE",
+      "description": "Detects the use of the bcdedit command to tamper with the boot configuration data. This technique is often times used by malware or attackers as a destructive way before launching ransomware.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\bcdedit\\\\\\.exe$\") OR process_original_file_name = \"bcdedit\\.exe\") AND process_command_line = RGX(\".*set.*\") AND ((process_command_line = RGX(\".*bootstatuspolicy.*\") AND process_command_line = RGX(\".*ignoreallfailures.*\")) OR (process_command_line = RGX(\".*recoveryenabled.*\") AND process_command_line = RGX(\".*no.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "93217c6d-6328-41c9-afa0-b109d67141aa"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

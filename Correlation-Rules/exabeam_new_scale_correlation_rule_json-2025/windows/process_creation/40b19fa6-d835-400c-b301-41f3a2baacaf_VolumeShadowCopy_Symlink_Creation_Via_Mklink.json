@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "VolumeShadowCopy Symlink Creation Via Mklink",
+      "description": "Shadow Copies storage symbolic link creation using operating systems utilities",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*mklink.*\") AND process_command_line = RGX(\".*HarddiskVolumeShadowCopy.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2ce702c6-3443-48c2-92b1-a21dd94f4ca6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

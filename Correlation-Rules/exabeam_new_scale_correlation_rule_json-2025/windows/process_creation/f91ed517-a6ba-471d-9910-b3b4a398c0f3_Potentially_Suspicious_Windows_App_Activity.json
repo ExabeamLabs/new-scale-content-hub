@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Suspicious Windows App Activity",
+      "description": "Detects potentially suspicious child process of applications launched from inside the WindowsApps directory. This could be a sign of a rogue \".appx\" package installation/execution",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "parent_process_path = RGX(\".*C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\WindowsApps\\\\\\\\.*\") AND ((process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\")) OR (process_command_line = RGX(\".*cmd\\\\ \\\\/c.*\") OR process_command_line = RGX(\".*Invoke\\\\-.*\") OR process_command_line = RGX(\".*Base64.*\"))) AND  NOT ((parent_process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\WindowsApps\\\\\\\\Microsoft\\\\\\.WindowsTerminal.*\") AND parent_process_path = RGX(\"\\\\\\\\WindowsTerminal\\\\\\.exe$\") AND (process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "171e7327-d662-4bfb-aeeb-f5f335b17a84"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

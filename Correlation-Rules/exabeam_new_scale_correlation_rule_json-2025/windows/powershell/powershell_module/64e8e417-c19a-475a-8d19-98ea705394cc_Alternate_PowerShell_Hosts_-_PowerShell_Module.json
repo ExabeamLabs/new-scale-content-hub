@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Alternate PowerShell Hosts - PowerShell Module",
+      "description": "Detects alternate PowerShell hosts potentially bypassing detections looking for powershell.exe Note: Unmapped fields: ContextInfo, Payload",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ContextInfo = RGX(\".**.*\") AND  NOT ((ContextInfo = RGX(\".*\\\\=\\\\ powershell.*\") OR ContextInfo = RGX(\".*\\\\=\\\\ C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\WindowsPowerShell\\\\\\\\v1\\\\\\.0\\\\\\\\powershell.*\") OR ContextInfo = RGX(\".*\\\\=\\\\ C\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\WindowsPowerShell\\\\\\\\v1\\\\\\.0\\\\\\\\powershell.*\") OR ContextInfo = RGX(\".*\\\\=\\\\ C\\\\:\\\\/Windows\\\\/System32\\\\/WindowsPowerShell\\\\/v1\\\\\\.0\\\\/powershell.*\") OR ContextInfo = RGX(\".*\\\\=\\\\ C\\\\:\\\\/Windows\\\\/SysWOW64\\\\/WindowsPowerShell\\\\/v1\\\\\\.0\\\\/powershell.*\")) OR ContextInfo = RGX(\".*\\\\=\\\\ C\\\\:\\\\\\\\WINDOWS\\\\\\\\System32\\\\\\\\sdiagnhost\\\\\\.exe\\\\ \\\\-Embedding.*\") OR ContextInfo = RGX(\".*ConfigSyncRun\\\\\\.exe.*\") OR ContextInfo = RGX(\".*C\\\\:\\\\\\\\Windows\\\\\\\\system32\\\\\\\\dsac\\\\\\.exe.*\") OR ContextInfo = RGX(\".*C\\\\:\\\\\\\\Windows\\\\\\\\system32\\\\\\\\wsmprovhost\\\\\\.exe\\\\ \\\\-Embedding.*\") OR (Payload = RGX(\".*Update\\\\-Help.*\") OR Payload = RGX(\".*Failed\\\\ to\\\\ update\\\\ Help\\\\ for\\\\ the\\\\ module.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "add54387-f9d9-4722-8ee1-44f18d08aac8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

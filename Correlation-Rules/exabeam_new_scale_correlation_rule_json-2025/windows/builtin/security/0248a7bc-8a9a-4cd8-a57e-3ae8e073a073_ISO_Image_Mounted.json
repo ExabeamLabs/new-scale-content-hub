@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "ISO Image Mounted",
+      "description": "Detects the mount of an ISO image on an endpoint Note: Unmapped fields: ObjectServer, ObjectType, ObjectName",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4663 AND ObjectServer = \"Security\" AND ObjectType = \"File\" AND ObjectName = RGX(\"^\\\\\\\\Device\\\\\\\\CdRom\")) AND  NOT ((ObjectName = \"\\\\Device\\\\CdRom0\\\\autorun\\.ico\" OR ObjectName = \"\\\\Device\\\\CdRom0\\\\setup\\.exe\" OR ObjectName = \"\\\\Device\\\\CdRom0\\\\setup64\\.exe\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "269d6a94-c603-45f9-8c29-94170a1ddc8b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Access of Sudoers File Content",
+      "description": "Detects the execution of a text-based file access or inspection utilities to read the content of /etc/sudoers in order to potentially list all users that have sudo rights.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\/cat$\") OR process_path = RGX(\"\\\\/ed$\") OR process_path = RGX(\"\\\\/egrep$\") OR process_path = RGX(\"\\\\/emacs$\") OR process_path = RGX(\"\\\\/fgrep$\") OR process_path = RGX(\"\\\\/grep$\") OR process_path = RGX(\"\\\\/head$\") OR process_path = RGX(\"\\\\/less$\") OR process_path = RGX(\"\\\\/more$\") OR process_path = RGX(\"\\\\/nano$\") OR process_path = RGX(\"\\\\/tail$\")) AND process_command_line = RGX(\".*\\\\ \\\\/etc\\\\/sudoers.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "db5fbefd-e6a7-4b1b-8885-a8cdfd58b5b9"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

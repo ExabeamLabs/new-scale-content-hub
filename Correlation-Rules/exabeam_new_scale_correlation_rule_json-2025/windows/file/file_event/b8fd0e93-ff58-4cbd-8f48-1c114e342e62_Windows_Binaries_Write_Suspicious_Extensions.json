@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows Binaries Write Suspicious Extensions",
+      "description": "Detects Windows executables that write files with suspicious extensions",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\csrss\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\lsass\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\RuntimeBroker\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\sihost\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\smss\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wininit\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\winlogon\\\\\\.exe$\")) AND (file_path = RGX(\"\\\\\\.bat$\") OR file_path = RGX(\"\\\\\\.dll$\") OR file_path = RGX(\"\\\\\\.exe$\") OR file_path = RGX(\"\\\\\\.hta$\") OR file_path = RGX(\"\\\\\\.iso$\") OR file_path = RGX(\"\\\\\\.ps1$\") OR file_path = RGX(\"\\\\\\.txt$\") OR file_path = RGX(\"\\\\\\.vbe$\") OR file_path = RGX(\"\\\\\\.vbs$\"))) OR ((process_path = RGX(\"\\\\\\\\dllhost\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\svchost\\\\\\.exe$\")) AND (file_path = RGX(\"\\\\\\.bat$\") OR file_path = RGX(\"\\\\\\.hta$\") OR file_path = RGX(\"\\\\\\.iso$\") OR file_path = RGX(\"\\\\\\.ps1$\") OR file_path = RGX(\"\\\\\\.vbe$\") OR file_path = RGX(\"\\\\\\.vbs$\")))) AND  NOT ((process_path = \"C\\:\\\\Windows\\\\System32\\\\dllhost\\.exe\" AND (file_path = RGX(\".*\\\\:\\\\\\\\Users\\\\\\\\.*\") AND file_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\\\\\_\\\\_PSScriptPolicyTest\\\\_.*\")) AND file_path = RGX(\"\\\\\\.ps1$\")) OR (process_path = \"C\\:\\\\Windows\\\\system32\\\\svchost\\.exe\" AND (file_path = RGX(\".*C\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\GroupPolicy\\\\\\\\DataStore\\\\\\\\.*\") AND file_path = RGX(\".*\\\\\\\\sysvol\\\\\\\\.*\") AND file_path = RGX(\".*\\\\\\\\Policies\\\\\\\\.*\") AND file_path = RGX(\".*\\\\\\\\Machine\\\\\\\\Scripts\\\\\\\\Startup\\\\\\\\.*\")) AND (file_path = RGX(\"\\\\\\.ps1$\") OR file_path = RGX(\"\\\\\\.bat$\"))) OR (process_path = \"C\\:\\\\Windows\\\\system32\\\\svchost\\.exe\" AND (file_path = RGX(\".*C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\WindowsApps\\\\\\\\Clipchamp.*\") AND file_path = RGX(\".*\\\\\\.ps1.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8aa1aff0-46d3-4a00-aea7-a52e987a34ad"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

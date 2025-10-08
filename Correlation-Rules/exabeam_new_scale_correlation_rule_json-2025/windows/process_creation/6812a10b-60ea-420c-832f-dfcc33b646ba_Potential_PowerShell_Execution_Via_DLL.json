@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential PowerShell Execution Via DLL",
+      "description": "Detects potential PowerShell execution from a DLL instead of the usual PowerShell process as seen used in PowerShdll.\nThis detection assumes that PowerShell commands are passed via the CommandLine.\n",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\InstallUtil\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\RegAsm\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\RegSvcs\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\rundll32\\\\\\.exe$\")) OR (process_original_file_name = \"InstallUtil\\.exe\" OR process_original_file_name = \"RegAsm\\.exe\" OR process_original_file_name = \"RegSvcs\\.exe\" OR process_original_file_name = \"REGSVR32\\.EXE\" OR process_original_file_name = \"RUNDLL32\\.EXE\")) AND (process_command_line = RGX(\".*Default\\\\\\.GetString.*\") OR process_command_line = RGX(\".*DownloadString.*\") OR process_command_line = RGX(\".*FromBase64String.*\") OR process_command_line = RGX(\".*ICM\\\\ .*\") OR process_command_line = RGX(\".*IEX\\\\ .*\") OR process_command_line = RGX(\".*Invoke\\\\-Command.*\") OR process_command_line = RGX(\".*Invoke\\\\-Expression.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4dd92f23-6acc-49ef-9821-28169cf86653"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

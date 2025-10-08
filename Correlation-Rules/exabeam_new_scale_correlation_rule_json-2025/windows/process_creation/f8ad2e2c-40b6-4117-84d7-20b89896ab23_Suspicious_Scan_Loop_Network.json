@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Scan Loop Network",
+      "description": "Adversaries may attempt to get a listing of other systems by IP address, hostname, or other logical identifier on a network that may be used for Lateral Movement from the current system",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*for\\\\ .*\") OR process_command_line = RGX(\".*foreach\\\\ .*\")) AND (process_command_line = RGX(\".*nslookup.*\") OR process_command_line = RGX(\".*ping.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "09f110ff-5d1a-4f04-bc20-d1867c966c0e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

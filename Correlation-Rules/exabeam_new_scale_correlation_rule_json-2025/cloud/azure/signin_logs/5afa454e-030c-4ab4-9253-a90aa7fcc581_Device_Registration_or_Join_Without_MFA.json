@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Device Registration or Join Without MFA",
+      "description": "Monitor and alert for device registration or join events where MFA was not performed. Note: Unmapped fields: ResourceDisplayName, conditionalAccessStatus, AuthenticationRequirement",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ResourceDisplayName = \"Device\\ Registration\\ Service\" AND conditionalAccessStatus = \"success\") AND  NOT (AuthenticationRequirement = \"multiFactorAuthentication\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "bedcccff-8d26-4b40-a5d8-fa6d1b8e57bf"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

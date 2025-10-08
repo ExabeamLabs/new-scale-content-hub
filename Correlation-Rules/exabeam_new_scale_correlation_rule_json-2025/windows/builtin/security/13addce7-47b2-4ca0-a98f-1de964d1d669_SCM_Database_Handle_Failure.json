@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "SCM Database Handle Failure",
+      "description": "Detects non-system users failing to get a handle of the SCM database. Note: Unmapped fields: ObjectType, ObjectName, AccessMask, SubjectLogonId",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4656 AND ObjectType = \"SC\\_MANAGER\\ OBJECT\" AND ObjectName = \"ServicesActive\" AND AccessMask = \"0xf003f\") AND  NOT (SubjectLogonId = \"0x3e4\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "110e7e3d-6cc6-499e-914d-055deebd283c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

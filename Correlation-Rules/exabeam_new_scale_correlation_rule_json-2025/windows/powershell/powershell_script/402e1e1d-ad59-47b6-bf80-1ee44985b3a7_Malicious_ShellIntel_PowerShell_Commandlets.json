@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Malicious ShellIntel PowerShell Commandlets",
+      "description": "Detects Commandlet names from ShellIntel exploitation scripts. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Invoke\\\\-SMBAutoBrute.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-GPOLinks.*\") OR ScriptBlockText = RGX(\".*Invoke\\\\-Potato.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "dc6845e6-c1cc-4d92-ab12-f137bdb8eb5d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

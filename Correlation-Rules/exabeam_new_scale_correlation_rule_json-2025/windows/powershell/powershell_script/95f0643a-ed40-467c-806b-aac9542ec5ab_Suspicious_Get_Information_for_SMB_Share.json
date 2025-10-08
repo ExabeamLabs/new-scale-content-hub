@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Get Information for SMB Share",
+      "description": "Adversaries may look for folders and drives shared on remote systems as a means of identifying sources of information to gather as\na precursor for Collection and to identify potential systems of interest for Lateral Movement.\nNetworks often contain shared network drives and folders that enable users to access file directories on various systems across a network.\n Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ScriptBlockText = RGX(\".*get\\\\-smbshare.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d3360da3-82d1-42dd-b7c1-529326ee7ec6"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

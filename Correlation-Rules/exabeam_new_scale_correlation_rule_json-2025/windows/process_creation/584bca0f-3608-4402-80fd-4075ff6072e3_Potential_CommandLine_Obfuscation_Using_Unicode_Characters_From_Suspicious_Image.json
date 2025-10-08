@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential CommandLine Obfuscation Using Unicode Characters From Suspicious Image",
+      "description": "Detects potential commandline obfuscation using unicode characters.\nAdversaries may attempt to make an executable or file difficult to discover or analyze by encrypting, encoding, or otherwise obfuscating its contents on the system or in transit.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\_ise\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\")) AND (process_original_file_name = \"Cmd\\.EXE\" OR process_original_file_name = \"cscript\\.exe\" OR process_original_file_name = \"PowerShell\\.EXE\" OR process_original_file_name = \"PowerShell\\_ISE\\.EXE\" OR process_original_file_name = \"pwsh\\.dll\" OR process_original_file_name = \"wscript\\.exe\")) AND (process_command_line = RGX(\".*\u02e3.*\") OR process_command_line = RGX(\".*\u02ea.*\") OR process_command_line = RGX(\".*\u02e2.*\") OR process_command_line = RGX(\".*\u2215.*\") OR process_command_line = RGX(\".*\u2044.*\") OR process_command_line = RGX(\".*\u2015.*\") OR process_command_line = RGX(\".*\u2014.*\") OR process_command_line = RGX(\".*\\\\\u00a0.*\") OR process_command_line = RGX(\".*\u00af.*\") OR process_command_line = RGX(\".*\u00ae.*\") OR process_command_line = RGX(\".*\u00b6.*\") OR process_command_line = RGX(\".*\u2800.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0059f04a-40cd-4867-a376-a1ec7466e20d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

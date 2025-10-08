@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remote Access Tool - Anydesk Execution From Suspicious Folder",
+      "description": "An adversary may use legitimate desktop support and remote access software, such as Team Viewer, Go2Assist, LogMein, AmmyyAdmin, etc, to establish an interactive command and control channel to target systems within networks.\nThese services are commonly used as legitimate technical support software, and may be allowed by application control within a target environment.\nRemote access tools like VNC, Ammyy, and Teamviewer are used frequently when compared with other legitimate software commonly used by adversaries. (Citation: Symantec Living off the Land)\n",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\AnyDesk\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\AnyDeskMSI\\\\\\.exe$\")) OR process_description = \"AnyDesk\" OR process_product = \"AnyDesk\" OR process_company = \"AnyDesk\\ Software\\ GmbH\") AND  NOT ((process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\.*\") OR process_path = RGX(\".*Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\AnyDesk.*\") OR process_path = RGX(\".*Program\\\\ Files\\\\\\\\AnyDesk.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a0eeadc4-d29b-4510-a97d-5df4ad8f8a64"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

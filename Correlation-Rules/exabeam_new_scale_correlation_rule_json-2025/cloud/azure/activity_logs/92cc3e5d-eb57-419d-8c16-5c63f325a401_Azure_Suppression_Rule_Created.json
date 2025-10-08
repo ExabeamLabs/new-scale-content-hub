@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Azure Suppression Rule Created",
+      "description": "Identifies when a suppression rule is created in Azure. Adversary's could attempt this to evade detection. Note: Unmapped fields: operationName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "operationName = \"MICROSOFT\\.SECURITY\\/ALERTSSUPPRESSIONRULES\\/WRITE\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d445a99a-9969-4bbe-bd92-0b3fc592312a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

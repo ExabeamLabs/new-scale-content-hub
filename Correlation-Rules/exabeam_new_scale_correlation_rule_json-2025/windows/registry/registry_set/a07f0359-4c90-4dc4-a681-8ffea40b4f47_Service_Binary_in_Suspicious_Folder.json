@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Service Binary in Suspicious Folder",
+      "description": "Detect the creation of a service with a service binary located in a suspicious directory Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((registry_path = RGX(\"^HKLM\\\\\\\\System\\\\\\\\CurrentControlSet\\\\\\\\Services\\\\\\\\\") AND registry_path = RGX(\"\\\\\\\\Start$\") AND (process_path = RGX(\".*\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\Perflogs\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\ADMIN\\\\$\\\\\\\\.*\") OR process_path = RGX(\".*\\\\\\\\Temp\\\\\\\\.*\")) AND (Details = \"DWORD\\ \\(0x00000000\\)\" OR Details = \"DWORD\\ \\(0x00000001\\)\" OR Details = \"DWORD\\ \\(0x00000002\\)\")) OR (registry_path = RGX(\"^HKLM\\\\\\\\System\\\\\\\\CurrentControlSet\\\\\\\\Services\\\\\\\\\") AND registry_path = RGX(\"\\\\\\\\ImagePath$\") AND (Details = RGX(\".*\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR Details = RGX(\".*\\\\\\\\Perflogs\\\\\\\\.*\") OR Details = RGX(\".*\\\\\\\\ADMIN\\\\$\\\\\\\\.*\") OR Details = RGX(\".*\\\\\\\\Temp\\\\\\\\.*\")))) AND  NOT ((process_path = RGX(\".*\\\\\\\\Common\\\\ Files\\\\\\\\.*\") AND process_path = RGX(\".*\\\\\\\\Temp\\\\\\\\.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "61d9e12e-e8fd-42ac-9d29-9d25c6c71afc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

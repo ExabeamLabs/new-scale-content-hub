@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential AVKkid.DLL Sideloading",
+      "description": "Detects potential DLL sideloading of \"AVKkid.dll\" Note: Unmapped fields: ImageLoaded",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ImageLoaded = RGX(\"\\\\\\\\AVKkid\\\\\\.dll$\") AND  NOT (((process_path = RGX(\".*C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\G\\\\ DATA\\\\\\\\.*\") OR process_path = RGX(\".*C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\G\\\\ DATA\\\\\\\\.*\")) AND process_path = RGX(\"\\\\\\\\AVKKid\\\\\\.exe$\") AND (ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\G\\\\ DATA\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\G\\\\ DATA\\\\\\\\\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "51a9ac92-ee05-4684-bff3-b351aa01fb98"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

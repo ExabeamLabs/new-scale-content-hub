@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "File Recovery From Backup Via Wbadmin.EXE",
+      "description": "Detects the recovery of files from backups via \"wbadmin.exe\".\nAttackers can restore sensitive files such as NTDS.DIT or Registry Hives from backups in order to potentially extract credentials.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\wbadmin\\\\\\.exe$\") OR process_original_file_name = \"WBADMIN\\.EXE\") AND (process_command_line = RGX(\".*\\\\ recovery.*\") AND process_command_line = RGX(\".*recoveryTarget.*\") AND process_command_line = RGX(\".*itemtype\\\\:File.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "44ff6378-f0d8-43e5-9610-5f0dbfe79e79"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

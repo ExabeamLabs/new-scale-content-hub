@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "UtilityFunctions.ps1 Proxy Dll",
+      "description": "Detects the use of a Microsoft signed script executing a managed DLL with PowerShell.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*UtilityFunctions\\\\\\.ps1.*\") OR process_command_line = RGX(\".*RegSnapin\\\\ .*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "768072c9-9a37-47b2-af32-4f9a8d591905"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Active Directory Enumeration Using AD Module - PsModule",
+      "description": "Detects usage of the \"Import-Module\" cmdlet to load the \"Microsoft.ActiveDirectory.Management.dl\" DLL. Which is often used by attackers to perform AD enumeration. Note: Unmapped fields: Payload",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((Payload = RGX(\".*Import\\\\-Module\\\\ .*\") OR Payload = RGX(\".*ipmo\\\\ .*\")) AND Payload = RGX(\".*Microsoft\\\\\\.ActiveDirectory\\\\\\.Management\\\\\\.dll.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "785a1592-3c87-4223-9b0c-b62976483412"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

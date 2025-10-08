@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Renamed Sysinternals Sdelete Execution",
+      "description": "Detects the use of a renamed SysInternals Sdelete, which is something an administrator shouldn't do (the renaming)",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_original_file_name = \"sdelete\\.exe\" AND  NOT ((process_path = RGX(\"\\\\\\\\sdelete\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\sdelete64\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "74b9f7c8-b4b2-4cb7-9828-b967f4e25c71"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Restricted Software Access By SRP",
+      "description": "Detects restricted access to applications by the Software Restriction Policies (SRP) policy Note: Unmapped fields: Provider_Name",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Provider_Name = \"Microsoft\\-Windows\\-SoftwareRestrictionPolicies\" AND (event_id = 865 OR event_id = 866 OR event_id = 867 OR event_id = 868 OR event_id = 882))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e658034f-dccc-422c-8829-fceb12ca8040"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

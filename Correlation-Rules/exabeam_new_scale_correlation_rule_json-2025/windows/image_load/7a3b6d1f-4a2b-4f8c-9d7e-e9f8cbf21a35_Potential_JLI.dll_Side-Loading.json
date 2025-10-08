@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential JLI.dll Side-Loading",
+      "description": "Detects potential DLL side-loading of jli.dll.\nJLI.dll has been observed being side-loaded by Java processes by various threat actors, including APT41, XWorm,\nand others in order to load malicious payloads in context of legitimate Java processes.\n Note: Unmapped fields: ImageLoaded, Signed",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ImageLoaded = RGX(\"\\\\\\\\jli\\\\\\.dll$\") AND  NOT (((ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\\") OR ImageLoaded = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\\")) AND process_description = \"OpenJDK\\ Platform\\ binary\" AND process_original_file_name = \"jli\\.dll\" AND process_product = RGX(\"^OpenJDK\\\\ Platform\") AND Signed = \"true\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "88d53aec-2778-4a5e-bde0-53a9582162a3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

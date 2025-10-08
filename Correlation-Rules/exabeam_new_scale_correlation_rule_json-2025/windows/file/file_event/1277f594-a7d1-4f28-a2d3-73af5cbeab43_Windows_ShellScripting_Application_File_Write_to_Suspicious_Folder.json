@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows Shell/Scripting Application File Write to Suspicious Folder",
+      "description": "Detects Windows shells and scripting applications that write files to suspicious folders",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\bash\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\cscript\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\msbuild\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\sh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wscript\\\\\\.exe$\")) AND (file_path = RGX(\"^C\\\\:\\\\\\\\PerfLogs\\\\\\\\\") OR file_path = RGX(\"^C\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\\"))) OR ((process_path = RGX(\"\\\\\\\\certutil\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\forfiles\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\mshta\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\scriptrunner\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\wmic\\\\\\.exe$\")) AND (file_path = RGX(\".*C\\\\:\\\\\\\\PerfLogs\\\\\\\\.*\") OR file_path = RGX(\".*C\\\\:\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR file_path = RGX(\".*C\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4f30f737-536b-4386-9e68-cf3c9194a4ee"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

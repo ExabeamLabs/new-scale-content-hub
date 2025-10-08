@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Connection to Remote Account",
+      "description": "Adversaries with no prior knowledge of legitimate credentials within the system or environment may guess passwords to attempt access to accounts.\nWithout knowledge of the password for an account, an adversary may opt to systematically guess the password using a repetitive or iterative mechanism\n Note: Unmapped fields: ScriptBlockText",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*System\\\\\\.DirectoryServices\\\\\\.Protocols\\\\\\.LdapDirectoryIdentifier.*\") OR ScriptBlockText = RGX(\".*System\\\\\\.Net\\\\\\.NetworkCredential.*\") OR ScriptBlockText = RGX(\".*System\\\\\\.DirectoryServices\\\\\\.Protocols\\\\\\.LdapConnection.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1bd363be-b627-4901-9633-4ce38ade5d4a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Service Installed",
+      "description": "Detects installation of NalDrv or PROCEXP152 services via registry-keys to non-system32 folders.\nBoth services are used in the tool Ghost-In-The-Logs (https://github.com/bats3c/Ghost-In-The-Logs), which uses KDU (https://github.com/hfiref0x/KDU)\n Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = \"HKLM\\\\System\\\\CurrentControlSet\\\\Services\\\\NalDrv\\\\ImagePath\" OR registry_path = \"HKLM\\\\System\\\\CurrentControlSet\\\\Services\\\\PROCEXP152\\\\ImagePath\") AND  NOT (((process_path = RGX(\"\\\\\\\\procexp64\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\procexp\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\procmon64\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\procmon\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\handle\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\handle64\\\\\\.exe$\")) AND Details = RGX(\".*\\\\\\\\WINDOWS\\\\\\\\system32\\\\\\\\Drivers\\\\\\\\PROCEXP152\\\\\\.SYS.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b8a374ff-b064-4cbe-8d2b-d6fbc815faed"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

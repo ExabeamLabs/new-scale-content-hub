@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Service Installation Script",
+      "description": "Detects suspicious service installation scripts Note: Unmapped fields: Provider_Name, ImagePath",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((Provider_Name = \"Service\\ Control\\ Manager\" AND event_id = 7045) AND (ImagePath = RGX(\".*\\\\ \\\\-c\\\\ .*\") OR ImagePath = RGX(\".*\\\\ \\\\-r\\\\ .*\") OR ImagePath = RGX(\".*\\\\ \\\\-k\\\\ .*\")) AND (ImagePath = RGX(\".*cscript.*\") OR ImagePath = RGX(\".*mshta.*\") OR ImagePath = RGX(\".*powershell.*\") OR ImagePath = RGX(\".*pwsh.*\") OR ImagePath = RGX(\".*regsvr32.*\") OR ImagePath = RGX(\".*rundll32.*\") OR ImagePath = RGX(\".*wscript.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "bde75b21-49a1-442a-aa61-e7e92962c1c2"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "NTFS Alternate Data Stream",
+      "description": "Detects writing data into NTFS alternate data streams from powershell. Needs Script Block Logging. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ScriptBlockText = RGX(\".*set\\\\-content.*\") OR ScriptBlockText = RGX(\".*add\\\\-content.*\")) AND ScriptBlockText = RGX(\".*\\\\-stream.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7f653db1-0607-4c3a-b511-95addee66e0c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

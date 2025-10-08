@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - Dumpert Process Dumper Execution",
+      "description": "Detects the use of Dumpert process dumper, which dumps the lsass.exe process memory",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_hash = RGX(\".*MD5\\\\=09D278F9DE118EF09163C6140255C690.*\") OR process_command_line = RGX(\".*Dumpert\\\\\\.dll.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6227d67b-04a3-404f-86e3-e156f8c8d370"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

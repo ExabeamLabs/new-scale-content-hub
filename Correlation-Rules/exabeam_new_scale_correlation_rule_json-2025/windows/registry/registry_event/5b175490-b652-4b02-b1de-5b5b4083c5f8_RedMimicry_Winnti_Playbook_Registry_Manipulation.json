@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "RedMimicry Winnti Playbook Registry Manipulation",
+      "description": "Detects actions caused by the RedMimicry Winnti playbook",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "registry_path = RGX(\".*HKLM\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\HTMLHelp\\\\\\\\data.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "79a09f33-4f30-4052-ad28-481a8e8ce11c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

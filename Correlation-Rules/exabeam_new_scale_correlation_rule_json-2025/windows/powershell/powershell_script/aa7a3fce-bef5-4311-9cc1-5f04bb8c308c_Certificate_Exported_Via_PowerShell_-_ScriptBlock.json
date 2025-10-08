@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Certificate Exported Via PowerShell - ScriptBlock",
+      "description": "Detects calls to cmdlets inside of PowerShell scripts that are used to export certificates from the local certificate store. Threat actors were seen abusing this to steal private keys from compromised machines. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Export\\\\-PfxCertificate.*\") OR ScriptBlockText = RGX(\".*Export\\\\-Certificate.*\")) AND  NOT (ScriptBlockText = RGX(\".*CmdletsToExport\\\\ \\\\=\\\\ \\\\@\\\\(.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8c6965a6-30f2-4f1b-8c0f-ee5cbfc078eb"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

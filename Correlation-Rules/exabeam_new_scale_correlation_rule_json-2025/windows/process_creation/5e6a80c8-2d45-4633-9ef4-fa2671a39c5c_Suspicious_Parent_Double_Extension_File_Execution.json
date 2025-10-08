@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Parent Double Extension File Execution",
+      "description": "Detect execution of suspicious double extension files in ParentCommandLine",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((parent_process_path = RGX(\"\\\\\\.doc\\\\\\.lnk$\") OR parent_process_path = RGX(\"\\\\\\.docx\\\\\\.lnk$\") OR parent_process_path = RGX(\"\\\\\\.xls\\\\\\.lnk$\") OR parent_process_path = RGX(\"\\\\\\.xlsx\\\\\\.lnk$\") OR parent_process_path = RGX(\"\\\\\\.ppt\\\\\\.lnk$\") OR parent_process_path = RGX(\"\\\\\\.pptx\\\\\\.lnk$\") OR parent_process_path = RGX(\"\\\\\\.rtf\\\\\\.lnk$\") OR parent_process_path = RGX(\"\\\\\\.pdf\\\\\\.lnk$\") OR parent_process_path = RGX(\"\\\\\\.txt\\\\\\.lnk$\") OR parent_process_path = RGX(\"\\\\\\.doc\\\\\\.js$\") OR parent_process_path = RGX(\"\\\\\\.docx\\\\\\.js$\") OR parent_process_path = RGX(\"\\\\\\.xls\\\\\\.js$\") OR parent_process_path = RGX(\"\\\\\\.xlsx\\\\\\.js$\") OR parent_process_path = RGX(\"\\\\\\.ppt\\\\\\.js$\") OR parent_process_path = RGX(\"\\\\\\.pptx\\\\\\.js$\") OR parent_process_path = RGX(\"\\\\\\.rtf\\\\\\.js$\") OR parent_process_path = RGX(\"\\\\\\.pdf\\\\\\.js$\") OR parent_process_path = RGX(\"\\\\\\.txt\\\\\\.js$\")) OR (parent_process_command_line = RGX(\".*\\\\\\.doc\\\\\\.lnk.*\") OR parent_process_command_line = RGX(\".*\\\\\\.docx\\\\\\.lnk.*\") OR parent_process_command_line = RGX(\".*\\\\\\.xls\\\\\\.lnk.*\") OR parent_process_command_line = RGX(\".*\\\\\\.xlsx\\\\\\.lnk.*\") OR parent_process_command_line = RGX(\".*\\\\\\.ppt\\\\\\.lnk.*\") OR parent_process_command_line = RGX(\".*\\\\\\.pptx\\\\\\.lnk.*\") OR parent_process_command_line = RGX(\".*\\\\\\.rtf\\\\\\.lnk.*\") OR parent_process_command_line = RGX(\".*\\\\\\.pdf\\\\\\.lnk.*\") OR parent_process_command_line = RGX(\".*\\\\\\.txt\\\\\\.lnk.*\") OR parent_process_command_line = RGX(\".*\\\\\\.doc\\\\\\.js.*\") OR parent_process_command_line = RGX(\".*\\\\\\.docx\\\\\\.js.*\") OR parent_process_command_line = RGX(\".*\\\\\\.xls\\\\\\.js.*\") OR parent_process_command_line = RGX(\".*\\\\\\.xlsx\\\\\\.js.*\") OR parent_process_command_line = RGX(\".*\\\\\\.ppt\\\\\\.js.*\") OR parent_process_command_line = RGX(\".*\\\\\\.pptx\\\\\\.js.*\") OR parent_process_command_line = RGX(\".*\\\\\\.rtf\\\\\\.js.*\") OR parent_process_command_line = RGX(\".*\\\\\\.pdf\\\\\\.js.*\") OR parent_process_command_line = RGX(\".*\\\\\\.txt\\\\\\.js.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9ba5e68c-907b-4ca1-a592-25bd92b0045f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

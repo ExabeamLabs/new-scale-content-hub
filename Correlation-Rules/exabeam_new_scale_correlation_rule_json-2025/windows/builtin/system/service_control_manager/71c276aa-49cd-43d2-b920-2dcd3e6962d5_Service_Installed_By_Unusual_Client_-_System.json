@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Service Installed By Unusual Client - System",
+      "description": "Detects a service installed by a client which has PID 0 or whose parent has PID 0 Note: Unmapped fields: Provider_Name",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Provider_Name = \"Service\\ Control\\ Manager\" AND event_id = 7045 AND process_id = 0)",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b80412e4-05a1-453b-9721-5ab1d360c1a1"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

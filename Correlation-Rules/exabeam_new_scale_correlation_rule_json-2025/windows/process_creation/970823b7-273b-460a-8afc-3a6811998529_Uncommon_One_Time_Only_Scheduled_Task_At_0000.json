@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Uncommon One Time Only Scheduled Task At 00:00",
+      "description": "Detects scheduled task creation events that include suspicious actions, and is run once at 00:00",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\".*\\\\\\\\schtasks\\\\\\.exe.*\") OR process_original_file_name = \"schtasks\\.exe\") AND (process_command_line = RGX(\".*wscript.*\") OR process_command_line = RGX(\".*vbscript.*\") OR process_command_line = RGX(\".*cscript.*\") OR process_command_line = RGX(\".*wmic\\\\ .*\") OR process_command_line = RGX(\".*wmic\\\\\\.exe.*\") OR process_command_line = RGX(\".*regsvr32\\\\\\.exe.*\") OR process_command_line = RGX(\".*powershell.*\") OR process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\.*\")) AND (process_command_line = RGX(\".*once.*\") AND process_command_line = RGX(\".*00\\\\:00.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "419addeb-1fa9-49ca-87d7-de9a5cce3bc3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New Capture Session Launched Via DXCap.EXE",
+      "description": "Detects the execution of \"DXCap.EXE\" with the \"-c\" flag, which allows a user to launch any arbitrary binary or windows package through DXCap itself. This can be abused to potentially bypass application whitelisting.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\DXCap\\\\\\.exe$\") OR process_original_file_name = \"DXCap\\.exe\") AND process_command_line = RGX(\".*\\\\ \\\\-c\\\\ .*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "5331aa8c-c9cb-48d8-988a-292abfb0a6e3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

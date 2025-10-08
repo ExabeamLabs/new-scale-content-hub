@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New TimeProviders Registered With Uncommon DLL Name",
+      "description": "Detects processes setting a new DLL in DllName in under HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\W32Time\\TimeProvider.\nAdversaries may abuse time providers to execute DLLs when the system boots.\nThe Windows Time service (W32Time) enables time synchronization across and within domains.\n Note: Unmapped fields: Details",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(registry_path = RGX(\".*\\\\\\\\Services\\\\\\\\W32Time\\\\\\\\TimeProviders.*\") AND registry_path = RGX(\"\\\\\\\\DllName$\")) AND  NOT ((Details = \"\\%SystemRoot\\%\\\\System32\\\\vmictimeprovider\\.dll\" OR Details = \"\\%systemroot\\%\\\\system32\\\\w32time\\.dll\" OR Details = \"C\\:\\\\Windows\\\\SYSTEM32\\\\w32time\\.DLL\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e9ac3ac8-1139-4fa9-8c13-4e942810b510"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

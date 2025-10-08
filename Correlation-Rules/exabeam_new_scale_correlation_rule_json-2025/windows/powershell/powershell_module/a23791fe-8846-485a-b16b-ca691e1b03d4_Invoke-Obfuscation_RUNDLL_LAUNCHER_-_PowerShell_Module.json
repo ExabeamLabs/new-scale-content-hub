@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation RUNDLL LAUNCHER - PowerShell Module",
+      "description": "Detects Obfuscated Powershell via RUNDLL LAUNCHER Note: Unmapped fields: Payload",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Payload = RGX(\".*rundll32\\\\\\.exe.*\") AND Payload = RGX(\".*shell32\\\\\\.dll.*\") AND Payload = RGX(\".*shellexec\\\\_rundll.*\") AND Payload = RGX(\".*powershell.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "6864325a-8e1f-4be6-b5b5-66c5d0f2808d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

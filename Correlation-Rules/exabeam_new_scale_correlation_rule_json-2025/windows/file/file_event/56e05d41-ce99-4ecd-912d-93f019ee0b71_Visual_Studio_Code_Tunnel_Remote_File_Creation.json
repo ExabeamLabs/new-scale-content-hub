@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Visual Studio Code Tunnel Remote File Creation",
+      "description": "Detects the creation of file by the \"node.exe\" process in the \".vscode-server\" directory. Could be a sign of remote file creation via VsCode tunnel feature\n",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\".*\\\\\\\\servers\\\\\\\\Stable\\\\-.*\") AND process_path = RGX(\"\\\\\\\\server\\\\\\\\node\\\\\\.exe$\") AND file_path = RGX(\".*\\\\\\\\\\\\\\.vscode\\\\-server\\\\\\\\data\\\\\\\\User\\\\\\\\History\\\\\\\\.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "12388342-7581-4ac8-a6d3-8fdf1b67df65"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

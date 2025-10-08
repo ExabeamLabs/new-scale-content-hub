@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Automated Collection Command PowerShell",
+      "description": "Once established within a system or network, an adversary may use automated techniques for collecting internal data. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ScriptBlockText = RGX(\".*\\\\\\.doc.*\") OR ScriptBlockText = RGX(\".*\\\\\\.docx.*\") OR ScriptBlockText = RGX(\".*\\\\\\.xls.*\") OR ScriptBlockText = RGX(\".*\\\\\\.xlsx.*\") OR ScriptBlockText = RGX(\".*\\\\\\.ppt.*\") OR ScriptBlockText = RGX(\".*\\\\\\.pptx.*\") OR ScriptBlockText = RGX(\".*\\\\\\.rtf.*\") OR ScriptBlockText = RGX(\".*\\\\\\.pdf.*\") OR ScriptBlockText = RGX(\".*\\\\\\.txt.*\")) AND (ScriptBlockText = RGX(\".*Get\\\\-ChildItem.*\") AND ScriptBlockText = RGX(\".*\\\\ \\\\-Recurse\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\ \\\\-Include\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f2132366-7740-4571-a90b-d7beb9ca57da"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

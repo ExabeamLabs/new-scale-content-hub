@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Invoke-Obfuscation VAR++ LAUNCHER OBFUSCATION - PowerShell Module",
+      "description": "Detects Obfuscated Powershell via VAR++ LAUNCHER Note: Unmapped fields: Payload",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "Payload = RGX(\"(?i)&&set.*({\\d}){2,}\\\"\\s+?-f.*&&.*cmd.*/c\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8faef5fd-72a9-4231-baa9-3d2773397a49"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

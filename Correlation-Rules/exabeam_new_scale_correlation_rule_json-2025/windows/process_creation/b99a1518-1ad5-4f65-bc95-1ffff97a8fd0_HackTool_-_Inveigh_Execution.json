@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - Inveigh Execution",
+      "description": "Detects the use of Inveigh a cross-platform .NET IPv4/IPv6 machine-in-the-middle tool",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\Inveigh\\\\\\.exe$\") OR (process_original_file_name = \"\\\\Inveigh\\.exe\" OR process_original_file_name = \"\\\\Inveigh\\.dll\") OR process_description = \"Inveigh\" OR (process_command_line = RGX(\".*\\\\ \\\\-SpooferIP.*\") OR process_command_line = RGX(\".*\\\\ \\\\-ReplyToIPs\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-ReplyToDomains\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-ReplyToMACs\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-SnifferIP.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "53cc8aee-d172-4b92-8cf5-b731137e47a0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

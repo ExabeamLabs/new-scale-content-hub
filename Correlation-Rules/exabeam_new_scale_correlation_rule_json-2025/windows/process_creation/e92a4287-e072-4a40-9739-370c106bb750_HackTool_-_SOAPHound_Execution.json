@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - SOAPHound Execution",
+      "description": "Detects the execution of SOAPHound, a .NET tool for collecting Active Directory data, using specific command-line arguments that may indicate an attempt to extract sensitive AD information.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*\\\\ \\\\-\\\\-buildcache\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-\\\\-bhdump\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-\\\\-certdump\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-\\\\-dnsdump\\\\ .*\")) AND (process_command_line = RGX(\".*\\\\ \\\\-c\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-\\\\-cachefilename\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-o\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-\\\\-outputdirectory.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "bf48ebcf-5496-484d-8239-00ed7e282c9d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

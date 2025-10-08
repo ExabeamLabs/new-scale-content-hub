@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "NTLM Brute Force",
+      "description": "Detects common NTLM brute force device names Note: Unmapped fields: WorkstationName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "event_id = 8004 AND (WorkstationName = \"Rdesktop\" OR WorkstationName = \"Remmina\" OR WorkstationName = \"Freerdp\" OR WorkstationName = \"Windows7\" OR WorkstationName = \"Windows8\" OR WorkstationName = \"Windows2012\" OR WorkstationName = \"Windows2016\" OR WorkstationName = \"Windows2019\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ebc4811a-5fba-47e0-8df9-ad2244c7f5d3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

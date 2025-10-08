@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Uncommon Svchost Parent Process",
+      "description": "Detects an uncommon svchost parent process",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_path = RGX(\"\\\\\\\\svchost\\\\\\.exe$\") AND  NOT ((parent_process_path = RGX(\"\\\\\\\\Mrt\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\MsMpEng\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\ngen\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\rpcnet\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\services\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\TiWorker\\\\\\.exe$\")) OR parent_process_path = \"None\" OR (parent_process_path = \"\\-\" OR parent_process_path = \"\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "29ada2ac-4a9e-4d6e-9431-f3ef6b5226d3"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

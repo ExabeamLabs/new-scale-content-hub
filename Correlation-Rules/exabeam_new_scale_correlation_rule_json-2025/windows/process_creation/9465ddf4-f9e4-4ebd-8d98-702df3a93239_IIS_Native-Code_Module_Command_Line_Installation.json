@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "IIS Native-Code Module Command Line Installation",
+      "description": "Detects suspicious IIS native-code module installations via command line",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\appcmd\\\\\\.exe$\") OR process_original_file_name = \"appcmd\\.exe\") AND ((process_command_line = RGX(\".*install.*\") AND process_command_line = RGX(\".*module.*\")) AND (process_command_line = RGX(\".*\\\\-name\\\\:.*\") OR process_command_line = RGX(\".*\\\\/name\\\\:.*\")))) AND  NOT (parent_process_path = \"C\\:\\\\Windows\\\\System32\\\\inetsrv\\\\iissetup\\.exe\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "33b47ca7-a9a2-4ea3-989e-4fe0e682a6ab"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

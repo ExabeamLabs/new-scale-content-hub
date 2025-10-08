@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Compressed File Creation Via Tar.EXE",
+      "description": "Detects execution of \"tar.exe\" in order to create a compressed file.\nAdversaries may abuse various utilities to compress or encrypt data before exfiltration.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\tar\\\\\\.exe$\") OR process_original_file_name = \"bsdtar\") AND (process_command_line = RGX(\".*\\\\-c.*\") OR process_command_line = RGX(\".*\\\\-r.*\") OR process_command_line = RGX(\".*\\\\-u.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "17b415e6-910a-4de0-b8ec-a283dc546680"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

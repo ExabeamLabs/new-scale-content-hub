@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Renamed Msdt.EXE Execution",
+      "description": "Detects the execution of a renamed \"Msdt.exe\" binary",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_original_file_name = \"msdt\\.exe\" AND  NOT (process_path = RGX(\"\\\\\\\\msdt\\\\\\.exe$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a7beadcc-9ad8-46ed-877c-6b3186478cbc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

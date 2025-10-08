@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "File Download Via Bitsadmin",
+      "description": "Detects usage of bitsadmin downloading a file",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\bitsadmin\\\\\\.exe$\") OR process_original_file_name = \"bitsadmin\\.exe\") AND (process_command_line = RGX(\".*\\\\ \\\\/transfer\\\\ .*\") OR ((process_command_line = RGX(\".*\\\\ \\\\/create\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\/addfile\\\\ .*\")) AND process_command_line = RGX(\".*http.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "340c6a87-1be8-44a7-9fae-030e74df9412"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

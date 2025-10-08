@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - Evil-WinRm Execution - PowerShell Module",
+      "description": "Detects the execution of Evil-WinRM via PowerShell Module logs by leveraging the hardcoded strings inside the utility.\n Note: Unmapped fields: ContextInfo, Payload",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ContextInfo = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\wsmprovhost\\\\\\.exe.*\") OR ContextInfo = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\wsmprovhost\\\\\\.exe.*\")) AND ((Payload = RGX(\".*value\\\\=\\\\\"\\\\(get\\\\-location\\\\)\\\\\\.path.*\") OR Payload = RGX(\".*value\\\\=\\\\\"\\\\(get\\\\-item*\\\\)\\\\\\.length.*\") OR Payload = RGX(\".*Invoke\\\\-Binary\\\\ .*\") OR Payload = RGX(\".*Donut\\\\-Loader\\\\ \\\\-process\\\\_id*\\\\-donutfile.*\") OR Payload = RGX(\".*Bypass\\\\-4MSI.*\") OR Payload = RGX(\".*IEX\\\\ \\\\(\\\\[System\\\\\\.Text\\\\\\.Encoding\\\\]\\\\:\\\\:ASCII\\\\\\.GetString\\\\(\\\\[System\\\\\\.Convert\\\\]\\\\:\\\\:FromBase64String\\\\(\\\\$a\\\\)\\\\)\\\\)\\\\\\.replace\\\\(\\\\'???\\\\'\\\\,\\\\'\\\\'\\\\).*\")) OR (Payload = RGX(\".*\\\\$servicios\\\\ \\\\=\\\\ Get\\\\-ItemProperty\\\\ \\\\\"registry\\\\:\\\\:HKLM\\\\\\\\System\\\\\\\\CurrentControlSet\\\\\\\\Services\\\\\\\\\\\\.*\") AND Payload = RGX(\".*Where\\\\-Object\\\\ \\\\{\\\\$\\\\_\\\\\\.imagepath\\\\ \\\\-notmatch\\\\ \\\\\"system\\\\\"\\\\ \\\\-and\\\\ \\\\$\\\\_\\\\\\.imagepath\\\\ \\\\-ne\\\\ \\\\$null\\\\ \\\\}\\\\ \\\\|\\\\ Select\\\\-Object\\\\ pschildname\\\\,imagepath.*\")) OR (Payload = RGX(\".*\\\\$a\\\\ \\\\+\\\\=\\\\ \\\\ \\\\\\\\\\\\\"\\\\$\\\\(\\\\$\\\\_\\\\\\.FullName\\\\\\.Replace\\\\(\\\\'\\\\\\\\\\\\'\\\\,\\\\'\\\\/\\\\'\\\\)\\\\)\\\\/\\\\\\\\\\\\\"\\\\}else\\\\{\\\\ \\\\ \\\\$a\\\\ \\\\+\\\\=\\\\ \\\\\\\\\\\\\"\\\\$\\\\(\\\\$\\\\_\\\\\\.FullName\\\\\\.Replace\\\\(\\\\'\\\\\\\\\\\\'\\\\,\\\\ \\\\'\\\\/\\\\'\\\\)\\\\)\\\\\\\\\\\\\"\\\\ \\\\}.*\") AND Payload = RGX(\".*\\\\$a\\\\=\\\\@\\\\(\\\\)\\\\;\\\\$.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1a427ab0-29e3-4fb6-8465-adb9b5a2f4e8"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

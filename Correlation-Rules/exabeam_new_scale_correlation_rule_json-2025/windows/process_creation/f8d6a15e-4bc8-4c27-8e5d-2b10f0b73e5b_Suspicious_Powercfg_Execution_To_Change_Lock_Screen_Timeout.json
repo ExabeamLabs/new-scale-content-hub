@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Powercfg Execution To Change Lock Screen Timeout",
+      "description": "Detects suspicious execution of 'Powercfg.exe' to change lock screen timeout",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\powercfg\\\\\\.exe$\") OR process_original_file_name = \"PowerCfg\\.exe\") AND ((process_command_line = RGX(\".*\\\\/setacvalueindex\\\\ .*\") AND process_command_line = RGX(\".*SCHEME\\\\_CURRENT.*\") AND process_command_line = RGX(\".*SUB\\\\_VIDEO.*\") AND process_command_line = RGX(\".*VIDEOCONLOCK.*\")) OR (process_command_line = RGX(\".*\\\\-change\\\\ .*\") AND process_command_line = RGX(\".*\\\\-standby\\\\-timeout\\\\-.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a47da712-d8e1-4458-ae42-aa8f1573e206"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

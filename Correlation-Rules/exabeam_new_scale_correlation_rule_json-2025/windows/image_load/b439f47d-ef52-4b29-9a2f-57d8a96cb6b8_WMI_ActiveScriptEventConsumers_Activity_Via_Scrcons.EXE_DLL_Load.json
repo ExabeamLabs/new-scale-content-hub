@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "WMI ActiveScriptEventConsumers Activity Via Scrcons.EXE DLL Load",
+      "description": "Detects signs of the WMI script host process \"scrcons.exe\" loading scripting DLLs which could indicates WMI ActiveScriptEventConsumers EventConsumers activity. Note: Unmapped fields: ImageLoaded",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\scrcons\\\\\\.exe$\") AND (ImageLoaded = RGX(\"\\\\\\\\vbscript\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\wbemdisp\\\\\\.dll$\") OR ImageLoaded = RGX(\"\\\\\\\\wshom\\\\\\.ocx$\") OR ImageLoaded = RGX(\"\\\\\\\\scrrun\\\\\\.dll$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "06a931b1-c53c-42e0-80b0-a1c131b823a5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

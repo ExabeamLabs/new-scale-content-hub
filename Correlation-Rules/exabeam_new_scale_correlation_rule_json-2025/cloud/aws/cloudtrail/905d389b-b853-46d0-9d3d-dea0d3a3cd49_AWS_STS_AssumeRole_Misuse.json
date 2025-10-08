@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "AWS STS AssumeRole Misuse",
+      "description": "Identifies the suspicious use of AssumeRole. Attackers could move laterally and escalate privileges. Note: Unmapped fields: userIdentity.type, userIdentity.sessionContext.sessionIssuer.type",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(userIdentity.type = \"AssumedRole\" AND userIdentity.sessionContext.sessionIssuer.type = \"Role\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c22cdede-d7ad-45ee-92bb-d877ae113a53"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

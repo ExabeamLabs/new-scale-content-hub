@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Persistence Attempt Via Run Keys Using Reg.EXE",
+      "description": "Detects suspicious command line reg.exe tool adding key to RUN key in Registry",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\reg\\\\\\.exe$\") AND (process_command_line = RGX(\".*reg.*\") AND process_command_line = RGX(\".*\\\\ add\\\\ .*\")) AND (process_command_line = RGX(\".*Software\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Run.*\") OR process_command_line = RGX(\".*\\\\\\\\Software\\\\\\\\WOW6432Node\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Run.*\") OR process_command_line = RGX(\".*\\\\\\\\Software\\\\\\\\Microsoft\\\\\\\\Windows\\\\\\\\CurrentVersion\\\\\\\\Policies\\\\\\\\Explorer\\\\\\\\Run.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "9b3a848a-b2c1-435b-b3ae-1a825ece8453"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

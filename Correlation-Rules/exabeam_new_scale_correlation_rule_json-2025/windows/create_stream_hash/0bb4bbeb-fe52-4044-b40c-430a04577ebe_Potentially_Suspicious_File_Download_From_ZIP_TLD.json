@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Suspicious File Download From ZIP TLD",
+      "description": "Detects the download of a file with a potentially suspicious extension from a .zip top level domain. Note: Unmapped fields: Contents",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Contents = RGX(\".*\\\\\\.zip\\\\/.*\") AND (file_path = RGX(\".*\\\\\\.bat\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.dat\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.dll\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.doc\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.docm\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.exe\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.hta\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.pptm\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.ps1\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.rar\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.rtf\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.sct\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.vbe\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.vbs\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.ws\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.wsf\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.xll\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.xls\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.xlsm\\\\:Zone.*\") OR file_path = RGX(\".*\\\\\\.zip\\\\:Zone.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a327c219-446f-4ab0-b816-d31bb3b90221"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

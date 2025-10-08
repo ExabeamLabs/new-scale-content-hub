@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - NSudo Execution",
+      "description": "Detects the use of NSudo tool for command execution",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\NSudo\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\NSudoLC\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\NSudoLG\\\\\\.exe$\")) OR (process_original_file_name = \"NSudo\\.exe\" OR process_original_file_name = \"NSudoLC\\.exe\" OR process_original_file_name = \"NSudoLG\\.exe\")) AND (process_command_line = RGX(\".*\\\\-U\\\\:S\\\\ .*\") OR process_command_line = RGX(\".*\\\\-U\\\\:T\\\\ .*\") OR process_command_line = RGX(\".*\\\\-U\\\\:E\\\\ .*\") OR process_command_line = RGX(\".*\\\\-P\\\\:E\\\\ .*\") OR process_command_line = RGX(\".*\\\\-M\\\\:S\\\\ .*\") OR process_command_line = RGX(\".*\\\\-M\\\\:H\\\\ .*\") OR process_command_line = RGX(\".*\\\\-U\\\\=S\\\\ .*\") OR process_command_line = RGX(\".*\\\\-U\\\\=T\\\\ .*\") OR process_command_line = RGX(\".*\\\\-U\\\\=E\\\\ .*\") OR process_command_line = RGX(\".*\\\\-P\\\\=E\\\\ .*\") OR process_command_line = RGX(\".*\\\\-M\\\\=S\\\\ .*\") OR process_command_line = RGX(\".*\\\\-M\\\\=H\\\\ .*\") OR process_command_line = RGX(\".*\\\\-ShowWindowMode\\\\:Hide.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "d8439d86-0d02-4e79-9979-8edc7b49cd43"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

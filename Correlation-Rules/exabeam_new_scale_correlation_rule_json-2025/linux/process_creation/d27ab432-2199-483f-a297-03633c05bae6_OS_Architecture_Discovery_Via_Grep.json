@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "OS Architecture Discovery Via Grep",
+      "description": "Detects the use of grep to identify information about the operating system architecture. Often combined beforehand with the execution of \"uname\" or \"cat /proc/cpuinfo\"\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/grep$\") AND (process_command_line = RGX(\"aarch64$\") OR process_command_line = RGX(\"arm$\") OR process_command_line = RGX(\"i386$\") OR process_command_line = RGX(\"i686$\") OR process_command_line = RGX(\"mips$\") OR process_command_line = RGX(\"x86\\\\_64$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f7293e96-d145-4a62-a5fe-a550d00a2cfc"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

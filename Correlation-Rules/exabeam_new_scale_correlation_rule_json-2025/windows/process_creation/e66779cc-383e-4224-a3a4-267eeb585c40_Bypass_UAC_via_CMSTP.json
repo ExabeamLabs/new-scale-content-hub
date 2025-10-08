@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Bypass UAC via CMSTP",
+      "description": "Detect commandline usage of Microsoft Connection Manager Profile Installer (cmstp.exe) to install specially formatted local .INF files",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\cmstp\\\\\\.exe$\") OR process_original_file_name = \"CMSTP\\.EXE\") AND (process_command_line = RGX(\".*\\\\/s.*\") OR process_command_line = RGX(\".*\\\\-s.*\") OR process_command_line = RGX(\".*\\\\/au.*\") OR process_command_line = RGX(\".*\\\\-au.*\") OR process_command_line = RGX(\".*\\\\/ni.*\") OR process_command_line = RGX(\".*\\\\-ni.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f4971231-d383-4155-8b72-8f8e1b290ff4"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

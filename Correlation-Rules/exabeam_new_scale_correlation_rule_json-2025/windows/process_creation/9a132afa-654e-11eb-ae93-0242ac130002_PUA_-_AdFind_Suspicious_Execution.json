@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - AdFind Suspicious Execution",
+      "description": "Detects AdFind execution with common flags seen used during attacks",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*domainlist.*\") OR process_command_line = RGX(\".*trustdmp.*\") OR process_command_line = RGX(\".*dcmodes.*\") OR process_command_line = RGX(\".*adinfo.*\") OR process_command_line = RGX(\".*\\\\ dclist\\\\ .*\") OR process_command_line = RGX(\".*computer\\\\_pwdnotreqd.*\") OR process_command_line = RGX(\".*objectcategory\\\\=.*\") OR process_command_line = RGX(\".*\\\\-subnets\\\\ \\\\-f.*\") OR process_command_line = RGX(\".*name\\\\=\\\\\"Domain\\\\ Admins\\\\.*\") OR process_command_line = RGX(\".*\\\\-sc\\\\ u\\\\:.*\") OR process_command_line = RGX(\".*domainncs.*\") OR process_command_line = RGX(\".*dompol.*\") OR process_command_line = RGX(\".*\\\\ oudmp\\\\ .*\") OR process_command_line = RGX(\".*subnetdmp.*\") OR process_command_line = RGX(\".*gpodmp.*\") OR process_command_line = RGX(\".*fspdmp.*\") OR process_command_line = RGX(\".*users\\\\_noexpire.*\") OR process_command_line = RGX(\".*computers\\\\_active.*\") OR process_command_line = RGX(\".*computers\\\\_pwdnotreqd.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "aa692f72-518f-430b-9433-38e62947887a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Arbitrary File Download Using Office Application",
+      "description": "Detects potential arbitrary file download using a Microsoft Office application",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\EXCEL\\\\\\.EXE$\") OR process_path = RGX(\"\\\\\\\\POWERPNT\\\\\\.EXE$\") OR process_path = RGX(\"\\\\\\\\WINWORD\\\\\\.exe$\")) OR (process_original_file_name = \"Excel\\.exe\" OR process_original_file_name = \"POWERPNT\\.EXE\" OR process_original_file_name = \"WinWord\\.exe\")) AND (process_command_line = RGX(\".*http\\\\:\\\\/\\\\/.*\") OR process_command_line = RGX(\".*https\\\\:\\\\/\\\\/.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f1ccd2d5-328e-4861-be1c-32fc469b940f"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

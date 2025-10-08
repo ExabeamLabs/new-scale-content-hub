@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New Root Certificate Authority Added",
+      "description": "Detects newly added root certificate authority to an AzureAD tenant to support certificate based authentication. Note: Unmapped fields: OperationName, TargetResources.modifiedProperties.newValue",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(OperationName = \"Set\\ Company\\ Information\" AND TargetResources.modifiedProperties.newValue = RGX(\".*TrustedCAsForPasswordlessAuth.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "055af6ea-98e8-4323-a8f1-69f35126b045"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

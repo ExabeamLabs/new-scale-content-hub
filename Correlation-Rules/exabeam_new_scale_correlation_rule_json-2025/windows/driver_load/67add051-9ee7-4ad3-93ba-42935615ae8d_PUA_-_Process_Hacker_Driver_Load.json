@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - Process Hacker Driver Load",
+      "description": "Detects driver load of the Process Hacker tool Note: Unmapped fields: ImageLoaded",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ImageLoaded = RGX(\"\\\\\\\\kprocesshacker\\\\\\.sys$\") OR (process_hash = RGX(\".*IMPHASH\\\\=821D74031D3F625BCBD0DF08B70F1E77.*\") OR process_hash = RGX(\".*IMPHASH\\\\=F86759BB4DE4320918615DC06E998A39.*\") OR process_hash = RGX(\".*IMPHASH\\\\=0A64EEB85419257D0CE32BD5D55C3A18.*\") OR process_hash = RGX(\".*IMPHASH\\\\=6E7B34DFC017700B1517B230DF6FF0D0.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8813e09e-f740-4cee-9f13-9e532556548d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

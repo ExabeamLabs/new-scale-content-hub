@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Binary Or Script Dropper Via PowerShell",
+      "description": "Detects PowerShell creating a binary executable or a script file.",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\_ise\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\")) AND (file_path = RGX(\"\\\\\\.bat$\") OR file_path = RGX(\"\\\\\\.chm$\") OR file_path = RGX(\"\\\\\\.cmd$\") OR file_path = RGX(\"\\\\\\.com$\") OR file_path = RGX(\"\\\\\\.dll$\") OR file_path = RGX(\"\\\\\\.exe$\") OR file_path = RGX(\"\\\\\\.hta$\") OR file_path = RGX(\"\\\\\\.jar$\") OR file_path = RGX(\"\\\\\\.js$\") OR file_path = RGX(\"\\\\\\.ocx$\") OR file_path = RGX(\"\\\\\\.scr$\") OR file_path = RGX(\"\\\\\\.sys$\") OR file_path = RGX(\"\\\\\\.vbe$\") OR file_path = RGX(\"\\\\\\.vbs$\") OR file_path = RGX(\"\\\\\\.wsf$\"))) AND  NOT ((file_path = RGX(\"^C\\\\:\\\\\\\\Users\\\\\\\\\") AND file_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") AND (file_path = RGX(\"\\\\\\.dll$\") OR file_path = RGX(\"\\\\\\.exe$\"))) OR ((file_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\\") OR file_path = RGX(\"^C\\\\:\\\\\\\\Windows\\\\\\\\SystemTemp\\\\\\\\\")) AND (file_path = RGX(\"\\\\\\.dll$\") OR file_path = RGX(\"\\\\\\.exe$\"))) OR (file_path = RGX(\"^C\\\\:\\\\\\\\Users\\\\\\\\\") AND file_path = RGX(\".*\\\\\\\\WindowsPowerShell\\\\\\\\Modules\\\\\\\\.*\") AND file_path = RGX(\"\\\\\\.dll$\")) OR (file_path = RGX(\"^C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\PackageManagement\\\\\\\\ProviderAssemblies\\\\\\\\nuget\\\\\\\\\") AND file_path = RGX(\"\\\\\\\\Microsoft\\\\\\.PackageManagement\\\\\\.NuGetProvider\\\\\\.dll$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "617cdacf-6390-4548-96af-9f28523ba815"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

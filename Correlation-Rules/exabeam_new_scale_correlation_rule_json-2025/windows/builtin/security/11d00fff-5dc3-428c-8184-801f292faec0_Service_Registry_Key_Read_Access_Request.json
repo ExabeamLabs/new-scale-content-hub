@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Service Registry Key Read Access Request",
+      "description": "Detects \"read access\" requests on the services registry key.\nAdversaries may execute their own malicious payloads by hijacking the Registry entries used by services.\nAdversaries may use flaws in the permissions for Registry keys related to services to redirect from the originally specified executable to one that they control, in order to launch their own code when a service starts.\n Note: Unmapped fields: ObjectName, AccessList",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4663 AND (ObjectName = RGX(\".*\\\\\\\\SYSTEM\\\\\\\\.*\") AND ObjectName = RGX(\".*ControlSet\\\\\\\\Services\\\\\\\\.*\")) AND AccessList = RGX(\".*\\\\%\\\\%1538.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "e737162d-2fff-4070-8423-cf1dd3300b51"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

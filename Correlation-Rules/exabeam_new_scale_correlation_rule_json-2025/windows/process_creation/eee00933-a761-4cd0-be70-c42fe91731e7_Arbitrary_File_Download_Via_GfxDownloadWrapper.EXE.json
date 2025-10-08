@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Arbitrary File Download Via GfxDownloadWrapper.EXE",
+      "description": "Detects execution of GfxDownloadWrapper.exe with a URL as an argument to download file.",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\GfxDownloadWrapper\\\\\\.exe$\") AND (process_command_line = RGX(\".*http\\\\:\\\\/\\\\/.*\") OR process_command_line = RGX(\".*https\\\\:\\\\/\\\\/.*\"))) AND  NOT (process_command_line = RGX(\".*https\\\\:\\\\/\\\\/gameplayapi\\\\\\.intel\\\\\\.com\\\\/.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "97de014b-c89f-4da0-857b-a1c68ca4be22"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

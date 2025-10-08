@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Too Many Global Admins",
+      "description": "Identifies an event where there are there are too many accounts assigned the Global Administrator role. Note: Unmapped fields: riskEventType",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "riskEventType = \"tooManyGlobalAdminsAssignedToTenantAlertIncident\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f2064698-9405-4065-bba3-57e09228d37a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

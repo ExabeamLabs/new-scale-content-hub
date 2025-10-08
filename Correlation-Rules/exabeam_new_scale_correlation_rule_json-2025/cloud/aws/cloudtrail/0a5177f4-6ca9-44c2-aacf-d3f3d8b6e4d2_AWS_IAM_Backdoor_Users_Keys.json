@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "AWS IAM Backdoor Users Keys",
+      "description": "Detects AWS API key creation for a user by another user.\nBackdoored users can be used to obtain persistence in the AWS environment.\nAlso with this alert, you can detect a flow of AWS keys in your org.\n Note: Unmapped fields: eventSource, eventName, userIdentity.arn",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(eventSource = \"iam\\.amazonaws\\.com\" AND eventName = \"CreateAccessKey\") AND  NOT (userIdentity.arn = RGX(\".*responseElements\\\\\\.accessKey\\\\\\.userName.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "bfd0ecb0-5625-4b87-95d6-43b4b3799062"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows Defender Threat Detected",
+      "description": "Detects actions taken by Windows Defender malware detection engines",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 1006 OR event_id = 1015 OR event_id = 1116 OR event_id = 1117)",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1ca5954c-16b3-4878-bbd2-2d9771fb0e0b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

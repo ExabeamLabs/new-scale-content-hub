@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Uncommon Child Process Of Conhost.EXE",
+      "description": "Detects uncommon \"conhost\" child processes. This could be a sign of \"conhost\" usage as a LOLBIN or potential process injection activity. Note: Unmapped fields: Provider_Name",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "parent_process_path = RGX(\"\\\\\\\\conhost\\\\\\.exe$\") AND  NOT (process_path = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\conhost\\\\\\.exe$\") OR process_path = \"None\" OR process_path = \"\") AND  NOT (Provider_Name = \"SystemTraceProvider\\-Process\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "17be76c8-1191-4400-8221-686d0a8affa7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

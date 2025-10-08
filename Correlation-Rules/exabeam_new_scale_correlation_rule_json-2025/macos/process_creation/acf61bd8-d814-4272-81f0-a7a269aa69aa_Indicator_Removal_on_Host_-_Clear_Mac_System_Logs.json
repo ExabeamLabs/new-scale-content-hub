@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Indicator Removal on Host - Clear Mac System Logs",
+      "description": "Detects deletion of local audit logs",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/rm$\") OR process_path = RGX(\"\\\\/unlink$\") OR process_path = RGX(\"\\\\/shred$\")) AND (process_command_line = RGX(\".*\\\\/var\\\\/log.*\") OR (process_command_line = RGX(\".*\\\\/Users\\\\/.*\") AND process_command_line = RGX(\".*\\\\/Library\\\\/Logs\\\\/.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "cd5f8c9e-f280-4366-a62b-24f677b4cc2e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

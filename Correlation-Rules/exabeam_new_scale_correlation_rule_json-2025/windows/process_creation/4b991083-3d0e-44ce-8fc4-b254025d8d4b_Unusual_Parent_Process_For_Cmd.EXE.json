@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Unusual Parent Process For Cmd.EXE",
+      "description": "Detects suspicious parent process for cmd.exe",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\cmd\\\\\\.exe$\") AND (parent_process_path = RGX(\"\\\\\\\\csrss\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\ctfmon\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\dllhost\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\epad\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\FlashPlayerUpdateService\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\GoogleUpdate\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\jucheck\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\jusched\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\LogonUI\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\lsass\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\SearchIndexer\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\SearchProtocolHost\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\SIHClient\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\sihost\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\slui\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\spoolsv\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\sppsvc\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\taskhostw\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\unsecapp\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\WerFault\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\wermgr\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\wlanext\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\WUDFHost\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f90ff660-3a31-4dc2-aea6-2f527ee0c944"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

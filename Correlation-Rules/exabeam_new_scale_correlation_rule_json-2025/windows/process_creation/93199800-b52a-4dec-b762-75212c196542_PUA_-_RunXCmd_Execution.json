@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - RunXCmd Execution",
+      "description": "Detects the use of the RunXCmd tool to execute commands with System or TrustedInstaller accounts",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_command_line = RGX(\".*\\\\ \\\\/account\\\\=system\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\/account\\\\=ti\\\\ .*\")) AND process_command_line = RGX(\".*\\\\/exec\\\\=.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a9be85e1-cbae-4e57-a0c0-de95069dfc42"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

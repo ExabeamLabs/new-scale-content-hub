@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Triple Cross eBPF Rootkit Install Commands",
+      "description": "Detects default install commands of the Triple Cross eBPF rootkit based on the \"deployer.sh\" script",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/sudo$\") AND (process_command_line = RGX(\".*\\\\ tc\\\\ .*\") AND process_command_line = RGX(\".*\\\\ enp0s3\\\\ .*\")) AND (process_command_line = RGX(\".*\\\\ qdisc\\\\ .*\") OR process_command_line = RGX(\".*\\\\ filter\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "f1f38b4a-c86a-475e-8462-91e2f21f6f07"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

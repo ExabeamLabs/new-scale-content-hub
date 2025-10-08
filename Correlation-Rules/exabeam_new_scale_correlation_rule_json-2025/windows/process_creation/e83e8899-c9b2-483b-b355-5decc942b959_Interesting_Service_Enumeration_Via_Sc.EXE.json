@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Interesting Service Enumeration Via Sc.EXE",
+      "description": "Detects the enumeration and query of interesting and in some cases sensitive services on the system via \"sc.exe\".\nAttackers often try to enumerate the services currently running on a system in order to find different attack vectors.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\sc\\\\\\.exe$\") OR process_original_file_name = \"sc\\.exe\") AND process_command_line = RGX(\".*query.*\") AND process_command_line = RGX(\".*termservice.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "39c29973-3b38-49a4-9075-d79c41c1a670"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Visual Studio Code Tunnel Shell Execution",
+      "description": "Detects the execution of a shell (powershell, bash, wsl...) via Visual Studio Code tunnel. Attackers can abuse this functionality to establish a C2 channel and execute arbitrary commands on the system.",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(parent_process_path = RGX(\".*\\\\\\\\servers\\\\\\\\Stable\\\\-.*\") AND parent_process_path = RGX(\"\\\\\\\\server\\\\\\\\node\\\\\\.exe$\") AND parent_process_command_line = RGX(\".*\\\\\\.vscode\\\\-server.*\")) AND (((process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\")) AND process_command_line = RGX(\".*\\\\\\\\terminal\\\\\\\\browser\\\\\\\\media\\\\\\\\shellIntegration\\\\\\.ps1.*\")) OR (process_path = RGX(\"\\\\\\\\wsl\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\bash\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2f8a3991-a9bc-4d50-806c-7bb546f3ccf7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

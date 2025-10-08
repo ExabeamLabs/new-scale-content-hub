@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential RemoteFXvGPUDisablement.EXE Abuse - PowerShell ScriptBlock",
+      "description": "Detects PowerShell module creation where the module Contents are set to \"function Get-VMRemoteFXPhysicalVideoAdapter\". This could be a sign of potential abuse of the \"RemoteFXvGPUDisablement.exe\" binary which is known to be vulnerable to module load-order hijacking. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "ScriptBlockText = RGX(\"^function\\\\ Get\\\\-VMRemoteFXPhysicalVideoAdapter\\\\ \\\\{\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c31fac5f-181c-409f-ae5d-5b7fdedd656e"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

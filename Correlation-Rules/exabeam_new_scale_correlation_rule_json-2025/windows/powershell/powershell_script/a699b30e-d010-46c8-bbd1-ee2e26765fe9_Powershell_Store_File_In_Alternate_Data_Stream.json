@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Powershell Store File In Alternate Data Stream",
+      "description": "Storing files in Alternate Data Stream (ADS) similar to Astaroth malware. Note: Unmapped fields: ScriptBlockText",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*Start\\\\-Process.*\") AND ScriptBlockText = RGX(\".*\\\\-FilePath\\\\ \\\\\"\\\\$env\\\\:comspec\\\\\"\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\-ArgumentList\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\>.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "cf39246f-1a44-422b-815c-0181bfddf2f5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

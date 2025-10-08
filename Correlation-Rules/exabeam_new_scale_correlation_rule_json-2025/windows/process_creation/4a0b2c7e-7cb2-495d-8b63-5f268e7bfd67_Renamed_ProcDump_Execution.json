@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Renamed ProcDump Execution",
+      "description": "Detects the execution of a renamed ProcDump executable.\nThis often done by attackers or malware in order to evade defensive mechanisms.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_original_file_name = \"procdump\" OR ((process_command_line = RGX(\".*\\\\ \\\\-ma\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-mp\\\\ .*\")) AND process_command_line = RGX(\".*\\\\ \\\\/accepteula.*\"))) AND  NOT ((process_path = RGX(\"\\\\\\\\procdump\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\procdump64\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "4cb39eed-bff5-4423-a5b9-2c435c7732ce"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

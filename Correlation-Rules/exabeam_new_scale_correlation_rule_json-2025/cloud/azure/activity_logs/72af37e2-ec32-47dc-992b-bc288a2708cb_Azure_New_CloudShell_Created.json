@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Azure New CloudShell Created",
+      "description": "Identifies when a new cloudshell is created inside of Azure portal. Note: Unmapped fields: operationName",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "operationName = \"MICROSOFT\\.PORTAL\\/CONSOLES\\/WRITE\"",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "25bef11b-0d43-4f5e-b5ac-09a48e470d56"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

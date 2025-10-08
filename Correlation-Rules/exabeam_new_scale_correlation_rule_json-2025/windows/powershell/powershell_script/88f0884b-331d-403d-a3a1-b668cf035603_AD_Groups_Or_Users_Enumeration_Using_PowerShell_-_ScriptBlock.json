@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "AD Groups Or Users Enumeration Using PowerShell - ScriptBlock",
+      "description": "Adversaries may attempt to find domain-level groups and permission settings.\nThe knowledge of domain-level permission groups can help adversaries determine which groups exist and which users belong to a particular group.\nAdversaries may use this information to determine which users have elevated permissions, such as domain administrators.\n Note: Unmapped fields: ScriptBlockText",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "low",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*get\\\\-ADPrincipalGroupMembership.*\") OR (ScriptBlockText = RGX(\".*get\\\\-aduser.*\") AND ScriptBlockText = RGX(\".*\\\\-f\\\\ .*\") AND ScriptBlockText = RGX(\".*\\\\-pr\\\\ .*\") AND ScriptBlockText = RGX(\".*DoesNotRequirePreAuth.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c8786e9b-43ef-47f6-8513-af76b0806681"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

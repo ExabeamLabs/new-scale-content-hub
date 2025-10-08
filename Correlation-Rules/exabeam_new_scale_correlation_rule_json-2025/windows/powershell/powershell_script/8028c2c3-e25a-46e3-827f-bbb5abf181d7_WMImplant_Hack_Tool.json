@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "WMImplant Hack Tool",
+      "description": "Detects parameters used by WMImplant Note: Unmapped fields: ScriptBlockText",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ScriptBlockText = RGX(\".*WMImplant.*\") OR ScriptBlockText = RGX(\".*\\\\ change\\\\_user\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\ gen\\\\_cli\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\ command\\\\_exec\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\ disable\\\\_wdigest\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\ disable\\\\_winrm\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\ enable\\\\_wdigest\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\ enable\\\\_winrm\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\ registry\\\\_mod\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\ remote\\\\_posh\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\ sched\\\\_job\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\ service\\\\_mod\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\ process\\\\_kill\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\ active\\\\_users\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\ basic\\\\_info\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\ power\\\\_off\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\ vacant\\\\_system\\\\ .*\") OR ScriptBlockText = RGX(\".*\\\\ logon\\\\_events\\\\ .*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "dd371990-53af-4d96-afe9-c9e44ead718d"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

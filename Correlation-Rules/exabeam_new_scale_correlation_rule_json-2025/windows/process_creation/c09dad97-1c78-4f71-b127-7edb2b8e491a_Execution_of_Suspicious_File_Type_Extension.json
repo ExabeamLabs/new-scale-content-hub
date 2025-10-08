@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Execution of Suspicious File Type Extension",
+      "description": "Detects whether the image specified in a process creation event doesn't refer to an \".exe\" (or other known executable extension) file. This can be caused by process ghosting or other unorthodox methods to start a process.\nThis rule might require some initial baselining to align with some third party tooling in the user environment.\n",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": " NOT ((process_path = RGX(\"\\\\\\.bin$\") OR process_path = RGX(\"\\\\\\.cgi$\") OR process_path = RGX(\"\\\\\\.com$\") OR process_path = RGX(\"\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\.scr$\") OR process_path = RGX(\"\\\\\\.tmp$\"))) AND  NOT ((process_path = \"System\" OR process_path = \"Registry\" OR process_path = \"MemCompression\" OR process_path = \"vmmem\") OR process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Installer\\\\\\\\MSI.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\DriverStore\\\\\\\\FileRepository\\\\\\\\.*\") OR (process_path = RGX(\".*\\\\:\\\\\\\\Config\\\\\\.Msi\\\\\\\\.*\") AND (process_path = RGX(\"\\\\\\.rbf$\") OR process_path = RGX(\"\\\\\\.rbs$\"))) OR (parent_process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\")) OR process_path = RGX(\".*\\\\:\\\\\\\\\\\\$Extend\\\\\\\\\\\\$Deleted\\\\\\\\.*\") OR (process_path = \"\\-\" OR process_path = \"\") OR process_path = \"None\") AND  NOT (parent_process_path = RGX(\".*\\\\:\\\\\\\\ProgramData\\\\\\\\Avira\\\\\\\\.*\") OR (process_path = RGX(\".*NVIDIA\\\\\\\\NvBackend\\\\\\\\.*\") AND process_path = RGX(\"\\\\\\.dat$\")) OR ((process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\WINPAKPRO\\\\\\\\.*\") OR process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\WINPAKPRO\\\\\\\\.*\")) AND process_path = RGX(\"\\\\\\.ngn$\")) OR (process_path = RGX(\"\\\\:\\\\\\\\Program\\\\ Files\\\\ \\\\(x86\\\\)\\\\\\\\MyQ\\\\\\\\Server\\\\\\\\pcltool\\\\\\.dll$\") OR process_path = RGX(\"\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\MyQ\\\\\\\\Server\\\\\\\\pcltool\\\\\\.dll$\")) OR (process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Packages\\\\\\\\.*\") AND process_path = RGX(\".*\\\\\\\\LocalState\\\\\\\\rootfs\\\\\\\\.*\")) OR process_path = RGX(\"\\\\\\\\LZMA\\\\_EXE$\") OR process_path = RGX(\".*\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Mozilla\\\\ Firefox\\\\\\\\.*\") OR (parent_process_path = \"C\\:\\\\Windows\\\\System32\\\\services\\.exe\" AND process_path = RGX(\"com\\\\\\.docker\\\\\\.service$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "3026190f-4981-4cab-83f4-dfefa9c22b38"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

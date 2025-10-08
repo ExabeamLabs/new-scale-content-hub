@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PUA - Process Hacker Execution",
+      "description": "Detects the execution of Process Hacker based on binary metadata information (Image, Hash, Imphash, etc).\nProcess Hacker is a tool to view and manipulate processes, kernel options and other low level options.\nThreat actors abused older vulnerable versions to manipulate system processes.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\".*\\\\\\\\ProcessHacker\\\\_.*\") OR process_path = RGX(\"\\\\\\\\ProcessHacker\\\\\\.exe$\") OR (process_original_file_name = \"ProcessHacker\\.exe\" OR process_original_file_name = \"Process\\ Hacker\") OR process_description = \"Process\\ Hacker\" OR process_product = \"Process\\ Hacker\" OR (process_hash = RGX(\".*MD5\\\\=68F9B52895F4D34E74112F3129B3B00D.*\") OR process_hash = RGX(\".*MD5\\\\=B365AF317AE730A67C936F21432B9C71.*\") OR process_hash = RGX(\".*SHA1\\\\=A0BDFAC3CE1880B32FF9B696458327CE352E3B1D.*\") OR process_hash = RGX(\".*SHA1\\\\=C5E2018BF7C0F314FED4FD7FE7E69FA2E648359E.*\") OR process_hash = RGX(\".*SHA256\\\\=D4A0FE56316A2C45B9BA9AC1005363309A3EDC7ACF9E4DF64D326A0FF273E80F.*\") OR process_hash = RGX(\".*SHA256\\\\=BD2C2CF0631D881ED382817AFCCE2B093F4E412FFB170A719E2762F250ABFEA4.*\") OR process_hash = RGX(\".*IMPHASH\\\\=3695333C60DEDECDCAFF1590409AA462.*\") OR process_hash = RGX(\".*IMPHASH\\\\=04DE0AD9C37EB7BD52043D2ECAC958DF.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "7104e380-258c-4422-a7b8-27ebdaf679e7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

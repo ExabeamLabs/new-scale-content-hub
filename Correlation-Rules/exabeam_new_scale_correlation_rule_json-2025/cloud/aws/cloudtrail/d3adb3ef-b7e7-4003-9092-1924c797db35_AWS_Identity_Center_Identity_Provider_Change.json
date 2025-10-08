@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "AWS Identity Center Identity Provider Change",
+      "description": "Detects a change in the AWS Identity Center (FKA AWS SSO) identity provider.\nA change in identity provider allows an attacker to establish persistent access or escalate privileges via user impersonation.\n Note: Unmapped fields: eventSource, eventName",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((eventSource = \"sso\\-directory\\.amazonaws\\.com\" OR eventSource = \"sso\\.amazonaws\\.com\") AND (eventName = \"AssociateDirectory\" OR eventName = \"DisableExternalIdPConfigurationForDirectory\" OR eventName = \"DisassociateDirectory\" OR eventName = \"EnableExternalIdPConfigurationForDirectory\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c7b39f4f-34c0-41fd-883b-2c41858bfe33"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

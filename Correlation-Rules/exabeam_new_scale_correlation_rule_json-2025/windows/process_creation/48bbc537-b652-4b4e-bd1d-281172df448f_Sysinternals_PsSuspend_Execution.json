@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Sysinternals PsSuspend Execution",
+      "description": "Detects usage of Sysinternals PsSuspend which can be abused to suspend critical processes",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_original_file_name = \"pssuspend\\.exe\" OR (process_path = RGX(\"\\\\\\\\pssuspend\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pssuspend64\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "11922b77-4d26-4b7a-bfdf-aba90c4d38ab"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious AddinUtil.EXE CommandLine Execution",
+      "description": "Detects execution of the Add-In deployment cache updating utility (AddInutil.exe) with suspicious Addinroot or Pipelineroot paths. An adversary may execute AddinUtil.exe with uncommon Addinroot/Pipelineroot paths that point to the adversaries Addins.Store payload.\n",
+      "useCase": "data exfiltration",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\addinutil\\\\\\.exe$\") OR process_original_file_name = \"AddInUtil\\.exe\") AND (((process_command_line = RGX(\".*\\\\-AddInRoot\\\\:.*\") OR process_command_line = RGX(\".*\\\\-PipelineRoot\\\\:.*\")) AND (process_command_line = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Desktop\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Downloads\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\"))) OR ((process_command_line = RGX(\".*\\\\-AddInRoot\\\\:\\\\\\..*\") OR process_command_line = RGX(\".*\\\\-AddInRoot\\\\:\\\\\"\\\\\\.\\\\.*\") OR process_command_line = RGX(\".*\\\\-PipelineRoot\\\\:\\\\\\..*\") OR process_command_line = RGX(\".*\\\\-PipelineRoot\\\\:\\\\\"\\\\\\.\\\\.*\")) AND (process_working_directory = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\.*\") OR process_working_directory = RGX(\".*\\\\\\\\Desktop\\\\\\\\.*\") OR process_working_directory = RGX(\".*\\\\\\\\Downloads\\\\\\\\.*\") OR process_working_directory = RGX(\".*\\\\\\\\Users\\\\\\\\Public\\\\\\\\.*\") OR process_working_directory = RGX(\".*\\\\\\\\Windows\\\\\\\\Temp\\\\\\\\.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8226c6cb-680a-4cdc-9076-adab35561c5a"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

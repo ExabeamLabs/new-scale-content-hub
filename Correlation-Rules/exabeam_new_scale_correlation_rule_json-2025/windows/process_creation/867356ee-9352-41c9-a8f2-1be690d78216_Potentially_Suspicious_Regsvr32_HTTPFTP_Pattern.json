@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potentially Suspicious Regsvr32 HTTP/FTP Pattern",
+      "description": "Detects regsvr32 execution to download/install/register new DLLs that are hosted on Web or FTP servers.",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\regsvr32\\\\\\.exe$\") OR process_original_file_name = \"REGSVR32\\.EXE\") AND (process_command_line = RGX(\".*\\\\ \\\\/i.*\") OR process_command_line = RGX(\".*\\\\ \\\\-i.*\")) AND (process_command_line = RGX(\".*ftp.*\") OR process_command_line = RGX(\".*http.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "92a73be0-dea4-45a1-99c9-0c71f25b0b81"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

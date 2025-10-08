@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Guest Users Invited To Tenant By Non Approved Inviters",
+      "description": "Detects guest users being invited to tenant by non-approved inviters Note: Unmapped fields: Category, OperationName, InitiatedBy",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(Category = \"UserManagement\" AND OperationName = \"Invite\\ external\\ user\") AND  NOT (InitiatedBy = RGX(\".*\\\\<approved\\\\ guest\\\\ inviter\\\\ use\\\\ OR\\\\ for\\\\ multiple\\\\>.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "cb4ccbbe-b6d3-483a-b3e0-aa44c41b6d66"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

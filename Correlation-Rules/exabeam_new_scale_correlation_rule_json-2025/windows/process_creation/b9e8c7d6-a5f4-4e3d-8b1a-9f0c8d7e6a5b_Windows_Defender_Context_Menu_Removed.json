@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Windows Defender Context Menu Removed",
+      "description": "Detects the use of reg.exe or PowerShell to delete the Windows Defender context menu handler registry keys.\nThis action removes the \"Scan with Microsoft Defender\" option from the right-click menu for files, directories, and drives.\nAttackers may use this technique to hinder manual, on-demand scans and reduce the visibility of the security product.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\powershell\\\\_ise\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\reg\\\\\\.exe$\")) OR (process_original_file_name = \"powershell\\_ise\\.EXE\" OR process_original_file_name = \"PowerShell\\.EXE\" OR process_original_file_name = \"pwsh\\.dll\" OR process_original_file_name = \"reg\\.exe\")) AND (process_command_line = RGX(\".*del.*\") OR process_command_line = RGX(\".*Remove\\\\-Item.*\") OR process_command_line = RGX(\".*ri\\\\ .*\")) AND process_command_line = RGX(\".*\\\\\\\\shellex\\\\\\\\ContextMenuHandlers\\\\\\\\EPP.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "c1661d08-6b7e-43ac-b369-056b12e42839"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

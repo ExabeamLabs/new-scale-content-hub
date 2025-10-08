@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "New Root or CA or AuthRoot Certificate to Store",
+      "description": "Detects the addition of new root, CA or AuthRoot certificates to the Windows registry Note: Unmapped fields: Details",
+      "useCase": "compromised credentials",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\SystemCertificates\\\\\\\\Root\\\\\\\\Certificates\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Policies\\\\\\\\Microsoft\\\\\\\\SystemCertificates\\\\\\\\Root\\\\\\\\Certificates\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\EnterpriseCertificates\\\\\\\\Root\\\\\\\\Certificates\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\SystemCertificates\\\\\\\\CA\\\\\\\\Certificates\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Policies\\\\\\\\Microsoft\\\\\\\\SystemCertificates\\\\\\\\CA\\\\\\\\Certificates\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\EnterpriseCertificates\\\\\\\\CA\\\\\\\\Certificates\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\SystemCertificates\\\\\\\\AuthRoot\\\\\\\\Certificates\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Policies\\\\\\\\Microsoft\\\\\\\\SystemCertificates\\\\\\\\AuthRoot\\\\\\\\Certificates\\\\\\\\.*\") OR registry_path = RGX(\".*\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\EnterpriseCertificates\\\\\\\\AuthRoot\\\\\\\\Certificates\\\\\\\\.*\")) AND registry_path = RGX(\"\\\\\\\\Blob$\") AND Details = \"Binary\\ Data\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "8d2026d7-e45c-4d25-a4cd-8a83c4d606cd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

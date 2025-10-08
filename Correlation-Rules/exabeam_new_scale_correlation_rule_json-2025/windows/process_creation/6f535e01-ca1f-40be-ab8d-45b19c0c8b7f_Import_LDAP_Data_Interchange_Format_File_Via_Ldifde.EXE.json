@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Import LDAP Data Interchange Format File Via Ldifde.EXE",
+      "description": "Detects the execution of \"Ldifde.exe\" with the import flag \"-i\". The can be abused to include HTTP-based arguments which will allow the arbitrary download of files from a remote server.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\ldifde\\\\\\.exe$\") OR process_original_file_name = \"ldifde\\.exe\") AND (process_command_line = RGX(\".*\\\\-i.*\") AND process_command_line = RGX(\".*\\\\-f.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a2604f4a-998b-47ac-841b-833bda5e5739"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

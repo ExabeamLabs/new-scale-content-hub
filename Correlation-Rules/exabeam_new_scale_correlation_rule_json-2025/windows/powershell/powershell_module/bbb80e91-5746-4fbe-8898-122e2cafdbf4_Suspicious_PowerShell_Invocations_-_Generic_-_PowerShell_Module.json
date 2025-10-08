@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious PowerShell Invocations - Generic - PowerShell Module",
+      "description": "Detects suspicious PowerShell invocation command parameters Note: Unmapped fields: ContextInfo",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((ContextInfo = RGX(\".*\\\\ \\\\-enc\\\\ .*\") OR ContextInfo = RGX(\".*\\\\ \\\\-EncodedCommand\\\\ .*\") OR ContextInfo = RGX(\".*\\\\ \\\\-ec\\\\ .*\")) AND (ContextInfo = RGX(\".*\\\\ \\\\-w\\\\ hidden\\\\ .*\") OR ContextInfo = RGX(\".*\\\\ \\\\-window\\\\ hidden\\\\ .*\") OR ContextInfo = RGX(\".*\\\\ \\\\-windowstyle\\\\ hidden\\\\ .*\") OR ContextInfo = RGX(\".*\\\\ \\\\-w\\\\ 1\\\\ .*\")) AND (ContextInfo = RGX(\".*\\\\ \\\\-noni\\\\ .*\") OR ContextInfo = RGX(\".*\\\\ \\\\-noninteractive\\\\ .*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "b30aed0f-7a12-4754-86c7-944d05f45029"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

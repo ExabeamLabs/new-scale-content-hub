@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - Potential CobaltStrike Process Injection",
+      "description": "Detects a potential remote threat creation with certain characteristics which are typical for Cobalt Strike beacons Note: Unmapped fields: StartAddress",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(StartAddress = RGX(\"0B80$\") OR StartAddress = RGX(\"0C7C$\") OR StartAddress = RGX(\"0C88$\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "93bf4496-b502-4363-9a90-65bfc3760e46"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

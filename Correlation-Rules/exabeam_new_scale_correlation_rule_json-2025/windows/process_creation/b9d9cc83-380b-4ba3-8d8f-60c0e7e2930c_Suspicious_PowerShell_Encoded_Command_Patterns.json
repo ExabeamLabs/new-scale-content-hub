@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious PowerShell Encoded Command Patterns",
+      "description": "Detects PowerShell command line patterns in combincation with encoded commands that often appear in malware infection chains",
+      "useCase": "abnormal process execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(((process_path = RGX(\"\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\\\\\pwsh\\\\\\.exe$\")) OR (process_original_file_name = \"PowerShell\\.Exe\" OR process_original_file_name = \"pwsh\\.dll\")) AND (process_command_line = RGX(\".*\\\\ \\\\-e\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-en\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-enc\\\\ .*\") OR process_command_line = RGX(\".*\\\\ \\\\-enco.*\")) AND (process_command_line = RGX(\".*\\\\ JAB.*\") OR process_command_line = RGX(\".*\\\\ SUVYI.*\") OR process_command_line = RGX(\".*\\\\ SQBFAFgA.*\") OR process_command_line = RGX(\".*\\\\ aWV4I.*\") OR process_command_line = RGX(\".*\\\\ IAB.*\") OR process_command_line = RGX(\".*\\\\ PAA.*\") OR process_command_line = RGX(\".*\\\\ aQBlAHgA.*\"))) AND  NOT ((parent_process_path = RGX(\".*C\\\\:\\\\\\\\Packages\\\\\\\\Plugins\\\\\\\\Microsoft\\\\\\.GuestConfiguration\\\\\\.ConfigurationforWindows\\\\\\\\.*\") OR parent_process_path = RGX(\".*\\\\\\\\gc\\\\_worker\\\\\\.exe.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "1fff7de9-fdea-4ce7-8e71-61802b937edd"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

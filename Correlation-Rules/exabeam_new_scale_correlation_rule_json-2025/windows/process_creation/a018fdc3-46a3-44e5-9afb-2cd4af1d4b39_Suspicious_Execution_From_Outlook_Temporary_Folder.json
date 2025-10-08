@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Suspicious Execution From Outlook Temporary Folder",
+      "description": "Detects a suspicious program execution in Outlook temp folder",
+      "useCase": "remote code execution",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "process_path = RGX(\".*\\\\\\\\Temporary\\\\ Internet\\\\ Files\\\\\\\\Content\\\\\\.Outlook\\\\\\\\.*\")",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "98cfd5c5-4c05-4922-be2e-8a64340b1508"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

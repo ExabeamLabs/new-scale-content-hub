@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Potential Persistence Via Microsoft Compatibility Appraiser",
+      "description": "Detects manual execution of the \"Microsoft Compatibility Appraiser\" task via schtasks.\nIn order to trigger persistence stored in the \"\\AppCompatFlags\\TelemetryController\" registry key.\n",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\schtasks\\\\\\.exe$\") OR process_original_file_name = \"schtasks\\.exe\") AND (process_command_line = RGX(\".*run\\\\ .*\") AND process_command_line = RGX(\".*\\\\\\\\Application\\\\ Experience\\\\\\\\Microsoft\\\\ Compatibility\\\\ Appraiser.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a6a24687-4f38-4715-8524-1de50ea7f6d0"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

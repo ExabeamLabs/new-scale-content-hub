@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Abusing Print Executable",
+      "description": "Attackers can use print.exe for remote file copy",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\print\\\\\\.exe$\") AND process_command_line = RGX(\"^print\") AND (process_command_line = RGX(\".*\\\\/D.*\") AND process_command_line = RGX(\".*\\\\\\.exe.*\"))) AND  NOT (process_command_line = RGX(\".*print\\\\\\.exe.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "642a8aa2-5b8f-4745-9ff4-58dc080d3099"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

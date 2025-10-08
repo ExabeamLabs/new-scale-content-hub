@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "File Time Attribute Change",
+      "description": "Detect file time attribute change to hide new or changes to existing files",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\/touch$\") AND (process_command_line = RGX(\".*\\\\-t.*\") OR process_command_line = RGX(\".*\\\\-acmr.*\") OR process_command_line = RGX(\".*\\\\-d.*\") OR process_command_line = RGX(\".*\\\\-r.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "a8968fd7-6bd6-4b31-af6e-ff9ddf4628da"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

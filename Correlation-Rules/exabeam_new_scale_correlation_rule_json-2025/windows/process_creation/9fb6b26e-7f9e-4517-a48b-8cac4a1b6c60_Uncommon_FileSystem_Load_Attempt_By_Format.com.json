@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Uncommon FileSystem Load Attempt By Format.com",
+      "description": "Detects the execution of format.com with an uncommon filesystem selection that could indicate a defense evasion activity in which \"format.com\" is used to load malicious DLL files or other programs.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_path = RGX(\"\\\\\\\\format\\\\\\.com$\") AND process_command_line = RGX(\".*\\\\/fs\\\\:.*\")) AND  NOT ((process_command_line = RGX(\".*\\\\/fs\\\\:exFAT.*\") OR process_command_line = RGX(\".*\\\\/fs\\\\:FAT.*\") OR process_command_line = RGX(\".*\\\\/fs\\\\:NTFS.*\") OR process_command_line = RGX(\".*\\\\/fs\\\\:ReFS.*\") OR process_command_line = RGX(\".*\\\\/fs\\\\:UDF.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0df1efd1-adc1-4a73-bd74-16ec4f5924e5"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

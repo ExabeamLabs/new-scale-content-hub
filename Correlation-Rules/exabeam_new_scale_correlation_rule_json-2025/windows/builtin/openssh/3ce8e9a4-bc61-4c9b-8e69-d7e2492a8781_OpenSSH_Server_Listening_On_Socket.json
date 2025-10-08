@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "OpenSSH Server Listening On Socket",
+      "description": "Detects scenarios where an attacker enables the OpenSSH server and server starts to listening on SSH socket. Note: Unmapped fields: process, payload",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(event_id = 4 AND process = \"sshd\" AND payload = RGX(\"^Server\\\\ listening\\\\ on\\\\ \"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "62740d58-2e80-4cdd-91db-abf3f0d5c045"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

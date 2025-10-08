@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Use Short Name Path in Command Line",
+      "description": "Detect use of the Windows 8.3 short name. Which could be used as a method to avoid command-line detection",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(process_command_line = RGX(\".*\\\\~1\\\\\\\\.*\") OR process_command_line = RGX(\".*\\\\~2\\\\\\\\.*\")) AND  NOT (((parent_process_path = \"C\\:\\\\Windows\\\\System32\\\\Dism\\.exe\" OR parent_process_path = \"C\\:\\\\Windows\\\\System32\\\\cleanmgr\\.exe\" OR parent_process_path = \"C\\:\\\\Program\\ Files\\\\GPSoftware\\\\Directory\\ Opus\\\\dopus\\.exe\") OR (parent_process_path = RGX(\"\\\\\\\\WebEx\\\\\\\\WebexHost\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\thor\\\\\\\\thor64\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\veam\\\\\\.backup\\\\\\.shell\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\winget\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\Everything\\\\\\\\Everything\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\aurora\\\\-agent\\\\-64\\\\\\.exe$\") OR parent_process_path = RGX(\"\\\\\\\\aurora\\\\-agent\\\\\\.exe$\")) OR parent_process_path = RGX(\".*\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\WinGet\\\\\\\\.*\") OR (process_command_line = RGX(\".*\\\\\\\\appdata\\\\\\\\local\\\\\\\\webex\\\\\\\\webex64\\\\\\\\meetings\\\\\\\\wbxreport\\\\\\.exe.*\") OR process_command_line = RGX(\".*C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Git\\\\\\\\post\\\\-install\\\\\\.bat.*\") OR process_command_line = RGX(\".*C\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\Git\\\\\\\\cmd\\\\\\\\scalar\\\\\\.exe.*\"))))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "2822a8eb-b3bb-468c-9e7d-e95c540d4a55"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

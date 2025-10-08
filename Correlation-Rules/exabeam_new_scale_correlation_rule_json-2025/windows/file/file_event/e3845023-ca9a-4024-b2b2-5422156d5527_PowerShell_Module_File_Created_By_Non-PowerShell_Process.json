@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "PowerShell Module File Created By Non-PowerShell Process",
+      "description": "Detects the creation of a new PowerShell module \".psm1\", \".psd1\", \".dll\", \".ps1\", etc. by a non-PowerShell process",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "medium",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(file_path = RGX(\".*\\\\\\\\WindowsPowerShell\\\\\\\\Modules\\\\\\\\.*\") OR file_path = RGX(\".*\\\\\\\\PowerShell\\\\\\\\7\\\\\\\\Modules\\\\\\\\.*\")) AND  NOT ((process_path = RGX(\"\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\PowerShell\\\\\\\\7\\\\-preview\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\:\\\\\\\\Program\\\\ Files\\\\\\\\PowerShell\\\\\\\\7\\\\\\\\pwsh\\\\\\.exe$\") OR process_path = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\poqexec\\\\\\.exe$\") OR process_path = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\WindowsPowerShell\\\\\\\\v1\\\\\\.0\\\\\\\\powershell\\\\_ise\\\\\\.exe$\") OR process_path = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\WindowsPowerShell\\\\\\\\v1\\\\\\.0\\\\\\\\powershell\\\\\\.exe$\") OR process_path = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\poqexec\\\\\\.exe$\") OR process_path = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\WindowsPowerShell\\\\\\\\v1\\\\\\.0\\\\\\\\powershell\\\\_ise\\\\\\.exe$\") OR process_path = RGX(\"\\\\:\\\\\\\\Windows\\\\\\\\SysWOW64\\\\\\\\WindowsPowerShell\\\\\\\\v1\\\\\\.0\\\\\\\\powershell\\\\\\.exe$\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "62ea16a6-6210-4c68-a4d5-a51edde3c16b"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

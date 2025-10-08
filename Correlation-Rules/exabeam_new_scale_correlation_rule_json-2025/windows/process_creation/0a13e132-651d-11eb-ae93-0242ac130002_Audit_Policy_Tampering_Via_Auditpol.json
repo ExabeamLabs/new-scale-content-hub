@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Audit Policy Tampering Via Auditpol",
+      "description": "Threat actors can use auditpol binary to change audit policy configuration to impair detection capability.\nThis can be carried out by selectively disabling/removing certain audit policies as well as restoring a custom policy owned by the threat actor.\n",
+      "useCase": "evasion",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\"\\\\\\\\auditpol\\\\\\.exe$\") OR process_original_file_name = \"AUDITPOL\\.EXE\") AND (process_command_line = RGX(\".*disable.*\") OR process_command_line = RGX(\".*clear.*\") OR process_command_line = RGX(\".*remove.*\") OR process_command_line = RGX(\".*restore.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "0264c1b3-6873-4aa7-8521-500f27d62c7c"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

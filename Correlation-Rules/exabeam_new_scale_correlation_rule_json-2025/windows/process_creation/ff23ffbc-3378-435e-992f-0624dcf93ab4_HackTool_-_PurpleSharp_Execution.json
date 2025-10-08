@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "HackTool - PurpleSharp Execution",
+      "description": "Detects the execution of the PurpleSharp adversary simulation tool",
+      "useCase": "malware",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "critical",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "((process_path = RGX(\".*\\\\\\\\purplesharp.*\") OR process_original_file_name = \"PurpleSharp\\.exe\") OR (process_command_line = RGX(\".*xyz123456\\\\\\.exe.*\") OR process_command_line = RGX(\".*PurpleSharp.*\")))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "453e1d0a-1a18-4ac7-9bb6-f6d544a0a268"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "name": "Remote PowerShell Session (PS Module)",
+      "description": "Detects remote PowerShell sessions Note: Unmapped fields: ContextInfo",
+      "useCase": "privilege escalation",
+      "mitre": [],
+      "sequencesExecution": "CREATION_ORDER",
+      "severity": "high",
+      "sequencesConfig": {
+        "sequences": [
+          {
+            "name": "",
+            "query": "(ContextInfo = RGX(\".*\\\\ \\\\=\\\\ ServerRemoteHost\\\\ .*\") AND ContextInfo = RGX(\".*wsmprovhost\\\\\\.exe.*\")) AND  NOT (ContextInfo = RGX(\".*\\\\\\\\Windows\\\\\\\\system32\\\\\\\\WindowsPowerShell\\\\\\\\v1\\\\\\.0\\\\\\\\Modules\\\\\\\\Microsoft\\\\\\.PowerShell\\\\\\.Archive\\\\\\\\Microsoft\\\\\\.PowerShell\\\\\\.Archive\\\\\\.psm1.*\"))",
+            "condition": {
+              "triggerOnAnyMatch": true
+            },
+            "id": "ce796574-59a0-48e3-94ab-e3f0539250d7"
+          }
+        ],
+        "commonProperties": null,
+        "outcomes": null
+      }
+    }
+  ]
+}
