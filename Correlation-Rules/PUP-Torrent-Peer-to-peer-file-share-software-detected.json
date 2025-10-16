@@ -1,0 +1,35 @@
+{
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "name": "PUP - Torrent Peer-to-peer file share software detected",
+            "description": "Possible Unwanted Program - Torrent software on LAN and attempted outbound communications.",
+            "useCase": "data_leak",
+            "mitre": [
+                {
+                    "tacticKey": "TA0010",
+                    "tactic": "Exfiltration",
+                    "techniqueKey": "T1537",
+                    "technique": "Transfer Data to Cloud Account"
+                }
+            ],
+            "sequencesExecution": "CREATION_ORDER",
+            "severity": "medium",
+            "sequencesConfig": {
+                "sequences": [
+                    {
+                        "name": "LAN Torrent software and attempt outbound",
+                        "query": "dest_port: 6881 AND src_ip: [10.0.0.0/8]",
+                        "condition": {
+                            "triggerOnAnyMatch": true
+                        },
+                        "id": "5ad74dd8-b98a-4f0d-98ea-d3ed57980ef1"
+                    }
+                ],
+                "commonProperties": null,
+                "outcomes": null
+            },
+            "scheduleConfig": null
+        }
+    ]
+}
