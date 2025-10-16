@@ -1,4 +1,4 @@
-Search: src_mac: RGXi("^B8:27:EB\|^DC:A6:32\|^E4:5F:01\|^28:CD:C1\|^D8:3A:DD\|^2C:CF:67") OR dest_mac: RGXi("^B8:27:EB\|^DC:A6:32\|^E4:5F:01\|^28:CD:C1\|^D8:3A:DD\|^2C:CF:67")
+Search: src_mac: RGXi("^B8:27:EB|^DC:A6:32|^E4:5F:01|^28:CD:C1|^D8:3A:DD|^2C:CF:67") OR dest_mac: RGXi("^B8:27:EB|^DC:A6:32|^E4:5F:01|^28:CD:C1|^D8:3A:DD|^2C:CF:67")
 Timeframe: 24 hours
 Search Name: Raspberry PI observed on network
 Search Description: It may be unusual for a Raspberry PI device to be on an enterprise network.
