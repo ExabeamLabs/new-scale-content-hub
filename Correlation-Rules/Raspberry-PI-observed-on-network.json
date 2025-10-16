@@ -19,11 +19,11 @@
                 "sequences": [
                     {
                         "name": "Raspberry PI observed on network",
-                        "query": "src_mac: RGXi(\"^B8:27:EB\\|^DC:A6:32\\|^E4:5F:01\\|^28:CD:C1\\|^D8:3A:DD\\|^2C:CF:67\") OR dest_mac: RGXi(\"^B8:27:EB\\|^DC:A6:32\\|^E4:5F:01\\|^28:CD:C1\\|^D8:3A:DD\\|^2C:CF:67\")",
+                        "query": "src_mac: RGXi(\"^B8:27:EB|^DC:A6:32|^E4:5F:01|^28:CD:C1|^D8:3A:DD|^2C:CF:67\") OR dest_mac: RGXi(\"^B8:27:EB|^DC:A6:32|^E4:5F:01|^28:CD:C1|^D8:3A:DD|^2C:CF:67\")",
                         "condition": {
                             "triggerOnAnyMatch": true
                         },
-                        "id": "096e2627-6526-469f-b7e7-c2ea399389d5"
+                        "id": "5b175be1-a7a6-445d-9cfe-65830484383a"
                     }
                 ],
                 "commonProperties": null,
