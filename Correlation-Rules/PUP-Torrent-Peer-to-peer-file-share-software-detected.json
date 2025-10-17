@@ -3,7 +3,7 @@
     "ruleDefinitions": [
         {
             "name": "PUP - Torrent Peer-to-peer file share software detected",
-            "description": "Possible Unwanted Program - Torrent software on LAN and attempted outbound communications.",
+            "description": "Potentially Unwanted Program - Torrent software on LAN and attempted outbound communications.",
             "useCase": "data_leak",
             "mitre": [
                 {
@@ -32,4 +32,5 @@
             "scheduleConfig": null
         }
     ]
+
 }
