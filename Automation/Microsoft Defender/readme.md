@@ -3,11 +3,13 @@
 
 What Is Possible With Defender ?
 
+You can review the following link for official documentaiton on the individual actions possible via the API, this link takes you to a specific one but just click through the tree on the left - https://learn.microsoft.com/en-us/defender-endpoint/api/isolate-machine
+
 Isolate Machine: Disconnects a device from the network while maintaining communication with the Defender for Endpoint     service.​ - Complete written by Charlie MacArthur
 
-Release from Isolation: Reverses the isolation, restoring the device's network connectivity.​
+Release from Isolation / Unisolate a device: Reverses the isolation, restoring the device's network connectivity.​ - Complete written by Charlie MacArthur
 
-Run Antivirus Scan: Initiates a quick or full antivirus scan on the device.​  - Complete written by Charlie MacArthur
+Run Antivirus Scan: Initiates a quick or full antivirus scan on the device.​ - Complete written by Charlie MacArthur
 
 Collect Investigation Package: Gathers diagnostic information from the device for further analysis.​
 
