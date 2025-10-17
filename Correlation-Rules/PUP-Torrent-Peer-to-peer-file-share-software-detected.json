@@ -2,8 +2,8 @@
     "version": "1",
     "ruleDefinitions": [
         {
-            "name": "PUP - Torrent Peer-to-peer file share software detected",
-            "description": "Potentially Unwanted Program - Torrent software on LAN and attempted outbound communications.",
+            "name": "PUP - BitTorrent Peer-to-peer file share detected",
+            "description": "Potentially Unwanted Program - BitTorrent software or web connection detected on internal network.",
             "useCase": "data_leak",
             "mitre": [
                 {
@@ -18,8 +18,8 @@
             "sequencesConfig": {
                 "sequences": [
                     {
-                        "name": "LAN Torrent software and attempt outbound",
-                        "query": "dest_port: 6881 AND src_ip: [10.0.0.0/8]",
+                        "name": "BitTorrent software or web attempt outbound",
+                        "query": "src_ip: [10.0.0.0/8] AND dest_port: 6881",
                         "condition": {
                             "triggerOnAnyMatch": true
                         },
@@ -34,3 +34,4 @@
     ]
 
 }
+
