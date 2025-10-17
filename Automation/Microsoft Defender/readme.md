@@ -5,6 +5,8 @@ What Is Possible With Defender ?
 
 You can review the following link for official documentaiton on the individual actions possible via the API, this link takes you to a specific one but just click through the tree on the left - https://learn.microsoft.com/en-us/defender-endpoint/api/isolate-machine
 
+Make sure you review the required permissions for each function/action because without them the scripts will fail. 
+
 
 COMPLETE
 
