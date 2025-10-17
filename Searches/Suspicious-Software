@@ -1,0 +1,9 @@
+Search:  event_code = "4688" AND process_name: "winget.exe" AND process_command_line: RGXi("\sinstall\s")
+Timeframe: 24 hours
+Search Name: Winget.exe Software installs
+Search Description: It may be unusual for Windows software to be added via command line.
+
+Search: src_ip: [10.0.0.0/8] AND dest_port: 6881
+Timeframe: 24 hours
+Search Name: PUP - BitTorrent Peer-to-peer file share detected 
+Search Description: Potentially Unwanted Program - BitTorrent software or web connection detected on internal network.
