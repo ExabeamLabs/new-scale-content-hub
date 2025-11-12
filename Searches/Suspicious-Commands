@@ -1,0 +1,5 @@
+Search:  process_command_line: "python" AND process_command_line: RGXi("-m") AND process_command_line: RGXi("SimpleHTTPServer|http\.server")
+Timeframe: 24 hours
+Search Name: Pythonic Web Server started
+Search Description: Python can invoke a web server on any port and serve up the current working directory of the file system for download.
+
