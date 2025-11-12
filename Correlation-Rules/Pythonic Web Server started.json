@@ -1,0 +1,47 @@
+{
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "name": "Pythonic Web Server started",
+            "description": "Python can invoke a web server on any port and serve up the current working directory of the file system for download.",
+            "useCase": "data_exfiltration",
+            "mitre": [
+                {
+                    "tacticKey": "TA0010",
+                    "tactic": "Exfiltration",
+                    "techniqueKey": "T1567",
+                    "technique": "Exfiltration Over Web Service"
+                },
+                {
+                    "tacticKey": "TA0010",
+                    "tactic": "Exfiltration",
+                    "techniqueKey": "T1011",
+                    "technique": "Exfiltration Over Other Network Medium"
+                },
+                {
+                    "tacticKey": "TA0010",
+                    "tactic": "Exfiltration",
+                    "techniqueKey": "T1048",
+                    "technique": "Exfiltration Over Alternative Protocol"
+                }
+            ],
+            "sequencesExecution": "CREATION_ORDER",
+            "severity": "high",
+            "sequencesConfig": {
+                "sequences": [
+                    {
+                        "name": "Pythonic Web Server",
+                        "query": "process_command_line: \"python\" AND process_command_line: RGXi(\"-m\") AND process_command_line: RGXi(\"SimpleHTTPServer|http\\.server\")",
+                        "condition": {
+                            "triggerOnAnyMatch": true
+                        },
+                        "id": "eb8183fa-02bb-477c-a44d-0c7a5507d50d"
+                    }
+                ],
+                "commonProperties": null,
+                "outcomes": null
+            },
+            "scheduleConfig": null
+        }
+    ]
+}
