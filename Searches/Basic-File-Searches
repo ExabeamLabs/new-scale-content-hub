@@ -22,6 +22,14 @@ file_name: "clamav" OR url: "https://www.clamav.net/downloads"
 file_name: "gusetup.exe" OR url: "https://www.glarysoft.com/glary-utilities/download/"
 
 
+# Shadow IT - AntiVirus Download - COMBINED SEARCH
+file_name: "stinger32.exe" OR url: "https://downloadcenter.trellix.com/products/mcafee-avert/stinger/stinger32.exe" OR 
+file_name: "avg_mac_security_online.dmg" OR file_name: "avg_antivirus_free_setup.exe" OR url: "https://www.avg.com/en-us/download-thank-you.php" OR
+file_name: "avast_one_free_antivirus.exe" OR url: "https://www.avast.com/en-us/download-thank-you.php" OR
+file_name: "TotalAV_Setup.exe" OR url: "https://www.totalav.com/free-antivirus-software" OR
+file_name: "clamav" OR url: "https://www.clamav.net/downloads" OR
+file_name: "gusetup.exe" OR url: "https://www.glarysoft.com/glary-utilities/download/"
+
 
 ######################  File Transfer Use Cases ######################
 
