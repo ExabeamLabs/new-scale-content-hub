@@ -1,0 +1,18 @@
+# File Transfers to External Destinations
+(activity_type: "file-upload" OR activity_type: "file-transfer") AND NOT dest_ip: [10.0.0.0/8] AND NOT dest_ip: [172.16.0.0/12] AND NOT dest_ip: [192.168.0.0/16] 
+AND NOT object: RGXi("REPLACE_COMPANY_NAME(-my)?\.sharepoint\.com")
+
+# Shadow IT - AntiVirus Download -MalwareBytes
+file_name: "MBSetup.exe" OR url: "https://www.malwarebytes.com/mwb-download/thankyou"
+
+# Shadow IT - AntiVirus Download - Trellix McAfee Stinger
+file_name: "stinger32.exe" OR url: "https://downloadcenter.trellix.com/products/mcafee-avert/stinger/stinger32.exe"
+
+# Shadow IT - AntiVirus Download - AVG AntiVirus Free
+file_name: "avg_mac_security_online.dmg" OR file_name: "avg_antivirus_free_setup.exe" OR url: "https://www.avg.com/en-us/download-thank-you.php"
+
+# Shadow IT - AntiVirus Download - Avast One Free
+file_name: "avast_one_free_antivirus.exe OR url: "https://www.avast.com/en-us/download-thank-you.php"
+
+# Shadow IT - AntiVirus Download - Total AV Free
+file_name: "TotalAV_Setup.exe" OR url: "https://www.totalav.com/free-antivirus-software"
