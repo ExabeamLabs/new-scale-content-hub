@@ -1,0 +1,35 @@
+{
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "name": "Shadow IT - AntiVirus Download",
+            "description": "Shadow IT - AntiVirus Download. Users should not be attempting to self-resolve malware with free tools.",
+            "useCase": "malware",
+            "mitre": [
+                {
+                    "tacticKey": "TA0007",
+                    "tactic": "Discovery",
+                    "techniqueKey": "T1518",
+                    "technique": "Software Discovery"
+                }
+            ],
+            "sequencesExecution": "CREATION_ORDER",
+            "severity": "medium",
+            "sequencesConfig": {
+                "sequences": [
+                    {
+                        "name": "Shadow IT - AntiVirus Download",
+                        "query": "file_name: \"MBSetup.exe\" OR url: \"https://www.malwarebytes.com/mwb-download/thankyou\" OR\nfile_name: \"stinger32.exe\" OR url: \"https://downloadcenter.trellix.com/products/mcafee-avert/stinger/stinger32.exe\" OR\nfile_name: \"avg_mac_security_online.dmg\" OR file_name: \"avg_antivirus_free_setup.exe\" OR url: \"https://www.avg.com/en-us/download-thank-you.php\" OR\nfile_name: \"avast_one_free_antivirus.exe\" OR url: \"https://www.avast.com/en-us/download-thank-you.php\" OR\nfile_name: \"TotalAV_Setup.exe\" OR url: \"https://www.totalav.com/free-antivirus-software\" OR\nfile_name: \"clamav\" OR url: \"https://www.clamav.net/downloads\"\n",
+                        "condition": {
+                            "triggerOnAnyMatch": true
+                        },
+                        "id": "ac3fb6f7-ec5f-47c0-839c-1ffdb1e090c8"
+                    }
+                ],
+                "commonProperties": null,
+                "outcomes": null
+            },
+            "scheduleConfig": null
+        }
+    ]
+}
