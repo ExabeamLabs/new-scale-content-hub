@@ -16,3 +16,6 @@ file_name: "avast_one_free_antivirus.exe" OR url: "https://www.avast.com/en-us/d
 
 # Shadow IT - AntiVirus Download - Total AV Free
 file_name: "TotalAV_Setup.exe" OR url: "https://www.totalav.com/free-antivirus-software"
+
+# Shadow IT - AntiVirus Download - ClamAV
+file_name: "clamav" OR url: "https://www.clamav.net/downloads"
