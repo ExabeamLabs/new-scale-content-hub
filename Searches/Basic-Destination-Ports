@@ -16,5 +16,5 @@ dest_port: 3389 AND NOT geo_dest_ip.country: "us" AND NOT dest_ip: [10.0.0.0/8] 
 # Other Remote Desktop tool attempts to external addresses (VNC, Teamviewer, AnyDesk, NoMachine, Splashtop)
 dest_port: (5900, 5938, 7070, 4000, 6783)  AND NOT dest_ip: [10.0.0.0/8] AND NOT dest_ip: [172.16.0.0/12] AND NOT dest_ip: [192.168.0.0/16] AND NOT dest_ip: NULL 
 
-# uTorrent attempts to external addresses
+# BitTorrent attempts to external addresses
 dest_port: (6881, 6882, 6883, 6884, 6885, 6886, 6887, 6888, 6889)  AND NOT dest_ip: [10.0.0.0/8] AND NOT dest_ip: [172.16.0.0/12] AND NOT dest_ip: [192.168.0.0/16] AND NOT dest_ip: NULL 
