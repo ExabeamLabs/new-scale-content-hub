@@ -17,7 +17,7 @@ Author: Charlie Mac UK TAM - May 2025 - Email If Stuck<br>
    - Service configuration parameters
    - Edit service configuration parameters
    - Click JSON editor
-   - Paste contents from [service_configuration_parameters.json](../service_configuration_parameters.json)
+   - Paste contents from [service_configuration_parameters.json](../VirusTotal/service_configuration_parameters.json)
 
 3. **Add Service Instance**
    - Provide instance name
@@ -27,7 +27,7 @@ Author: Charlie Mac UK TAM - May 2025 - Email If Stuck<br>
 4. **Add Action**
    - Action name:  Get an IP address report
    - Description:  Get an IP address report
-   - Paste code contents from action file:  [VirusTotal_Action_IPLookup.py](../VirusTotal_Action_IPLookup.py)
+   - Paste code contents from action file:  [VirusTotal_Action_IPLookup.py](../VirusTotal/VirusTotal_Action_IPLookup.py)
    - Deploy
 
 ## Playbook Demonstration
