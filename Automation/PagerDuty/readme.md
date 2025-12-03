@@ -3,13 +3,12 @@ Version: 1.0
 Author: Nick Oneill US TAM - Sept 2025 - Reach out with any questions
 
 
-[PagerDuty Documenation](https://example.com](https://developer.pagerduty.com/api-reference/e65c5833eeb07-pager-duty-api)
 
 ### Installation steps
 1. Add Service
-  1.1 Service name:  PagerDuty
-  1.2 Service Description:  PagerDuty integration version 1.0
-  3. Click Import from File or URL  
+1.1. Service name:  PagerDuty
+1.2. Service Description:  PagerDuty integration version 1.0
+1.3. Click Import from File or URL  
   4. Paste URL...   https://github.com/ExabeamLabs/new-scale-content-hub/blob/main/Automation/PagerDuty/Exabeam_Service_Import-PagerDuty-Version_1.0.json
   5. Click Import and Next
 2. Service configuration parameters
@@ -23,3 +22,7 @@ Author: Nick Oneill US TAM - Sept 2025 - Reach out with any questions
   4. Deploy
 
 Playbook to demonstrate usage
+
+Reference Materials:
+[PagerDuty API Documenation][https://developer.pagerduty.com/api-reference/e65c5833eeb07-pager-duty-api]
+[Postman Collection for PagerDuty API][https://www.postman.com/pagerduty/pagerduty-public-api-collection/collection/mfb3pn8/pagerduty-api]
