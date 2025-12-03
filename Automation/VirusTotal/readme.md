@@ -1,5 +1,36 @@
-VirusTotal API
-Doc Reference:     https://docs.virustotal.com/docs/api-overview
+# Exabeam Automation Management - Integration with VirusTotal
 
-Supported Action:  Get an IP address report
-Doc Reference:     https://docs.virustotal.com/reference/ip-info
+Description: This Automation Management integration with VirusTotal currently supports the Action of **Get an IP address report**<br>
+Version: 1.0<br>
+Author: Nick Oneill US TAM - Sept 2025 - Reach out with any questions<br>
+
+## Setup Service
+
+1. **Add Service**
+   - Service name:  VirusTotal
+   - Service Description:  VirusTotal integration version 1.0
+   - Click Import from File or URL
+   - Paste URL...   `https://github.com/ExabeamLabs/new-scale-content-hub/blob/main/Automation/VirusTotal/Exabeam_Service_Import-VirusTotal-Version_1.0.json`
+   - Click Import and Next
+
+2. **Configure Service**
+   - Service configuration parameters
+   - Edit service configuration parameters
+   - Click JSON editor
+   - Paste contents from [service_configuration_parameters.json](../service_configuration_parameters.json)
+
+3. **Add Action**
+   - Action name:  Get an IP address report
+   - Description:  Get an IP address report
+   - Paste code contents from action file:  [VirusTotal_Action_IPLookup.py](../VirusTotal_Action_IPLookup.py)
+   - Deploy
+
+## Playbook to demonstrate usage
+
+PLACEHOLDER
+
+## Reference Materials:
+
+[VirusTotal API Documenation](https://docs.virustotal.com/docs/api-overview)
+[VirusTotal API - ip-info](https://docs.virustotal.com/reference/ip-info)
+[Postman Collection for VirusTotal API](https://www.postman.com/pagerduty/pagerduty-public-api-collection/collection/mfb3pn8/pagerduty-api)
