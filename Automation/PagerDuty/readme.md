@@ -17,12 +17,12 @@ Author: Nick Oneill US TAM - Sept 2025 - Reach out with any questions<br>
    - Service configuration parameters
    - Edit service configuration parameters
    - Click JSON editor
-   - Paste contents from [service_configuration_parameters.json](../service_configuration_parameters.json)
+   - Paste contents from [service_configuration_parameters.json](../PagerDuty/service_configuration_parameters.json)
 
 3. **Add Action**
    - Action name:  Create an Incident
    - Description:  Create an incident synchronously without a corresponding event from a monitoring service. An incident represents a problem or an issue that needs to be addressed and resolved.
-   - Paste code contents from action file:  [pagerduty_create_an_incident.py](../pagerduty_create_an_incident.py)
+   - Paste code contents from action file:  [pagerduty_create_an_incident.py](../PagerDuty/pagerduty_create_an_incident.py)
    - Deploy
 
 ## Playbook to demonstrate usage
