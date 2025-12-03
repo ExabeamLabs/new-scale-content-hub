@@ -31,6 +31,5 @@ PLACEHOLDER
 
 ## Reference Materials:
 
-[VirusTotal API Documenation](https://docs.virustotal.com/docs/api-overview)
-[VirusTotal API - ip-info](https://docs.virustotal.com/reference/ip-info)
-[Postman Collection for VirusTotal API](https://www.postman.com/pagerduty/pagerduty-public-api-collection/collection/mfb3pn8/pagerduty-api)
+[VirusTotal API Documenation](https://docs.virustotal.com/docs/api-overview)<br>
+[VirusTotal API - ip-info](https://docs.virustotal.com/reference/ip-info)<br>
