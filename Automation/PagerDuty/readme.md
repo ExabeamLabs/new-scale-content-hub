@@ -1,5 +1,5 @@
 # Exabeam Automation Management - Integration with PagerDuty 
-Description: This Automation Management integration with PagerDuty currently supports the Action of *Create an Incident*
+Description: This Automation Management integration with PagerDuty currently supports the Action of **Create an Incident**<br>
 Version: 1.0<br>
 Author: Nick Oneill US TAM - Sept 2025 - Reach out with any questions<br>
 
