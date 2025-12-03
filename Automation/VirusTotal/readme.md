@@ -39,7 +39,7 @@ Author: Charlie Mac UK TAM - May 2025 - Email If Stuck<br>
    - VT_API_KEY > plug-in > "$var:f/exabeam/VirusTotal/{instance}/VT_API_KEY"
    - Deploy
 
-6. **Run Playbook from Threat Center"
+6. **Run Playbook from Threat Center**
    - Select a Case
    - Run a Playbook
    - Select VirusTotal IP Lookup
