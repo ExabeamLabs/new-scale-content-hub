@@ -1,0 +1,16 @@
+{
+    "order": [
+        "ApiKey"
+    ],
+    "required": [
+        "ApiKey"
+    ],
+    "properties": {
+        "ApiKey": {
+            "type": "string",
+            "default": "",
+            "password": true,
+            "description": ""
+        }
+    }
+}
