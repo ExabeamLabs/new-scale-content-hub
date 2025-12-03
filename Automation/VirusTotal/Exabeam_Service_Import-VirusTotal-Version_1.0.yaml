@@ -6,6 +6,9 @@ info:
   description: API specification for retrieving information about an IP address using VirusTotal.
 servers:
   - url: https://www.virustotal.com/api/v3
+    variables:
+      apiKey:
+        default: ${VT_API_KEY}
 paths:
   /ip_addresses/{ip}:
     get:
