@@ -1,4 +1,9 @@
-# Nick Oneill US TAM - Sept 2025 - Reach out with any questions
+# Action name: Create an Incident
+# Descritpion: Create an incident synchronously without a corresponding event from a monitoring service. An incident represents a problem or an issue that needs to be addressed and resolved.
+# Version 1.0
+# Doc Reference:  https://www.postman.com/pagerduty/pagerduty-public-api-collection/request/owz0ryf/create-an-incident
+# Author: Nick Oneill US TAM - Sept 2025 - Reach out with any questions
+
 import requests
 import json
 from typing import TypedDict
@@ -51,3 +56,4 @@ def main(
         print("Non-JSON response received:")
         print("Status Code:", response.status_code)
         print("Response Text:", response.text)
+
