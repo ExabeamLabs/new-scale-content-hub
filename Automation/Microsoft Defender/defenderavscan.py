@@ -104,5 +104,5 @@ def run_scan(device_name: str) -> str:
 
 # ─── Windmill Entrypoint ───────────────────────────────────────────────────────
 def main(x: str) -> str:
-    # 'x' should be the target device name (e.g., "win10-vm2.milbury.org.uk")
+    # 'x' should be the target device name (e.g., "win10.domain.org.uk")
     return run_scan(x)
