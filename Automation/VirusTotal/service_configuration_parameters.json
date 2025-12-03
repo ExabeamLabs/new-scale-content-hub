@@ -1,0 +1,18 @@
+{
+	"order": [
+		"VT_API_KEY"
+	],
+	"required": [
+		"VT_API_KEY"
+	],
+	"properties": {
+		"VT_API_KEY": {
+			"type": "string",
+			"default": "",
+			"nullable": false,
+			"password": true,
+			"description": "Your VirusTotal API Key",
+			"placeholder": ""
+		}
+	}
+}
