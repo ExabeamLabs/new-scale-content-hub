@@ -3,13 +3,12 @@ Version: 1.0<br>
 Author: Nick Oneill US TAM - Sept 2025 - Reach out with any questions<br>
 
 
-
 ### Install Service
 1. Add Service
 2. Service name:  PagerDuty
 3. Service Description:  PagerDuty integration version 1.0
 4. Click Import from File or URL  
-5. Paste URL...   [Exabeam_Service_Import-PagerDuty-Version_1.0.json](../Exabeam_Service_Import-PagerDuty-Version_1.0.json)
+5. Paste URL...   [https://github.com/ExabeamLabs/new-scale-content-hub/blob/main/Automation/PagerDuty/Exabeam_Service_Import-PagerDuty-Version_1.0.json]
 6. Click Import and Next
 
 ### Configure Service
