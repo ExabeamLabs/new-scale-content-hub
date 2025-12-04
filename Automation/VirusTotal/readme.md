@@ -3,6 +3,7 @@
 Description: This Automation Management integration with VirusTotal currently supports the Action of **Get an IP address report**<br>
 Version: 1.0<br>
 Author: Charlie Mac UK TAM - May 2025 - Email If Stuck<br>
+Author: Mark Ulmer US Service Consultant - December 2025 - Moved api_key to instance variable<br>
 
 ## Setup Service
 
