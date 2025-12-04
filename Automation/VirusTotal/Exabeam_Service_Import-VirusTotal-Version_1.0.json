@@ -1,0 +1,129 @@
+
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "VirusTotal IP Address API",
+    "version": "1.0.0",
+    "description": "API specification for retrieving information about an IP address using VirusTotal."
+  },
+  "servers": [
+    {
+      "url": "https://www.virustotal.com/api/v3",
+      "variables": {
+        "apiKey": {
+          "default": "${VT_API_KEY}"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/ip_addresses/{ip}": {
+      "get": {
+        "summary": "Get information about an IP address",
+        "description": "Retrieves analysis and reputation details for a given IP address from VirusTotal.",
+        "operationId": "getIpAddressInfo",
+        "parameters": [
+          {
+            "name": "ip",
+            "in": "path",
+            "required": true,
+            "description": "The IP address to retrieve information for.",
+            "schema": {
+              "type": "string",
+              "example": "8.8.8.8"
+            }
+          },
+          {
+            "name": "x-apikey",
+            "in": "header",
+            "required": true,
+            "description": "Your VirusTotal API key.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with IP address details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "IP address identifier."
+                        },
+                        "type": {
+                          "type": "string",
+                          "description": "Resource type (ip_address)."
+                        },
+                        "attributes": {
+                          "type": "object",
+                          "properties": {
+                            "as_owner": {
+                              "type": "string",
+                              "description": "Autonomous system owner."
+                            },
+                            "country": {
+                              "type": "string",
+                              "description": "Country code."
+                            },
+                            "last_analysis_stats": {
+                              "type": "object",
+                              "description": "Summary of analysis results.",
+                              "properties": {
+                                "harmless": {
+                                  "type": "integer"
+                                },
+                                "malicious": {
+                                  "type": "integer"
+                                },
+                                "suspicious": {
+                                  "type": "integer"
+                                },
+                                "undetected": {
+                                  "type": "integer"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid IP or missing parameters)."
+          },
+          "401": {
+            "description": "Unauthorized (invalid API key)."
+          },
+          "404": {
+            "description": "IP address not found."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-apikey"
+      }
+    }
+  },
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ]
