@@ -7,12 +7,7 @@
     },
     "servers": [
         {
-            "url": "https://www.virustotal.com/api/v3",
-            "variables": {
-                "apiKey": {
-                    "default": "${VT_API_KEY}"
-                }
-            }
+            "url": "https://www.virustotal.com/api/v3"
         }
     ],
     "paths": {
