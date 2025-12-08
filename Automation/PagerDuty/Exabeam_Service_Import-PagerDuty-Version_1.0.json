@@ -1,3 +1,227 @@
-# This would be the Service import into Exabeam Automation Management
-# PLACEHOLDER FOR   openapi 3.0.2
 
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "PagerDuty REST API – Create Incident (subset)",
+    "version": "v2",
+    "description": "Minimal OpenAPI spec including only the endpoint to create an incident via POST /incidents."
+  },
+  "servers": [
+    { "url": "https://api.pagerduty.com" }
+  ],
+  "components": {
+    "securitySchemes": {
+      "apiKey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Use format: Token token=<API_KEY>"
+      }
+    },
+    "schemas": {
+      "CreateIncidentRequest": {
+        "type": "object",
+        "properties": {
+          "incident": {
+            "type": "object",
+            "required": ["type", "title", "service"],
+            "properties": {
+              "type": { "type": "string", "example": "incident" },
+              "title": { "type": "string", "description": "Incident title/summary." },
+              "service": {
+                "type": "object",
+                "required": ["id", "type"],
+                "properties": {
+                  "id": { "type": "string", "description": "Service ID." },
+                  "type": { "type": "string", "example": "service_reference" }
+                }
+              },
+              "urgency": { "type": "string", "enum": ["high", "low"] },
+              "priority": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" },
+                  "type": { "type": "string", "example": "priority_reference" }
+                }
+              },
+              "incident_key": { "type": "string" },
+              "body": {
+                "type": "object",
+                "properties": {
+                  "type": { "type": "string", "example": "incident_body" },
+                  "details": { "type": "string" }
+                }
+              },
+              "assignments": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "assignee": {
+                      "type": "object",
+                      "properties": {
+                        "id": { "type": "string" },
+                        "type": { "type": "string", "example": "user_reference" }
+                      }
+                    }
+                  }
+                }
+              },
+              "escalation_policy": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" },
+                  "type": { "type": "string", "example": "escalation_policy_reference" }
+                }
+              },
+              "conference_bridge": {
+                "type": "object",
+                "properties": {
+                  "conference_number": { "type": "string" },
+                  "conference_url": { "type": "string", "format": "uri" }
+                }
+              }
+            }
+          }
+        },
+        "required": ["incident"]
+      },
+      "Incident": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "incident_number": { "type": "integer" },
+          "type": { "type": "string", "example": "incident" },
+          "summary": { "type": "string" },
+          "title": { "type": "string" },
+          "status": { "type": "string", "enum": ["triggered", "acknowledged", "resolved"] },
+          "incident_key": { "type": "string" },
+          "service": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "type": { "type": "string", "example": "service_reference" }
+            }
+          },
+          "assignments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "assignee": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "type": { "type": "string", "example": "user_reference" }
+                  }
+                },
+                "at": { "type": "string", "format": "date-time" }
+              }
+            }
+          },
+          "created_at": { "type": "string", "format": "date-time" },
+          "updated_at": { "type": "string", "format": "date-time" },
+          "html_url": { "type": "string", "format": "uri" },
+          "self": { "type": "string", "format": "uri" }
+        },
+        "required": ["id", "type", "title", "status", "service"]
+      },
+      "CreateIncidentResponse": {
+        "type": "object",
+        "properties": {
+          "incident": { "$ref": "#/components/schemas/Incident" }
+        },
+        "required": ["incident"]
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "message": { "type": "string" }
+            },
+            "required": ["message"]
+          }
+        },
+        "required": ["error"]
+      }
+    },
+    "parameters": {
+      "AcceptVersion": {
+        "name": "Accept",
+        "in": "header",
+        "required": true,
+        "schema": { "type": "string" },
+        "example": "application/vnd.pagerduty+json;version=2",
+        "description": "Versioning header required by PagerDuty."
+      },
+      "FromHeader": {
+        "name": "From",
+        "in": "header",
+        "required": true,
+        "schema": { "type": "string", "format": "email" },
+        "description": "Email address of a valid PagerDuty user."
+      }
+    }
+  },
+  "security": [
+    { "apiKey": [] }
+  ],
+  "paths": {
+    "/incidents": {
+      "post": {
+        "operationId": "createIncident",
+        "summary": "Create an incident",
+        "description": "Create an incident synchronously without a corresponding event.",
+        "tags": ["Incidents"],
+        "parameters": [
+          { "$ref": "#/components/parameters/AcceptVersion" },
+          { "$ref": "#/components/parameters/FromHeader" }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateIncidentRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Incident created.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CreateIncidentResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
