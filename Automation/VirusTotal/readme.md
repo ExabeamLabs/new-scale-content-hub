@@ -11,7 +11,7 @@ Author: Mark Ulmer US Service Consultant - December 2025 - Moved api_key to inst
    - Service name:  VirusTotal
    - Service Description:  VirusTotal integration version 1.0
    - Click Import from File or URL
-   - Paste URL...   `https://github.com/ExabeamLabs/new-scale-content-hub/blob/main/Automation/VirusTotal/Exabeam_Service_Import-VirusTotal-Version_1.0.yaml`
+   - Paste URL...   `https://raw.githubusercontent.com/ExabeamLabs/new-scale-content-hub/refs/heads/main/Automation/VirusTotal/Exabeam_Service_Import-VirusTotal-Version_1.0.json`
    - Click Import and Next
 
 2. **Configure Service Parameters**
@@ -25,9 +25,9 @@ Author: Mark Ulmer US Service Consultant - December 2025 - Moved api_key to inst
    - VT_API_KEY variable - Provide your VirusTotal API Key
    - Save
   
-4. **Add Action**
-   - Action name:  Get an IP address report
-   - Description:  Get an IP address report
+4. **Edit Action**
+   - Action name:  Get information about an IP address
+   - Description:  Get information about an IP address
    - Paste code contents from action file:  [VirusTotal_Action_IPLookup.py](../VirusTotal/VirusTotal_Action_IPLookup.py)
    - Deploy
 
