@@ -12,24 +12,29 @@ Author: Mark Ulmer US Service Consultant - December 2025 - Moved api_key to inst
    - Service Description:  VirusTotal integration version 1.0
    - Click Import from File or URL
    - Paste URL...   `https://raw.githubusercontent.com/ExabeamLabs/new-scale-content-hub/refs/heads/main/Automation/VirusTotal/Exabeam_Service_Import-VirusTotal-Version_1.0.json`
+   - Click Confirm and Validate
    - Click Import and Next
 
-2. **Configure Service Parameters**
+3. **Configure Service Parameters**
    - Service configuration parameters
    - Edit service configuration parameters
    - Click JSON editor
    - Paste contents from [service_configuration_parameters.json](../VirusTotal/service_configuration_parameters.json)
-
-3. **Add Service Instance**
-   - Provide instance name
-   - VT_API_KEY variable - Provide your VirusTotal API Key
    - Save
-  
+
 4. **Edit Action**
-   - Action name:  Get information about an IP address
+   - Edit action name:  Get information about an IP address
    - Description:  Get information about an IP address
    - Paste code contents from action file:  [VirusTotal_Action_IPLookup.py](../VirusTotal/VirusTotal_Action_IPLookup.py)
    - Deploy
+
+5. **Add Service Instance**
+   - Click on Instances tab
+   - Click + Add Instance
+   - Provide instance name
+   - VT_API_KEY variable - Provide your VirusTotal API Key
+   - Save
+
 
 ## Playbook Demonstration
 5. **Create Playbook**
