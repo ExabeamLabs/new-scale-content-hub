@@ -8,7 +8,28 @@
 import requests
 import json
 
-def main(case_id: str, case_title: str, service_id: str, apikey: str):
+def get_default_id(apikey: str):
+
+    url = "https://api.pagerduty.com/services"
+    querystring = {"name":"Default Service"}
+
+    headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": f"Token token={apikey}" 
+}
+    response = requests.get(url, headers=headers, params=querystring)
+    data = response.json()
+    # Access the 'id' of the first service
+
+    services = data.get("services", [])
+    if not services:
+        raise ValueError("No services found in the response.")
+
+    return services[0].get("id")
+
+
+def main(case_id: str, case_title: str, fromEmail: str, apikey: str):
 
     url = "https://api.pagerduty.com/incidents"
 
@@ -16,7 +37,7 @@ def main(case_id: str, case_title: str, service_id: str, apikey: str):
         "type": "Security Incident",
         "title": case_title, #choose what you'd like from flow_input for the incident title
         "service": {
-            "id": service_id, 
+            "id": get_default_id(apikey),
             "type": "service"
         },
         "urgency": "high",
@@ -29,7 +50,7 @@ def main(case_id: str, case_title: str, service_id: str, apikey: str):
     headers = {
     "Accept": "application/json",
     "Content-Type": "application/json",
-    "From": "noreply@exabeam.com",
+    "From": fromEmail,
     "Authorization": f"Token token={apikey}" 
 }
 
