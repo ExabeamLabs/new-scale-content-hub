@@ -15,18 +15,16 @@ def main(apikey: str):
     headers = {
     "Accept": "application/json",
     "Content-Type": "application/json",
-    "From": from_email,
     "Authorization": f"Token token={apikey}" 
 }
 
-    response = requests.post(url, headers=headers, params=querystring)
+    response = requests.get(url, headers=headers, params=querystring)
+    data = response.json()
+    # Access the 'id' of the first service
 
-    try:
-        # Access the 'id' of the first service
-        service_id = response["services"][0]["id"]
-        print(service_id)
+    services = data.get("services", [])
+    if not services:
+        raise ValueError("No services found in the response.")
 
-    except json.JSONDecodeError:
-        print("Non-JSON response received:")
-        print("Status Code:", response.status_code)
-        print("Response Text:", response.text)
+    service_id = services[0].get("id")
+    print(service_id)
