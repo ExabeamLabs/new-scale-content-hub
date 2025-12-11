@@ -17,7 +17,7 @@
         "FromEmail": {
             "type": "string",
             "default": "",
-            "password": true,
+            "password": false,
             "description": "This must be a valid user in PagerDuty"
         }
     }
