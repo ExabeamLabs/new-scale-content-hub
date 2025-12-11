@@ -1,13 +1,14 @@
 # Action name: Create an Incident
 # Descritpion: Create an incident synchronously without a corresponding event from a monitoring service. An incident represents a problem or an issue that needs to be addressed and resolved.
-# Version 1.0.1
+# Version 1.0
 # Doc Reference:  https://www.postman.com/pagerduty/pagerduty-public-api-collection/request/owz0ryf/create-an-incident
 # Author: Nick Oneill US TAM - Sept 2025 - Reach out with any questions
+# Author: Mark Ulmer US Service Consultant - Dec 2025 - Moved apikey to instance variable
 
 import requests
 import json
 
-def main(case_title: str, incident_key: str, apikey: str, from_email: str):
+def main(case_id: str, case_title: str, service_id: str, apikey: str):
 
     url = "https://api.pagerduty.com/incidents"
 
@@ -15,11 +16,11 @@ def main(case_title: str, incident_key: str, apikey: str, from_email: str):
         "type": "Security Incident",
         "title": case_title, #choose what you'd like from flow_input for the incident title
         "service": {
-            "id": "XYZ", #Required to get the Default Service ID. Use api https://developer.pagerduty.com/api-reference/e960cca205c0f-list-services
+            "id": service_id, 
             "type": "service"
         },
         "urgency": "high",
-        "incident_key": incident_key, # set this to case id from flow_input
+        "incident_key": case_id, # Consider sending Exabeam Case ID
         "body": {
             "type": "incident_body",
             "details": "Notable User or Asset has reached a high risk score."
@@ -28,7 +29,7 @@ def main(case_title: str, incident_key: str, apikey: str, from_email: str):
     headers = {
     "Accept": "application/json",
     "Content-Type": "application/json",
-    "From": from_email,
+    "From": "noreply@exabeam.com",
     "Authorization": f"Token token={apikey}" 
 }
 
