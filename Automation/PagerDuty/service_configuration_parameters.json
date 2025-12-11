@@ -1,8 +1,10 @@
 {
     "order": [
+        "FromEmail",
         "ApiKey"
     ],
     "required": [
+        "FromEmail",
         "ApiKey"
     ],
     "properties": {
@@ -11,6 +13,12 @@
             "default": "",
             "password": true,
             "description": ""
+        },
+        "FromEmail": {
+            "type": "string",
+            "default": "",
+            "password": true,
+            "description": "This must be a valid user in PagerDuty"
         }
     }
 }
