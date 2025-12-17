@@ -23,20 +23,17 @@ Author: Mark Ulmer - US Service Consultant - December 2025 - Added to GitHub and
    - Save
 
 4. **Edit Action**
-   - Edit action name:  Add_context_records
-   - Description:  Add context records to Exabeam Context Management Table.
+   - Edit action name:  Add context records to an existing table
    - Paste code contents from action file:  [Add_context_records.py](../Context-Management/Add_context_records.py)
    - Deploy
   
    **Edit Action**
-   - Edit action name:  Delete_context_records
-   - Description:  Delete context records from Exabeam Context Management Table.
+   - Edit action name:  Delete records from an existing custom context table
    - Paste code contents from action file:  [Delete_context_records.py](../Context-Management/Delete_context_records.py)
    - Deploy
   
    **Edit Action**
-   - Edit action name:  Get_context_record
-   - Description:  Get context record from Exabeam Context Management Table.
+   - Edit action name:  Get table records by ID
    - Paste code contents from action file:  [Get_context_record.py](../Context-Management/Get_context_record.py)
    - Deploy
 
