@@ -1,3 +1,4 @@
+#Get table records by ID
 import requests
 from typing import List, Dict, Any, Tuple, Optional
 
