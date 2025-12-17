@@ -11,7 +11,7 @@ Author: Mark Ulmer - US Service Consultant - December 2025 - Added to GitHub and
    - Service name:  ExabeamContextManagement 
    - Service Description:  ExabeamContextManagement integration version 1.0
    - Click Import from File or URL
-   - Paste URL...   `https://raw.githubusercontent.com/ExabeamLabs/new-scale-content-hub/refs/heads/main/Automation/.Exabeam/Context-Management/Exabeam_Service_Import-ContextManagement-Version_1.0.json`
+   - Paste URL...   `https://raw.githubusercontent.com/ExabeamLabs/new-scale-content-hub/refs/heads/main/Automation/Exabeam/Context-Management/Exabeam_Service_Import-ContextManagement-Version_1.0.json`
    - Click Confirm and Validate
    - Click Import and Next
 
