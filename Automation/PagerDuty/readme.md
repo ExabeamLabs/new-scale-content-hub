@@ -3,6 +3,7 @@
 Description: This Automation Management integration with PagerDuty currently supports the Action of **Create an Incident**<br>
 Version: 1.0<br>
 Author: Nick Oneill US TAM - Sept 2025 - Reach out with any questions<br>
+Author: Mark Ulmer - US Service Consultant - December 2025 - Added to GitHub and created readme<br>
 
 
 ## Setup Service
@@ -25,8 +26,7 @@ Author: Nick Oneill US TAM - Sept 2025 - Reach out with any questions<br>
    - Paste code contents from action file:  [pagerduty_create_an_incident.py](../PagerDuty/pagerduty_create_an_incident.py)
    - Deploy
 
-## Playbook to demonstrate usage
-PLACEHOLDER
+
 
 ## Reference Materials:
 [PagerDuty API Documenation](https://developer.pagerduty.com/api-reference/e65c5833eeb07-pager-duty-api)<br>
