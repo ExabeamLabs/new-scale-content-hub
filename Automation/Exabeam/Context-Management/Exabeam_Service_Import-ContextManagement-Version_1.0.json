@@ -1,1 +1,269 @@
-PLACEHOLDER  - In process 12/16/2025  MU
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Exabeam Context Management API",
+    "version": "v1",
+    "description": "A subset of the Exabeam API for managing context table records."
+  },
+  "servers": [
+    {
+      "url": "https://api.exabeam.com/v1"
+    }
+  ],
+  "paths": {
+    "/context/tables/{tableId}/records": {
+      "get": {
+        "summary": "Get table records by ID",
+        "operationId": "getTableRecordsById",
+        "parameters": [
+          {
+            "name": "tableId",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the table.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page number to retrieve.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The number of records to return per page.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A paginated list of context table records.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": true
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "total": {
+                          "type": "integer",
+                          "description": "Total number of records in the table."
+                        },
+                        "page": {
+                          "type": "integer",
+                          "description": "The current page number."
+                        },
+                        "limit": {
+                          "type": "integer",
+                          "description": "The number of records per page."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "post": {
+        "summary": "Add context records to an existing table",
+        "operationId": "addRecordsToTable",
+        "parameters": [
+          {
+            "name": "tableId",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the table to add records to.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "An array of records to add to the context table.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "records"
+                ],
+                "properties": {
+                  "records": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": true
+                    }
+                  }
+                },
+                "example": {
+                  "records": [
+                    {
+                      "hostname": "host1",
+                      "ip_address": "192.168.1.10"
+                    },
+                    {
+                      "hostname": "host2",
+                      "ip_address": "192.168.1.11"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Request accepted. The records are being processed."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete records from an existing custom context table",
+        "operationId": "deleteRecordsFromTable",
+        "parameters": [
+          {
+            "name": "tableId",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the table to delete records from.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "An array of record IDs to delete.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "recordIds"
+                ],
+                "properties": {
+                  "recordIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "recordIds": [
+                    "60d5ec4b...1",
+                    "60d5ec4b...2"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Records deleted successfully."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "BadRequest": {
+        "description": "Bad Request -- The request could not be understood by the server due to malformed syntax."
+      },
+      "Unauthorized": {
+        "description": "Unauthorized -- The request requires user authentication."
+      },
+      "Forbidden": {
+        "description": "Forbidden -- The server understood the request, but is refusing to fulfill it."
+      },
+      "NotFound": {
+        "description": "Not Found -- The requested resource could not be found."
+      },
+      "InternalServerError": {
+        "description": "Internal Server Error -- The server encountered an unexpected condition that prevented it from fulfilling the request."
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Exabeam-API-Key"
+      }
+    }
+  },
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ]
+}
