@@ -1,9 +1,7 @@
-# Delete record
+# Delete records from an existing custom context table
 import requests
 from typing import List, Dict, Union
 import json
-
-# delete_record_from_table.py
 
 # --- Helper Functions ---
 def _get_access_token(api_key_id: str, api_key_secret: str, base_url: str) -> str:
