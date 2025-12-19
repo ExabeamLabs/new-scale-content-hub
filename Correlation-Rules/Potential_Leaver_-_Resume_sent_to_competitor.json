@@ -4,6 +4,7 @@
 	"_comment_step2": "Navigate to Correlation Rules, choose import, select file, import.",
 	"_author": "Mark Ulmer, US Services Consultant",
 	"_version_date": "2025-12-19",
+	
     "version": "1",
     "ruleDefinitions": [
         {
@@ -17,8 +18,8 @@
             "sequencesConfig": {
                 "sequences": [
                     {
-                        "name": "Resume File Attachment ",
-                        "query": "dest_email_domain IN \"Competitor Company Names\".\"Key\" AND file_name: WLDi(\"resume\")",
+                        "name": "Resume file attachment sent to Competitor",
+                        "query": "activity_type: \"email-send\" AND dest_email_domain IN \"Competitor Company Names\".\"Key\" AND file_name: WLDi(\"resume\") ",
                         "condition": {
                             "triggerOnAnyMatch": true
                         },
