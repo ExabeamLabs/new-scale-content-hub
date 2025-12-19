@@ -1,0 +1,12 @@
+# Requirement: Populate built-in Context Table "Competitor Company Names" with competitor domain names.
+
+Search: email_domain IN "Competitor Company Names"."Key"
+Timeframe: 24 hours
+Search Name: Emails from Competitors
+Search Description: Emails from Competitor domains
+
+Search: dest_email_domain IN "Competitor Company Names"."Key"
+Timeframe: 24 hours
+Search Name: Emails to Competitors
+Search Description: Emails to Competitor domains
+
