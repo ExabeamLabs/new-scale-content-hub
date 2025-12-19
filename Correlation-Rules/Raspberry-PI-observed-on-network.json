@@ -1,4 +1,10 @@
 {
+	"_comment": "Installation Instructions",
+	"_comment": "Download this file",
+	"_comment": "Navigate to Correlation Rules, choose import, select file, import.",
+	"_author": "Mark Ulmer, US Services Consultant",
+	"_version_date": "2025-12-19",
+    
     "version": "1",
     "ruleDefinitions": [
         {
@@ -33,3 +39,4 @@
         }
     ]
 }
+
