@@ -1,0 +1,34 @@
+{
+	"_comment_title": "Installation Instructions",
+	"_comment_step1": "Download this file",
+	"_comment_step2": "Navigate to Correlation Rules, choose import, select file, import.",
+	"_author": "Mark Ulmer, US Services Consultant",
+	"_version_date": "2025-12-19",
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "name": "Potential Leaver - Resume sent to competitor",
+            "description": "Potential Leaver - Resume sent as file attachment sent to a competitor",
+            "useCase": "workforce_protection",
+            "mitre": [
+            ],
+            "sequencesExecution": "CREATION_ORDER",
+            "severity": "medium",
+            "sequencesConfig": {
+                "sequences": [
+                    {
+                        "name": "Resume File Attachment ",
+                        "query": "dest_email_domain IN \"Competitor Company Names\".\"Key\" AND file_name: WLDi(\"resume\")",
+                        "condition": {
+                            "triggerOnAnyMatch": true
+                        },
+                        "id": "04eb4f58-3b0d-4ead-93ab-4c7469af4473"
+                    }
+                ],
+                "commonProperties": null,
+                "outcomes": null
+            },
+            "scheduleConfig": null
+        }
+    ]
+}
