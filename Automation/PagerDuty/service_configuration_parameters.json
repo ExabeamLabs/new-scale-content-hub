@@ -1,24 +1,24 @@
 {
-    "order": [
-        "FromEmail",
-        "ApiKey"
-    ],
-    "required": [
-        "FromEmail",
-        "ApiKey"
-    ],
-    "properties": {
-        "ApiKey": {
-            "type": "string",
-            "default": "",
-            "password": true,
-            "description": ""
-        },
-        "FromEmail": {
-            "type": "string",
-            "default": "",
-            "password": false,
-            "description": "This must be a valid user in PagerDuty"
-        }
-    }
+	"order": [
+		"FromEmail",
+		"ApiKey"
+	],
+	"required": [
+		"FromEmail",
+		"ApiKey"
+	],
+	"properties": {
+		"FromEmail": {
+			"type": "string",
+			"default": "",
+			"password": false,
+			"description": "This must be a valid user in PagerDuty"
+		},
+		"ApiKey": {
+			"type": "string",
+			"default": "",
+			"password": true,
+			"description": "Navigate to PagerDuty > Integrations > API Access Keys"
+		}
+	}
 }
