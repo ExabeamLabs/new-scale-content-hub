@@ -26,6 +26,13 @@ Author: Mark Ulmer - US Service Consultant - December 2025 - Added to GitHub and
    - Paste code contents from action file:  [pagerduty_create_an_incident.py](../PagerDuty/pagerduty_create_an_incident.py)
    - Deploy
 
+4. **Add Service Instance**
+   - Click on Instances tab
+   - Click + Add Instance
+   - Provide instance name
+   - FromEmail - Provide your account email registered with PagerDuty
+   - ApiKey variable - Provide your PagerDuty API Key
+   - Save
 
 
 ## Reference Materials:
