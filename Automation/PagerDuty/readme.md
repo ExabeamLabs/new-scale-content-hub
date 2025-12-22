@@ -11,7 +11,7 @@ Author: Mark Ulmer - US Service Consultant - December 2025 - Added to GitHub and
    - Service name:  PagerDuty
    - Service Description:  PagerDuty integration version 1.0
    - Click Import from File or URL  
-   - Paste URL...   `https://github.com/ExabeamLabs/new-scale-content-hub/blob/main/Automation/PagerDuty/Exabeam_Service_Import-PagerDuty-Version_1.0.json`
+   - Paste URL...   `https://raw.githubusercontent.com/ExabeamLabs/new-scale-content-hub/refs/heads/main/Automation/PagerDuty/Exabeam_Service_Import-PagerDuty-Version_1.0.json`
    - Click Import and Next
 
 2. **Configure Service**
