@@ -6,8 +6,10 @@ This repo contains a single Python script that:
 3) Produces **three CSVs** and a **single self-contained HTML dashboard** showing coverage and gaps
 
 ---
-
 ## Repo layout
+
+
+```text
 .
 ├── assets/
 │ └── logo.png # Optional: your logo (copied into each output folder)
