@@ -5,6 +5,15 @@ This repo contains a single Python script that:
 2) Pulls your correlation rules + exports enabled rule definitions
 3) Produces **three CSVs** and a **single self-contained HTML dashboard** showing coverage and gaps
 
+<img width="1450" height="1270" alt="image" src="https://github.com/user-attachments/assets/b922f5e6-a2e9-450b-bafd-7aea64ce40be" />
+
+## Troubleshooting
+
+99% of the time if you are having an issue it's because you are hitting the wrong region with the API, the script is set to EU by default by you may well need one of the following in the region variable..
+
+<img width="241" height="321" alt="image" src="https://github.com/user-attachments/assets/6d191120-7c68-406d-b9d4-acfe62fa5e69" />
+<img width="488" height="84" alt="image" src="https://github.com/user-attachments/assets/a68afd59-6719-4eb7-ace1-b4c7e0837a49" />
+
 ---
 ## Repo layout
 
