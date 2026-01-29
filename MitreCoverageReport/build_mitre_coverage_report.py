@@ -943,4 +943,5 @@ if __name__ == "__main__":
     if missing_export_names:
         print(f"\n{ANSI_GREEN}[INFO]{ANSI_RESET} First 10 rules missing from export:")
         for n in missing_export_names[:10]:
+
             print(f" - {n}")
