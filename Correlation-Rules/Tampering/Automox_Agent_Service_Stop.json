@@ -17,6 +17,18 @@
                     "tactic": "Execution",
                     "techniqueKey": "T1072",
                     "technique": "Software Deployment Tools"
+                },
+                {
+                    "tacticKey": "TA0005",
+                    "tactic": "Defense Evasion",
+                    "techniqueKey": "T1562",
+                    "technique": "Impair Defenses"
+                },
+                {
+                    "tacticKey": "TA0040",
+                    "tactic": "Impact",
+                    "techniqueKey": "T1489",
+                    "technique": "Service Stop"
                 }
             ],
             "sequencesExecution": "CREATION_ORDER",
