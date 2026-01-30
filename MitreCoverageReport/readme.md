@@ -9,6 +9,8 @@ This repo contains a single Python script that:
 
 ## Troubleshooting
 
+Use Python 3.10 or later.
+
 99% of the time if you are having an issue it's because you are hitting the wrong region with the API, the script is set to EU by default but you may well need one of the following in the region variable..
 
 <img width="241" height="321" alt="image" src="https://github.com/user-attachments/assets/6d191120-7c68-406d-b9d4-acfe62fa5e69" />
