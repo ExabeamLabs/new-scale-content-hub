@@ -1,0 +1,41 @@
+{
+    "_comment_title": "Installation Instructions",
+    "_comment_step1": "Download this file",
+    "_comment_step2": "Navigate to Correlation Rules, choose import, select file, import.",
+    "_author": "Mark Ulmer, US Services Consultant",
+    "_version_date": "2026-01-29",
+	
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "name": "CrowdStrike Falcon Sensor Service Stop",
+            "description": "Security applications must not be stopped, disabled, altered, bypassed, or removed.",
+            "useCase": "audit_tampering",
+            "mitre": [
+                {
+                    "tacticKey": "TA0002",
+                    "tactic": "Execution",
+                    "techniqueKey": "T1072",
+                    "technique": "Software Deployment Tools"
+                }
+            ],
+            "sequencesExecution": "CREATION_ORDER",
+            "severity": "critical",
+            "sequencesConfig": {
+                "sequences": [
+                    {
+                        "name": "CrowdStrike Falcon Sensor Service Stop",
+                        "query": "event_code: \"ServiceStopped\" AND process_command_line: RGXi(\"CSFalconService\\.exe|CSFalconService|CrowdStrike Falcon Sensor Service\")",
+                        "condition": {
+                            "triggerOnAnyMatch": true
+                        },
+                        "id": "83e3169a-0543-4918-8c68-494eb5afb910"
+                    }
+                ],
+                "commonProperties": null,
+                "outcomes": null
+            },
+            "scheduleConfig": null
+        }
+    ]
+}

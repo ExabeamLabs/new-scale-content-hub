@@ -1,0 +1,53 @@
+{
+    "_comment_title": "Installation Instructions",
+    "_comment_step1": "Download this file",
+    "_comment_step2": "Navigate to Correlation Rules, choose import, select file, import.",
+    "_author": "Mark Ulmer, US Services Consultant",
+    "_version_date": "2026-01-29",
+    
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "name": "Automox Uninstall Attempt",
+            "description": "Company policy clearly states that security applications must not be disabled, altered, bypassed, or removed. These tools are not optional, and they’re not there by accident — they exist to protect our environment from threats that can impact all of us.",
+            "useCase": "audit_tampering",
+            "mitre": [
+                {
+                    "tacticKey": "TA0002",
+                    "tactic": "Execution",
+                    "techniqueKey": "T1072",
+                    "technique": "Software Deployment Tools"
+                }
+            ],
+            "sequencesExecution": "CREATION_ORDER",
+            "severity": "critical",
+            "sequencesConfig": {
+                "sequences": [
+                    {
+                        "name": "Automox Uninstall Attempt",
+                        "query": "(event_code: \"ProcessRollup2\" AND platform:\"windows\" AND process_command_line: RGXi(\"Automox_Installer\") AND process_command_line: RGXi(\"\\.(msi|exe)\") AND process_command_line: RGXi(\" /x\") ) OR process_command_line: RGXi(\"launchctl bootout system/com\\.automox\\.agent|amagent --deregister|rm -f /usr/local/bin/amagent\\*|rm -rf \\\"/Library/Application Support/Automox/\\\"|rm -f /Library/LaunchDaemons/com\\.automox\\.agent\") OR (activity_type: \"file-delete\" AND file_name: RGXi(\"automox\\.agent|amagent\\.exe\"))",
+                        "condition": {
+                            "groupByOption": true,
+                            "groupBy": [
+                                "user",
+                                "dest_host"
+                            ],
+                            "functionType": "count",
+                            "subject": "event",
+                            "field": "",
+                            "operator": "more_than",
+                            "value": "0",
+                            "time": 15,
+                            "unit": "m",
+                            "triggerOnAnyMatch": false
+                        },
+                        "id": "2c7c55e1-47bf-4a31-8495-9426ff4f067c"
+                    }
+                ],
+                "commonProperties": null,
+                "outcomes": null
+            },
+            "scheduleConfig": null
+        }
+    ]
+}

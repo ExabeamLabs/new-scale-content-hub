@@ -1,0 +1,41 @@
+{
+    "_comment_title": "Installation Instructions",
+    "_comment_step1": "Download this file",
+    "_comment_step2": "Navigate to Correlation Rules, choose import, select file, import.",
+    "_author": "Mark Ulmer, US Services Consultant",
+    "_version_date": "2026-01-29",
+    
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "name": "Zscaler Uninstall Attempt",
+            "description": "Security applications must not be stopped, disabled, altered, bypassed, or removed.",
+            "useCase": "audit_tampering",
+            "mitre": [
+                {
+                    "tacticKey": "TA0002",
+                    "tactic": "Execution",
+                    "techniqueKey": "T1072",
+                    "technique": "Software Deployment Tools"
+                }
+            ],
+            "sequencesExecution": "CREATION_ORDER",
+            "severity": "critical",
+            "sequencesConfig": {
+                "sequences": [
+                    {
+                        "name": "Zscaler Uninstall Attempt",
+                        "query": "(event_code: \"ProcessRollup2\" AND platform:\"windows\" AND process_command_line: RGXi(\"ZSAInstaller\") AND process_command_line: RGXi(\"uninstall\\.exe\") ) OR process_command_line: RGXi(\"/Applications/Zscaler/Zscaler Uninstaller.app|rm -f /Applications/Zscaler/\") ",
+                        "condition": {
+                            "triggerOnAnyMatch": true
+                        },
+                        "id": "39b8058f-a825-434c-9589-6291388dd26f"
+                    }
+                ],
+                "commonProperties": null,
+                "outcomes": null
+            },
+            "scheduleConfig": null
+        }
+    ]
+}
