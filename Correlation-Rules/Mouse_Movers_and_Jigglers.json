@@ -1,0 +1,41 @@
+{
+    "_comment_title": "Installation Instructions",
+    "_comment_step1": "Download this file",
+    "_comment_step2": "Navigate to Correlation Rules, choose import, select file, import.",
+    "_author": "Mark Ulmer, US Services Consultant",
+    "_version_date": "2026-01-30",
+	
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "name": "Mouse Movers and Jigglers",
+            "description": "This rule attempts to detect some of the most popular software Mouse Movers and Jigglers for Windows and MacOS.",
+            "useCase": "audit_tampering",
+            "mitre": [
+                {
+                    "tacticKey": "TA0007",
+                    "tactic": "Discovery",
+                    "techniqueKey": "T1518",
+                    "technique": "Software Discovery"
+                }
+            ],
+            "sequencesExecution": "CREATION_ORDER",
+            "severity": "high",
+            "sequencesConfig": {
+                "sequences": [
+                    {
+                        "name": "Mouse Movers and Jigglers",
+                        "query": "event_code: \"ProcessRollup2\" AND \n(\nprocess_command_line: RGXi(\"MoveMouse Installer\\.exe|Move Mouse Installer\\.exe|MouseJiggle\\.exe|Wiggler - The mouse moving app Installer\\.exe|Caffeine\\.exe|Insomnia\\.exe|StayAwake\\.exe|PreventTurnOff\\.exe|DontSleep\\.exe|NoSleep\\.exe|StatusHolder\\.exe\") \nOR \nprocess_command_line: RGXi(\"Auto Mouse Jiggler Mover.app|Jiggler.app|Computer Mouse Jiggler.app|Mouse Shaker.app|Mouse Mover|pip install jiggler\")\n)",
+                        "condition": {
+                            "triggerOnAnyMatch": true
+                        },
+                        "id": "c2334b8f-7008-449e-abca-394f4c82638a"
+                    }
+                ],
+                "commonProperties": null,
+                "outcomes": null
+            },
+            "scheduleConfig": null
+        }
+    ]
+}
