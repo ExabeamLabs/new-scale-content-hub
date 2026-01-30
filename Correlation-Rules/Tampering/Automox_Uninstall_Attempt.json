@@ -9,7 +9,7 @@
     "ruleDefinitions": [
         {
             "name": "Automox Uninstall Attempt",
-            "description": "Company policy clearly states that security applications must not be disabled, altered, bypassed, or removed. These tools are not optional, and they’re not there by accident — they exist to protect our environment from threats that can impact all of us.",
+            "description": "Security applications must not be stopped, disabled, altered, bypassed, or removed.",
             "useCase": "audit_tampering",
             "mitre": [
                 {
@@ -64,3 +64,4 @@
     ]
 
 }
+
