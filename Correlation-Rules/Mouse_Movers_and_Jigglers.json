@@ -25,7 +25,7 @@
                 "sequences": [
                     {
                         "name": "Mouse Movers and Jigglers",
-                        "query": "event_code: \"ProcessRollup2\" AND \n(\nprocess_command_line: RGXi(\"MoveMouse Installer\\.exe|Move Mouse Installer\\.exe|MouseJiggle\\.exe|Wiggler - The mouse moving app Installer\\.exe|Caffeine\\.exe|Insomnia\\.exe|StayAwake\\.exe|PreventTurnOff\\.exe|DontSleep\\.exe|NoSleep\\.exe|StatusHolder\\.exe\") \nOR \nprocess_command_line: RGXi(\"Auto Mouse Jiggler Mover\\.app|Jiggler\\.app|Computer Mouse Jiggler\\.app|Mouse Shaker\\.app|Mouse Mover|pip install jiggler\")\n)",
+                        "query": "activity_type: \"process-create\" AND \n(\nprocess_command_line: RGXi(\"MoveMouse Installer\\.exe|Move Mouse Installer\\.exe|MouseJiggle\\.exe|Wiggler - The mouse moving app Installer\\.exe|Caffeine\\.exe|Insomnia\\.exe|StayAwake\\.exe|PreventTurnOff\\.exe|DontSleep\\.exe|NoSleep\\.exe|StatusHolder\\.exe\") \nOR \nprocess_command_line: RGXi(\"Auto Mouse Jiggler Mover\\.app|Jiggler\\.app|Computer Mouse Jiggler\\.app|Mouse Shaker\\.app|Mouse Mover|pip install jiggler\")\n)",
                         "condition": {
                             "triggerOnAnyMatch": true
                         },
@@ -40,4 +40,5 @@
     ]
 
 }
+
 
