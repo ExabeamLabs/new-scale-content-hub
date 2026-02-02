@@ -37,7 +37,7 @@
                 "sequences": [
                     {
                         "name": "Automox Agent Service Stop",
-                        "query": "event_code: \"ServiceStopped\" AND process_command_line: RGXi(\"\\samagent|com\\.automox\\.agent\")",
+                        "query": "event_code: \"ServiceStopped\" AND process_command_line: RGXi(\"amagent|com\\.automox\\.agent\") AND NOT user: RGXi(\"umfd-|dwm-\")",
                         "condition": {
                             "triggerOnAnyMatch": true
                         },
