@@ -1,0 +1,41 @@
+{
+	"_comment_title": "Installation Instructions",
+	"_comment_step1": "Download this file",
+	"_comment_step2": "Navigate to Correlation Rules, choose import, select file, import.",
+	"_author": "Mark Ulmer, US Services Consultant",
+	"_version_date": "2026-02-02",
+	
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "name": "ZohoMeeting Client",
+            "description": "ZohoMeeting Client is often used by Small Businesses. In addition to meetings, this software allows file transfers and remote control of dekstop.",
+            "useCase": "evasion",
+            "mitre": [
+                {
+                    "tacticKey": "TA0005",
+                    "tactic": "Defense Evasion",
+                    "techniqueKey": "T1562",
+                    "technique": "Impair Defenses"
+                }
+            ],
+            "sequencesExecution": "CREATION_ORDER",
+            "severity": "medium",
+            "sequencesConfig": {
+                "sequences": [
+                    {
+                        "name": "ZohoMeeting Client",
+                        "query": "activity_type: \"process-create\" AND process_command_line: RGXi(\"ZohoMeeting\")",
+                        "condition": {
+                            "triggerOnAnyMatch": true
+                        },
+                        "id": "4b8891d6-76f7-4c43-b9ef-7a4f6bc600b9"
+                    }
+                ],
+                "commonProperties": null,
+                "outcomes": null
+            },
+            "scheduleConfig": null
+        }
+    ]
+}
