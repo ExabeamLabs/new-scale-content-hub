@@ -31,7 +31,7 @@
                 "sequences": [
                     {
                         "name": "Zscaler Agent Service Stop",
-                        "query": "event_code: \"ServiceStopped\" AND process_command_line: RGXi(\"ZSAService\\.exe|ZSAService\")",
+                        "query": "event_code: \"ServiceStopped\" AND process_command_line: RGXi(\"ZSAService\") AND NOT user: RGXi(\"umfd-|dwm-\")",
                         "condition": {
                             "triggerOnAnyMatch": true
                         },
