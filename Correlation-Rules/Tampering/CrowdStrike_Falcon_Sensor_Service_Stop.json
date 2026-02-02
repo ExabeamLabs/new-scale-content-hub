@@ -31,7 +31,7 @@
                 "sequences": [
                     {
                         "name": "CrowdStrike Falcon Sensor Service Stop",
-                        "query": "event_code: \"ServiceStopped\" AND process_command_line: RGXi(\"CSFalconService\\.exe|CSFalconService|CrowdStrike Falcon Sensor Service\")",
+                        "query": "event_code: \"ServiceStopped\" AND process_command_line: RGXi(\"CSFalconService\\.exe|CSFalconService|CrowdStrike Falcon Sensor Service\")  AND NOT user: RGXi(\"umfd-|dwm-\")",
                         "condition": {
                             "triggerOnAnyMatch": true
                         },
@@ -46,3 +46,4 @@
     ]
 
 }
+
