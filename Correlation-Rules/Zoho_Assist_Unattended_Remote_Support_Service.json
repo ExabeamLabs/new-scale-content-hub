@@ -1,0 +1,41 @@
+{
+    "_comment_title": "Installation Instructions",
+    "_comment_step1": "Download this file",
+    "_comment_step2": "Navigate to Correlation Rules, choose import, select file, import.",
+    "_author": "Mark Ulmer, US Services Consultant",
+    "_version_date": "2026-02-03",
+  
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "name": "EXASOC : Zoho Assist Unattended Remote Support Service",
+            "description": "Zoho Assist is often used by Small Businesses. Zoho Assist is a tool that allows Unattended Remote Desktop Access",
+            "useCase": "evasion",
+            "mitre": [
+                {
+                    "tacticKey": "TA0005",
+                    "tactic": "Defense Evasion",
+                    "techniqueKey": "T1562",
+                    "technique": "Impair Defenses"
+                }
+            ],
+            "sequencesExecution": "CREATION_ORDER",
+            "severity": "medium",
+            "sequencesConfig": {
+                "sequences": [
+                    {
+                        "name": "Zoho Assist Unattended Remote Support client",
+                        "query": "activity_type: \"process-create\" AND process_name: RGXi(\"ZohoURS\\.exe|ZohoURSService\\.exe|ZA_Upgrader\\.exe\")",
+                        "condition": {
+                            "triggerOnAnyMatch": true
+                        },
+                        "id": "84b16865-108c-4815-b249-f5265af2d081"
+                    }
+                ],
+                "commonProperties": null,
+                "outcomes": null
+            },
+            "scheduleConfig": null
+        }
+    ]
+}
