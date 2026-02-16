@@ -22,7 +22,7 @@ Author: Mark Ulmer US Service Consultant - February 2026<br>
    - Import Enrichment config file [Enrichment-Source_MAC_Address_to_OUI_Vendor.conf](../OUI_Vendor_Enrichment/Enrichment-Source_MAC_Address_to_OUI_Vendor.conf)
 
 ## Here is what is looks like:
-<img width="1115" height="233" alt="image" src="../OUI_Vendor_Enrichment/Screenshot_Enrichment-Source_MAC_Address_to_OUI_Vendor.png" />
+<img width="606" height="330" alt="image" src="../OUI_Vendor_Enrichment/Screenshot_Enrichment-Source_MAC_Address_to_OUI_Vendor.png" />
    
    
 ## Reference Materials:
