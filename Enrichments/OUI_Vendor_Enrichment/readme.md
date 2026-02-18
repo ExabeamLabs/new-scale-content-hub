@@ -40,5 +40,5 @@ Author: Mark Ulmer US Service Consultant - February 2026<br>
 ## Reference Materials:
 [Cisco Quick Tip - Using MAC Address To Determine Manufacturer](https://youtu.be/gCXLO5cCTzM?si=bfloCcdNSrLy6EPQ)<br>
 [Organizationally unique identifier](https://en.wikipedia.org/wiki/Organizationally_unique_identifier)<br>
-[Full Database of MAC OUI](https://maclookup.app/downloads/csv-database)>br>
+[Source Database of All MAC OUI](https://maclookup.app/downloads/csv-database)<br>
 
