@@ -30,7 +30,7 @@ Author: Mark Ulmer US Service Consultant - February 2026<br>
 <img width="606" height="330" alt="image" src="../OUI_Vendor_Enrichment/Screenshot_Enrichment-Source_MAC_Address_to_OUI_Vendor.png" />
 
 <br>
-There is also a [Dashboard.config](/Dashboards/Devices_by_MAC_Vendor_v1.config)
+There is also a [Dashboard.config](../../Dashboards/Devices_by_MAC_Vendor_v1.config)
 <br>
    
 ## Reference Materials:
