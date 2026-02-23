@@ -15,20 +15,13 @@ Author: Mark Ulmer US Service Consultant - February 2026<br>
    - Add Attributes: Key and Value
    - Create
    
-2. **Upload a Suspicious list from CSV**
+2. **Upload full OUI list from CSV**
    - Navigate to OUI_Lookup
-   - Download this file [OUI_Lookup_Suspicious.csv](../OUI_Vendor_Enrichment/OUI_Lookup_Suspicious.csv)
-   - TIP: You might want to add your most suspicious OUI pefixes here. This is only an example list.
+   - Download this file [OUI_Lookup_Full_List_OUI_Lowercase.csv](../OUI_Vendor_Enrichment/OUI_Lookup_Full_List_OUI_Lowercase.csv)
    - Upload CSV
    - Append Data
    
-3. **Upload a Common list from CSV**
-   - Download this file [OUI_Lookup_Common.csv](../OUI_Vendor_Enrichment/OUI_Lookup_Common.csv)
-   - TIP: You might want to add your most popular and authorized OUI pefixes here. This is not a complete list.
-   - Upload CSV
-   - Append Data
-   
-5. **Log Stream | Enrichments **
+3. **Log Stream | Enrichments **
    - Navigate to Log Stream, then select Enrichments
    - Download this Enrichment config file [Enrichment-Source_MAC_Address_to_OUI_Vendor.conf](../OUI_Vendor_Enrichment/Enrichment-Source_MAC_Address_to_OUI_Vendor.conf)
    - Import and select file
