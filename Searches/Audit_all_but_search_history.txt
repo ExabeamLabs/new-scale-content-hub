@@ -1,0 +1,8 @@
+Search: SELECT app, object, activity_type, user_info, geo_src_ip.isp, additional_info, outcome,
+COUNT(*) AS total
+WHERE product:"Audit Log" AND NOT app:"Search"
+GROUP-BY app, object, activity_type, user_info, geo_src_ip.isp, additional_info, outcome
+ORDER-BY object ASC, total DESC
+Timeframe: 24 hours
+Search Name: Audit all events except Searches
+Search Description: Rollup the audit event types present
