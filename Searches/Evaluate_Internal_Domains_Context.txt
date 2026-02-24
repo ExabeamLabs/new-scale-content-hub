@@ -1,0 +1,7 @@
+Search: SELECT email_domain, email_address, count(*) as total 
+WHERE NOT email_address:NULL AND NOT  email_domain IN "Internal Domains"
+GROUP-BY email_domain, email_address
+ORDER-BY total DESC
+Timeframe: 24 hours
+Search Name: Evaluate Internal Domains correctness
+Search Description: Is my Context Table for Internal Domains current and correct, the results of this should show all email based events that are not mapping to a domain listed in the Context table. Note that you may want to compare the source_email_address and dest_email_addresses and respective domains as well.
