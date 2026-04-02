@@ -1,0 +1,9 @@
+Search Name: NSA Rule Troubleshooting - Prof-GA-E-U-SE - Related activity and parser 
+Search Description: Given a specific rule_id, extract the fields of the events that contributed to the specific detections. 
+Timeframe: 24 hours
+
+Search:  
+SELECT RGX_EXTRACT("src_activity_type\":\"(.+?)\"") as associated_activity_type, RGX_EXTRACT("msg_type\":\"(.+?)\"") as event_msg_type,
+count(*) as tcount 
+WHERE rule_id:"Prof-GA-E-U-SE"  
+GROUP-BY associated_activity_type, event_msg_type ORDER-BY tcount DESC
