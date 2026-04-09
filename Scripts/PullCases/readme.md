@@ -5,6 +5,7 @@ Export Exabeam Threat Center cases to CSV using the official API.
 This script authenticates using OAuth2 (client credentials), queries cases from the Threat Center API, and exports results in a flattened, CSV-friendly format.
 
 Features
+
 OAuth2 client credential authentication
 Supports all Exabeam cloud regions
 Handles API response formats (rows, cases, data)
@@ -55,93 +56,53 @@ This script uses OAuth2 Client Credentials flow.
 
 Example request:
 
-POST /auth/v1/token
-{
-  "client_id": "...",
-  "client_secret": "...",
-  "grant_type": "client_credentials"
-}
-Important: fields Parameter
-
-The fields parameter is required.
-
-If it is omitted, the API will return empty objects:
-
-"rows": [
-  {},
-  {}
-]
+      POST /auth/v1/token
+      {
+        "client_id": "...",
+        "client_secret": "...",
+        "grant_type": "client_credentials"
+      }
+      Important: fields Parameter
+      
+      The fields parameter is required.
+      
+      If it is omitted, the API will return empty objects:
+      
+      "rows": [
+        {},
+        {}
+      ]
 
 Correct usage:
 
 "fields": ["*"]
+
 Example Usage
-.\Export-ExabeamCases.ps1 `
-    -BaseUrl "https://api.sa.exabeam.cloud" `
-    -ClientId "YOUR_CLIENT_ID" `
-    -ClientSecret "YOUR_CLIENT_SECRET" `
-    -StartTime "2026-04-01T00:00:00Z" `
-    -EndTime "2026-04-10T00:00:00Z" `
-    -Filter 'NOT stage:"CLOSED"' `
-    -ShowJwtPayload
+
+    .\Export-ExabeamCases.ps1 `
+        -BaseUrl "https://api.sa.exabeam.cloud" `
+        -ClientId "YOUR_CLIENT_ID" `
+        -ClientSecret "YOUR_CLIENT_SECRET" `
+        -StartTime "2026-04-01T00:00:00Z" `
+        -EndTime "2026-04-10T00:00:00Z" `
+        -Filter 'NOT stage:"CLOSED"' `
+        -ShowJwtPayload
+    
 Example API Request
-POST /threat-center/v1/search/cases
-{
-  "fields": ["*"],
-  "limit": 10,
-  "startTime": "2026-04-01T00:00:00Z",
-  "endTime": "2026-04-10T00:00:00Z",
-  "filter": "NOT stage:\"CLOSED\""
-}
+
+    POST /threat-center/v1/search/cases
+    
+    {
+      "fields": ["*"],
+      "limit": 10,
+      "startTime": "2026-04-01T00:00:00Z",
+      "endTime": "2026-04-10T00:00:00Z",
+      "filter": "NOT stage:\"CLOSED\""
+    }
+
 Output
+
 CSV file generated in the current directory (or -OutputPath)
 File naming format:
 ExabeamCases_YYYYMMDD_HHMMSS.csv
 Nested objects are flattened for CSV compatibility
-Troubleshooting
-Audiences in Jwt are not allowed
-
-Cause:
-Base URL does not match your tenant region.
-
-Fix:
-Ensure the API base URL aligns with the JWT aud value.
-
-Empty rows ({})
-
-Cause:
-Missing fields parameter.
-
-Fix:
-Include:
-
-fields = @("*")
-HTTP 400 Bad Request
-
-Common causes:
-
-Missing Z on timestamps
-Invalid filter syntax
-Unsupported fields
-No results returned
-
-Check:
-
-Time range
-Filter logic
-Case status or stage values
-Security Notes
-
-Do not commit credentials.
-
-Never hardcode:
-
-ClientSecret
-Bearer tokens
-
-If credentials are exposed, rotate them immediately.
-
-Recommended approaches:
-
-Environment variables
-Secure secret storage (e.g. Azure Key Vault)
