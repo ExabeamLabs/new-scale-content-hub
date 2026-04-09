@@ -17,6 +17,7 @@ Full error handling (including raw API responses)
 API References
 
 https://developers.exabeam.com/exabeam/reference/get-access-token
+
 https://developers.exabeam.com/exabeam/reference/threat-center-search-cases
 
 These are the official Exabeam API docs used to build this script.
