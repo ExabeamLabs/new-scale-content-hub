@@ -30,8 +30,11 @@ Common examples:
 
 ---
 
-## Example One (Specific case stage)
+## Examples
 ```powershell
+
+## Example One (Pull Cases With Specific Status)
+
 .\Export-ExabeamCases.ps1 `
     -BaseUrl "https://api.sa.exabeam.cloud" `
     -ClientId "YOUR_CLIENT_ID" `
