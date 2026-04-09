@@ -1,7 +1,3 @@
-Exabeam Threat Center Case Export (PowerShell)
-
-Export Exabeam Threat Center cases to CSV using the official API.
-
 This script authenticates using OAuth2 (client credentials), queries cases from the Threat Center API, and exports results in a flattened, CSV-friendly format.
 
 Features
@@ -24,13 +20,12 @@ These are the official Exabeam API docs used to build this script.
 
 Regions / Base URLs
 
-Your API base URL must match your tenant region.
+Your API base URL must match your tenant region. If it does not, you will see errors such as: Audiences in Jwt are not allowed. Your region typically matches your tenant URL.
 
-If it does not, you will see errors such as:
-
-Audiences in Jwt are not allowed
 Common API Base URLs
+
 Region	Base URL
+
 US West	https://api.us-west.exabeam.cloud
 
 US East	https://api.use1.exabeam.cloud
@@ -50,8 +45,6 @@ Japan	https://api.jp.exabeam.cloud
 Singapore	https://api.sg.exabeam.cloud
 
 Saudi Arabia	https://api.sa.exabeam.cloud
-
-Your region typically matches your tenant URL.
 
 Authentication
 
