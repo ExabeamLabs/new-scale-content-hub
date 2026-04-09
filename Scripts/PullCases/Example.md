@@ -31,7 +31,7 @@ Common examples:
 ---
 
 ## Example One (Specific case stage)
-
+```powershell
 .\Export-ExabeamCases.ps1 `
     -BaseUrl "https://api.sa.exabeam.cloud" `
     -ClientId "YOUR_CLIENT_ID" `
@@ -45,7 +45,6 @@ Common examples:
     
 ## Example Two (Pull All Cases Any Status)
 
-```powershell
 .\Export-ExabeamCases.ps1 `
     -BaseUrl "https://api.sa.exabeam.cloud" `
     -ClientId "YOUR_CLIENT_ID" `
