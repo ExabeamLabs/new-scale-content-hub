@@ -7,7 +7,7 @@
     Threat Center Search Cases API, and exports results to CSV.
 
 .NOTES
-    IMPORTANT: Rotate your API secret if it has been exposed.
+    Rotate your API secret if it has been exposed.
 #>
 
 [CmdletBinding()]
@@ -27,9 +27,9 @@ param (
     [Parameter(Mandatory)]
     [string]$EndTime,
 
-    [string]$Filter = 'NOT stage:"CLOSED"',
+    [string]$Filter = 'NOT caseId:"__NO_MATCH__"',
 
-    [int]$Limit = 30000,
+    [int]$Limit = 3000,
 
     [string]$OutputPath = (Get-Location).Path,
 
@@ -40,7 +40,10 @@ param (
 # Logging
 # =========================
 function Write-Log {
-    param($Message, $Level = "INFO")
+    param(
+        [string]$Message,
+        [string]$Level = "INFO"
+    )
 
     $ts = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     $color = switch ($Level) {
@@ -48,6 +51,7 @@ function Write-Log {
         "SUCCESS" { "Green" }
         "WARN"    { "Yellow" }
         "ERROR"   { "Red" }
+        default   { "White" }
     }
 
     Write-Host "[$ts] [$Level] $Message" -ForegroundColor $color
@@ -57,21 +61,39 @@ function Write-Log {
 # Ensure UTC Z format
 # =========================
 function To-UtcZ {
-    param($dt)
+    param(
+        [Parameter(Mandatory)]
+        [string]$DateText
+    )
 
-    if ($dt -match 'Z$') { return $dt }
+    if ($DateText -match 'Z$') {
+        return $DateText
+    }
 
-    return ([datetime]::Parse($dt)).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+    try {
+        return ([datetime]::Parse($DateText)).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+    }
+    catch {
+        throw "Invalid date format: $DateText"
+    }
 }
 
 # =========================
 # Decode JWT (debug only)
 # =========================
 function Decode-JWT {
-    param($token)
+    param(
+        [Parameter(Mandatory)]
+        [string]$Token
+    )
 
     try {
-        $payload = $token.Split('.')[1]
+        $parts = $Token.Split('.')
+        if ($parts.Count -lt 2) {
+            throw "JWT does not contain enough parts."
+        }
+
+        $payload = $parts[1]
         $payload = $payload.Replace('-', '+').Replace('_', '/')
 
         switch ($payload.Length % 4) {
@@ -86,27 +108,115 @@ function Decode-JWT {
         return $json | ConvertFrom-Json
     }
     catch {
-        Write-Log "JWT decode failed" "WARN"
+        Write-Log "JWT decode failed: $_" "WARN"
+        return $null
     }
 }
 
 # =========================
-# Flatten object for CSV
+# Read raw error body
+# =========================
+function Get-ErrorResponseBody {
+    param(
+        [Parameter(Mandatory)]
+        $Exception
+    )
+
+    try {
+        if ($Exception.Response -and $Exception.Response.GetResponseStream) {
+            $stream = $Exception.Response.GetResponseStream()
+            if ($stream) {
+                $reader = New-Object System.IO.StreamReader($stream)
+                $body = $reader.ReadToEnd()
+                $reader.Close()
+                return $body
+            }
+        }
+    }
+    catch {
+        return $null
+    }
+
+    return $null
+}
+
+# =========================
+# Convert nested values for CSV
+# =========================
+function Convert-ForCsv {
+    param($Value)
+
+    if ($null -eq $Value) {
+        return $null
+    }
+
+    if (
+        $Value -is [string] -or
+        $Value -is [int] -or
+        $Value -is [long] -or
+        $Value -is [double] -or
+        $Value -is [decimal] -or
+        $Value -is [bool] -or
+        $Value -is [datetime]
+    ) {
+        return $Value
+    }
+
+    if ($Value -is [System.Collections.IDictionary] -or $Value -is [PSCustomObject]) {
+        return ($Value | ConvertTo-Json -Compress -Depth 20)
+    }
+
+    if ($Value -is [System.Collections.IEnumerable] -and $Value -isnot [string]) {
+        $items = foreach ($item in $Value) {
+            if (
+                $item -is [string] -or
+                $item -is [int] -or
+                $item -is [long] -or
+                $item -is [double] -or
+                $item -is [decimal] -or
+                $item -is [bool] -or
+                $item -is [datetime]
+            ) {
+                $item
+            }
+            else {
+                $item | ConvertTo-Json -Compress -Depth 20
+            }
+        }
+        return ($items -join "; ")
+    }
+
+    return [string]$Value
+}
+
+# =========================
+# Flatten object with priority columns first
 # =========================
 function Flatten {
     param($obj)
 
+    $priority = @(
+        "vendor",
+        "caseNumber",
+        "caseId",
+        "alertId",
+        "rules"
+    )
+
     $row = [ordered]@{}
 
-    foreach ($p in $obj.PSObject.Properties) {
-        if ($p.Value -is [System.Collections.IEnumerable] -and $p.Value -isnot [string]) {
-            $row[$p.Name] = ($p.Value | ConvertTo-Json -Compress)
-        }
-        elseif ($p.Value -is [PSCustomObject]) {
-            $row[$p.Name] = ($p.Value | ConvertTo-Json -Compress)
+    foreach ($name in $priority) {
+        if ($obj.PSObject.Properties.Name -contains $name) {
+            $row[$name] = Convert-ForCsv -Value $obj.$name
         }
         else {
-            $row[$p.Name] = $p.Value
+            $row[$name] = $null
+        }
+    }
+
+    foreach ($prop in $obj.PSObject.Properties) {
+        if ($priority -notcontains $prop.Name) {
+            $row[$prop.Name] = Convert-ForCsv -Value $prop.Value
         }
     }
 
@@ -116,11 +226,23 @@ function Flatten {
 # =========================
 # Prep
 # =========================
-$StartTime = To-UtcZ $StartTime
-$EndTime   = To-UtcZ $EndTime
+try {
+    $StartTimeUtc = To-UtcZ -DateText $StartTime
+    $EndTimeUtc   = To-UtcZ -DateText $EndTime
+}
+catch {
+    Write-Log $_ "ERROR"
+    exit 1
+}
 
-if (!(Test-Path $OutputPath)) {
-    New-Item -ItemType Directory -Path $OutputPath | Out-Null
+if (-not (Test-Path $OutputPath)) {
+    try {
+        New-Item -ItemType Directory -Path $OutputPath -Force | Out-Null
+    }
+    catch {
+        Write-Log "Failed to create output path: $_" "ERROR"
+        exit 1
+    }
 }
 
 # =========================
@@ -128,7 +250,7 @@ if (!(Test-Path $OutputPath)) {
 # =========================
 $tokenUrl = "$BaseUrl/auth/v1/token"
 
-Write-Log "Requesting token..."
+Write-Log "Requesting access token from $tokenUrl"
 
 $tokenBody = @{
     grant_type    = "client_credentials"
@@ -140,18 +262,45 @@ try {
     $tokenResp = Invoke-RestMethod -Uri $tokenUrl -Method POST -Headers @{
         "accept"       = "application/json"
         "content-type" = "application/json"
-    } -Body $tokenBody
+    } -Body $tokenBody -ErrorAction Stop
 
     $token = $tokenResp.access_token
-    Write-Log "Token acquired" "SUCCESS"
+
+    if (-not $token) {
+        throw "Token response did not include access_token."
+    }
+
+    Write-Log "Access token obtained successfully." "SUCCESS"
 }
 catch {
-    Write-Log "Auth failed: $_" "ERROR"
-    exit
+    Write-Log "Authentication failed: $_" "ERROR"
+
+    if ($_.ErrorDetails.Message) {
+        Write-Log "API Error Detail: $($_.ErrorDetails.Message)" "ERROR"
+    }
+
+    $raw = Get-ErrorResponseBody -Exception $_.Exception
+    if ($raw) {
+        Write-Log "Raw response body:" "WARN"
+        Write-Host $raw
+    }
+
+    exit 1
 }
 
 if ($ShowJwtPayload) {
-    Decode-JWT $token | ConvertTo-Json -Depth 5 | Write-Host
+    $jwt = Decode-JWT -Token $token
+    if ($jwt) {
+        Write-Log "Decoded JWT payload below for troubleshooting:"
+        $jwt | ConvertTo-Json -Depth 10 | Write-Host
+
+        if ($jwt.PSObject.Properties.Name -contains "aud") {
+            Write-Log "JWT aud: $($jwt.aud)" "INFO"
+        }
+        if ($jwt.PSObject.Properties.Name -contains "iss") {
+            Write-Log "JWT iss: $($jwt.iss)" "INFO"
+        }
+    }
 }
 
 # =========================
@@ -159,59 +308,85 @@ if ($ShowJwtPayload) {
 # =========================
 $casesUrl = "$BaseUrl/threat-center/v1/search/cases"
 
-$body = @{
-    fields    = @("*")   # <-- CRITICAL FIX
+$bodyObject = @{
+    fields    = @("*")
     limit     = $Limit
-    startTime = $StartTime
-    endTime   = $EndTime
+    startTime = $StartTimeUtc
+    endTime   = $EndTimeUtc
     filter    = $Filter
-} | ConvertTo-Json -Compress
+}
 
-Write-Log "Querying cases..."
+$body = $bodyObject | ConvertTo-Json -Compress -Depth 10
+
+Write-Log "Effective StartTime: $StartTimeUtc"
+Write-Log "Effective EndTime:   $EndTimeUtc"
+Write-Log "Effective Filter:    $Filter"
+Write-Log "Effective Limit:     $Limit"
+Write-Log "Effective Fields:    *"
+Write-Log "Querying cases from $casesUrl"
 
 try {
     $resp = Invoke-RestMethod -Uri $casesUrl -Method POST -Headers @{
         "accept"        = "application/json"
         "content-type"  = "application/json"
         "authorization" = "Bearer $token"
-    } -Body $body
+    } -Body $body -ErrorAction Stop
 }
 catch {
-    Write-Log "API FAILED" "ERROR"
+    Write-Log "Cases API call failed: $_" "ERROR"
+
+    if ($_.Exception.Response -and $_.Exception.Response.StatusCode) {
+        Write-Log "HTTP Status: $([int]$_.Exception.Response.StatusCode)" "ERROR"
+    }
 
     if ($_.ErrorDetails.Message) {
-        Write-Log $_.ErrorDetails.Message "ERROR"
+        Write-Log "API Error Detail: $($_.ErrorDetails.Message)" "ERROR"
     }
 
-    if ($_.Exception.Response) {
-        $reader = New-Object System.IO.StreamReader($_.Exception.Response.GetResponseStream())
-        $reader.BaseStream.Position = 0
-        $reader.DiscardBufferedData()
-        $bodyErr = $reader.ReadToEnd()
-        Write-Host $bodyErr
+    $raw = Get-ErrorResponseBody -Exception $_.Exception
+    if ($raw) {
+        Write-Log "Raw response body:" "WARN"
+        Write-Host $raw
     }
 
-    exit
+    Write-Log "Request body used:" "WARN"
+    Write-Host $body
+
+    exit 1
 }
 
 # =========================
 # HANDLE RESPONSE
 # =========================
-if ($resp.rows) {
-    $data = $resp.rows
+if ($null -eq $resp) {
+    Write-Log "API returned an empty response." "WARN"
+    exit 0
+}
+
+$data = if ($resp.PSObject.Properties.Name -contains "rows" -and $resp.rows) {
+    @($resp.rows)
+}
+elseif ($resp.PSObject.Properties.Name -contains "cases" -and $resp.cases) {
+    @($resp.cases)
+}
+elseif ($resp.PSObject.Properties.Name -contains "data" -and $resp.data) {
+    @($resp.data)
+}
+elseif ($resp -is [System.Collections.IEnumerable] -and $resp -isnot [string]) {
+    @($resp)
 }
 else {
-    $data = $resp
+    @($resp)
 }
 
 $count = $data.Count
 
 if ($count -eq 0) {
-    Write-Log "No results returned" "WARN"
-    exit
+    Write-Log "No results returned." "WARN"
+    exit 0
 }
 
-Write-Log "Retrieved $count rows" "SUCCESS"
+Write-Log "Retrieved $count row(s)." "SUCCESS"
 
 # =========================
 # EXPORT CSV
@@ -220,6 +395,11 @@ $flat = $data | ForEach-Object { Flatten $_ }
 
 $file = Join-Path $OutputPath ("ExabeamCases_" + (Get-Date -Format "yyyyMMdd_HHmmss") + ".csv")
 
-$flat | Export-Csv $file -NoTypeInformation -Encoding UTF8
-
-Write-Log "Exported to $file" "SUCCESS"
+try {
+    $flat | Export-Csv -Path $file -NoTypeInformation -Encoding UTF8
+    Write-Log "Exported to $file" "SUCCESS"
+}
+catch {
+    Write-Log "CSV export failed: $_" "ERROR"
+    exit 1
+}
