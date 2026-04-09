@@ -13,7 +13,9 @@ Automatically converts timestamps to UTC (Z)
 Exports clean, flattened CSV
 Debug mode for JWT inspection
 Full error handling (including raw API responses)
+
 API References
+
 https://developers.exabeam.com/exabeam/reference/get-access-token
 https://developers.exabeam.com/exabeam/reference/threat-center-search-cases
 
