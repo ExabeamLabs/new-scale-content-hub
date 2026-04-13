@@ -59,7 +59,10 @@ Common examples:
 
 ---
 
-To use the bulk update script you just need to complete the first pull cases script, and either use the filters to have that just return the cases you want to close - Or manually do some filtering in Excel/CSV to only keep the rows and most importantly caseID that you want to bulk change the status of. Point the second script (bulk update) at that CSV via the switch you can see below for -CsvPath . 
+To use the bulk update script you just need to complete the first pull cases script, and either use the filters to have that
+just return the cases you want to close - Or manually do some filtering in Excel/CSV to only keep the rows and most importantly
+caseID that you want to bulk change the status of. Point the second script (bulk update) at that CSV via the switch you can 
+see below for -CsvPath . 
 
 PS C:\Projects\Export-ExabeamCases> .\Export-ExabeamCases.ps1 `
     -BaseUrl "https://api.sa.exabeam.cloud" `
