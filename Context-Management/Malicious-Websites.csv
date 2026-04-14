@@ -1,2 +1,5 @@
 Key,Value
-malware.wicar.org,"All malware is hosted at: http://malware.wicar.org/, which is the correct address that should be blocked by anti-malware solutions"
+malware.wicar.org,"Type: DOMAIN Comment: Malware Testing - All malware is hosted at: http://malware.wicar.org/, which is the correct address that should be blocked by anti-malware solutions"
+ado-read-parser.com,"Type: DOMAIN Value: ado-read-parser.com Confidence: 90% Status: Active Description: Adobe ZeroDay Tags: Adobe ZeroDay C2 Source: MeduzaCTI Platform"
+zx.ado-read-parser.com,"Type: DOMAIN Value: zx.ado-read-parser.com Confidence: 90% Status: Active Description: Adobe ZeroDay Tags: Adobe ZeroDay C2 Source: MeduzaCTI Platform"
+microsoft-update.support,"Type: DOMAIN Value: microsoft-update.support Confidence: 85% Status: Active Description: Fake Windows support website that delivers info stealer malware Tags: Malware Stealer Payload Dropper Source: MeduzaCTI Platform"
