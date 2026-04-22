@@ -1,1 +1,35 @@
-{"version":"1","ruleDefinitions":[{"name":"Installation Activity Linux","description":"This rule detects attempts to install a package or service with 'apt-get install' or 'yum install' commands. This could be indicative of an attacker trying to install malicious software.","useCase":"malware","mitre":[{"tacticKey":"TA0002","tactic":"Execution","techniqueKey":"T1072","technique":"Software Deployment Tools"}],"sequencesExecution":"CREATION_ORDER","severity":"low","sequencesConfig":{"sequences":[{"name":"","query":"activity_type:\"process-create\" AND process_command_line:\"apt-get \",\"yum \" AND process_command_line:(\"install\",\"--enablerepo=\")","condition":{"triggerOnAnyMatch":true},"id":"818ec8c3-c386-46c6-a92c-b7522739b39a"}],"commonProperties":null,"outcomes":null},"scheduleConfig":null}]}
+{
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "name": "Installation Activity Linux",
+            "description": "This rule detects attempts to install a package or service with 'apt-get install' or 'yum install' commands. This could be indicative of an attacker trying to install malicious software.",
+            "useCase": "malware",
+            "mitre": [
+                {
+                    "tacticKey": "TA0002",
+                    "tactic": "Execution",
+                    "techniqueKey": "T1072",
+                    "technique": "Software Deployment Tools"
+                }
+            ],
+            "sequencesExecution": "CREATION_ORDER",
+            "severity": "low",
+            "sequencesConfig": {
+                "sequences": [
+                    {
+                        "name": "",
+                        "query": "activity_type:\"process-create\" AND process_command_line:(\"apt \",\"apt-get \",\"yum \") AND process_command_line:(\"install\",\"--enablerepo=\")",
+                        "condition": {
+                            "triggerOnAnyMatch": true
+                        },
+                        "id": "818ec8c3-c386-46c6-a92c-b7522739b39a"
+                    }
+                ],
+                "commonProperties": null,
+                "outcomes": null
+            },
+            "scheduleConfig": null
+        }
+    ]
+}
