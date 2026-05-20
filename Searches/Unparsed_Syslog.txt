@@ -1,0 +1,7 @@
+Search:  
+  SELECT RGX_EXTRACT("([a-zA-Z0-9_-]+)\[\d+\]:*") AS syslog_process, RGX_EXTRACT("(debug|DEBUG|info|INFO|notice|NOTICE|warn|WARN|err|ERR|crit|CRIT|alert|ALERT|emerg|EMERG)") AS syslog_severity, COUNT(*) as line_count, SUM(raw_log_size) as byte_sum
+  WHERE m_exa_sc_collector_type: "syslog" AND parsed: FALSE AND NOT syslog_process: null
+  GROUP-BY syslog_process, syslog_severity ORDER-BY byte_sum DESC
+Timeframe: 24 hours
+Search Name:  Unparsed Syslog by Process and byte_sum
+Search Description:  This search will extract at search time the process name and count the lines and bytes of the unparsed syslog messages.
