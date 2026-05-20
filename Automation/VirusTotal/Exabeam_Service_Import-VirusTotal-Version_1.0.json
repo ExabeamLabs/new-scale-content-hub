@@ -1,141 +1,215 @@
 {
-  "openapi": "3.0.0",
-  "info": {
-    "title": "VirusTotal IP Address API",
-    "description": "API specification for retrieving IP address information from VirusTotal",
-    "version": "3.0"
-  },
-  "servers": [
-    {
-      "url": "https://www.virustotal.com/api/v3",
-      "description": "VirusTotal API v3 Production Server"
-    }
-  ],
-  "security": [
-    {
-      "ApiKeyAuth": []
-    }
-  ],
-  "paths": {
-    "/ip_addresses/{ip}": {
-      "get": {
-        "operationId": "getIpAddressInfo",
-        "summary": "Get information about an IP address",
-        "description": "Retrieves analysis and reputation details for a given IP address from VirusTotal",
-        "parameters": [
-          {
-            "name": "ip",
-            "in": "path",
-            "required": true,
-            "description": "The IP address to retrieve information for",
-            "schema": {
-              "type": "string",
-              "example": "8.8.8.8"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response with IP address details",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string",
-                          "description": "IP address identifier"
-                        },
-                        "type": {
-                          "type": "string",
-                          "description": "Resource type (ip_address)"
-                        },
-                        "attributes": {
-                          "type": "object",
-                          "properties": {
-                            "as_owner": {
-                              "type": "string",
-                              "description": "Autonomous system owner"
-                            },
-                            "asn": {
-                              "type": "integer",
-                              "description": "Autonomous system number"
-                            },
-                            "country": {
-                              "type": "string",
-                              "description": "Country code"
-                            },
-                            "continent": {
-                              "type": "string",
-                              "description": "Continent code"
-                            },
-                            "last_analysis_stats": {
-                              "type": "object",
-                              "description": "Summary of analysis results",
-                              "properties": {
-                                "harmless": {
-                                  "type": "integer",
-                                  "description": "Number of engines that found the IP harmless"
-                                },
-                                "malicious": {
-                                  "type": "integer",
-                                  "description": "Number of engines that found the IP malicious"
-                                },
-                                "suspicious": {
-                                  "type": "integer",
-                                  "description": "Number of engines that found the IP suspicious"
-                                },
-                                "undetected": {
-                                  "type": "integer",
-                                  "description": "Number of engines that did not detect anything"
-                                },
-                                "timeout": {
-                                  "type": "integer",
-                                  "description": "Number of engines that timed out"
-                                }
-                              }
-                            },
-                            "reputation": {
-                              "type": "integer",
-                              "description": "Reputation score"
-                            },
-                            "network": {
-                              "type": "string",
-                              "description": "Network range"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request (invalid IP or missing parameters)"
-          },
-          "401": {
-            "description": "Unauthorized (invalid API key)"
-          },
-          "404": {
-            "description": "IP address not found"
-          }
+    "openapi": "3.0.0",
+    "info": {
+        "title": "VirusTotal v3 API - IP and Domain Reports",
+        "description": "A subset of the VirusTotal v3 API for retrieving analysis reports for IP addresses and domains.",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://www.virustotal.com/api/v3",
+            "description": "VirusTotal v3 API Server"
         }
-      }
+    ],
+    "paths": {
+        "/ip_addresses/{ip}": {
+            "get": {
+                "summary": "Get an IP address report",
+                "description": "Retrieves a report for a given IP address. The report includes threat reputation, contextual information, and detection details from various antivirus engines.",
+                "operationId": "getIpAddressReport",
+                "parameters": [
+                    {
+                        "name": "ip",
+                        "in": "path",
+                        "required": true,
+                        "description": "The IP address to retrieve the report for.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response containing the IP address report.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/IPAddressResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request (e.g., invalid IP address format)."
+                    },
+                    "401": {
+                        "description": "Unauthorized (Invalid or missing API key)."
+                    },
+                    "404": {
+                        "description": "Not Found (IP address not found in VirusTotal database)."
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": [
+                        ]
+                    }
+                ]
+            }
+        },
+        "/domains/{domain}": {
+            "get": {
+                "summary": "Get a Domain report",
+                "description": "Retrieves a report for a given domain. The report provides threat reputation, contextual information, and analysis results from 70+ antivirus products and blocklists.",
+                "operationId": "getDomainReport",
+                "parameters": [
+                    {
+                        "name": "domain",
+                        "in": "path",
+                        "required": true,
+                        "description": "The domain name to retrieve the report for.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response containing the domain report.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DomainResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request (e.g., invalid domain format)."
+                    },
+                    "401": {
+                        "description": "Unauthorized (Invalid or missing API key)."
+                    },
+                    "404": {
+                        "description": "Not Found (Domain not found in VirusTotal database)."
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": [
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "api_key": {
+                "type": "apiKey",
+                "name": "x-apikey",
+                "in": "header"
+            }
+        },
+        "schemas": {
+            "IPAddressResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string",
+                                "description": "The IP address."
+                            },
+                            "type": {
+                                "type": "string",
+                                "enum": [
+                                    "ip_address"
+                                ]
+                            },
+                            "links": {
+                                "type": "object",
+                                "properties": {
+                                    "self": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "attributes": {
+                                "type": "object",
+                                "properties": {
+                                    "reputation": {
+                                        "type": "integer"
+                                    },
+                                    "last_analysis_stats": {
+                                        "$ref": "#/components/schemas/AnalysisStats"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "DomainResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string",
+                                "description": "The domain name."
+                            },
+                            "type": {
+                                "type": "string",
+                                "enum": [
+                                    "domain"
+                                ]
+                            },
+                            "links": {
+                                "type": "object",
+                                "properties": {
+                                    "self": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "attributes": {
+                                "type": "object",
+                                "properties": {
+                                    "reputation": {
+                                        "type": "integer"
+                                    },
+                                    "last_analysis_stats": {
+                                        "$ref": "#/components/schemas/AnalysisStats"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "AnalysisStats": {
+                "type": "object",
+                "properties": {
+                    "harmless": {
+                        "type": "integer"
+                    },
+                    "malicious": {
+                        "type": "integer"
+                    },
+                    "suspicious": {
+                        "type": "integer"
+                    },
+                    "undetected": {
+                        "type": "integer"
+                    },
+                    "timeout": {
+                        "type": "integer"
+                    }
+                }
+            }
+        }
     }
-  },
-  "components": {
-    "securitySchemes": {
-      "ApiKeyAuth": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "x-apikey",
-        "description": "Your VirusTotal API key"
-      }
-    }
-  }
 }
