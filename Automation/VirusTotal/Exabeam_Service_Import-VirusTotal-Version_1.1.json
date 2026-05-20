@@ -1,9 +1,9 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "VirusTotal v3 API - IP and Domain Reports",
-        "description": "A subset of the VirusTotal v3 API for retrieving analysis reports for IP addresses and domains.",
-        "version": "1.1.0"
+        "title": "VirusTotal v3 API - IP, Domain, and URL Reports",
+        "description": "A subset of the VirusTotal v3 API for retrieving analysis reports for IP addresses, domains, and URLs.",
+        "version": "1.1"
     },
     "servers": [
         {
@@ -101,6 +101,51 @@
                     }
                 ]
             }
+        },
+        "/urls/{url_id}": {
+            "get": {
+                "summary": "Get a URL report",
+                "description": "Retrieves a report for a given URL. The `url_id` is the base64 representation of the URL.",
+                "operationId": "getUrlReport",
+                "parameters": [
+                    {
+                        "name": "url_id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The base64 representation of the URL to retrieve the report for.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response containing the URL report.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/URLResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request (e.g., invalid URL format)."
+                    },
+                    "401": {
+                        "description": "Unauthorized (Invalid or missing API key)."
+                    },
+                    "404": {
+                        "description": "Not Found (URL not found in VirusTotal database)."
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": [
+                        ]
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -165,6 +210,45 @@
                                 "type": "string",
                                 "enum": [
                                     "domain"
+                                ]
+                            },
+                            "links": {
+                                "type": "object",
+                                "properties": {
+                                    "self": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "attributes": {
+                                "type": "object",
+                                "properties": {
+                                    "reputation": {
+                                        "type": "integer"
+                                    },
+                                    "last_analysis_stats": {
+                                        "$ref": "#/components/schemas/AnalysisStats"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "URLResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string",
+                                "description": "The URL identifier."
+                            },
+                            "type": {
+                                "type": "string",
+                                "enum": [
+                                    "url"
                                 ]
                             },
                             "links": {
