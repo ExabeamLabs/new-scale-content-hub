@@ -68,5 +68,4 @@ Author: Mark Ulmer US Service Consultant - May 2026 - Added Get Domain Report an
 ## Reference Materials:
 
 [VirusTotal API Documenation](https://docs.virustotal.com/docs/api-overview)<br>
-[VirusTotal API - ip-info](https://docs.virustotal.com/reference/ip-info)<br>
-[VirusTotal API - domain-info](https://docs.virustotal.com/reference/domain-info)<br>
+[VirusTotal API Reference](https://docs.virustotal.com/reference/overview)<br>
