@@ -4,15 +4,15 @@ Description: This Automation Management integration with VirusTotal currently su
 Version: 1.1<br>
 Author: Charlie Mac UK TAM - May 2025 - Email If Stuck<br>
 Author: Mark Ulmer US Service Consultant - December 2025 - Moved api_key to instance variable<br>
-Author: Mark Ulmer US Service Consultant - May 2026 - Intent is to add Domain Lookup<br>
+Author: Mark Ulmer US Service Consultant - May 2026 - Added Get Domain Report<br>
 
 ## Setup Service
 
 1. **Add Service**
    - Service name:  VirusTotal
-   - Service Description:  VirusTotal integration version 1.0
+   - Service Description:  VirusTotal integration version 1.1
    - Click Import from File or URL
-   - Paste URL...   `https://raw.githubusercontent.com/ExabeamLabs/new-scale-content-hub/refs/heads/main/Automation/VirusTotal/Exabeam_Service_Import-VirusTotal-Version_1.0.json`
+   - Paste URL...   `https://raw.githubusercontent.com/ExabeamLabs/new-scale-content-hub/refs/heads/main/Automation/VirusTotal/Exabeam_Service_Import-VirusTotal-Version_1.1.json`
    - Click Confirm and Validate
    - Click Import and Next
 
@@ -24,12 +24,18 @@ Author: Mark Ulmer US Service Consultant - May 2026 - Intent is to add Domain Lo
    - Save
 
 4. **Edit Action**
-   - Edit action name:  Get information about an IP address
-   - Description:  Get information about an IP address
-   - Paste code contents from action file:  [VirusTotal_Action_IPLookup.py](../VirusTotal/VirusTotal_Action_IPLookup.py)
+   - Edit action name:  Get an IP address report
+   - Description:  Get an IP address report
+   - Paste code contents from action file:  [VirusTotal_Action_Get_IP_Report.py](../VirusTotal/VirusTotal_Action_Get_IP_Report.py)
    - Deploy
-
-5. **Add Service Instance**
+     
+5. **Edit Action**
+   - Edit action name:  Get a Domain report
+   - Description:  Get a Domain report
+   - Paste code contents from action file:  [VirusTotal_Action_Get_Domain_Report.py](../VirusTotal/VirusTotal_Action_Get_Domain_Report.py)
+   - Deploy
+     
+6. **Add Service Instance**
    - Click on Instances tab
    - Click + Add Instance
    - Provide instance name
@@ -38,15 +44,15 @@ Author: Mark Ulmer US Service Consultant - May 2026 - Intent is to add Domain Lo
 
 
 ## Playbook Demonstration
-5. **Create Playbook**
+1. **Create Playbook**
    - Name: VirusTotal IP Lookup
    - Add Step
-   - Select Action > Exabeam > Get Information about an IP address
+   - Select Action > Exabeam > Get an IP address report
    - ip_to_check > plug-in > flow_input.dest_ips
    - VT_API_KEY > plug-in > "$var:f/exabeam/VirusTotal/{instance}/VT_API_KEY"
    - Deploy
 
-6. **Run Playbook from Threat Center**
+2. **Run Playbook from Threat Center**
    - Select a Case
    - Run a Playbook
    - Select VirusTotal IP Lookup
@@ -57,3 +63,4 @@ Author: Mark Ulmer US Service Consultant - May 2026 - Intent is to add Domain Lo
 
 [VirusTotal API Documenation](https://docs.virustotal.com/docs/api-overview)<br>
 [VirusTotal API - ip-info](https://docs.virustotal.com/reference/ip-info)<br>
+[VirusTotal API - domain-info](https://docs.virustotal.com/reference/domain-info)<br>
