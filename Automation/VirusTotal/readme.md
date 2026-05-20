@@ -1,9 +1,10 @@
 # Exabeam Automation Management - Integration with VirusTotal
 
 Description: This Automation Management integration with VirusTotal currently supports the Action of **Get an IP address report**<br>
-Version: 1.0<br>
+Version: 1.1<br>
 Author: Charlie Mac UK TAM - May 2025 - Email If Stuck<br>
 Author: Mark Ulmer US Service Consultant - December 2025 - Moved api_key to instance variable<br>
+Author: Mark Ulmer US Service Consultant - May 2026 - Intent is to add Domain Lookup<br>
 
 ## Setup Service
 
