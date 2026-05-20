@@ -3,7 +3,7 @@
     "info": {
         "title": "VirusTotal v3 API - IP and Domain Reports",
         "description": "A subset of the VirusTotal v3 API for retrieving analysis reports for IP addresses and domains.",
-        "version": "1.0.0"
+        "version": "1.1.0"
     },
     "servers": [
         {
