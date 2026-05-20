@@ -3,8 +3,20 @@
 import urllib.request
 import json
 import base64
+from urllib.parse import urlparse
+
 
 def check_url_virustotal(url, api_key):
+    """
+    Checks a URL against the VirusTotal API.
+    """
+    if not url or not isinstance(url, str):
+        raise ValueError("URL must be a non-empty string.")
+
+    parsed_url = urlparse(url)
+    if not (parsed_url.scheme and parsed_url.netloc):
+        raise ValueError(f"Invalid URL format: '{url}'. A scheme (e.g., http, https) and a domain are required.")
+
     url_id = base64.urlsafe_b64encode(f"{url}".encode()).decode().strip("=")
     urlreport = f"https://www.virustotal.com/api/v3/urls/{url_id}"
     headers = {
@@ -35,13 +47,9 @@ def main(url_to_check, VT_API_KEY):
     if not VT_API_KEY:
         raise RuntimeError("VT_API_KEY environment variable is not set")
 
-    # Check if input is a list, and pick the first item
-    if isinstance(url_to_check, list):
-        if not url_to_check:
-            return "No URL provided."
-        url_to_check = url_to_check[0]
-
-    url_to_check = url_to_check.strip()
-
-    result = check_url_virustotal(url_to_check, VT_API_KEY)
-    return result
+    try:
+        result = check_url_virustotal(url_to_check, VT_API_KEY)
+        return result
+    except ValueError as e:
+        # Catch validation errors from check_url_virustotal
+        return str(e)
