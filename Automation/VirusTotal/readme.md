@@ -25,13 +25,13 @@ Author: Mark Ulmer US Service Consultant - May 2026 - Added Get Domain Report<br
 
 4. **Edit Action**
    - Edit action name:  Get an IP address report
-   - Description:  Get an IP address report
+   - Description:  Retrieves a report for a given IP address. The report includes threat reputation from various antivirus engines.
    - Paste code contents from action file:  [VirusTotal_Action_Get_IP_Report.py](../VirusTotal/VirusTotal_Action_Get_IP_Report.py)
    - Deploy
      
 5. **Edit Action**
    - Edit action name:  Get a Domain report
-   - Description:  Get a Domain report
+   - Description:  Retrieves a report for a given Domain. The report includes threat reputation from various antivirus engines.
    - Paste code contents from action file:  [VirusTotal_Action_Get_Domain_Report.py](../VirusTotal/VirusTotal_Action_Get_Domain_Report.py)
    - Deploy
      
