@@ -3,16 +3,15 @@
 import urllib.request
 import json
 import base64
-import requests
 
 def check_url_virustotal(url, api_key):
-    url_id = base64.urlsafe_b64encode(f"url".encode()).decode().strip("=")
-    url = f"https://www.virustotal.com/api/v3/urls/{url_id}"
+    url_id = base64.urlsafe_b64encode(f"{url}".encode()).decode().strip("=")
+    urlreport = f"https://www.virustotal.com/api/v3/urls/{url_id}"
     headers = {
         "accept": "application/json",
         "x-apikey": api_key
     }
-    req = urllib.request.Request(url, headers=headers, method="GET")
+    req = urllib.request.Request(urlreport, headers=headers, method="GET")
 
     try:
         with urllib.request.urlopen(req) as response:
