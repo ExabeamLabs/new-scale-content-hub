@@ -1,6 +1,6 @@
 # Exabeam Automation Management - Integration with VirusTotal
 
-Description: This Automation Management integration with VirusTotal currently supports the Action of **Get an IP address report**<br>
+Description: Automation Management integration with VirusTotal V3 APIs.<br>
 Version: 1.1<br>
 Author: Charlie Mac UK TAM - May 2025 - Email If Stuck<br>
 Author: Mark Ulmer US Service Consultant - December 2025 - Moved api_key to instance variable<br>
@@ -36,7 +36,7 @@ Author: Mark Ulmer US Service Consultant - May 2026 - Added Get Domain Report an
    - Deploy
      
 6. **Edit Action**
-   - Edit action name:  Get a UURL report
+   - Edit action name:  Get a URL report
    - Description:  Retrieves a report for a given URL. The report includes threat reputation from various antivirus engines.
    - Paste code contents from action file:  [VirusTotal_Action_Get_URL_Report.py](../VirusTotal/VirusTotal_Action_Get_URL_Report.py)
    - Deploy
