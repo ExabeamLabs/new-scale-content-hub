@@ -1,14 +1,24 @@
 {
 	"order": [
-		"CS_CLIENT_ID",
-		"CS_CLIENT_SECRET"
+		"BASE_URL",
+		"CLIENT_ID",
+		"CLIENT_SECRET"
 	],
 	"required": [
-		"CS_CLIENT_ID",
-		"CS_CLIENT_SECRET"
+		"BASE_URL",
+		"CLIENT_ID",
+		"CLIENT_SECRET"
 	],
 	"properties": {
-		"CS_CLIENT_ID": {
+		"BASE_URL": {
+			"type": "string",
+			"default": "",
+			"nullable": false,
+			"password": true,
+			"description": "Your CrowdStrike Falcon Base URL",
+			"placeholder": ""
+		},
+		"CLIENT_ID": {
 			"type": "string",
 			"default": "",
 			"nullable": false,
@@ -16,7 +26,7 @@
 			"description": "Your CrowdStrike Falcon Client ID",
 			"placeholder": ""
 		},
-		"CS_CLIENT_SECRET": {
+		"CLIENT_SECRET": {
 			"type": "string",
 			"default": "",
 			"nullable": false,
