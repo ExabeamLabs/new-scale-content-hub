@@ -5,7 +5,7 @@ import requests
 import json
 
 def get_oauth2_token(BASE_URL, CLIENT_ID, CLIENT_SECRET):
-    url = f"https://{BASE_URL}/oauth2/token"
+    url = f"{BASE_URL}/oauth2/token"
     data = {
             'client_id': CLIENT_ID,
             'client_secret': CLIENT_SECRET
