@@ -27,7 +27,7 @@ def check_ip_virustotal(ip, api_key):
     except Exception as e:
         return f"API request failed: {e}"
 
-def main(ip_to_check, VT_API_KEY: str):
+def main(VT_API_KEY: str):
     ip_to_check = "1.1.1.1"
 
   # Check VT_API_KEY
