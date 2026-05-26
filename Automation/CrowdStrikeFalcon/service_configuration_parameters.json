@@ -1,0 +1,28 @@
+{
+	"order": [
+		"CS_CLIENT_ID",
+		"CS_CLIENT_SECRET"
+	],
+	"required": [
+		"CS_CLIENT_ID",
+		"CS_CLIENT_SECRET"
+	],
+	"properties": {
+		"CS_CLIENT_ID": {
+			"type": "string",
+			"default": "",
+			"nullable": false,
+			"password": true,
+			"description": "Your CrowdStrike Falcon Client ID",
+			"placeholder": ""
+		},
+		"CS_CLIENT_SECRET": {
+			"type": "string",
+			"default": "",
+			"nullable": false,
+			"password": true,
+			"description": "Your CrowdStrike Falcon Client SECRET",
+			"placeholder": ""
+		}
+	}
+}
