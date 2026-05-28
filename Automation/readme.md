@@ -8,7 +8,7 @@ These automations were built by the SOC team to bridge the gap between Exabeam d
 
 ## What Is Windmill?
 
-[Windmill](https://www.windmill.dev) is an open-source workflow automation platform designed for developers and security teams. Think of it as the glue layer between your security tools — you write small Python (or TypeScript, Go, Bash) scripts, chain them together into flows, and Windmill handles the orchestration, scheduling, secrets management, and execution.
+[Windmill](https://www.windmill.dev) is a workflow automation platform designed for developers and security teams. Think of it as the glue layer between your security tools — you write small Python (or TypeScript, Go, Bash) scripts, chain them together into flows, and Windmill handles the orchestration, scheduling, secrets management, and execution.
 
 In a SOC context, it's a practical alternative to heavyweight commercial SOAR platforms. You get:
 
@@ -19,9 +19,9 @@ In a SOC context, it's a practical alternative to heavyweight commercial SOAR pl
 - **Scheduling** — run automations on a cron schedule
 - **Audit logs** — full execution history of every playbook run
 
-Windmill is self-hostable, open-source, and can run entirely within your own environment — no data leaves your network.
+Windmill runs within your own environment, keeping your data and credentials fully under your control.
 
-> Several large enterprises with 50+ person security teams have migrated from Palo Alto Cortex XSOAR and Tines to Windmill, attracted by the flexibility of writing real code rather than working around the constraints of a proprietary playbook editor.
+> Large enterprise security teams with 50+ analysts have migrated from platforms like Palo Alto Cortex XSOAR and Tines to Windmill, drawn by the flexibility of writing real code rather than working within the constraints of a proprietary playbook editor.
 
 ---
 
@@ -113,7 +113,7 @@ Webhook fires → Windmill flow starts
 
 ### Prerequisites
 
-- A running [Windmill](https://www.windmill.dev) instance (self-hosted or cloud)
+- A running Windmill instance
 - An Exabeam New-Scale tenant with API credentials
 - Python support enabled in your Windmill workspace (enabled by default)
 
@@ -184,4 +184,4 @@ Scripts in this library are designed to be generic and reusable. If you build a 
 
 ## Licence
 
-MIT — use freely, adapt as needed, credit appreciated but not required.
+MIT — adapt as needed, credit appreciated but not required.
