@@ -16,13 +16,20 @@ Author: Mark Ulmer US Service Consultant - May 2026 - Added Get Domain Report an
    - Click Confirm and Validate
    - Click Import and Next
 
-3. **Configure Service Parameters**
+2. **Configure Service Parameters**
    - Service configuration parameters
    - Edit service configuration parameters
    - Click JSON editor
    - Paste contents from [service_configuration_parameters.json](../VirusTotal/service_configuration_parameters.json)
    - Save
 
+3. **Add Service Instance**
+   - Click on Instances tab
+   - Click + Add Instance
+   - Provide instance name: VirusTotal
+   - VT_API_KEY variable - Provide your VirusTotal API Key
+   - Save
+  
 4. **Edit Action**
    - Edit action name:  Get an IP address report
    - Description:  Retrieves a report for a given IP address. The report includes threat reputation from various antivirus engines.
@@ -41,12 +48,7 @@ Author: Mark Ulmer US Service Consultant - May 2026 - Added Get Domain Report an
    - Paste code contents from action file:  [VirusTotal_Action_Get_URL_Report.py](../VirusTotal/VirusTotal_Action_Get_URL_Report.py)
    - Deploy
    
-7. **Add Service Instance**
-   - Click on Instances tab
-   - Click + Add Instance
-   - Provide instance name
-   - VT_API_KEY variable - Provide your VirusTotal API Key
-   - Save
+
 
 
 ## Playbook Demonstration
