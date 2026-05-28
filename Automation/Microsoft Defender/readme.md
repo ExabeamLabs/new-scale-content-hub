@@ -14,16 +14,4 @@ Isolate Machine: Disconnects a device from the network while maintaining communi
 
 Release from Isolation / Unisolate a device: Reverses the isolation, restoring the device's network connectivity.​ - Complete written by Charlie MacArthur
 
-Run Antivirus Scan: Initiates a quick or full antivirus scan on the device.​ - Complete written by Charlie MacArthur
-
-PENDING
-
-Collect Investigation Package: Gathers diagnostic information from the device for further analysis.​
-
-Restrict Code Execution: Limits the applications that can run on the device to those that are trusted.​
-
-Remove App Restriction: Lifts previously imposed application execution restrictions.
-
-Stop and Quarantine File: Terminates a malicious process and quarantines the associated file.​
-
-Offboard Machine: Removes the device from the Defender for Endpoint service.​
+Run Antivirus Scan: Initiates a quick or full antivirus scan on the device.​ - Complete written by Charlie MacArthur​
