@@ -1,0 +1,26 @@
+{
+	"type": "object",
+	"order": [
+		"instance_id",
+		"username",
+		"password"
+	],
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"required": [],
+	"properties": {
+		"instance_id": {
+			"type": "string",
+			"default": "",
+			"description": ""
+		},
+		"username": {
+			"type": "string",
+			"description": ""
+		},
+		"password": {
+			"type": "string",
+			"password": true,
+			"description": ""
+		}
+	}
+}
