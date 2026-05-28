@@ -2,7 +2,7 @@
 
 Description: This Automation Management integration with VirusTotal ServiceNow supports the Action of **Create ITSM incident**<br>
 Version: 1.0<br>
-Author: Mark Ulmer US Service Consultant - May 2026<br>
+Author: US Services Consultants - May 2026<br>
 
 ## Setup Service
 
