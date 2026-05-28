@@ -1,14 +1,14 @@
-# Exabeam New-Scale — Windmill Automation Library
+# Exabeam New-Scale — Advanced Automation Manager (AAM) Library
 
-A collection of SOAR automation scripts and playbooks built for use with [Windmill](https://www.windmill.dev), designed to extend and automate response workflows within **Exabeam New-Scale** (Threat Centre, Case Management, and beyond).
+A collection of SOAR automation scripts and playbooks built for use with the **Advanced Automation Manager (AAM)**, designed to extend and automate response workflows within **Exabeam New-Scale** (Threat Centre, Case Management, and beyond).
 
 These automations were built by the SOC team to bridge the gap between Exabeam detection and real-world response — connecting threat intelligence, firewall enforcement, and case documentation into end-to-end automated playbooks.
 
 ---
 
-## What Is Windmill?
+## What Is the Advanced Automation Manager?
 
-[Windmill](https://www.windmill.dev) is a workflow automation platform designed for developers and security teams. Think of it as the glue layer between your security tools — you write small Python (or TypeScript, Go, Bash) scripts, chain them together into flows, and Windmill handles the orchestration, scheduling, secrets management, and execution.
+The **Advanced Automation Manager (AAM)** is a workflow automation platform designed for developers and security teams. Think of it as the glue layer between your security tools — you write small Python (or TypeScript, Go, Bash) scripts, chain them together into flows, and AAM handles the orchestration, scheduling, secrets management, and execution.
 
 In a SOC context, it's a practical alternative to heavyweight commercial SOAR platforms. You get:
 
@@ -19,24 +19,24 @@ In a SOC context, it's a practical alternative to heavyweight commercial SOAR pl
 - **Scheduling** — run automations on a cron schedule
 - **Audit logs** — full execution history of every playbook run
 
-Windmill runs within your own environment, keeping your data and credentials fully under your control.
+AAM runs within your own environment, keeping your data and credentials fully under your control.
 
-> Large enterprise security teams with 50+ analysts have migrated from platforms like Palo Alto Cortex XSOAR and Tines to Windmill, drawn by the flexibility of writing real code rather than working within the constraints of a proprietary playbook editor.
+> Large enterprise security teams with 50+ analysts have migrated from platforms like Palo Alto Cortex XSOAR and Tines to AAM, drawn by the flexibility of writing real code rather than working within the constraints of a proprietary playbook editor.
 
 ---
 
-## Why Windmill + Exabeam?
+## Why AAM + Exabeam?
 
-Exabeam New-Scale provides exceptional detection and case management, but response actions — blocking an IP, updating a firewall, posting enriched case notes — still require reaching out to other tools. Windmill fills that gap.
+Exabeam New-Scale provides exceptional detection and case management, but response actions — blocking an IP, updating a firewall, posting enriched case notes — still require reaching out to other tools. AAM fills that gap.
 
 The integration approach used here:
 
 ```
 Exabeam Alert / Case
         │
-        │  Webhook trigger (HTTP POST to Windmill)
+        │  Trigger
         ▼
-  Windmill Flow (Playbook)
+  AAM Flow (Playbook)
         │
         ├─ Step 1: Threat Intelligence Enrichment (e.g. VirusTotal)
         ├─ Step 2: Response Action (e.g. firewall block via WinRM/PowerShell)
@@ -82,7 +82,7 @@ This is the full end-to-end playbook these scripts were built for:
 ```
 [Trigger]
 Exabeam alert fires on suspicious outbound connection to unknown IP
-Webhook fires → Windmill flow starts
+AAM flow starts
         │
         ▼
 [Step 1] VirusTotal IP Enrichment
@@ -94,7 +94,7 @@ Webhook fires → Windmill flow starts
         │  ELSE → stop flow, post "no action" note to case
         ▼
 [Step 2] Remote PowerShell Runner (WinRM)
-  Input:  IP address, firewall credentials (from Windmill Secrets)
+  Input:  IP address, firewall credentials (from AAM Secrets)
   Action: Connects to firewall management host, runs block script
   Output: Execution result (success/failure, stdout, stderr)
         │
@@ -113,31 +113,31 @@ Webhook fires → Windmill flow starts
 
 ### Prerequisites
 
-- A running Windmill instance
+- A running AAM instance
 - An Exabeam New-Scale tenant with API credentials
-- Python support enabled in your Windmill workspace (enabled by default)
+- Python support enabled in your AAM workspace (enabled by default)
 
 ### Setting Up Secrets
 
-Never hardcode credentials. Store all secrets in Windmill:
+Never hardcode credentials. Store all secrets in AAM:
 
-1. Go to **Windmill → Variables → New Variable → Secret**
+1. Go to **AAM → Variables → New Variable → Secret**
 2. Add secrets for: `exabeam_client_id`, `exabeam_client_secret`, `winrm_password`, etc.
 3. Reference them in flow steps as `$var:SECRET_NAME`
 
 ### Importing a Script
 
-1. Copy the `.py` file content into a new **Windmill Script**
+1. Copy the `.py` file content into a new **AAM Script**
 2. Set the language to **Python**
-3. The `# requirements:` comment at the top of each script tells Windmill which pip packages to install automatically
+3. The `# requirements:` comment at the top of each script tells AAM which pip packages to install automatically
 4. Save and test with the auto-generated UI form
 
 ### Building a Flow
 
-1. Create a new **Windmill Flow**
+1. Create a new **AAM Flow**
 2. Add steps in sequence, selecting your scripts
 3. Wire outputs to inputs: in the flow editor, map e.g. `results.vt_result` from Step 1 into the `vt_result` parameter of Step 3
-4. Add a webhook trigger to fire the flow from Exabeam
+4. Add a trigger to fire the flow from Exabeam
 
 ---
 
@@ -161,11 +161,6 @@ The modular design means each script works standalone or as part of a larger cha
 
 | Resource | Link |
 |----------|------|
-| Windmill Documentation | https://www.windmill.dev/docs/intro |
-| Windmill — SOAR Use Case Blog | https://www.windmill.dev/blog/windmill-for-soar-case-study |
-| Windmill GitHub | https://github.com/windmill-labs/windmill |
-| Windmill Secrets & Variables | https://www.windmill.dev/docs/core_concepts/variables_and_secrets |
-| Windmill Flow Editor | https://www.windmill.dev/docs/flows/flow_editor |
 | Exabeam New-Scale Docs | https://docs.exabeam.com/new-scale-security-operations-platform/ |
 | Exabeam New-Scale Content Hub | https://github.com/ExabeamLabs/new-scale-content-hub |
 
