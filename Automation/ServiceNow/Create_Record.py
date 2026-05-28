@@ -1,5 +1,6 @@
 import requests
 import json
+import wmill
 from requests.auth import HTTPBasicAuth
 from typing import TypedDict
 
@@ -36,6 +37,9 @@ def main(
         exabeam_risk_score: str | None,
         assignment_group: str | None
 ):
+    username = wmill.get_variable("f/exabeam/ServiceNow/ServiceNow/username")
+    password = wmill.get_variable("f/exabeam/ServiceNow/ServiceNow/password")
+    tenant = wmill.get_variable("f/exabeam/ServiceNow/ServiceNow/tenant")
     """
     Create a record
     """
