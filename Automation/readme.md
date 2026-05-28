@@ -141,19 +141,6 @@ Never hardcode credentials. Store all secrets in Windmill:
 
 ---
 
-## Connecting Exabeam to Windmill
-
-Windmill exposes a webhook URL for each flow. To trigger a playbook from Exabeam:
-
-1. In Windmill, open your flow → **Triggers → Webhook** → copy the URL
-2. In Exabeam, configure an **Automation Management** action to HTTP POST to that URL
-3. Pass relevant fields (case ID, IP, entity) as the JSON body
-4. Windmill receives the payload and starts the flow
-
-Exabeam Automation Management docs: [https://docs.exabeam.com/en/automation-management](https://docs.exabeam.com/en/automation-management/all/automation-management-guide/automation-management-services/create-an-automation-management-service.html)
-
----
-
 ## SOC Use Cases
 
 These building blocks support a range of SOC response scenarios:
@@ -180,7 +167,6 @@ The modular design means each script works standalone or as part of a larger cha
 | Windmill Secrets & Variables | https://www.windmill.dev/docs/core_concepts/variables_and_secrets |
 | Windmill Flow Editor | https://www.windmill.dev/docs/flows/flow_editor |
 | Exabeam New-Scale Docs | https://docs.exabeam.com/new-scale-security-operations-platform/ |
-| Exabeam Automation Management | https://docs.exabeam.com/en/automation-management/all/automation-management-guide/automation-management-services/create-an-automation-management-service.html |
 | Exabeam New-Scale Content Hub | https://github.com/ExabeamLabs/new-scale-content-hub |
 
 ---
