@@ -7,7 +7,7 @@ Author: US Services Consultant - May 2026 - Initial<br>
 ## Setup Service
 
 1. **Add Service**
-   - Service name:  urlscan.io
+   - Service name:  urlscan_io
    - Service Description:  urlscan.io integration version 1.0
    - Click Create Manually
    - Click Next
