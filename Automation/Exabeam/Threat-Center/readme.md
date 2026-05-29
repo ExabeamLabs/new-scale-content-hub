@@ -21,15 +21,16 @@ Author: Mark Ulmer - US Services Consultant - May 2026 - Created inital version<
    - Paste contents from [service_configuration_parameters.json](../Context-Management/service_configuration_parameters.json)
    - Save
 
-4. **Edit Action**
-   - Edit action name:  Create a note for a case
+4. **Add Action**
+   - Action name:  Create_a_note_for_a_case
+   - Description:  Create a note for a case
    - Paste code contents from action file:  [Create_a_note_for_a_case.py](../Context-Management/Create_a_note_for_a_case.py)
    - Deploy
   
 5. **Add Service Instance**
    - Click on Instances tab
    - Click + Add Instance
-   - Provide instance name
+   - Instance name: Exabeam_Threat_Center
    - Select your deployment region
    - Provide your API Key ID
    - Provide your API Key Secret
