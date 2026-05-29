@@ -206,7 +206,7 @@ def print_search_results(domain: str, data: dict) -> None:
 # ─────────────────────────────────────────────
 def main(domain: str, new_scan: bool):
     # ── Config — edit here or pass via CLI ──────────────────────────
-    API_KEY = wmill.get_variable("f/exabeam/URLSCAN/URLSCAN/api_key")
+    API_KEY = wmill.get_variable("f/exabeam/urlscan_io/urlscan_io/api_key")
     DOMAIN = domain
     # Set to True to submit a fresh scan; False to search existing scans only
     SUBMIT_NEW_SCAN = new_scan
