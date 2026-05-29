@@ -35,10 +35,12 @@ Author: US Services Consultant - May 2026 - Initial<br>
 
 ## Playbook Demonstration
 1. **Create Playbook**
-   - Name: urlscan.io Domain Reputation Lookup
+   - Name: urlscan Domain Reputation Lookup
+   - Description: urlscan Domain Reputation Lookup
+   - Trigger: No Trigger
    - Add Step
-   - Select Action > Exabeam > Domain Reputation Lookup
-   - domain > plug-in > flow_input.dest_ips
+   - Select Action > Exabeam > Domain_Reputation_Lookup
+   - domain > plug-in > flow_input.dest_hosts
    - Deploy
 
 ## Reference Materials:
