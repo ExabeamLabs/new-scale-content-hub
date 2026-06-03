@@ -1,0 +1,15 @@
+# Requirement: Identify Unnamed Network Zones
+# Why does this matter? 
+#  The Network Zones context table provides source and destination zone name information for enrichment of event data.  
+#  This makes it possible to trigger network zone-based detections. Example: Abnormal number of unique destination network zone in login for this user
+#  Without Network Zones names, events are not evaluated by the NSA rules. The more Network Zones names, the better detection coverage is for the customer.
+
+Search: SELECT src_ip, COUNT(*) AS zone_count WHERE src_ip:RGX("^(10\.|192\.168\.|172\.(1[6-9]|2\d|3[0-1])\.)") AND NOT src_ip:NULL AND src_zone:NULL GROUP-BY src_ip ORDER-BY zone_count DESC
+Timeframe: 24 hours
+Search Name: Missing Source Network Zone Information
+Search Description: Missing Source Network Zone Information
+
+Search: SELECT dest_ip, COUNT(*) AS zone_count WHERE dest_ip:RGX("^(10\.|192\.168\.|172\.(1[6-9]|2\d|3[0-1])\.)") AND NOT dest_ip:NULL AND dest_zone:NULL GROUP-BY dest_ip ORDER-BY zone_count DESC
+Timeframe: 24 hours
+Search Name: Missing Destination Network Zone Information
+Search Description: Missing Destination Network Zone Information
