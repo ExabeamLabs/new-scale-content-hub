@@ -1,0 +1,41 @@
+{
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "templateId": "C_FF-PC-MouseJiggler_45d6",
+            "name": "First-time Mouse Jiggler - Activity Simulator Process Detected",
+            "description": "Detects the first-time execution of known mouse jiggler or activity simulation applications for a given user, which can be used to bypass inactivity detection or maintain presence.",
+            "applicableEvents": [
+                {
+                    "activity_type": [
+                        "process-create"
+                    ]
+                }
+            ],
+            "detectionReason": "First-time mouse jiggler - activity simulator process '${event.process_name}' detected with command line '${event.process_command_line}' on host '${event.src_host}' by user '${entity.user.source}'.",
+            "type": "profiledFeature",
+            "mitre": [
+                {
+                    "techniqueKey": "T1036",
+                    "technique": "Masquerading",
+                    "tactic": "Defense Evasion",
+                    "tacticKey": "TA0005"
+                }
+            ],
+            "useCases": [
+                "Evasion"
+            ],
+            "actOnCondition": "true",
+            "featureValue": "process_name",
+            "scopeValue": "EntityId('type: User && direction: Source')",
+            "trainOnCondition": "activity_type = 'process-create' AND (containsAny(process_command_line, 'MoveMouse Installer.exe', 'Move Mouse Installer.exe', 'MouseJiggle.exe', 'Wiggler - The mouse moving app Installer.exe', 'Caffeine.exe', 'Insomnia.exe', 'StayAwake.exe', 'PreventTurnOff.exe', 'DontSleep.exe', 'NoSleep.exe', 'StatusHolder.exe', 'MouseClicker.exe') OR containsAny(process_command_line, 'Auto Mouse Jiggler Mover.app', 'Jiggler.app', 'Computer Mouse Jiggler.app', 'Mouse Shaker.app', 'Mouse Mover', 'pip install jiggler'))",
+            "anomalyThreshold": "90 days",
+            "checkScopeMaturity": true,
+            "maturityThreshold": "14 days",
+            "familyId": "process-creation-activity",
+            "ruleGroupId": "pc-binary-execution-group",
+            "severity": "High",
+            "testMode": false
+        }
+    ]
+}
