@@ -260,7 +260,3 @@ Each event arrives at your webhook as a JSON POST — one event per request. Her
 Key fields for SIEM parsing: `uuid` (deduplicate on this), `timestamp` (milliseconds), `username`, `source` (IP address), `applicationCode` (which CyberArk service), `auditCode`, `auditType`, `action`, `actionType`.
 
 ---
-
-## Licence
-
-Add your licence here before publishing.
