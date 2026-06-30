@@ -47,7 +47,12 @@ Author: Mark Ulmer US Service Consultant - May 2026 - Added Get Domain Report an
    - Description:  Retrieves a report for a given URL. The report includes threat reputation from various antivirus engines.
    - Paste code contents from action file:  [VirusTotal_Action_Get_URL_Report.py](../VirusTotal/VirusTotal_Action_Get_URL_Report.py)
    - Deploy
-   
+     
+7. **Add Action**
+   - Edit action name:  Extract_publc_ip_addresses
+   - Description:  Extract and return only public ip addresses.
+   - Paste code contents from action file:  [Extract_public_ip_addresses.py](../VirusTotal/Extract_public_ip_addresses.py)
+   - Deploy   
 
 
 
@@ -57,7 +62,6 @@ Author: Mark Ulmer US Service Consultant - May 2026 - Added Get Domain Report an
    - Add Step
    - Select Action > Exabeam > Get an IP address report
    - ip_to_check > plug-in > flow_input.dest_ips
-   - VT_API_KEY > plug-in > "$var:f/exabeam/VirusTotal/{instance}/VT_API_KEY"
    - Deploy
 
 2. **Run Playbook from Threat Center**
