@@ -9,7 +9,7 @@
     "paths": {
         "/create_issue": {
             "post": {
-                "summary": "Create External Issue - JIRA",
+                "summary": "Create Issue \- JIRA",
                 "description": "Create External Issue in JIRA",
                 "operationId": "createIssue",
                 "responses": {
@@ -21,7 +21,7 @@
         },
         "/add_comment": {
             "post": {
-                "summary": "Add Comment to Issue - JIRA",
+                "summary": "Add Comment to Issue \- JIRA",
                 "description": "Add Comment to Issue in JIRA",
                 "operationId": "addComment",
                 "responses": {
@@ -33,7 +33,7 @@
         },
         "/assign_issue": {
             "post": {
-                "summary": "Change Assignment on Issue - JIRA",
+                "summary": "Change Assignment on Issue \- JIRA",
                 "description": "Change Assignment on Issue in JIRA",
                 "operationId": "assignIssue",
                 "responses": {
