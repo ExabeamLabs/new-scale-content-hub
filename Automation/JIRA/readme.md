@@ -27,19 +27,18 @@ Author: US Services Consultant - July 2026 - Initial<br>
    - Save
      
 4. **Edit Action**
-   - Edit action name:  Create External Ticket - JIRA
-   - Description:  Creates a ticket in JIRA.
-   - Paste code contents from action file:  [Create_External_Ticket-JIRA.py](../JIRA/Create_External_Ticket-JIRA.py)
+   - Edit action name:  Create Issue in JIRA
+   - Paste code contents from action file:  [Create_Issue_JIRA.py](../JIRA/Create_Issue_JIRA.py)
    - Deploy
      
 
 ## Playbook Demonstration
 1. **Create Playbook**
-   - Name: Create External Ticket - JIRA
-   - Description: Creates a ticket in JIRA.
+   - Name: Create Issue in JIRA
+   - Description: Creates an Issue in JIRA.
    - Trigger: No Trigger
    - Add Step
-   - Select Action > Exabeam > Create External Ticket - JIRA
+   - Select Action > Exabeam > Create Issue in JIRA
    - Deploy
 
 ## Reference Materials:
