@@ -1,11 +1,21 @@
 {
 	"order": [
+		"server_url",
 		"JIRA_API_KEY"
 	],
 	"required": [
+		"server_url",
 		"JIRA_API_KEY"
 	],
 	"properties": {
+		"server_url": {
+			"type": "string",
+			"default": "",
+			"nullable": false,
+			"password": false,
+			"description": "Your JIRA Instance URL.",
+			"placeholder": "https://your-domain.atlassian.net"
+		},
 		"JIRA_API_KEY": {
 			"type": "string",
 			"default": "",
