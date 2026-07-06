@@ -1,1 +1,18 @@
-
+{
+	"order": [
+		"JIRA_API_KEY"
+	],
+	"required": [
+		"JIRA_API_KEY"
+	],
+	"properties": {
+		"JIRA_API_KEY": {
+			"type": "string",
+			"default": "",
+			"nullable": false,
+			"password": true,
+			"description": "Your JIRA API Key",
+			"placeholder": ""
+		}
+	}
+}
