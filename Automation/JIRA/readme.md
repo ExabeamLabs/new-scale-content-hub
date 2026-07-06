@@ -9,8 +9,10 @@ Author: US Services Consultant - July 2026 - Initial<br>
 1. **Add Service**
    - Service name:  JIRA
    - Service Description:  JIRA integration version 1.0
-   - Click Create Manually
-   - Click Next
+   - Click Import from File or URL
+   - Paste URL... `https://raw.githubusercontent.com/ExabeamLabs/new-scale-content-hub/refs/heads/AAM_JIRA/Automation/JIRA/Exabeam_Service_Import-JIRA.json`
+   - Click Confirm and Validate
+   - Click Import and Next
 
 2. **Configure Service Parameters**
    - Service configuration parameters
