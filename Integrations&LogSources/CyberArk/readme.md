@@ -1,10 +1,10 @@
-# CyberArk/Idira ISPSS Audit → Webhook Forwarder <img width="161" height="60" alt="image" src="https://github.com/user-attachments/assets/abab539d-fa81-48ea-ab86-d12e3450673a" />
+# CyberArk ISPSS Audit → Webhook Forwarder
 
 A PowerShell script that pulls audit events from **CyberArk Identity Security Platform Shared Services (ISPSS)** and forwards them to a webhook endpoint — such as an **Exabeam JSON webhook collector** — as individual JSON events.
 
-Built to run as an **Azure Automation runbook** or a **Windows Scheduled Task**, with secrets pulled securely from Azure Automation variables or environment variables. Both of these work fine but it's worth being aware you can only run the Azure jobs once an hour.
+Built to run as an **Azure Automation runbook on a Hybrid Runbook Worker**, with secrets pulled securely from Azure Automation variables.
 
-
+> 📸 *Screenshots coming soon*
 
 ---
 
@@ -15,8 +15,8 @@ CyberArk's ISPSS Audit service doesn't push events to your SIEM. You have to pul
 This script fills that gap. It handles everything:
 - OAuth2 token acquisition from CyberArk Identity
 - The createQuery → results cursor loop
-- Remembering where it got to (cursor persistence across runs)
-- Recovering automatically if the cursor expires
+- Remembering where it got to (cursor persistence across runs, stored on the Hybrid Worker's local disk)
+- Automatically recovering if the cursor expires or is exhausted
 - Respecting CyberArk's 1-call-per-minute rate limit
 - Forwarding each event to your webhook with retries
 
@@ -51,11 +51,11 @@ You need **5 values** from your CyberArk tenant. The table below tells you exact
 
 ### Step 1 — Download the script
 
-Save `CyberArkAuditEndpoint-ForwardAsWebhook.ps1` to a folder on your machine or upload it to Azure Automation as a runbook.
+Upload `CyberArkAuditEndpoint-ForwardAsWebhook.ps1` to Azure Automation as a runbook.
 
 ### Step 2 — Edit the configuration block
 
-Open the script in any text editor (Notepad, VS Code, PowerShell ISE). Near the top you'll find the `$Config` block. **These are the only lines you need to change:**
+Open the script. Near the top you'll find the `$Config` block. **These are the only lines you need to change:**
 
 ```powershell
 $Config = @{
@@ -71,18 +71,14 @@ $Config = @{
     # --- Webhook target ---
     WebhookUrl   = 'https://your-exabeam-collector.example.com/api/v1/events'  # 👈 CHANGE: your webhook URL
 
-    # Everything below this line can stay as default
+    # Everything below this line can stay as default unless told otherwise
     ...
 }
 ```
 
-> ⚠️ **Never put your client secret, API key, or webhook token directly in the script.** These go in secrets storage — see Step 3.
+> ⚠️ **Never put your client secret, API key, or webhook token directly in the script.** These go in Azure Automation variables — see Step 3.
 
 ### Step 3 — Store your secrets securely
-
-The script needs 3 secrets at runtime. How you store them depends on where you're running the script:
-
-#### Option A — Azure Automation
 
 In your Azure Automation Account, go to **Shared Resources → Variables** and create three variables. **Tick "Encrypted" for each one.**
 
@@ -94,19 +90,13 @@ In your Azure Automation Account, go to **Shared Resources → Variables** and c
 
 The script picks these up automatically via `Get-AutomationVariable` when running as a runbook.
 
-#### Option B — Windows Scheduled Task
+### Step 4 — Confirm Hybrid Worker is set
 
-Run these commands **once** in PowerShell on the machine that will run the script (as the same account the task will run as):
+> ⚠️ **This is the most important setting.** Without it, the script will not retain its position between runs.
 
-```powershell
-[Environment]::SetEnvironmentVariable('CYBERARK_CLIENT_SECRET', '<your client secret>', 'Machine')
-[Environment]::SetEnvironmentVariable('CYBERARK_API_KEY', '<your api key>', 'Machine')
-[Environment]::SetEnvironmentVariable('WEBHOOK_BEARER_TOKEN', '<your webhook token>', 'Machine')
-```
+In Azure Automation, open your runbook and confirm **Run on** is set to your **Hybrid Worker Group** — not Azure. The script relies on the Hybrid Worker's local disk to save its position (the cursor) between executions. If it runs in a standard Azure sandbox, the disk is wiped between jobs and the script will re-pull the same events every time.
 
-Open a **new** PowerShell window after running these — environment variables only appear in new sessions.
-
-### Step 4 — Test with a dry run
+### Step 5 — Test with a dry run
 
 Before sending any real data to your SIEM, run the script with `-DryRun`. This pulls real events from CyberArk but **prints them to the console instead of posting to the webhook** — nothing gets sent anywhere.
 
@@ -114,7 +104,7 @@ Before sending any real data to your SIEM, run the script with `-DryRun`. This p
 .\CyberArkAuditEndpoint-ForwardAsWebhook.ps1 -DryRun
 ```
 
-A healthy run looks like this:
+A healthy first run looks like this:
 
 ```
 2026-01-15 09:00:01 [INFO] Requesting access token from https://abc1234.id.cyberark.cloud/OAuth2/Token/MySiemApp
@@ -123,17 +113,25 @@ A healthy run looks like this:
 2026-01-15 09:01:05 [INFO] Received 298 events - forwarding to webhook.
 [DRY RUN] Would POST to https://...: {"uuid":"...","applicationCode":"IDP",...}
 ...
-2026-01-15 09:02:08 [INFO] No new events - caught up.
+2026-01-15 09:02:08 [INFO] No new events - caught up. Clearing cursor so next run creates a fresh query from lastEventEpoch.
 2026-01-15 09:02:08 [INFO] Run complete. API calls: 2, events forwarded: 298, events dropped: 0.
 ```
 
-If you see errors instead, check the [Troubleshooting](#troubleshooting) section below.
+On the **second run**, you should see this line confirming position is being retained:
 
-> ℹ️ Dry runs **do** advance the saved cursor. This means when you go live, it will continue from where the dry run left off rather than re-sending everything. If you want the webhook to receive the full lookback window, run once with `-ResetCursor` before your first live run.
+```
+2026-01-15 09:05:01 [INFO] Resuming from persisted cursor.
+```
 
-### Step 5 — Run it live
+If you see a fresh `createQuery window` line on every run instead, the runbook is not running on the Hybrid Worker — check Step 4.
 
-Once the dry run looks good, run without `-DryRun`:
+If you see errors, check the [Troubleshooting](#troubleshooting) section below.
+
+> ℹ️ Dry runs **do** advance the saved cursor. If you want the webhook to receive the full lookback window on the first live run, run once with `-ResetCursor` before going live.
+
+### Step 6 — Run it live
+
+Once the dry run looks good:
 
 ```powershell
 .\CyberArkAuditEndpoint-ForwardAsWebhook.ps1
@@ -141,23 +139,9 @@ Once the dry run looks good, run without `-DryRun`:
 
 Check your SIEM to confirm events are arriving.
 
-### Step 6 — Schedule it
+### Step 7 — Schedule it
 
-#### Azure Automation
-
-Link the runbook to a **Schedule** in your Automation Account. Every 5 minutes is recommended.
-
-#### Windows Scheduled Task
-
-Create a task with these settings:
-
-| Setting | Value |
-|---|---|
-| Program | `powershell.exe` |
-| Arguments | `-NoProfile -ExecutionPolicy Bypass -File "C:\Path\To\CyberArkAuditEndpoint-ForwardAsWebhook.ps1"` |
-| Run as | The service account (the one whose environment variables you set in Step 3) |
-| Trigger | Every 5 minutes |
-| Start in | The folder containing the script |
+Link the runbook to a **Schedule** in your Azure Automation Account. Every **5 minutes** is recommended.
 
 ---
 
@@ -171,19 +155,21 @@ Create a task with these settings:
 
 ---
 
-## What gets created alongside the script
+## What gets created on the Hybrid Worker
 
-The script creates three files automatically in the same folder as the script:
+The script automatically creates a working directory at `C:\ProgramData\CyberArkAuditSync\` on the Hybrid Worker on its first run. Three files live here:
 
 | File | Purpose | What to look for |
 |---|---|---|
-| `CyberArkAuditSync.state.json` | Remembers where the script got to — the cursor and timestamp of the last event forwarded | If `lastRunUtc` is hours old, the scheduled task has stopped |
-| `CyberArkAuditSync_YYYYMMDD.log` | Daily log file with INFO/WARN/ERROR entries | Any ERROR lines or repeated WARN about cursor rebuilds |
-| `CyberArkAuditSync.lock` | Prevents two copies running at the same time | If it persists while nothing is running, a previous run died hard — safe to delete |
+| `state.json` | Saves the cursor position and timestamp of the last event forwarded — this is how the script remembers where it got to between runs | If this file is missing or empty after a run, the Hybrid Worker setting (Step 4) is likely wrong |
+| `sync_YYYYMMDD.log` | Daily log file with INFO/WARN/ERROR entries | Any ERROR lines; repeated WARN about cursor rebuilds |
+| `sync.lock` | Prevents two copies of the script running at the same time | If it persists while nothing is running, a previous run died hard — safe to delete manually |
 
-> Add these to your `.gitignore` — they accumulate real usernames and timestamps at runtime and shouldn't go into source control:
+> The working directory path can be changed by editing the `WorkDir`, `StateFile`, `LockFile`, and `LogFile` values in the `$Config` block.
+
+> Add the following to your `.gitignore` — these files accumulate real usernames and timestamps at runtime:
 > ```
-> *.state.json
+> *.json
 > *.log
 > *.lock
 > ```
@@ -192,7 +178,7 @@ The script creates three files automatically in the same folder as the script:
 
 ## Configuration reference
 
-All settings are in the `$Config` block. Most defaults are fine — here's what everything does:
+All settings are in the `$Config` block near the top of the script:
 
 | Setting | Default | Description |
 |---|---|---|
@@ -203,34 +189,38 @@ All settings are in the `$Config` block. Most defaults are fine — here's what 
 | `AuditBaseUrl` | — | Audit API base URL from the Export to SIEM page |
 | `PageSize` | `500` | Events fetched per API call. 500 is the maximum |
 | `WebhookUrl` | — | Your webhook endpoint URL |
-| `WebhookTimeoutSec` | `30` | Seconds to wait for the webhook to respond |
-| `WebhookRetries` | `3` | How many times to retry a failed webhook call before giving up |
+| `WebhookTimeoutSec` | `30` | Seconds to wait for the webhook to respond before timing out |
+| `WebhookRetries` | `3` | How many times to retry a failed webhook call before giving up on that event |
 | `WebhookRetryDelaySeconds` | `5` | Seconds to wait between retries |
-| `LookbackHours` | `24` | How far back to pull events on first run. Max useful value is 168 (7 days) |
-| `OverlapMinutes` | `5` | Re-reads the last 5 minutes when recovering from a lost cursor — avoids gaps |
-| `MaxApiCallsPerRun` | `5` | Maximum CyberArk API calls per run (1 create + 4 result pages = up to 2,000 events) |
-| `ApiCallSpacingSeconds` | `61` | Pause between API calls. Keep this at 61 or above — CyberArk enforces 1 call/minute |
+| `LookbackHours` | `24` | How far back to pull events on first run. Max useful value is 168 (7 days — CyberArk's retention limit) |
+| `OverlapMinutes` | `5` | Re-reads the last 5 minutes when rebuilding after a lost cursor — prevents gaps at the cost of occasional duplicates |
+| `MaxApiCallsPerRun` | `5` | Maximum CyberArk API calls per run. 1 call creates the query, the rest fetch pages (500 events each) |
+| `ApiCallSpacingSeconds` | `61` | Pause between API calls. **Keep at 61 or above** — CyberArk enforces 1 call/minute and will reject faster requests |
+| `StatePersistence` | `File` | Where to save the cursor. `File` = Hybrid Worker local disk (recommended). `AutomationVariable` = Azure Automation variable (use only if not on a Hybrid Worker) |
+| `WorkDir` | `C:\ProgramData\CyberArkAuditSync` | Root folder for all state, log, and lock files on the Hybrid Worker. Created automatically on first run |
 
 ---
 
 ## Troubleshooting
 
-| Error message | What it means | Fix |
+| Symptom / Error | What it means | Fix |
 |---|---|---|
-| `Required secret '...' not found` | The secret isn't set in Azure Automation variables or environment variables | Add the missing variable (see Step 3) |
+| Every run shows a fresh `createQuery window` instead of `Resuming from persisted cursor` | The runbook is running in an Azure sandbox, not on the Hybrid Worker — the disk is wiped between jobs | Set **Run on** to your Hybrid Worker Group (Step 4) |
+| `Required secret '...' not found` | The secret isn't set as an Azure Automation variable | Create the missing variable in Shared Resources → Variables (Step 3) |
 | `invalid_request / unknown app <name>` | The Application ID in the script doesn't match what's in CyberArk | Check the Settings tab of the web app — copy the Application ID exactly, it's case-sensitive |
-| `invalid_grant / invalid grant type` | Token request is malformed or the web app doesn't have Client Creds enabled | Check the web app's Tokens tab — Client Creds must be ticked |
-| `401 Unauthorized` from the Audit API | The token was issued by the wrong endpoint or the web app is missing its Advanced-tab claims script | Ask your CyberArk admin to verify the Advanced tab has the `setClaim` lines saved |
-| `403 Forbidden` from the Audit API | Wrong API key, or the service user doesn't have the right permissions on the web app | Check the API key matches the one on the Export to SIEM page; check the service user has Grant/View/Run/Automatically Deploy |
-| `400` on results call | Cursor has expired | The script auto-recovers on the next run — no action needed |
-| Webhook retries failing | Webhook endpoint is unreachable or rejecting requests | Verify the webhook URL and bearer token; check Exabeam collector is running |
-| `Lock file present` warning | Another run is already in progress, or a previous run crashed | Wait 30 minutes for auto-recovery, or delete the `.lock` file manually if nothing is running |
+| `invalid_grant / invalid grant type` | Token request is malformed or Client Creds not enabled on the web app | Check the web app's Tokens tab — Client Creds must be ticked |
+| `401 Unauthorized` from the Audit API | Token issued by the wrong endpoint, or the web app is missing its Advanced-tab claims script | Ask your CyberArk admin to verify the Advanced tab has the `setClaim` lines saved and the Scope tab has `isp.audit.events:read` |
+| `403 Forbidden` from the Audit API | Wrong API key, or the service user lacks permissions on the web app | Check the API key matches the Export to SIEM page; service user needs Grant/View/Run/Automatically Deploy |
+| `400` on results call | Cursor has expired or been invalidated | Script auto-recovers on the next run — no action needed |
+| Webhook retries failing | Webhook endpoint is unreachable or rejecting the token | Verify the webhook URL and bearer token; check the Exabeam collector is running and accepting connections |
+| `Lock file present` warning | Another run is in progress, or a previous run crashed without cleaning up | Wait 30 minutes for auto-recovery, or delete `sync.lock` from `C:\ProgramData\CyberArkAuditSync\` manually |
+| No new events flowing despite activity in CyberArk | Stale cursor with a past `dateTo` ceiling — this was a bug in earlier versions | Ensure you are on the latest version of the script. Delete `state.json` from `C:\ProgramData\CyberArkAuditSync\` to force a clean restart |
 
 ---
 
 ## Event format
 
-Each event arrives at your webhook as a JSON POST — one event per request. Here's an example of what the payload looks like:
+Each event arrives at your webhook as a JSON POST — one event per request. Here's an example payload:
 
 ```json
 {
@@ -257,6 +247,30 @@ Each event arrives at your webhook as a JSON POST — one event per request. Her
 }
 ```
 
-Key fields for SIEM parsing: `uuid` (deduplicate on this), `timestamp` (milliseconds), `username`, `source` (IP address), `applicationCode` (which CyberArk service), `auditCode`, `auditType`, `action`, `actionType`.
+Key fields for SIEM parsing: `uuid` (deduplicate on this), `timestamp` (milliseconds — not seconds), `username`, `source` (source IP address), `applicationCode` (which CyberArk service generated the event), `auditCode`, `auditType`, `action`, `actionType`.
 
 ---
+
+## Version notes
+
+### Latest version
+
+Four bugs were identified and fixed following initial production deployment:
+
+**1. Cursor not clearing when caught up** *(caused events to stop flowing)*
+When the script exhausted all events in a query window, it kept the cursor rather than clearing it. CyberArk bakes a `dateTo` ceiling into every cursor at creation time, so an exhausted cursor permanently reports "no new events" as time moves forward past that ceiling. The fix: when the results call returns empty, the cursor is now cleared. The next run creates a fresh query from the last forwarded event's timestamp to the current time, so new events are always visible.
+
+**2. Webhook bearer token fetched per event** *(performance)*
+`Get-AutomationVariable` was being called once for every event forwarded — potentially hundreds of calls per run. The webhook token doesn't change mid-run, so it is now fetched once at startup and reused for all events.
+
+**3. Rate limit sleep not applied after the final API call** *(could cause throttling on back-to-back runs)*
+The 61-second API rate limit sleep was conditional on the call budget not being exhausted, meaning the last call of a run had no sleep after it. If the schedule fired again quickly, the next run's first call could hit CyberArk's rate limit. The sleep is now applied unconditionally after every results call.
+
+**4. Duplicate section comment in script** *(cosmetic)*
+A copy-paste artefact left the `STATE` section header duplicated in the script. Removed.
+
+---
+
+## Licence
+
+Add your licence here before publishing.
