@@ -1,0 +1,40 @@
+{
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "name": "Server Reboot - Unplanned or Unknown Reason",
+            "description": "Server Reboot - Unplanned or Unknown Reason",
+            "useCase": "abnormal_authentication_access",
+            "mitre": [
+                {
+                    "tacticKey": "TA0040",
+                    "tactic": "Impact",
+                    "techniqueKey": "T1529",
+                    "technique": "System Shutdown/Reboot"
+                }
+            ],
+            "sequencesExecution": "CREATION_ORDER",
+            "severity": "high",
+            "sequencesConfig": {
+                "sequences": [
+                    {
+                        "name": "Server Reboot - Not Planned",
+                        "query": "activity_type: \"endpoint-stop\" AND (result_reason: (\"unplanned\",\"No title for this reason could be found\") OR NOT result_reason: \"Planned\")  AND dest_host IN \"Servers\" AND NOT dest_host IN \"Domain Controllers\"",
+                        "condition": {
+                            "groupByOption": true,
+                            "groupBy": [
+                                "dest_host"
+                            ],
+                            "triggerOnAnyMatch": true
+                        },
+                        "id": "7e56e5a1-17ba-46d9-9d76-803b118ff9a7"
+                    }
+                ],
+                "commonProperties": null,
+                "restrictToSite": null,
+                "outcomes": null
+            },
+            "scheduleConfig": null
+        }
+    ]
+}
