@@ -2,7 +2,7 @@ import requests
 import wmill
 from requests.auth import HTTPBasicAuth
 
-def main(jira_project, jira_summary, jira_description):
+def main(jira_project, jira_summary):
     # URL for JIRA APIs
     base_url = wmill.get_variable("f/exabeam/JIRA/JIRA/server_url")
     url = f"{base_url}/rest/api/3/issue"
@@ -26,7 +26,7 @@ def main(jira_project, jira_summary, jira_description):
                 "content": [
                     {"type": "paragraph",
                         "content": [
-                            {"type": "text", "text": jira_description}
+                            {"type": "text", "text": jira_summary}
                         ]
                     }
                 ]
@@ -45,8 +45,12 @@ def main(jira_project, jira_summary, jira_description):
     # Verify the reponse
     if response.status_code == 201:
         print("Issue created successfully!")
-        print("Issue reference:", response.json()["key"])
+        return {
+            "Issue reference": response.json()["key"]
+            }
     else:
         print("Problem creating issue in JIRA.")
-        print("Response Status:", response.status_code)
-        print("Reponse :", response.text)
+        return {
+            "Response Status:", response.status_code,
+            "Reponse :", response.text
+            }
