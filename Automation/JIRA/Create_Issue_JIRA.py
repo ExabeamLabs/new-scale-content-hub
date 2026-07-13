@@ -2,7 +2,7 @@ import requests
 import wmill
 from requests.auth import HTTPBasicAuth
 
-def main():
+def main(jira_project, jira_summary, jira_description):
     # URL for JIRA APIs
     base_url = wmill.get_variable("f/exabeam/JIRA/JIRA/server_url")
     url = f"{base_url}/rest/api/3/issue"
@@ -17,32 +17,24 @@ def main():
 
     payload = {
         "fields": {
-            "project": {
-                "key": "KAN"
-            },
-            "summary": "Here is a case from Exabeam",
+            "issuetype": {"name": "Task"},
+            "project": {"key": jira_project},
+            "summary": jira_summary,
             "description": {
                 "type": "doc",
                 "version": 1,
                 "content": [
-                    {
-                        "type": "paragraph",
+                    {"type": "paragraph",
                         "content": [
-                            {
-                                "type": "text",
-                                "text": "Case created from Exabeam details.."
-                            }
+                            {"type": "text", "text": jira_description}
                         ]
                     }
                 ]
-            },
-            "issuetype": {
-                "name": "Task"
             }
         }
     }
 
-    # Envoi de la requête POST
+    # POST to the API
     response = requests.post(
         url,
         headers=headers,
@@ -58,4 +50,3 @@ def main():
         print("Problem creating issue in JIRA.")
         print("Response Status:", response.status_code)
         print("Reponse :", response.text)
-
