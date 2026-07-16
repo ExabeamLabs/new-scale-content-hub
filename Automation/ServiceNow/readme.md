@@ -4,4 +4,4 @@ Description: This Automation Management integration with ServiceNow supports the
 Version: 1.0<br>
 Author: US Services Consultants<br>
 
-Staus:  *Comming soon*
+Staus:  *Coming soon*
