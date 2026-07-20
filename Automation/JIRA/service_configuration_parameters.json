@@ -1,0 +1,38 @@
+{
+	"order": [
+		"server_url",
+		"username",
+		"api_key"
+	],
+	"required": [
+		"server_url",
+		"username",
+		"api_key"
+	],
+	"properties": {
+		"server_url": {
+			"type": "string",
+			"default": "",
+			"nullable": false,
+			"password": false,
+			"description": "Your JIRA Instance URL.",
+			"placeholder": "https://your-domain.atlassian.net"
+		},
+		"username": {
+			"type": "string",
+			"default": "",
+			"nullable": false,
+			"password": false,
+			"description": "Your JIRA username.",
+			"placeholder": "your-user@your-domain.com"
+		},
+		"api_key": {
+			"type": "string",
+			"default": "",
+			"nullable": false,
+			"password": true,
+			"description": "Your JIRA API Key",
+			"placeholder": ""
+		}
+	}
+}
