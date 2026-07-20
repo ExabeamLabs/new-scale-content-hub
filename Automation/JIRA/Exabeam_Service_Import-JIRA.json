@@ -33,9 +33,9 @@
         },
         "/get_issue": {
             "get": {
-                "summary": "Get Issue details from JIRA",
-                "description": "Get Issue details from JIRA",
-                "operationId": "getIssueDetails",
+                "summary": "Get Issue Details from JIRA",
+                "description": "Get Issue Details from JIRA",
+                "operationId": "getIssue",
                 "responses": {
                     "200": {
                         "description": "Success"
