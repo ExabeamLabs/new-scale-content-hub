@@ -49,16 +49,16 @@ Author: US Services Consultant - July 2026 - Initial<br>
    - Description: Creates an Issue in JIRA.
    - Trigger: No Trigger
    - Add Step   - Select Action > Threat Center > GetCaseDetails
-     -- case_id = flow_input.case_id
+     - case_id = flow_input.case_id
    - Add Step   - Select Action > Exabeam > Create Issue in JIRA
-     -- jira_project = "KAN"
-     -- jira_summary = results.a.alertName
+     - jira_project = "KAN"
+     - jira_summary = results.a.alertName
    - Add Step   - Run one Branch
    - Edit Branch 1
-     -- Predicate expression = results.b
+     - Predicate expression = results.b
      - Add Step   - Selection Action > Exabeam > Create_a_note_for_a_case
-       -- CASE_UUID = flow_input.case_id
-       -- NOTE_CONTENT = results.b
+       - CASE_UUID = flow_input.case_id
+       - NOTE_CONTENT = results.b
    - Deploy
 
 ## Reference Materials:
