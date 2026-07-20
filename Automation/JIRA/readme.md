@@ -62,5 +62,5 @@ Author: US Services Consultant - July 2026 - Initial<br>
    - Deploy
 
 ## Reference Materials:
-[Jira REST API examples](https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/)
+https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/
 <br>
