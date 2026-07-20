@@ -31,11 +31,11 @@
                 }
             }
         },
-        "/assign_issue": {
-            "post": {
-                "summary": "Change Assignment on Issue in JIRA",
-                "description": "Change Assignment on Issue in JIRA",
-                "operationId": "assignIssue",
+        "/get_issue": {
+            "get": {
+                "summary": "Get Issue details from JIRA",
+                "description": "Get Issue details from JIRA",
+                "operationId": "getIssueDetails",
                 "responses": {
                     "200": {
                         "description": "Success"
