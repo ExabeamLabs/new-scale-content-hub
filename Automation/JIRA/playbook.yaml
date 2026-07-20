@@ -1,0 +1,199 @@
+summary: Create Issue in JIRA
+description: ""
+value:
+  modules:
+    - id: a
+      value:
+        path: hub/10000054/threatcenter/get_case_details
+        type: script
+        is_trigger: false
+        input_transforms:
+          case_id:
+            expr: flow_input.case_id
+            type: javascript
+      summary: Get Case Details (threatcenter)
+    - id: b
+      value:
+        path: f/exabeam/JIRA/Create_Issue_in_JIRA
+        type: script
+        is_trigger: false
+        input_transforms:
+          jira_project:
+            type: static
+            value: KAN
+          jira_summary:
+            expr: results.a.alert_name
+            type: javascript
+    - id: c
+      value:
+        type: branchone
+        default: []
+        branches:
+          - expr: results.b != null
+            modules:
+              - id: d
+                value:
+                  path: f/exabeam/Exabeam_Threat_Center/Create_a_note_for_a_case
+                  type: script
+                  is_trigger: false
+                  input_transforms:
+                    CASE_UUID:
+                      expr: flow_input.case_id
+                      type: javascript
+                    NOTE_CONTENT:
+                      expr: results.b["Issue reference"]
+                      type: javascript
+            summary: ""
+            parallel: true
+            skip_failure: true
+      summary: ""
+  groups: []
+schema:
+  required: []
+  properties:
+    alert_id:
+      type: string
+      format: uuid
+      description: ""
+      required: []
+      nullable: false
+      default: ""
+      enumLabels: {}
+      disableVariablePicker: false
+      disableCreate: false
+      password: false
+      order: []
+      properties: {}
+    case_id:
+      type: string
+      format: uuid
+      description: ""
+      required: []
+      nullable: false
+      default: ""
+      enumLabels: {}
+      disableVariablePicker: false
+      disableCreate: false
+      password: false
+      order: []
+      properties: {}
+    priority:
+      type: string
+    risk_score:
+      type: integer
+    create_case:
+      type: boolean
+    use_cases:
+      type: array
+      items:
+        type: string
+    mitres:
+      type: array
+      items:
+        type: object
+        properties:
+          tactic_key:
+            type: string
+          tactic:
+            type: string
+          technique_key:
+            type: string
+          technique:
+            type: string
+        additionalProperties: false
+    tags:
+      type: array
+      items:
+        type: string
+    rules:
+      type: array
+      items:
+        type: object
+        properties:
+          rule_source:
+            type: string
+          rule_id:
+            type: string
+            format: uuid
+          rule_name:
+            type: string
+          rule_reason:
+            type: string
+          rule_severity:
+            type: string
+          rule_type:
+            type: string
+          rule_trigger_event_id:
+            type:
+              - "null"
+          approx_log_time:
+            type:
+              - "null"
+          risk_score:
+            type:
+              - "null"
+          base_risk_score:
+            type:
+              - "null"
+        additionalProperties: false
+    src_ips:
+      type: array
+      items:
+        type: string
+    src_hosts:
+      type: array
+      items:
+        type: string
+    dest_ips:
+      type: array
+      items:
+        type: string
+    dest_hosts:
+      type: array
+      items:
+        type: string
+    users:
+      type: array
+      items:
+        type: string
+    case_curr_stage:
+      type: string
+    case_closed_reason:
+      type: string
+    case_queue:
+      type: string
+    case_assignee:
+      type: string
+    alert_creation_timestamp:
+      type: string
+      description: Alert Creation Timestamp
+      default: ""
+      properties: {}
+      required: []
+      password: false
+      nullable: false
+      order: []
+      disableVariablePicker: false
+      disableCreate: false
+  type: object
+  additionalProperties: false
+  order:
+    - alert_id
+    - case_id
+    - priority
+    - risk_score
+    - create_case
+    - use_cases
+    - mitres
+    - tags
+    - rules
+    - src_ips
+    - src_hosts
+    - dest_ips
+    - dest_hosts
+    - users
+    - case_curr_stage
+    - case_closed_reason
+    - case_queue
+    - case_assignee
+    - alert_creation_timestamp
