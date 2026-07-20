@@ -51,7 +51,7 @@ Author: US Services Consultant - July 2026 - Initial<br>
    - Add Step   - Select Action > Threat Center > GetCaseDetails
      - case_id = flow_input.case_id
    - Add Step   - Select Action > Exabeam > Create Issue in JIRA
-     - jira_project = "KAN"
+     - jira_project = "{your_project_name_here}"
      - jira_summary = results.a.alertName
    - Add Step   - Run one Branch
    - Edit Branch 1
