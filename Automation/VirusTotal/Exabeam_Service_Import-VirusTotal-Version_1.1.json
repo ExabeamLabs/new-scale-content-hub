@@ -1,0 +1,115 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "VirusTotal v3 API - IP, Domain, and URL Reports",
+        "description": "A subset of the VirusTotal v3 API for retrieving analysis reports for IP addresses, domains, and URLs.",
+        "version": "1.1"
+    },
+    "servers": [
+        {
+            "url": "https://www.virustotal.com/api/v3",
+            "description": "VirusTotal v3 API Server"
+        }
+    ],
+    "security": [
+        {
+            "VirusTotalApiKey": [
+            ]
+        }
+    ],
+    "paths": {
+        "/ip_addresses/{ip}": {
+            "get": {
+                "summary": "Get an IP address report",
+                "description": "Retrieves a report for a given IP address. The report includes threat reputation, contextual information, and detection details from various antivirus engines.",
+                "operationId": "getIpAddressReport",
+                "parameters": [
+                    {
+                        "name": "ip",
+                        "in": "path",
+                        "required": true,
+                        "description": "The IP address to retrieve the report for.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response containing the IP address report."
+                    }
+                }
+            }
+        },
+        "/domains/{domain}": {
+            "get": {
+                "summary": "Get a Domain report",
+                "description": "Retrieves a report for a given domain. The report provides threat reputation, contextual information, and analysis results from various antivirus engines.",
+                "operationId": "getDomainReport",
+                "parameters": [
+                    {
+                        "name": "domain",
+                        "in": "path",
+                        "required": true,
+                        "description": "The domain name to retrieve the report for.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response containing the domain report."
+                    }
+                }
+            }
+        },
+        "/urls/{url_id}": {
+            "get": {
+                "summary": "Get a URL report",
+                "description": "Retrieves a report for a given URL. The report provides threat reputation, contextual information, and analysis results from various antivirus engines.",
+                "operationId": "getURLReport",
+                "parameters": [
+                    {
+                        "name": "url_id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The URL ID (SHA-256 of the URL or base64 without padding).",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response containing the URL report."
+                    }
+                }
+            }
+        },
+        "/extractPublicAddresses": {
+            "get": {
+                "summary": "Extract Public IP Addresses",
+                "description": "Extracts and returns only external (public) IP addresses from a given list, filtering out private, loopback, link-local, and reserved ranges (RFC 1918, RFC 5735).",
+                "operationId": "extractPublicAddresses",
+                "responses": {
+                    "200": {
+                        "description": "Successful response."
+                    }
+                }
+            }
+        }
+    },
+    "/testConnection": {
+        "get": {
+            "summary": "Test Connection",
+            "description": "Serves as a connection test endpoint.",
+            "operationId": "testConnection",
+            "responses": {
+                "200": {
+                    "description": "Successful response."
+                }
+            }
+        }
+    }
+}

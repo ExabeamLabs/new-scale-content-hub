@@ -1,0 +1,680 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Exabeam Threat Center API",
+    "description": "OpenAPI specification for Exabeam Threat Center Cases and Alerts endpoints.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.us-west.exabeam.cloud",
+      "description": "Exabeam Cloud Base API Server (US West)"
+    }
+  ],
+  "security": [
+    {
+      "OAuth2": []
+    },
+    {
+      "Bearer": []
+    }
+  ],
+  "paths": {
+    "/threat-center/v1/search/cases": {
+      "post": {
+        "summary": "Search for cases",
+        "description": "Search for cases that match one or more search criteria. For example, you can search for cases that are associated with a specific caseId and that reference specific rules.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success. Returns search metadata and matched cases.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaseSearchResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Permission Denied"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/threat-center/v1/cases": {
+      "post": {
+        "summary": "Create a new case",
+        "description": "Creates a new case associated with an alert and updates case details like stage, priority, queue, assignee, closedReason.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "alertId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "The unique ID of the triggering alert."
+                  },
+                  "stage": {
+                    "type": "string"
+                  },
+                  "priority": {
+                    "type": "integer"
+                  },
+                  "queue": {
+                    "type": "string"
+                  },
+                  "assignee": {
+                    "type": "string"
+                  },
+                  "closedReason": {
+                    "type": "string"
+                  }
+                },
+                "required": ["alertId"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Attributes for the created case.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Case"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/threat-center/v1/cases/{caseId}": {
+      "get": {
+        "summary": "Get case details",
+        "description": "Get details for a specific case, as identified by a case ID.",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Unique ID that identifies a case."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. Returns attributes for the specified case.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Case"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Permission Denied"
+          },
+          "404": {
+            "description": "Case Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Update case details",
+        "description": "Update details for a specific case, as identified by case ID. Modify field values such as alertName, alertDescription, stage, closedReason, queue, assignee, priority, tags.",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Unique ID that identifies a case."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "alertName": {
+                    "type": "string"
+                  },
+                  "alertDescription": {
+                    "type": "string"
+                  },
+                  "stage": {
+                    "type": "string"
+                  },
+                  "closedReason": {
+                    "type": "string"
+                  },
+                  "queue": {
+                    "type": "string"
+                  },
+                  "assignee": {
+                    "type": "string"
+                  },
+                  "priority": {
+                    "type": "integer"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success. Returns attributes for the updated case.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Case"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Permission Denied"
+          },
+          "404": {
+            "description": "Case Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/threat-center/v1/cases/{caseId}/notes": {
+      "post": {
+        "summary": "Create a note for a case",
+        "description": "Adds a new note to a specific case.",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Unique ID that identifies a case."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "description": "The text content of the note."
+                  }
+                },
+                "required": [
+                  "text"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success. Returns the newly created note.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Note"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Permission Denied"
+          },
+          "404": {
+            "description": "Case Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/threat-center/v1/search/alerts": {
+      "post": {
+        "summary": "Search for alerts",
+        "description": "Search for alerts that match one or more search criteria. For example, you can search for alerts that are associated with a specific caseId and that reference specific rules.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success. Returns search metadata and matched alerts.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlertSearchResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Permission Denied"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/threat-center/v1/alerts/{alertId}": {
+      "get": {
+        "summary": "Get alert details",
+        "description": "Get details for a specific alert, as identified by an alert ID.",
+        "parameters": [
+          {
+            "name": "alertId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Unique ID that identifies an alert."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. Returns attributes for the specified alert.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Alert"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Permission Denied"
+          },
+          "404": {
+            "description": "Alert Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Update alert details",
+        "description": "Update details for a specific alert, as identified by an alert ID. Modify field values such as alertName, alertDescription, priority, tags.",
+        "parameters": [
+          {
+            "name": "alertId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Unique ID that identifies an alert."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "alertName": {
+                    "type": "string"
+                  },
+                  "alertDescription": {
+                    "type": "string"
+                  },
+                  "priority": {
+                    "type": "integer"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success. Returns attributes for the updated alert.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Alert"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Permission Denied"
+          },
+          "404": {
+            "description": "Alert Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "OAuth2": {
+        "type": "oauth2",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://api.us-west.exabeam.cloud/auth/v1/token",
+            "scopes": {}
+          }
+        }
+      },
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "SearchRequest": {
+        "type": "object",
+        "properties": {
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of fields to be returned from the search. Use '*' to return all applicable fields."
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp to start the search (ISO-8601 format)."
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp to end the search (ISO-8601 format)."
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int64",
+            "default": 3000,
+            "description": "Limit the number of results returned from the search request."
+          },
+          "orderBy": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [],
+            "description": "Order results by a specified field in ASC or DESC order."
+          },
+          "filter": {
+            "type": "string",
+            "description": "Filter for specific results."
+          }
+        },
+        "required": [
+          "fields",
+          "startTime",
+          "endTime",
+          "filter"
+        ]
+      },
+      "CaseSearchResponse": {
+        "type": "object",
+        "properties": {
+          "timeStartedMillis": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "timeCompletedMillis": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalResults": {
+            "type": "integer"
+          },
+          "rows": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Case"
+            }
+          }
+        }
+      },
+      "AlertSearchResponse": {
+        "type": "object",
+        "properties": {
+          "timeStartedMillis": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "timeCompletedMillis": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalResults": {
+            "type": "integer"
+          },
+          "rows": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Alert"
+            }
+          }
+        }
+      },
+      "Case": {
+        "type": "object",
+        "properties": {
+          "caseId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "alertId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "alertName": {
+            "type": "string"
+          },
+          "alertDescription": {
+            "type": "string"
+          },
+          "stage": {
+            "type": "string"
+          },
+          "closedReason": {
+            "type": "string"
+          },
+          "queue": {
+            "type": "string"
+          },
+          "assignee": {
+            "type": "string"
+          },
+          "priority": {
+            "type": "integer"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "creationTimestamp": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "ingestTimestamp": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "Alert": {
+        "type": "object",
+        "properties": {
+          "alertId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "caseId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "alertName": {
+            "type": "string"
+          },
+          "alertDescription": {
+            "type": "string"
+          },
+          "priority": {
+            "type": "integer"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "riskScore": {
+            "type": "integer"
+          },
+          "approxLogTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "creationTimestamp": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "Note": {
+        "type": "object",
+        "properties": {
+          "noteId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "text": {
+            "type": "string"
+          },
+          "author": {
+            "type": "string"
+          },
+          "creationTimestamp": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      }
+    }
+  }
+}
