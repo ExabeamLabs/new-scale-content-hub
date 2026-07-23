@@ -4,7 +4,7 @@ Description: Automation Management integration with VirusTotal V3 APIs.<br>
 Version: 1.1<br>
 Author: Charlie Mac UK TAM - May 2025 - Email If Stuck<br>
 Author: Mark Ulmer US Service Consultant - December 2025 - Moved api_key to instance variable<br>
-Author: Mark Ulmer US Service Consultant - May 2026 - Added Get Domain Report and Get URL Report<br>
+Author: Mark Ulmer US Service Consultant - July 2026 - Added Get Domain Report and Get URL Report<br>
 
 ## Setup Service
 
