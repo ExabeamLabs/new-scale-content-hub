@@ -1,12 +1,13 @@
-# Test Connection Action
-# Mark Ulmer US Service Consultant - May 2026 - Initial
+# Mark Ulmer US Service Consultant - July 2026 - Initial
 
 import urllib.request
 import json
 import ipaddress
+import wmill
 
-def check_ip_virustotal(ip, api_key):
+def check_ip_virustotal(ip):
     url = f"https://www.virustotal.com/api/v3/ip_addresses/{ip}"
+    api_key = wmill.get_variable("f/exabeam/VirusTotal/VirusTotal/VT_API_KEY")
     headers = {"x-apikey": api_key}
     req = urllib.request.Request(url, headers=headers, method="GET")
 
@@ -16,10 +17,7 @@ def check_ip_virustotal(ip, api_key):
             attributes = data["data"]["attributes"]["last_analysis_stats"]
 
             return {
-                "IP": ip,
-                "Malicious Reports": attributes["malicious"],
-                "Harmless Reports": attributes["harmless"],
-                "Suspicious Reports": attributes["suspicious"]
+                "IP": ip
             }
 
     except urllib.error.HTTPError as e:
@@ -27,13 +25,8 @@ def check_ip_virustotal(ip, api_key):
     except Exception as e:
         return f"API request failed: {e}"
 
-def main(VT_API_KEY: str):
+def main():
     ip_to_check = "1.1.1.1"
-
-  # Check VT_API_KEY
-    if not VT_API_KEY:
-        raise RuntimeError("VT_API_KEY environment variable is not set")
-
     ip_to_check = ip_to_check.strip()
 
     # Validate IP address
@@ -42,5 +35,5 @@ def main(VT_API_KEY: str):
     except ValueError:
         return f"Invalid IP address provided: {ip_to_check}"
 
-    result = check_ip_virustotal(ip_to_check, VT_API_KEY)
+    result = check_ip_virustotal(ip_to_check)
     return result
