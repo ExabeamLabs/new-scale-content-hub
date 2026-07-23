@@ -1,8 +1,3 @@
-# requirements:
-# wmill
-# requests
-# json
-
 import requests
 import wmill
 import json
