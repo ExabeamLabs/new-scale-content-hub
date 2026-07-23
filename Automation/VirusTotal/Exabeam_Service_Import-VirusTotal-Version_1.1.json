@@ -13,7 +13,8 @@
     ],
     "security": [
         {
-            "VirusTotalApiKey": []
+            "VirusTotalApiKey": [
+            ]
         }
     ],
     "paths": {
@@ -99,26 +100,15 @@
             }
         }
     },
-	"/testConnection": {
-            "get": {
-                "summary": "Test Connection",
-                "description": "Serves as a connection test endpoint.",
-                "operationId": "testConnection",
-                "responses": {
-                    "200": {
-                        "description": "Successful response."
-                    }
+    "/testConnection": {
+        "get": {
+            "summary": "Test Connection",
+            "description": "Serves as a connection test endpoint.",
+            "operationId": "testConnection",
+            "responses": {
+                "200": {
+                    "description": "Successful response."
                 }
-            }
-        }
-    },
-    "components": {
-        "securitySchemes": {
-            "VirusTotalApiKey": {
-                "type": "apiKey",
-                "in": "header",
-                "name": "x-apikey",
-                "description": "Your VirusTotal API key passed in the 'x-apikey' HTTP Header."
             }
         }
     }
