@@ -48,7 +48,7 @@
                 }
             }
         },
-        "/": {
+        "/extractPublcAddresses": {
             "get": {
                 "summary": "Extract publc ip addresses",
                 "description": "Extracts and returns only external (public) IP addresses from a given list, filtering out private, loopback, link-local and reserved ranges (RFC 1918, RFC 5735). Invalid IPv4 addresses are silently ignored",
@@ -60,7 +60,7 @@
                 }
             }
         },
-		"/": {
+		"/testConnection": {
             "get": {
                 "summary": "Test Connection",
                 "description": "Test Connection",
