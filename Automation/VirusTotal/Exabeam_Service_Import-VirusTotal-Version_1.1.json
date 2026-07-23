@@ -59,6 +59,18 @@
                     }
                 }
             }
+        },
+		"/": {
+            "get": {
+                "summary": "Test Connection",
+                "description": "Test Connection",
+                "operationId": "testConnection",
+                "responses": {
+                    "200": {
+                        "description": "Successful response."
+                    }
+                }
+            }
         }
     }
 }
