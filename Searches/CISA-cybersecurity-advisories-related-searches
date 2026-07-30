@@ -22,3 +22,9 @@ Timeframe: 30 days
 Search Name: LummaC2 Malware Hashes
 Search Description: AA25-141B Threat Actors Deploy LummaC2 Malware to Exfiltrate Sensitive Data from Organizations
 Reference: https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-141b
+
+Search: src_ip IN "CISA_AA26-097A_IP_IOCs"."IP Address (v4/v6)"
+Timeframe: 30 days
+Search Name: CISA AA26-097A IP Indicatiors of Compromise
+Search Description: AA26-097A Iranian-Affiliated Cyber Actors Exploit Programmable Logic Controllers Across US Critical Infrastructure
+Reference: https://www.cisa.gov/news-events/cybersecurity-advisories/aa26-097a
