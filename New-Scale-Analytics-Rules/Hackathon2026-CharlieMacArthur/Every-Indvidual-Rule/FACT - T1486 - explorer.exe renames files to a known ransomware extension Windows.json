@@ -1,0 +1,50 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1486-Ransomware-File-Rename-lockbit-21",
+      "name": "T1486 — Ransomware File Rename (.lockbit) (Fact #21)",
+      "description": "Ransomware File Rename (.lockbit). Trigger: explorer.exe renames files to a known ransomware extension",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "file-time-modify"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "2"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "file_name"
+      ],
+      "detectionReason": "'{process_name}' changed the creation time of {file_name} to a known ransomware extension (Sysmon rule: FileCreateTime — its proxy for file rename)",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1486",
+          "technique": "Data Encrypted for Impact",
+          "tactic": "Impact",
+          "tacticKey": "TA0040"
+        }
+      ],
+      "useCases": [
+        "Ransomware"
+      ],
+      "value": "endsWith(toLower(file_name), '.lockbit')",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "file-write-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "filew-file-process-group"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1098-001-Super-Admin-Granted-to-API-Integration-72",
+      "name": "T1098.001 — Super Admin Granted to API Integration (Fact #72)",
+      "description": "Super Admin Granted to API Integration. Trigger: Super Administrator privilege granted by an identity that doesn't normally perform privilege grants",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "platform": [
+            "Okta Adaptive MFA"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation",
+        "dest_user_full_name"
+      ],
+      "detectionReason": "{email_address} granted a privilege to {dest_user_full_name} ({event_name})",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1098.001",
+          "technique": "Account Manipulation",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Privilege Escalation"
+      ],
+      "value": "toLower(operation) = 'user.account.privilege.grant' && toLower(dest_user_full_name) = 'okta api integration'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "cloud-policy-management-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "cpm-role-assign-group"
+    }
+  ]
+}

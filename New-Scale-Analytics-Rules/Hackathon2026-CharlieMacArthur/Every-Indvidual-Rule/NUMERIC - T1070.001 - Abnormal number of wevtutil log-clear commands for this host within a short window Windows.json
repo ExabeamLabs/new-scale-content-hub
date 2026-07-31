@@ -1,0 +1,53 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "NumC-T1070-001-Event-Log-Cleared-on-DC-1",
+      "name": "T1070.001 — Event Log Cleared on DC (Numeric Count)",
+      "description": "Event Log Cleared on DC. Abnormal number of wevtutil log-clear commands for this host within a short window",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "1"
+          ]
+        }
+      ],
+      "detectionReason": "Abnormal number (${trigger.numeric_value}) of wevtutil log-clear commands on ${event.host}",
+      "type": "numericCountProfiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1070.001",
+          "technique": "Indicator Removal",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Audit Tampering"
+      ],
+      "trainOnCondition": "toLower(process_name) = 'wevtutil.exe' && contains(toLower(process_command_line), 'cl ')",
+      "actOnCondition": "toLower(process_name) = 'wevtutil.exe' && contains(toLower(process_command_line), 'cl ')",
+      "query": "(activity_type = \"process-create\") AND (platform = \"Windows\") AND (event_code = \"1\") AND (contains(toLower(process_name), \"wevtutil\"))",
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "process-creation-activity",
+      "ruleGroupId": "pc-event-log-tampering-group",
+      "severity": "Medium",
+      "testMode": false,
+      "scopeValue": "toLower(process_name) = 'wevtutil.exe' && contains(toLower(process_command_line), 'cl ')",
+      "windowDuration": "90 days",
+      "windowPeriod": "12 hours",
+      "logBase": 2.0,
+      "minOrderOfMagnitude": 32,
+      "anomalyThreshold": "1 days",
+      "checkScopeMaturity": false,
+      "countPer": "host"
+    }
+  ]
+}

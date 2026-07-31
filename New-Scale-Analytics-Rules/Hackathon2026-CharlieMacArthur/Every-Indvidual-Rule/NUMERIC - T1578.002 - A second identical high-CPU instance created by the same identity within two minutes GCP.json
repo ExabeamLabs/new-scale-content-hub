@@ -1,0 +1,43 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "NumC-T1578-002-High-CPU-Instances-in-Unused-Region-7",
+      "name": "T1578.002 — High-CPU Instances in Unused Region (Numeric Count)",
+      "description": "High-CPU Instances in Unused Region. A second identical high-CPU instance created by the same identity within two minutes",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "endpoint-create"
+          ],
+          "platform": [
+            "GCP"
+          ]
+        }
+      ],
+      "detectionReason": "Abnormal number (${trigger.numeric_value}) of compute instance creations by ${event.email_address}",
+      "type": "numericCountProfiledFeature",
+      "mitre": [],
+      "useCases": [
+        "Cloud Data Protection"
+      ],
+      "trainOnCondition": "toLower(operation) = 'v1.compute.instances.insert'",
+      "actOnCondition": "toLower(operation) = 'v1.compute.instances.insert'",
+      "query": "(activity_type = \"endpoint-create\") AND (platform = \"GCP\") AND (toLower(operation) = \"v1.compute.instances.insert\")",
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "general-activity",
+      "ruleGroupId": "go-operation-count-magnitude-group",
+      "severity": "Medium",
+      "testMode": false,
+      "scopeValue": "toLower(operation) = 'v1.compute.instances.insert'",
+      "windowDuration": "90 days",
+      "windowPeriod": "12 hours",
+      "logBase": 2.0,
+      "minOrderOfMagnitude": 32,
+      "anomalyThreshold": "1 days",
+      "checkScopeMaturity": false,
+      "countPer": "email_address"
+    }
+  ]
+}

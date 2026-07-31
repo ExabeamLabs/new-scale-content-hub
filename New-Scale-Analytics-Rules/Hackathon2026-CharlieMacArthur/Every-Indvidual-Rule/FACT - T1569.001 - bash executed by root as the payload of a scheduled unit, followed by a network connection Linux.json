@@ -1,0 +1,46 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1569-001-Systemd-Timer-Persistence-47",
+      "name": "T1569.001 — Systemd Timer Persistence (Fact #47)",
+      "description": "Systemd Timer Persistence. Trigger: bash executed by root as the payload of a scheduled unit, followed by a network connection",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "process_path"
+      ],
+      "detectionReason": "bash executed on {host}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1569.001",
+          "technique": "System Services",
+          "tactic": "Execution",
+          "tacticKey": "TA0002"
+        }
+      ],
+      "useCases": [
+        "Privilege Escalation"
+      ],
+      "value": "toLower(process_path) = '/bin/bash'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-process-execution-group"
+    }
+  ]
+}

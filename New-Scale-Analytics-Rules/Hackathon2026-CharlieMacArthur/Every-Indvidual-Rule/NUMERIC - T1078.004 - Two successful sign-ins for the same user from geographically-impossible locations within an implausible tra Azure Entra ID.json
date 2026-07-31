@@ -1,0 +1,54 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "NumDC-T1078-004-Impossible-Travel-Sign-In-5",
+      "name": "T1078.004 — Impossible Travel Sign-In (Numeric Distinct Count)",
+      "description": "Impossible Travel Sign-In. Two successful sign-ins for the same user from geographically-impossible locations within an implausible travel window",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-login"
+          ],
+          "category": [
+            "SignInLogs"
+          ],
+          "platform": [
+            "Microsoft 365"
+          ]
+        }
+      ],
+      "detectionReason": "Impossible travel: successive sign-ins from ${event.src_ip} shortly after a sign-in from a different country",
+      "type": "numericDistinctCountProfiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1078.004",
+          "technique": "Valid Accounts: Cloud Accounts",
+          "tactic": "Privilege Escalation",
+          "tacticKey": "TA0004"
+        }
+      ],
+      "useCases": [
+        "Privilege Abuse"
+      ],
+      "trainOnCondition": "outcome = 'success'",
+      "actOnCondition": "outcome = 'success'",
+      "query": "(activity_type = \"app-login\") AND (category = \"SignInLogs\") AND (platform = \"Microsoft 365\") AND (outcome = \"success\")",
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "app-login-activity",
+      "ruleGroupId": "al-source-endpoint-access-group",
+      "severity": "Medium",
+      "testMode": false,
+      "featureValue": "GetGeoInfo('country', src_ip)",
+      "scopeValue": "EntityId('type: User && direction: Source')",
+      "windowDuration": "1 days",
+      "windowPeriod": "12 hours",
+      "logBase": 2.0,
+      "minOrderOfMagnitude": 32,
+      "anomalyThreshold": "1 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1530-S3-Bucket-Made-Public-67",
+      "name": "T1530 — S3 Bucket Made Public (Fact #67)",
+      "description": "S3 Bucket Made Public. Trigger: S3 bucket policy modified to grant Principal:* read/list access",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "bucket-policy-modify"
+          ],
+          "platform": [
+            "AWS"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation"
+      ],
+      "detectionReason": "{user} called {operation} via {user_agent_client}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1530",
+          "technique": "Data from Cloud Storage",
+          "tactic": "Collection",
+          "tacticKey": "TA0009"
+        }
+      ],
+      "useCases": [
+        "Cloud Data Protection"
+      ],
+      "value": "toLower(operation) = 'putbucketpolicy'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "bucket-permission-modification-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "bpm-public-group"
+    }
+  ]
+}

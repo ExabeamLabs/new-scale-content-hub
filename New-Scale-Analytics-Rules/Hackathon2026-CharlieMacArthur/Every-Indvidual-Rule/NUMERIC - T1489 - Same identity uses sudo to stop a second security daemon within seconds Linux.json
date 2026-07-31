@@ -1,0 +1,50 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "NumC-T1489-fail2ban-ClamAV-Killed-Before-Brute-Force-4",
+      "name": "T1489 — fail2ban/ClamAV Killed Before Brute Force (Numeric Count)",
+      "description": "fail2ban/ClamAV Killed Before Brute Force. Same identity uses sudo to stop a second security daemon within seconds",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "detectionReason": "Abnormal number (${trigger.numeric_value}) of sudo systemctl-stop commands on ${event.host}",
+      "type": "numericCountProfiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1489",
+          "technique": "Service Stop",
+          "tactic": "Impact",
+          "tacticKey": "TA0040"
+        }
+      ],
+      "useCases": [
+        "Destruction of Data"
+      ],
+      "trainOnCondition": "toLower(process_name) = 'sudo' && contains(toLower(process_command_line), 'stop')",
+      "actOnCondition": "toLower(process_name) = 'sudo' && contains(toLower(process_command_line), 'stop')",
+      "query": "(activity_type = \"process-create\") AND (platform = \"Unix\") AND (contains(toLower(process_name), \"sudo\"))",
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "process-creation-activity",
+      "ruleGroupId": "pc-sudo-command-group",
+      "severity": "Medium",
+      "testMode": false,
+      "scopeValue": "toLower(process_name) = 'sudo' && contains(toLower(process_command_line), 'stop')",
+      "windowDuration": "90 days",
+      "windowPeriod": "12 hours",
+      "logBase": 2.0,
+      "minOrderOfMagnitude": 32,
+      "anomalyThreshold": "1 days",
+      "checkScopeMaturity": false,
+      "countPer": "host"
+    }
+  ]
+}

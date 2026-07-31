@@ -1,0 +1,50 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1070-001-Shadow-Copy-Deletion-Triple-VSS-Wipe-11",
+      "name": "T1070.001 — Shadow Copy Deletion (Triple VSS Wipe) (Fact #11)",
+      "description": "Shadow Copy Deletion (Triple VSS Wipe). Trigger: A shadow-copy-deletion technique (vssadmin.exe, wmic.exe, or PowerShell WMI — command line not visible via this WinAD builder, so the specific tool cannot be confirmed) executed against the host NOTE: COLLAPSED from 3 near-duplicate rows (vssadmin/wmic/PowerShell variants) — all 3 reduced to byte-identical detection logic given this WinAD source's lack of command-line visibility; kept as one rule rather than importing 3 rules that fire identically",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "endpoint-notification"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "4688"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "host"
+      ],
+      "detectionReason": "A 4688 process-creation audit event was logged on {host} (command-line not visible via this builder — see note)",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1070.001",
+          "technique": "Indicator Removal",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Ransomware"
+      ],
+      "value": "host = 'FS-SHARE-01'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-shadow-copy-delete-group"
+    }
+  ]
+}

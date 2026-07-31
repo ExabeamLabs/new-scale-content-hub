@@ -1,0 +1,46 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Prof-T1098-004-SSH-Authorized-Keys-Backdoor-16",
+      "name": "T1098.004 — SSH Authorized Keys Backdoor (Profiled)",
+      "description": "SSH Authorized Keys Backdoor. SSH public-key authentication success for root",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "ssh-traffic"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "detectionReason": "Unusual user '${trigger.feature_value}' authenticated via SSH from an external source to this host",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1098.004",
+          "technique": "Account Manipulation",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Account Manipulation"
+      ],
+      "featureValue": "user",
+      "scopeValue": "EntityId('type: Device && direction: Dest')",
+      "trainOnCondition": "src_network_type = 'WAN'",
+      "actOnCondition": "src_network_type = 'WAN'",
+      "anomalyThreshold": "45 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "endpoint-login-activity",
+      "ruleGroupId": "el-source-endpoint-access-group",
+      "severity": "Medium",
+      "testMode": false
+    }
+  ]
+}

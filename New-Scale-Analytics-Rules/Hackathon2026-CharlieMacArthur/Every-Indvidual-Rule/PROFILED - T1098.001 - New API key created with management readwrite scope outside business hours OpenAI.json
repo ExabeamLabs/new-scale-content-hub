@@ -1,0 +1,49 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Prof-T1098-001-Broad-Scope-API-Key-Created-Off-Hours-37",
+      "name": "T1098.001 — Broad-Scope API Key Created Off-Hours (Profiled)",
+      "description": "Broad-Scope API Key Created Off-Hours. New API key created with management read/write scope outside business hours",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "operation": [
+            "api_key.created"
+          ],
+          "platform": [
+            "OpenAI"
+          ]
+        }
+      ],
+      "detectionReason": "API key created by an identity with no prior history of doing so: '${trigger.feature_value}'",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1098.001",
+          "technique": "Account Manipulation",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Account Manipulation"
+      ],
+      "featureValue": "email_address",
+      "scopeValue": "'org'",
+      "trainOnCondition": "toLower(operation) = 'api_key.created'",
+      "actOnCondition": "toLower(operation) = 'api_key.created'",
+      "anomalyThreshold": "21 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "ai-activity",
+      "ruleGroupId": "ai-guardrail-first-user-activity-group",
+      "severity": "Medium",
+      "testMode": false
+    }
+  ]
+}

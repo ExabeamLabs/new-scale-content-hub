@@ -1,0 +1,51 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1047-WMI-Lateral-Movement-Plaintext-Credential-28",
+      "name": "T1047 — WMI Lateral Movement, Plaintext Credential (Fact #28)",
+      "description": "WMI Lateral Movement, Plaintext Credential. Trigger: Network logon (Type 3) on target host immediately follows a WMI remote-execution attempt from a peer workstation",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "endpoint-login"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "4624"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "login_type",
+        "user"
+      ],
+      "detectionReason": "Network logon (Type 3) for {user} on {host} from {src_ip}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1047",
+          "technique": "Windows Management Instrumentation",
+          "tactic": "Execution",
+          "tacticKey": "TA0002"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "value": "login_type = '3' && toLower(user) = 'administrator'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "endpoint-login-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "el-source-endpoint-access-group"
+    }
+  ]
+}

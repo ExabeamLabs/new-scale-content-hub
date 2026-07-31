@@ -1,0 +1,52 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1204-004-ClickFix-Paste-and-Run-18",
+      "name": "T1204.004 — ClickFix Paste-and-Run (Fact #18)",
+      "description": "ClickFix Paste-and-Run. Trigger: PowerShell launched with -w hidden -nop and Base64 command, parented by mshta.exe",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "1"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "process_name",
+        "process_command_line",
+        "parent_process_name"
+      ],
+      "detectionReason": "PowerShell launched hidden with an encoded command, parented by mshta.exe",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1204.004",
+          "technique": "User Execution",
+          "tactic": "Execution",
+          "tacticKey": "TA0002"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "value": "toLower(process_name) = 'powershell.exe' && contains(toLower(process_command_line), '-w hidden') && contains(toLower(process_command_line), '-nop') && toLower(parent_process_name) = 'mshta.exe'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-powershell-encoded-command-group"
+    }
+  ]
+}

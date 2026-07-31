@@ -1,0 +1,46 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1136-External-User-Invited-as-workspace-admin-81",
+      "name": "T1136 — External User Invited as workspace-admin (Fact #81)",
+      "description": "External User Invited as workspace-admin. Trigger: Personal/non-corporate email domain invited to a workspace with the highest privilege role",
+      "applicableEvents": [
+        {
+          "operation": [
+            "invite.sent"
+          ],
+          "platform": [
+            "OpenAI"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation"
+      ],
+      "detectionReason": "Workspace invite sent ({event_name}) — role/target domain not confirmed in parsed sample",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1136",
+          "technique": "Create Account",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Account Manipulation"
+      ],
+      "value": "toLower(operation) = 'invite.sent'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "ai-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "ai-guardrail-first-user-activity-group"
+    }
+  ]
+}

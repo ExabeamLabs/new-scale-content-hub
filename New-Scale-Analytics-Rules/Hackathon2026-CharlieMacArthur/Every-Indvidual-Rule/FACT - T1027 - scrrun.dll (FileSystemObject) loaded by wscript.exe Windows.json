@@ -1,0 +1,51 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1027-JScript-Loader-from-Outlook-4",
+      "name": "T1027 — JScript Loader from Outlook (Fact #4)",
+      "description": "JScript Loader from Outlook. Trigger: scrrun.dll (FileSystemObject) loaded by wscript.exe",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "dll-load"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "7"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "file_name",
+        "process_name"
+      ],
+      "detectionReason": "scrrun.dll loaded by '{process_name}'",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1027",
+          "technique": "Obfuscated Files or Information",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "value": "toLower(file_name) = 'scrrun.dll' && toLower(process_name) = 'wscript.exe'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "dll-load-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "dllname-group"
+    }
+  ]
+}

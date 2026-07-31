@@ -1,0 +1,50 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1136-003-Malicious-Automation-Runbook-56",
+      "name": "T1136.003 — Malicious Automation Runbook (Fact #56)",
+      "description": "Malicious Automation Runbook. Trigger: Newly-published runbook executed on a hybrid runbook worker within minutes of publication",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "category": [
+            "Administrative"
+          ],
+          "platform": [
+            "Azure"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "category",
+        "operation"
+      ],
+      "detectionReason": "Runbook job executed: {operation}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1136.003",
+          "technique": "Create Account",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Account Manipulation"
+      ],
+      "value": "operation = 'Microsoft.Automation/automationAccounts/jobs/write'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "compute-vm-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "cvma-remote-command-group"
+    }
+  ]
+}

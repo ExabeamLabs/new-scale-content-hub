@@ -1,0 +1,52 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1562-007-NSG-Rule-Widened-to-Any-Any-60",
+      "name": "T1562.007 — NSG Rule Widened to Any-Any (Fact #60)",
+      "description": "NSG Rule Widened to Any-Any. Trigger: NSG inbound rule modified to allow traffic from any source (0.0.0.0/0 or *)",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "network-notification"
+          ],
+          "category": [
+            "Administrative"
+          ],
+          "platform": [
+            "Network"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "category",
+        "resource",
+        "sourceAddressPrefix",
+        "direction"
+      ],
+      "detectionReason": "NSG rule modified: {resource}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1562.007",
+          "technique": "Impair Defenses",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Evasion"
+      ],
+      "value": "contains(toLower(resource), 'networksecuritygroups') && contains(toLower(resource), 'securityrules')",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "network-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "ntw-critical-session-group"
+    }
+  ]
+}

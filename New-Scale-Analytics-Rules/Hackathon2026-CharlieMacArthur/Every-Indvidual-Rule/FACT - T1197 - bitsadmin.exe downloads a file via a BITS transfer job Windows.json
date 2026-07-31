@@ -1,0 +1,51 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1197-BITS-Job-Abuse-15",
+      "name": "T1197 — BITS Job Abuse (Fact #15)",
+      "description": "BITS Job Abuse. Trigger: bitsadmin.exe downloads a file via a BITS transfer job",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "1"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "process_name",
+        "process_command_line"
+      ],
+      "detectionReason": "'{process_name}' downloaded a file via a BITS transfer job: {process_command_line}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1197",
+          "technique": "BITS Jobs",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "value": "toLower(process_name) = 'bitsadmin.exe' && contains(toLower(process_command_line), '/transfer')",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-bits-job-execution-group"
+    }
+  ]
+}

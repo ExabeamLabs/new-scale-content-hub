@@ -1,0 +1,51 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1027-JScript-Loader-from-Outlook-5",
+      "name": "T1027 — JScript Loader from Outlook (Fact #5)",
+      "description": "JScript Loader from Outlook. Trigger: Process makes outbound HTTP connection within seconds of spawning from an Office application",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "network-session"
+          ],
+          "platform": [
+            "Network"
+          ],
+          "event_code": [
+            "3"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "process_name",
+        "dest_network_type"
+      ],
+      "detectionReason": "'{process_name}' made an outbound network connection to {dest_host}:{dest_port}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1027",
+          "technique": "Obfuscated Files or Information",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "value": "toLower(process_name) = 'wscript.exe' && dest_network_type = 'WAN'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "network-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "ntw-process-name-group"
+    }
+  ]
+}

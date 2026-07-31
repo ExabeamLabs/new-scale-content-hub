@@ -1,0 +1,46 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1530-S3-Bucket-Made-Public-68",
+      "name": "T1530 — S3 Bucket Made Public (Fact #68)",
+      "description": "S3 Bucket Made Public. Trigger: Bucket ACL grant added for the AllUsers group immediately after a public bucket policy change",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "bucket-permission-modify"
+          ],
+          "platform": [
+            "AWS"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation"
+      ],
+      "detectionReason": "{user} called {operation} on an S3 bucket",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1530",
+          "technique": "Data from Cloud Storage",
+          "tactic": "Collection",
+          "tacticKey": "TA0009"
+        }
+      ],
+      "useCases": [
+        "Cloud Data Protection"
+      ],
+      "value": "toLower(operation) = 'putbucketacl'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "bucket-permission-modification-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "bpm-public-group"
+    }
+  ]
+}

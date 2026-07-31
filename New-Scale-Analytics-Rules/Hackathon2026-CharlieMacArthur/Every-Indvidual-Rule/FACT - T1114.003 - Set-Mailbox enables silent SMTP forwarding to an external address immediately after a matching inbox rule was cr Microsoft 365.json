@@ -1,0 +1,47 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1114-003-Forwarding-Rule-to-External-Domain-77",
+      "name": "T1114.003 — Forwarding Rule to External Domain (Fact #77)",
+      "description": "Forwarding Rule to External Domain. Trigger: Set-Mailbox enables silent SMTP forwarding to an external address immediately after a matching inbox rule was created",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "operation": [
+            "Set-Mailbox"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation",
+        "DeliverToMailboxAndForward"
+      ],
+      "detectionReason": "Set-Mailbox executed for {email_address} via {user_agent}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1114.003",
+          "technique": "Email Collection",
+          "tactic": "Collection",
+          "tacticKey": "TA0009"
+        }
+      ],
+      "useCases": [
+        "Data Leak"
+      ],
+      "value": "toLower(operation) = 'set-mailbox'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "email-rule-create-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "emailrc-susp-forward-rule-group"
+    }
+  ]
+}

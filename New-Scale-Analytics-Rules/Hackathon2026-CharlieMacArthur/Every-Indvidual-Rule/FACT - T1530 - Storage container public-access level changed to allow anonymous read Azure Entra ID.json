@@ -1,0 +1,50 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1530-Storage-Container-Made-Public-57",
+      "name": "T1530 — Storage Container Made Public (Fact #57)",
+      "description": "Storage Container Made Public. Trigger: Storage container public-access level changed to allow anonymous read",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "category": [
+            "Administrative"
+          ],
+          "platform": [
+            "Azure"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "category",
+        "operation"
+      ],
+      "detectionReason": "Storage container public-access setting changed: {operation}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1530",
+          "technique": "Data from Cloud Storage",
+          "tactic": "Collection",
+          "tacticKey": "TA0009"
+        }
+      ],
+      "useCases": [
+        "Cloud Data Protection"
+      ],
+      "value": "operation = 'Microsoft.Storage/storageAccounts/blobServices/containers/write'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "bucket-permission-modification-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "bpm-public-group"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Prof-T1055-Process-Injection-into-Notepad-2",
+      "name": "T1055 — Process Injection into Notepad (Profiled)",
+      "description": "Process Injection into Notepad. Injected-into process initiates outbound network connection immediately after CreateRemoteThread",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "network-session"
+          ],
+          "platform": [
+            "Network"
+          ],
+          "event_code": [
+            "3"
+          ]
+        }
+      ],
+      "detectionReason": "Rare process '${trigger.feature_value}' made an outbound network connection",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1055",
+          "technique": "Process Injection",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "featureValue": "process_name",
+      "scopeValue": "'org'",
+      "trainOnCondition": "true",
+      "actOnCondition": "true",
+      "anomalyThreshold": "30 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "network-activity",
+      "ruleGroupId": "ntw-process-name-group",
+      "severity": "Medium",
+      "testMode": false
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Prof-T1078-004-Impossible-Travel-Sign-In-21",
+      "name": "T1078.004 — Impossible Travel Sign-In (Profiled)",
+      "description": "Impossible Travel Sign-In. Successful Entra ID sign-in from a new geography for this user",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-login"
+          ],
+          "category": [
+            "SignInLogs"
+          ],
+          "platform": [
+            "Microsoft 365"
+          ]
+        }
+      ],
+      "detectionReason": "Successful sign-in from an unusual country: '${trigger.feature_value}'",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1078.004",
+          "technique": "Valid Accounts: Cloud Accounts",
+          "tactic": "Privilege Escalation",
+          "tacticKey": "TA0004"
+        }
+      ],
+      "useCases": [
+        "Privilege Abuse"
+      ],
+      "featureValue": "GetGeoInfo('country', src_ip)",
+      "scopeValue": "'org'",
+      "trainOnCondition": "outcome = 'success'",
+      "actOnCondition": "outcome = 'success'",
+      "anomalyThreshold": "45 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "app-login-activity",
+      "ruleGroupId": "al-source-endpoint-access-group",
+      "severity": "Medium",
+      "testMode": false
+    }
+  ]
+}

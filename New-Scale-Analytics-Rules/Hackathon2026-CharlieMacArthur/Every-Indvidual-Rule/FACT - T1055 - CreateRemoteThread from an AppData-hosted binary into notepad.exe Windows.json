@@ -1,0 +1,48 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1055-Process-Injection-into-Notepad-8",
+      "name": "T1055 — Process Injection into Notepad (Fact #8)",
+      "description": "Process Injection into Notepad. Trigger: CreateRemoteThread from an AppData-hosted binary into notepad.exe",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Windows"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "process_name",
+        "dest_process_name",
+        "process_dir"
+      ],
+      "detectionReason": "'{process_name}' created a remote thread in {dest_process_name}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1055",
+          "technique": "Process Injection",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "value": "toLower(process_name) = 'update.exe' && toLower(dest_process_name) = 'notepad.exe' && contains(toLower(process_dir), 'appdata')",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-process-memory-dump-group"
+    }
+  ]
+}

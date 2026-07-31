@@ -1,0 +1,47 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1556-006-MFA-Reset-via-Help-Desk-Impersonation-74",
+      "name": "T1556.006 — MFA Reset via Help Desk Impersonation (Fact #74)",
+      "description": "MFA Reset via Help Desk Impersonation. Trigger: Help-desk/shared identity deactivates a user's MFA factor",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "platform": [
+            "Okta Adaptive MFA"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation",
+        "full_name"
+      ],
+      "detectionReason": "{full_name} ({email_address}) deactivated an MFA factor",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1556.006",
+          "technique": "Modify Authentication Process: Multi-Factor Authentication",
+          "tactic": "Credential Access",
+          "tacticKey": "TA0006"
+        }
+      ],
+      "useCases": [
+        "Account Manipulation"
+      ],
+      "value": "toLower(operation) = 'user.mfa.factor.deactivate' && toLower(full_name) = 'help desk service'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "mfa-disable-activity",
+      "severity": "High",
+      "testMode": false,
+      "ruleGroupId": "mfa-disable-group"
+    }
+  ]
+}

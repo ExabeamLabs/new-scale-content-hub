@@ -1,0 +1,50 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1621-MFA-Push-Bombing-51",
+      "name": "T1621 — MFA Push Bombing (Fact #51)",
+      "description": "MFA Push Bombing. Trigger: MFA push denied by user",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-login"
+          ],
+          "category": [
+            "SignInLogs"
+          ],
+          "platform": [
+            "Microsoft 365"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "category",
+        "error_code"
+      ],
+      "detectionReason": "MFA-interrupted sign-in (error 50074) from {src_ip}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1621",
+          "technique": "Multi-Factor Authentication Request Generation",
+          "tactic": "Credential Access",
+          "tacticKey": "TA0006"
+        }
+      ],
+      "useCases": [
+        "Brute Force Attack"
+      ],
+      "value": "error_code = '50074'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "app-login-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "al-mfa-status-group"
+    }
+  ]
+}

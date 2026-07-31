@@ -1,0 +1,46 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Prof-T1005-Finance-Directory-Archived-and-Staged-13",
+      "name": "T1005 — Finance Directory Archived and Staged (Profiled)",
+      "description": "Finance Directory Archived and Staged. Privileged execution of tar as root on a file server",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "detectionReason": "Unusual host running privileged tar: '${trigger.feature_value}'",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1005",
+          "technique": "Data from Local System",
+          "tactic": "Collection",
+          "tacticKey": "TA0009"
+        }
+      ],
+      "useCases": [
+        "Data Access"
+      ],
+      "featureValue": "process_path",
+      "scopeValue": "EntityId('type: Device && direction: Source')",
+      "trainOnCondition": "user_id = '0' && contains(toLower(process_path), 'tar')",
+      "actOnCondition": "user_id = '0' && contains(toLower(process_path), 'tar')",
+      "anomalyThreshold": "21 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "process-creation-activity",
+      "ruleGroupId": "pc-process-execution-group",
+      "severity": "Medium",
+      "testMode": false
+    }
+  ]
+}

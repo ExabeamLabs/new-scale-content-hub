@@ -1,0 +1,48 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1550-001-OAuth-Consent-Phishing-79",
+      "name": "T1550.001 — OAuth Consent Phishing (Fact #79)",
+      "description": "OAuth Consent Phishing. Trigger: Consented application accesses mailbox items from a different IP than the consent action within seconds",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "operation": [
+            "MailItemsAccessed"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation",
+        "user_agent",
+        "appid"
+      ],
+      "detectionReason": "{email_address}'s mailbox accessed via AppId embedded in {user_agent} from {src_ip}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1550.001",
+          "technique": "Use Alternate Authentication Material",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Abnormal Authentication & Access"
+      ],
+      "value": "toLower(operation) = 'mailitemsaccessed' && contains(toLower(user_agent), 'appid=f2a8c3d1-dead-beef-cafe-000000000001')",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "file-read-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "filec-outlook-group"
+    }
+  ]
+}

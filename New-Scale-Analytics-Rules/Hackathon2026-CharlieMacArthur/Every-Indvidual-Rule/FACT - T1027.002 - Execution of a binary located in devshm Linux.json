@@ -1,0 +1,46 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1027-002-UPX-Packed-ELF-from-dev-shm-33",
+      "name": "T1027.002 — UPX-Packed ELF from /dev/shm (Fact #33)",
+      "description": "UPX-Packed ELF from /dev/shm. Trigger: Execution of a binary located in /dev/shm",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "process_dir"
+      ],
+      "detectionReason": "'{process_name}' executed directly from {process_dir}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1027.002",
+          "technique": "Obfuscated Files or Information",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Evasion"
+      ],
+      "value": "toLower(process_dir) = '/dev/shm/'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-process-execution-group"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1530-GCS-Bucket-Opened-to-allUsers-64",
+      "name": "T1530 — GCS Bucket Opened to allUsers (Fact #64)",
+      "description": "GCS Bucket Opened to allUsers. Trigger: Storage bucket IAM policy grants read access to allUsers (public internet)",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "platform": [
+            "GCP"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation"
+      ],
+      "detectionReason": "{email_address} called {operation} on {resource_name}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1530",
+          "technique": "Data from Cloud Storage",
+          "tactic": "Collection",
+          "tacticKey": "TA0009"
+        }
+      ],
+      "useCases": [
+        "Cloud Data Protection"
+      ],
+      "value": "toLower(operation) = 'storage.setiampermissions'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "bucket-permission-modification-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "bpm-public-group"
+    }
+  ]
+}

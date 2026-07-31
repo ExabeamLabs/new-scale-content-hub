@@ -1,0 +1,46 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1078-004-MFA-Hijack-via-SMS-Swap-71",
+      "name": "T1078.004 — MFA Hijack via SMS Swap (Fact #71)",
+      "description": "MFA Hijack via SMS Swap. Trigger: New MFA factor (SMS) enrolled for the same user within seconds of the previous factor being removed",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "platform": [
+            "Okta Adaptive MFA"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation"
+      ],
+      "detectionReason": "New MFA factor activated for {email_address}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1078.004",
+          "technique": "Valid Accounts: Cloud Accounts",
+          "tactic": "Privilege Escalation",
+          "tacticKey": "TA0004"
+        }
+      ],
+      "useCases": [
+        "Privilege Abuse"
+      ],
+      "value": "toLower(operation) = 'user.mfa.factor.activate'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "app-login-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "al-mfa-status-group"
+    }
+  ]
+}
