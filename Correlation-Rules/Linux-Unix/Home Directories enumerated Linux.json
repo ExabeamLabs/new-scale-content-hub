@@ -1,0 +1,35 @@
+{
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "name": "Home Directories enumerated Linux",
+            "description": "This rule detects the enumeration of home directories on a Linux system. It checks for the use of the 'ls' command with '/home' in the command line, which can be used to list the contents of the home directory. Such enumeration activities could indicate an attacker trying to gather information about users on the system.",
+            "useCase": "",
+            "mitre": [
+                {
+                    "tacticKey": "TA0007",
+                    "tactic": "Discovery",
+                    "techniqueKey": "T1083",
+                    "technique": "File and Directory Discovery"
+                }
+            ],
+            "sequencesExecution": "CREATION_ORDER",
+            "severity": "low",
+            "sequencesConfig": {
+                "sequences": [
+                    {
+                        "name": "",
+                        "query": "activity_type: \"process-create\" AND (process_command_line:\"ls \" AND process_command_line:(\"/root\",\"/home\"))",
+                        "condition": {
+                            "triggerOnAnyMatch": true
+                        },
+                        "id": "989ae596-541c-46a7-a526-e49d1269fe11"
+                    }
+                ],
+                "commonProperties": null,
+                "outcomes": null
+            },
+            "scheduleConfig": null
+        }
+    ]
+}

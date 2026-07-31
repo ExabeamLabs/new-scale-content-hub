@@ -1,0 +1,46 @@
+{
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "name": "File Content Change with Echo Linux",
+            "description": "This rule detects attempts to change file content with the 'echo' command. This could be indicative of an attacker trying to modify system configurations or implant malicious scripts.",
+            "useCase": "evasion",
+            "mitre": [
+                {
+                    "tacticKey": "TA0005",
+                    "tactic": "Defense Evasion",
+                    "techniqueKey": "T1070",
+                    "technique": "Indicator Removal"
+                }
+            ],
+            "sequencesExecution": "CREATION_ORDER",
+            "severity": "medium",
+            "sequencesConfig": {
+                "sequences": [
+                    {
+                        "name": "",
+                        "query": "process_command_line:\"echo\" AND process_command_line:\">\"",
+                        "condition": {
+                            "groupByOption": true,
+                            "groupBy": [
+                                "user"
+                            ],
+                            "functionType": "count",
+                            "subject": "event",
+                            "field": "",
+                            "operator": "more_than",
+                            "value": "0",
+                            "time": 20,
+                            "unit": "m",
+                            "triggerOnAnyMatch": false
+                        },
+                        "id": "7acb79ed-3527-4c80-b11e-282d22ff0ca8"
+                    }
+                ],
+                "commonProperties": null,
+                "outcomes": null
+            },
+            "scheduleConfig": null
+        }
+    ]
+}

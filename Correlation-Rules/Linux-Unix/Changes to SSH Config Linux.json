@@ -1,0 +1,35 @@
+{
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "name": "Changes to SSH Config Linux",
+            "description": "Linux SSH Authorized Keys Modification ",
+            "useCase": "privilege_escalation",
+            "mitre": [
+                {
+                    "tacticKey": "TA0003",
+                    "tactic": "Persistence",
+                    "techniqueKey": "T1098",
+                    "technique": "Account Manipulation"
+                }
+            ],
+            "sequencesExecution": "CREATION_ORDER",
+            "severity": "medium",
+            "sequencesConfig": {
+                "sequences": [
+                    {
+                        "name": "",
+                        "query": "activity_type:\"process-create\" AND platform:\"Unix\" AND ( ( additional_info:\".ssh/authorized_keys\" AND(process_name:(\"vi\",\"vim\",\"nano\",\"sed\",\"tee\",\"echo\",\"cp\",\"mv\",\"truncate\",\"chmod\",\"chown\") OR additional_info:\">>\"   OR additional_info:\"> \" ))  OR   ( process_name:\"ssh-keygen\"  AND additional_info:\"-t\" )) AND NOT user=\"root\"",
+                        "condition": {
+                            "triggerOnAnyMatch": true
+                        },
+                        "id": "bc024898-d8e4-4886-b23e-c35e1fcc37f7"
+                    }
+                ],
+                "commonProperties": null,
+                "outcomes": null
+            },
+            "scheduleConfig": null
+        }
+    ]
+}

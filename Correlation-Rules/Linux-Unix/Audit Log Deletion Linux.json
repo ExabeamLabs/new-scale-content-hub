@@ -1,0 +1,35 @@
+{
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "name": "(Audit) Log Deletion Linux",
+            "description": "Detects deletion or truncation of Linux log files located in /var/log. Attackers may attempt to remove or clear log files to hide malicious activity, including unauthorized access, privilege escalation, or persistence mechanisms",
+            "useCase": "privileged_activity",
+            "mitre": [
+                {
+                    "tacticKey": "TA0005",
+                    "tactic": "Defense Evasion",
+                    "techniqueKey": "T1070",
+                    "technique": "Indicator Removal"
+                }
+            ],
+            "sequencesExecution": "CREATION_ORDER",
+            "severity": "high",
+            "sequencesConfig": {
+                "sequences": [
+                    {
+                        "name": "",
+                        "query": "activity_type:\"process-create\"\r\nAND platform:\"Unix\"\r\nAND process_name:(\"rm\",\"truncate\")\r\nAND process_command_line:(\"/var/log/\")\r\nAND NOT process_command_line:(\" -mtime \",\" -mmin \",\".gz\")\r\nAND NOT parent_process_name:(\"logrotate\",\"cron\",\"systemd\",\"logrotate-script\")",
+                        "condition": {
+                            "triggerOnAnyMatch": true
+                        },
+                        "id": "a47deff1-f664-4d6b-b28b-dc380c940f3e"
+                    }
+                ],
+                "commonProperties": null,
+                "outcomes": null
+            },
+            "scheduleConfig": null
+        }
+    ]
+}

@@ -1,0 +1,35 @@
+{
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "name": "Local accounts were enumerated - Linux",
+            "description": "Enumerating Linux account information can aid an attacker in directing his attacks against certain users. Exabeam has identified commands that extract this type of account information.",
+            "useCase": "evasion",
+            "mitre": [
+                {
+                    "tacticKey": "TA0043",
+                    "tactic": "Reconnaissance",
+                    "techniqueKey": "T1589",
+                    "technique": "Gather Victim Identity Information"
+                }
+            ],
+            "sequencesExecution": "CREATION_ORDER",
+            "severity": "none",
+            "sequencesConfig": {
+                "sequences": [
+                    {
+                        "name": "",
+                        "query": "vendor: \"Unix\" AND (activity_type: \"process-create\" AND (process_command_line: (\"who \", \"last \", \"whoami \", \"finger \", \"pink \", \"users \", \"logname \") OR (process_command_line: (\"lslogins \") AND NOT process_command_line: (\"rmdir\"))))\n",
+                        "condition": {
+                            "triggerOnAnyMatch": true
+                        },
+                        "id": "8ac5d81b-c1e0-445c-acb2-04a111399253"
+                    }
+                ],
+                "commonProperties": null,
+                "outcomes": null
+            },
+            "scheduleConfig": null
+        }
+    ]
+}
