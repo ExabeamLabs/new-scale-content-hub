@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "exabeam-replay"
+version = "1.1.23"
+description = "Raw log replay with RFC 6587 framing for SIEM ingestion and parser testing"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Exabeam Replay Contributors" }]
+keywords = ["siem", "syslog", "exabeam", "security", "log-replay"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: System :: Logging",
+  "Topic :: Security",
+]
+dependencies = ["cryptography>=42.0,<47.0; sys_platform != 'win32'"]
+
+[project.optional-dependencies]
+build = ["pyinstaller>=6.0"]
+
+[project.scripts]
+exabeam-replay = "cli:main"
+
+[tool.setuptools]
+py-modules = ["replay_core", "cli", "credential_store"]
