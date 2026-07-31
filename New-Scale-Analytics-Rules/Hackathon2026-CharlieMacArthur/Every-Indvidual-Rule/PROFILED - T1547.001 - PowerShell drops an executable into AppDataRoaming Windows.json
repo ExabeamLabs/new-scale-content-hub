@@ -1,0 +1,49 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Prof-T1547-001-Registry-Run-Key-Persistence-12",
+      "name": "T1547.001 — Registry Run Key Persistence (Profiled)",
+      "description": "Registry Run Key Persistence. PowerShell drops an executable into AppData\\Roaming",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "file-write"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "11"
+          ]
+        }
+      ],
+      "detectionReason": "Unusual process '${trigger.feature_value}' wrote a file to AppData\\\\Roaming",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1547.001",
+          "technique": "Boot or Logon Autostart Execution",
+          "tactic": "Privilege Escalation",
+          "tacticKey": "TA0004"
+        }
+      ],
+      "useCases": [
+        "Privilege Escalation"
+      ],
+      "featureValue": "process_name",
+      "scopeValue": "'org'",
+      "trainOnCondition": "contains(toLower(file_dir), 'appdata\\\\roaming')",
+      "actOnCondition": "contains(toLower(file_dir), 'appdata\\\\roaming')",
+      "anomalyThreshold": "30 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "file-write-activity",
+      "ruleGroupId": "filew-file-process-group",
+      "severity": "Medium",
+      "testMode": false
+    }
+  ]
+}

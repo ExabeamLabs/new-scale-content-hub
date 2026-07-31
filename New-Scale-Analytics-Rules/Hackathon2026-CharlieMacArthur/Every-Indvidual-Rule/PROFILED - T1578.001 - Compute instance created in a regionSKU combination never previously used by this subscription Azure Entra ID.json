@@ -1,0 +1,49 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Prof-T1578-001-GPU-VM-in-Unused-Region-28",
+      "name": "T1578.001 — GPU VM in Unused Region (Profiled)",
+      "description": "GPU VM in Unused Region. Compute instance created in a region/SKU combination never previously used by this subscription",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "category": [
+            "Administrative"
+          ],
+          "platform": [
+            "Azure"
+          ]
+        }
+      ],
+      "detectionReason": "Unusual compute operation: '${trigger.feature_value}'",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1578.001",
+          "technique": "Modify Cloud Compute Infrastructure",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Cloud Data Protection"
+      ],
+      "featureValue": "operation",
+      "scopeValue": "'org'",
+      "trainOnCondition": "operation = 'Microsoft.Compute/virtualMachines/write'",
+      "actOnCondition": "operation = 'Microsoft.Compute/virtualMachines/write'",
+      "anomalyThreshold": "45 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "general-activity",
+      "ruleGroupId": "ga-region-group",
+      "severity": "Medium",
+      "testMode": false
+    }
+  ]
+}

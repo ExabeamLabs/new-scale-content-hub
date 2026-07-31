@@ -1,0 +1,46 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Prof-T1195-001-Malicious-pip-Package-Postinstall-18",
+      "name": "T1195.001 — Malicious pip Package Postinstall (Profiled)",
+      "description": "Malicious pip Package Postinstall. pip3 install executed on a build host",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "detectionReason": "Unusual process '${trigger.feature_value}' executed",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1195.001",
+          "technique": "Supply Chain Compromise: Compromise Software Dependencies and Development Tools",
+          "tactic": "Initial Access",
+          "tacticKey": "TA0001"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "featureValue": "process_path",
+      "scopeValue": "'org'",
+      "trainOnCondition": "true",
+      "actOnCondition": "true",
+      "anomalyThreshold": "21 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "process-creation-activity",
+      "ruleGroupId": "pc-process-execution-group",
+      "severity": "Medium",
+      "testMode": false
+    }
+  ]
+}

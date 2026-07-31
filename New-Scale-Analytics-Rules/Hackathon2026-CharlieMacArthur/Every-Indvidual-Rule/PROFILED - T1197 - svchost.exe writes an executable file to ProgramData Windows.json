@@ -1,0 +1,49 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Prof-T1197-BITS-Job-Abuse-8",
+      "name": "T1197 — BITS Job Abuse (Profiled)",
+      "description": "BITS Job Abuse. svchost.exe writes an executable file to ProgramData",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "file-write"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "11"
+          ]
+        }
+      ],
+      "detectionReason": "Unusual process '${trigger.feature_value}' wrote a file to ProgramData",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1197",
+          "technique": "BITS Jobs",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "featureValue": "process_name",
+      "scopeValue": "'org'",
+      "trainOnCondition": "contains(toLower(file_dir), 'programdata')",
+      "actOnCondition": "contains(toLower(file_dir), 'programdata')",
+      "anomalyThreshold": "30 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "file-write-activity",
+      "ruleGroupId": "filew-file-process-group",
+      "severity": "Medium",
+      "testMode": false
+    }
+  ]
+}

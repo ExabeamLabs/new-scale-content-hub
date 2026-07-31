@@ -1,0 +1,46 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Prof-T1556-006-MFA-Reset-via-Help-Desk-Impersonation-35",
+      "name": "T1556.006 — MFA Reset via Help Desk Impersonation (Profiled)",
+      "description": "MFA Reset via Help Desk Impersonation. New MFA factor enrolled for the target user from a location with no prior history for that user",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "platform": [
+            "Okta Adaptive MFA"
+          ]
+        }
+      ],
+      "detectionReason": "MFA factor enrolled from an unusual country for this user: '${trigger.feature_value}'",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1556.006",
+          "technique": "Modify Authentication Process: Multi-Factor Authentication",
+          "tactic": "Credential Access",
+          "tacticKey": "TA0006"
+        }
+      ],
+      "useCases": [
+        "Compromised Credentials"
+      ],
+      "featureValue": "location_country",
+      "scopeValue": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "toLower(operation) = 'user.mfa.factor.enroll'",
+      "actOnCondition": "toLower(operation) = 'user.mfa.factor.enroll'",
+      "anomalyThreshold": "45 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "app-login-activity",
+      "ruleGroupId": "al-source-endpoint-access-group",
+      "severity": "Medium",
+      "testMode": false
+    }
+  ]
+}
