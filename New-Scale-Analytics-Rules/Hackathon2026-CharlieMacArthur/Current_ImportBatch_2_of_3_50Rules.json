@@ -1,0 +1,2133 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1098-PIM-Role-Self-Activated-No-Approval-52",
+      "name": "T1098 — PIM Role Self-Activated, No Approval (Fact #52)",
+      "description": "PIM Role Self-Activated, No Approval. Trigger: Privileged Identity Management role activated without requiring approval",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "category": [
+            "Administrative"
+          ],
+          "platform": [
+            "Azure"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "category",
+        "operation"
+      ],
+      "detectionReason": "PIM role activated: {operation}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1098",
+          "technique": "Account Manipulation",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Privilege Escalation"
+      ],
+      "value": "operation = 'Add member to role completed (PIM activation)'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "cloud-policy-management-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "cpm-role-assign-group"
+    },
+    {
+      "templateId": "Fact-T1098-003-App-Registration-Granted-Directory-ReadWrite-53",
+      "name": "T1098.003 — App Registration Granted Directory.ReadWrite.All (Fact #53)",
+      "description": "App Registration Granted Directory.ReadWrite.All. Trigger: New client secret added to an application registration",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "category": [
+            "Administrative"
+          ],
+          "platform": [
+            "Azure"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "category",
+        "operation"
+      ],
+      "detectionReason": "New client secret added to an application: {operation}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1098.003",
+          "technique": "Additional Cloud Roles",
+          "tactic": "Privilege Escalation",
+          "tacticKey": "TA0004"
+        }
+      ],
+      "useCases": [
+        "Account Manipulation"
+      ],
+      "value": "operation = 'Update application - Certificates and secrets management'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "cloud-policy-management-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "cpm-critical-policy-group"
+    },
+    {
+      "templateId": "Fact-T1098-003-App-Registration-Granted-Directory-ReadWrite-54",
+      "name": "T1098.003 — App Registration Granted Directory.ReadWrite.All (Fact #54)",
+      "description": "App Registration Granted Directory.ReadWrite.All. Trigger: Application granted a high-privilege directory permission with tenant-wide admin consent shortly after a new credential was added",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "category": [
+            "Administrative"
+          ],
+          "platform": [
+            "Azure"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "category",
+        "operation"
+      ],
+      "detectionReason": "App role assignment added to a service principal: {operation}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1098.003",
+          "technique": "Additional Cloud Roles",
+          "tactic": "Privilege Escalation",
+          "tacticKey": "TA0004"
+        }
+      ],
+      "useCases": [
+        "Privilege Escalation"
+      ],
+      "value": "operation = 'Add app role assignment to service principal'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "app-consent-grant-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "acg-permissions-group"
+    },
+    {
+      "templateId": "Fact-T1136-003-Malicious-Automation-Runbook-55",
+      "name": "T1136.003 — Malicious Automation Runbook (Fact #55)",
+      "description": "Malicious Automation Runbook. Trigger: New runbook published to an Azure Automation account",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "category": [
+            "Administrative"
+          ],
+          "platform": [
+            "Azure"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "category",
+        "operation"
+      ],
+      "detectionReason": "New runbook published: {operation}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1136.003",
+          "technique": "Create Account",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Account Manipulation"
+      ],
+      "value": "operation = 'Microsoft.Automation/automationAccounts/runbooks/write'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "cloud-policy-management-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "cpm-first-resource-group"
+    },
+    {
+      "templateId": "Fact-T1136-003-Malicious-Automation-Runbook-56",
+      "name": "T1136.003 — Malicious Automation Runbook (Fact #56)",
+      "description": "Malicious Automation Runbook. Trigger: Newly-published runbook executed on a hybrid runbook worker within minutes of publication",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "category": [
+            "Administrative"
+          ],
+          "platform": [
+            "Azure"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "category",
+        "operation"
+      ],
+      "detectionReason": "Runbook job executed: {operation}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1136.003",
+          "technique": "Create Account",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Account Manipulation"
+      ],
+      "value": "operation = 'Microsoft.Automation/automationAccounts/jobs/write'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "compute-vm-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "cvma-remote-command-group"
+    },
+    {
+      "templateId": "Fact-T1530-Storage-Container-Made-Public-57",
+      "name": "T1530 — Storage Container Made Public (Fact #57)",
+      "description": "Storage Container Made Public. Trigger: Storage container public-access level changed to allow anonymous read",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "category": [
+            "Administrative"
+          ],
+          "platform": [
+            "Azure"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "category",
+        "operation"
+      ],
+      "detectionReason": "Storage container public-access setting changed: {operation}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1530",
+          "technique": "Data from Cloud Storage",
+          "tactic": "Collection",
+          "tacticKey": "TA0009"
+        }
+      ],
+      "useCases": [
+        "Cloud Data Protection"
+      ],
+      "value": "operation = 'Microsoft.Storage/storageAccounts/blobServices/containers/write'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "bucket-permission-modification-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "bpm-public-group"
+    },
+    {
+      "templateId": "Fact-T1530-Storage-Container-Made-Public-58",
+      "name": "T1530 — Storage Container Made Public (Fact #58)",
+      "description": "Storage Container Made Public. Trigger: Anonymous, unauthenticated blob read from a container recently made public",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "category": [
+            "StorageRead"
+          ],
+          "platform": [
+            "Azure"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "category",
+        "operation",
+        "src_network_type"
+      ],
+      "detectionReason": "Anonymous blob read ({operation}) from external IP {src_ip}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1530",
+          "technique": "Data from Cloud Storage",
+          "tactic": "Collection",
+          "tacticKey": "TA0009"
+        }
+      ],
+      "useCases": [
+        "Cloud Data Protection"
+      ],
+      "value": "operation = 'GetBlob' && src_network_type = 'WAN'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "file-read-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "filer-critical-endpoint-group"
+    },
+    {
+      "templateId": "Fact-T1059-VM-Custom-Script-Extension-59",
+      "name": "T1059 — VM Custom Script Extension (Fact #59)",
+      "description": "VM Custom Script Extension. Trigger: Custom Script Extension applied to a VM with a Base64-encoded PowerShell payload",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "category": [
+            "Administrative"
+          ],
+          "platform": [
+            "Azure"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "category",
+        "operation"
+      ],
+      "detectionReason": "Custom Script Extension applied to a VM: {operation}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1059",
+          "technique": "Command and Scripting Interpreter",
+          "tactic": "Execution",
+          "tacticKey": "TA0002"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "value": "operation = 'Microsoft.Compute/virtualMachines/extensions/write'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "compute-vm-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "cvma-remote-command-group"
+    },
+    {
+      "templateId": "Fact-T1562-007-NSG-Rule-Widened-to-Any-Any-60",
+      "name": "T1562.007 — NSG Rule Widened to Any-Any (Fact #60)",
+      "description": "NSG Rule Widened to Any-Any. Trigger: NSG inbound rule modified to allow traffic from any source (0.0.0.0/0 or *)",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "network-notification"
+          ],
+          "category": [
+            "Administrative"
+          ],
+          "platform": [
+            "Network"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "category",
+        "resource",
+        "sourceAddressPrefix",
+        "direction"
+      ],
+      "detectionReason": "NSG rule modified: {resource}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1562.007",
+          "technique": "Impair Defenses",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Evasion"
+      ],
+      "value": "contains(toLower(resource), 'networksecuritygroups') && contains(toLower(resource), 'securityrules')",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "network-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "ntw-critical-session-group"
+    },
+    {
+      "templateId": "Fact-T1098-GCP-IAM-Policy-Modified-via-SetIamPolicy-61",
+      "name": "T1098 — GCP IAM Policy Modified via SetIamPolicy (Fact #61)",
+      "description": "GCP IAM Policy Modified via SetIamPolicy. Trigger: Any GCP SetIamPolicy call (self-granted security-admin role / owner role to external identity / audit-config removal all reduce to this same event given confirmed CIM data — see note) NOTE: COLLAPSED from 3 near-duplicate rows (this scenario, T1098.001 'Owner Role Granted to External Gmail', and T1562.001 'Audit Logging Disabled') — none of the 3 could isolate the actual policy-delta content from confirmed CIM data, so all 3 reduced to the identical bare condition 'a SetIamPolicy call happened'. Kept as one broad rule rather than 3 rules that fire identically and indistinguishably on ANY IAM policy change, including benign ones. Recommend re-splitting once a production sample with the request.policy delta field is available.",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "platform": [
+            "GCP"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation"
+      ],
+      "detectionReason": "{email_address} called SetIamPolicy on {resource_name}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1098",
+          "technique": "Account Manipulation",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Privilege Escalation"
+      ],
+      "value": "toLower(operation) = 'setiampolicy'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "cloud-policy-management-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "cpm-role-assign-group"
+    },
+    {
+      "templateId": "Fact-T1098-001-Owner-Role-Granted-to-External-Gmail-62",
+      "name": "T1098.001 — Owner Role Granted to External Gmail (Fact #62)",
+      "description": "Owner Role Granted to External Gmail. Trigger: Newly-granted external identity mints a service account key within minutes NOTE: the sibling Fact row ('Primitive IAM role granted to a non-organizational identity') was removed — it was byte-identical detection logic to the T1098 'GCP IAM Policy Modified via SetIamPolicy' rule; see that rule instead",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "platform": [
+            "GCP"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation",
+        "email_domain"
+      ],
+      "detectionReason": "{email_address} (external domain: {email_domain}) minted a service account key",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1098.001",
+          "technique": "Account Manipulation",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Account Manipulation"
+      ],
+      "value": "toLower(operation) = 'google.iam.admin.v1.createserviceaccountkey' && endsWith(toLower(email_domain), 'gmail.com')",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "cloud-policy-management-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "cpm-role-assign-group"
+    },
+    {
+      "templateId": "Fact-T1136-003-Service-Account-Key-Minted-Off-Hours-63",
+      "name": "T1136.003 — Service Account Key Minted Off-Hours (Fact #63)",
+      "description": "Service Account Key Minted Off-Hours. Trigger: Same identity enumerates existing keys on the account immediately after minting a new one",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "platform": [
+            "GCP"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation"
+      ],
+      "detectionReason": "{email_address} enumerated existing service account keys",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1136.003",
+          "technique": "Create Account",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Account Manipulation"
+      ],
+      "value": "toLower(operation) = 'google.iam.admin.v1.listserviceaccountkeys'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "cloud-policy-management-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "cpm-first-user-activity-group"
+    },
+    {
+      "templateId": "Fact-T1530-GCS-Bucket-Opened-to-allUsers-64",
+      "name": "T1530 — GCS Bucket Opened to allUsers (Fact #64)",
+      "description": "GCS Bucket Opened to allUsers. Trigger: Storage bucket IAM policy grants read access to allUsers (public internet)",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "platform": [
+            "GCP"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation"
+      ],
+      "detectionReason": "{email_address} called {operation} on {resource_name}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1530",
+          "technique": "Data from Cloud Storage",
+          "tactic": "Collection",
+          "tacticKey": "TA0009"
+        }
+      ],
+      "useCases": [
+        "Cloud Data Protection"
+      ],
+      "value": "toLower(operation) = 'storage.setiampermissions'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "bucket-permission-modification-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "bpm-public-group"
+    },
+    {
+      "templateId": "Fact-T1562-001-Audit-Logging-Disabled-65",
+      "name": "T1562.001 — Audit Logging Disabled (Fact #65)",
+      "description": "Audit Logging Disabled. Trigger: Sensitive credential-creation action performed shortly after audit logging was disabled for the same project NOTE: the sibling Fact row ('Project IAM audit configuration overwritten to remove Data Access logging') was removed — it was byte-identical detection logic to the T1098 'GCP IAM Policy Modified via SetIamPolicy' rule; see that rule instead",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "platform": [
+            "GCP"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation"
+      ],
+      "detectionReason": "{email_address} minted a service account key",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1562.001",
+          "technique": "Impair Defenses",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Evasion"
+      ],
+      "value": "toLower(operation) = 'google.iam.admin.v1.createserviceaccountkey'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "cloud-policy-management-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "cpm-role-assign-group"
+    },
+    {
+      "templateId": "Fact-T1562-007-VPC-Firewall-Widened-66",
+      "name": "T1562.007 — VPC Firewall Widened (Fact #66)",
+      "description": "VPC Firewall Widened. Trigger: VPC firewall rule patched to allow inbound traffic from 0.0.0.0/0 on administrative/database ports",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "platform": [
+            "GCP"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation",
+        "sourceRanges"
+      ],
+      "detectionReason": "{email_address} patched firewall rule {resource_name}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1562.007",
+          "technique": "Impair Defenses",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Evasion"
+      ],
+      "value": "toLower(operation) = 'v1.compute.firewalls.patch'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "network-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "ntw-critical-session-group"
+    },
+    {
+      "templateId": "Fact-T1530-S3-Bucket-Made-Public-67",
+      "name": "T1530 — S3 Bucket Made Public (Fact #67)",
+      "description": "S3 Bucket Made Public. Trigger: S3 bucket policy modified to grant Principal:* read/list access",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "bucket-policy-modify"
+          ],
+          "platform": [
+            "AWS"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation"
+      ],
+      "detectionReason": "{user} called {operation} via {user_agent_client}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1530",
+          "technique": "Data from Cloud Storage",
+          "tactic": "Collection",
+          "tacticKey": "TA0009"
+        }
+      ],
+      "useCases": [
+        "Cloud Data Protection"
+      ],
+      "value": "toLower(operation) = 'putbucketpolicy'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "bucket-permission-modification-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "bpm-public-group"
+    },
+    {
+      "templateId": "Fact-T1530-S3-Bucket-Made-Public-68",
+      "name": "T1530 — S3 Bucket Made Public (Fact #68)",
+      "description": "S3 Bucket Made Public. Trigger: Bucket ACL grant added for the AllUsers group immediately after a public bucket policy change",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "bucket-permission-modify"
+          ],
+          "platform": [
+            "AWS"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation"
+      ],
+      "detectionReason": "{user} called {operation} on an S3 bucket",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1530",
+          "technique": "Data from Cloud Storage",
+          "tactic": "Collection",
+          "tacticKey": "TA0009"
+        }
+      ],
+      "useCases": [
+        "Cloud Data Protection"
+      ],
+      "value": "toLower(operation) = 'putbucketacl'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "bucket-permission-modification-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "bpm-public-group"
+    },
+    {
+      "templateId": "Fact-T1562-007-Security-Group-Opened-69",
+      "name": "T1562.007 — Security Group Opened (Fact #69)",
+      "description": "Security Group Opened. Trigger: Security group ingress rule authorized for all protocols/ports from 0.0.0.0/0 and ::/0",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "platform": [
+            "AWS"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation",
+        "ipProtocol"
+      ],
+      "detectionReason": "{user} called {operation} via {user_agent_client}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1562.007",
+          "technique": "Impair Defenses",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Evasion"
+      ],
+      "value": "toLower(operation) = 'authorizesecuritygroupingress'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "network-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "ntw-critical-session-group"
+    },
+    {
+      "templateId": "Fact-T1078-004-MFA-Hijack-via-SMS-Swap-70",
+      "name": "T1078.004 — MFA Hijack via SMS Swap (Fact #70)",
+      "description": "MFA Hijack via SMS Swap. Trigger: Existing MFA factor (push) deactivated for a user",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "platform": [
+            "Okta Adaptive MFA"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation"
+      ],
+      "detectionReason": "MFA factor deactivated for {email_address} ({event_name})",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1078.004",
+          "technique": "Valid Accounts: Cloud Accounts",
+          "tactic": "Privilege Escalation",
+          "tacticKey": "TA0004"
+        }
+      ],
+      "useCases": [
+        "Privilege Abuse"
+      ],
+      "value": "toLower(operation) = 'user.mfa.factor.deactivate'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "mfa-disable-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "mfa-disable-group"
+    },
+    {
+      "templateId": "Fact-T1078-004-MFA-Hijack-via-SMS-Swap-71",
+      "name": "T1078.004 — MFA Hijack via SMS Swap (Fact #71)",
+      "description": "MFA Hijack via SMS Swap. Trigger: New MFA factor (SMS) enrolled for the same user within seconds of the previous factor being removed",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "platform": [
+            "Okta Adaptive MFA"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation"
+      ],
+      "detectionReason": "New MFA factor activated for {email_address}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1078.004",
+          "technique": "Valid Accounts: Cloud Accounts",
+          "tactic": "Privilege Escalation",
+          "tacticKey": "TA0004"
+        }
+      ],
+      "useCases": [
+        "Privilege Abuse"
+      ],
+      "value": "toLower(operation) = 'user.mfa.factor.activate'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "app-login-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "al-mfa-status-group"
+    },
+    {
+      "templateId": "Fact-T1098-001-Super-Admin-Granted-to-API-Integration-72",
+      "name": "T1098.001 — Super Admin Granted to API Integration (Fact #72)",
+      "description": "Super Admin Granted to API Integration. Trigger: Super Administrator privilege granted by an identity that doesn't normally perform privilege grants",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "platform": [
+            "Okta Adaptive MFA"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation",
+        "dest_user_full_name"
+      ],
+      "detectionReason": "{email_address} granted a privilege to {dest_user_full_name} ({event_name})",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1098.001",
+          "technique": "Account Manipulation",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Privilege Escalation"
+      ],
+      "value": "toLower(operation) = 'user.account.privilege.grant' && toLower(dest_user_full_name) = 'okta api integration'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "cloud-policy-management-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "cpm-role-assign-group"
+    },
+    {
+      "templateId": "Fact-T1098-001-Super-Admin-Granted-to-API-Integration-73",
+      "name": "T1098.001 — Super Admin Granted to API Integration (Fact #73)",
+      "description": "Super Admin Granted to API Integration. Trigger: New API token generated immediately after the granting identity received elevated privilege",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "platform": [
+            "Okta Adaptive MFA"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation"
+      ],
+      "detectionReason": "New API token generated for {email_address}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1098.001",
+          "technique": "Account Manipulation",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Account Manipulation"
+      ],
+      "value": "toLower(operation) = 'system.api_token.create'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "cloud-policy-management-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "cpm-role-assign-group"
+    },
+    {
+      "templateId": "Fact-T1556-006-MFA-Reset-via-Help-Desk-Impersonation-74",
+      "name": "T1556.006 — MFA Reset via Help Desk Impersonation (Fact #74)",
+      "description": "MFA Reset via Help Desk Impersonation. Trigger: Help-desk/shared identity deactivates a user's MFA factor",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "platform": [
+            "Okta Adaptive MFA"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation",
+        "full_name"
+      ],
+      "detectionReason": "{full_name} ({email_address}) deactivated an MFA factor",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1556.006",
+          "technique": "Modify Authentication Process: Multi-Factor Authentication",
+          "tactic": "Credential Access",
+          "tacticKey": "TA0006"
+        }
+      ],
+      "useCases": [
+        "Account Manipulation"
+      ],
+      "value": "toLower(operation) = 'user.mfa.factor.deactivate' && toLower(full_name) = 'help desk service'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "mfa-disable-activity",
+      "severity": "High",
+      "testMode": false,
+      "ruleGroupId": "mfa-disable-group"
+    },
+    {
+      "templateId": "Fact-T1556-006-MFA-Reset-via-Help-Desk-Impersonation-75",
+      "name": "T1556.006 — MFA Reset via Help Desk Impersonation (Fact #75)",
+      "description": "MFA Reset via Help Desk Impersonation. Trigger: Successful login for the same user immediately follows the suspicious factor re-enrollment",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "endpoint-login"
+          ],
+          "platform": [
+            "Okta Adaptive MFA"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation"
+      ],
+      "detectionReason": "{email_address} logged in successfully",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1556.006",
+          "technique": "Modify Authentication Process: Multi-Factor Authentication",
+          "tactic": "Credential Access",
+          "tacticKey": "TA0006"
+        }
+      ],
+      "useCases": [
+        "Compromised Credentials"
+      ],
+      "value": "toLower(operation) = 'core.user_auth.login_success'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "app-login-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "al-mfa-status-group"
+    },
+    {
+      "templateId": "Fact-T1114-003-Forwarding-Rule-to-External-Domain-77",
+      "name": "T1114.003 — Forwarding Rule to External Domain (Fact #77)",
+      "description": "Forwarding Rule to External Domain. Trigger: Set-Mailbox enables silent SMTP forwarding to an external address immediately after a matching inbox rule was created",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "operation": [
+            "Set-Mailbox"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation",
+        "DeliverToMailboxAndForward"
+      ],
+      "detectionReason": "Set-Mailbox executed for {email_address} via {user_agent}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1114.003",
+          "technique": "Email Collection",
+          "tactic": "Collection",
+          "tacticKey": "TA0009"
+        }
+      ],
+      "useCases": [
+        "Data Leak"
+      ],
+      "value": "toLower(operation) = 'set-mailbox'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "email-rule-create-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "emailrc-susp-forward-rule-group"
+    },
+    {
+      "templateId": "Fact-T1550-001-OAuth-Consent-Phishing-78",
+      "name": "T1550.001 — OAuth Consent Phishing (Fact #78)",
+      "description": "OAuth Consent Phishing. Trigger: User grants broad mailbox/file permissions (Mail.Read, Files.ReadWrite.All, offline_access) to a third-party application",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "operation": [
+            "Consent to application"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation",
+        "app"
+      ],
+      "detectionReason": "{email_address} granted consent to an application ({event_name})",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1550.001",
+          "technique": "Use Alternate Authentication Material",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Abnormal Authentication & Access"
+      ],
+      "value": "toLower(operation) = 'consent to application'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "app-consent-grant-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "acg-permissions-group"
+    },
+    {
+      "templateId": "Fact-T1550-001-OAuth-Consent-Phishing-79",
+      "name": "T1550.001 — OAuth Consent Phishing (Fact #79)",
+      "description": "OAuth Consent Phishing. Trigger: Consented application accesses mailbox items from a different IP than the consent action within seconds",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "operation": [
+            "MailItemsAccessed"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation",
+        "user_agent",
+        "appid"
+      ],
+      "detectionReason": "{email_address}'s mailbox accessed via AppId embedded in {user_agent} from {src_ip}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1550.001",
+          "technique": "Use Alternate Authentication Material",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Abnormal Authentication & Access"
+      ],
+      "value": "toLower(operation) = 'mailitemsaccessed' && contains(toLower(user_agent), 'appid=f2a8c3d1-dead-beef-cafe-000000000001')",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "file-read-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "filec-outlook-group"
+    },
+    {
+      "templateId": "Fact-T1564-008-Inbox-Rules-Suppressing-Security-Alerts-80",
+      "name": "T1564.008 — Inbox Rules Suppressing Security Alerts (Fact #80)",
+      "description": "Inbox Rules Suppressing Security Alerts. Trigger: Inbox rule created that moves or deletes messages matching security-alert keywords",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "email_rule-create"
+          ],
+          "operation": [
+            "MoveToFolder"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation"
+      ],
+      "detectionReason": "Inbox rule (MoveToFolder) created for {email_address}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1564.008",
+          "technique": "Hide Artifacts",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Evasion"
+      ],
+      "value": "toLower(operation) = 'movetofolder'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "email-rule-create-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "emailrc-susp-forward-rule-group"
+    },
+    {
+      "templateId": "Fact-T1136-External-User-Invited-as-workspace-admin-81",
+      "name": "T1136 — External User Invited as workspace-admin (Fact #81)",
+      "description": "External User Invited as workspace-admin. Trigger: Personal/non-corporate email domain invited to a workspace with the highest privilege role",
+      "applicableEvents": [
+        {
+          "operation": [
+            "invite.sent"
+          ],
+          "platform": [
+            "OpenAI"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation"
+      ],
+      "detectionReason": "Workspace invite sent ({event_name}) — role/target domain not confirmed in parsed sample",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1136",
+          "technique": "Create Account",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Account Manipulation"
+      ],
+      "value": "toLower(operation) = 'invite.sent'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "ai-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "ai-guardrail-first-user-activity-group"
+    },
+    {
+      "templateId": "Fact-T1531-Bulk-User-Deletion-via-API-Key-82",
+      "name": "T1531 — Bulk User Deletion via API Key (Fact #82)",
+      "description": "Bulk User Deletion via API Key. Trigger: User deleted from the workspace by an API-key identity rather than a named admin",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "platform": [
+            "OpenAI"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation",
+        "credential_type"
+      ],
+      "detectionReason": "User deleted from the workspace by an actor with credential_type={credential_type}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1531",
+          "technique": "Account Access Removal",
+          "tactic": "Impact",
+          "tacticKey": "TA0040"
+        }
+      ],
+      "useCases": [
+        "Account Manipulation"
+      ],
+      "value": "toLower(operation) = 'user.deleted' && toLower(credential_type) = 'api_key'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "ai-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "ai-guardrail-first-user-activity-group"
+    },
+    {
+      "templateId": "Fact-T1567-Conversation-Shared-Publicly-83",
+      "name": "T1567 — Conversation Shared Publicly (Fact #83)",
+      "description": "Conversation Shared Publicly. Trigger: Conversation shared with public_link scope rather than workspace-internal",
+      "applicableEvents": [
+        {
+          "operation": [
+            "conversation.shared"
+          ],
+          "platform": [
+            "OpenAI"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation",
+        "share_scope",
+        "credential_type"
+      ],
+      "detectionReason": "Conversation shared by {email_address} ({event_name})",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1567",
+          "technique": "Exfiltration Over Web Service",
+          "tactic": "Exfiltration",
+          "tacticKey": "TA0010"
+        }
+      ],
+      "useCases": [
+        "Data Exfiltration"
+      ],
+      "value": "toLower(operation) = 'conversation.shared'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "ai-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "ai-conversation-share-count-magnitude-group"
+    },
+    {
+      "templateId": "Prof-T1055-Process-Injection-into-Notepad-2",
+      "name": "T1055 — Process Injection into Notepad (Profiled)",
+      "description": "Process Injection into Notepad. Injected-into process initiates outbound network connection immediately after CreateRemoteThread",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "network-session"
+          ],
+          "platform": [
+            "Network"
+          ],
+          "event_code": [
+            "3"
+          ]
+        }
+      ],
+      "detectionReason": "Rare process '${trigger.feature_value}' made an outbound network connection",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1055",
+          "technique": "Process Injection",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "featureValue": "process_name",
+      "scopeValue": "'org'",
+      "trainOnCondition": "true",
+      "actOnCondition": "true",
+      "anomalyThreshold": "30 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "network-activity",
+      "ruleGroupId": "ntw-process-name-group",
+      "severity": "Medium",
+      "testMode": false
+    },
+    {
+      "templateId": "Prof-T1078-003-Built-in-Admin-Re-Enabled-PtH-5",
+      "name": "T1078.003 — Built-in Admin Re-Enabled + PtH (Profiled)",
+      "description": "Built-in Admin Re-Enabled + PtH. NTLM network logon (Type 3) immediately following account re-enablement",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "endpoint-login"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "4624"
+          ]
+        }
+      ],
+      "detectionReason": "Unusual login type '${trigger.feature_value}' for this account",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1078.003",
+          "technique": "Valid Accounts",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Lateral Movement"
+      ],
+      "featureValue": "login_type",
+      "scopeValue": "EntityId('type: User && direction: Dest')",
+      "trainOnCondition": "true",
+      "actOnCondition": "true",
+      "anomalyThreshold": "30 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "endpoint-login-activity",
+      "ruleGroupId": "el-authentication-package-group",
+      "severity": "Medium",
+      "testMode": false
+    },
+    {
+      "templateId": "Prof-T1133-RDP-to-DC-via-Compromised-Service-Account-7",
+      "name": "T1133 — RDP to DC via Compromised Service Account (Profiled)",
+      "description": "RDP to DC via Compromised Service Account. Interactive/RDP logon (Type 10) by a service-account identity",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "endpoint-login"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "4624"
+          ]
+        }
+      ],
+      "detectionReason": "Unusual login type '${trigger.feature_value}' for this service account",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1133",
+          "technique": "External Remote Services",
+          "tactic": "Initial Access",
+          "tacticKey": "TA0001"
+        }
+      ],
+      "useCases": [
+        "Compromised Credentials"
+      ],
+      "featureValue": "login_type",
+      "scopeValue": "EntityId('type: User && direction: Dest')",
+      "trainOnCondition": "contains(toLower(user), 'svc')",
+      "actOnCondition": "contains(toLower(user), 'svc')",
+      "anomalyThreshold": "45 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "endpoint-login-activity",
+      "ruleGroupId": "el-unauthorized-rdp-group",
+      "severity": "Medium",
+      "testMode": false
+    },
+    {
+      "templateId": "Prof-T1197-BITS-Job-Abuse-8",
+      "name": "T1197 — BITS Job Abuse (Profiled)",
+      "description": "BITS Job Abuse. svchost.exe writes an executable file to ProgramData",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "file-write"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "11"
+          ]
+        }
+      ],
+      "detectionReason": "Unusual process '${trigger.feature_value}' wrote a file to ProgramData",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1197",
+          "technique": "BITS Jobs",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "featureValue": "process_name",
+      "scopeValue": "'org'",
+      "trainOnCondition": "contains(toLower(file_dir), 'programdata')",
+      "actOnCondition": "contains(toLower(file_dir), 'programdata')",
+      "anomalyThreshold": "30 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "file-write-activity",
+      "ruleGroupId": "filew-file-process-group",
+      "severity": "Medium",
+      "testMode": false
+    },
+    {
+      "templateId": "Prof-T1219-NetSupport-RAT-via-Fake-Browser-Update-10",
+      "name": "T1219 — NetSupport RAT via Fake Browser Update (Profiled)",
+      "description": "NetSupport RAT via Fake Browser Update. Newly-installed remote-access binary connects outbound to its configured gateway",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "network-session"
+          ],
+          "platform": [
+            "Network"
+          ],
+          "event_code": [
+            "3"
+          ]
+        }
+      ],
+      "detectionReason": "Process '${trigger.feature_value}' made its first-ever outbound connection from this host",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1219",
+          "technique": "Remote Access Tools",
+          "tactic": "Command and Control",
+          "tacticKey": "TA0011"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "featureValue": "process_name",
+      "scopeValue": "EntityId('type: Device && direction: Source')",
+      "trainOnCondition": "true",
+      "actOnCondition": "true",
+      "anomalyThreshold": "45 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "network-activity",
+      "ruleGroupId": "ntw-process-name-group",
+      "severity": "Medium",
+      "testMode": false
+    },
+    {
+      "templateId": "Prof-T1547-001-Registry-Run-Key-Persistence-12",
+      "name": "T1547.001 — Registry Run Key Persistence (Profiled)",
+      "description": "Registry Run Key Persistence. PowerShell drops an executable into AppData\\Roaming",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "file-write"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "11"
+          ]
+        }
+      ],
+      "detectionReason": "Unusual process '${trigger.feature_value}' wrote a file to AppData\\\\Roaming",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1547.001",
+          "technique": "Boot or Logon Autostart Execution",
+          "tactic": "Privilege Escalation",
+          "tacticKey": "TA0004"
+        }
+      ],
+      "useCases": [
+        "Privilege Escalation"
+      ],
+      "featureValue": "process_name",
+      "scopeValue": "'org'",
+      "trainOnCondition": "contains(toLower(file_dir), 'appdata\\\\roaming')",
+      "actOnCondition": "contains(toLower(file_dir), 'appdata\\\\roaming')",
+      "anomalyThreshold": "30 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "file-write-activity",
+      "ruleGroupId": "filew-file-process-group",
+      "severity": "Medium",
+      "testMode": false
+    },
+    {
+      "templateId": "Prof-T1005-Finance-Directory-Archived-and-Staged-13",
+      "name": "T1005 — Finance Directory Archived and Staged (Profiled)",
+      "description": "Finance Directory Archived and Staged. Privileged execution of tar as root on a file server",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "detectionReason": "Unusual host running privileged tar: '${trigger.feature_value}'",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1005",
+          "technique": "Data from Local System",
+          "tactic": "Collection",
+          "tacticKey": "TA0009"
+        }
+      ],
+      "useCases": [
+        "Data Access"
+      ],
+      "featureValue": "process_path",
+      "scopeValue": "EntityId('type: Device && direction: Source')",
+      "trainOnCondition": "user_id = '0' && contains(toLower(process_path), 'tar')",
+      "actOnCondition": "user_id = '0' && contains(toLower(process_path), 'tar')",
+      "anomalyThreshold": "21 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "process-creation-activity",
+      "ruleGroupId": "pc-process-execution-group",
+      "severity": "Medium",
+      "testMode": false
+    },
+    {
+      "templateId": "Prof-T1027-002-UPX-Packed-ELF-from-dev-shm-14",
+      "name": "T1027.002 — UPX-Packed ELF from /dev/shm (Profiled)",
+      "description": "UPX-Packed ELF from /dev/shm. Privileged curl execution by root",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "detectionReason": "Unusual host running privileged curl: '${trigger.feature_value}'",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1027.002",
+          "technique": "Obfuscated Files or Information",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Evasion"
+      ],
+      "featureValue": "process_path",
+      "scopeValue": "EntityId('type: Device && direction: Source')",
+      "trainOnCondition": "user_id = '0' && contains(toLower(process_path), 'curl')",
+      "actOnCondition": "user_id = '0' && contains(toLower(process_path), 'curl')",
+      "anomalyThreshold": "21 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "process-creation-activity",
+      "ruleGroupId": "pc-process-execution-group",
+      "severity": "Medium",
+      "testMode": false
+    },
+    {
+      "templateId": "Prof-T1098-004-SSH-Authorized-Keys-Backdoor-16",
+      "name": "T1098.004 — SSH Authorized Keys Backdoor (Profiled)",
+      "description": "SSH Authorized Keys Backdoor. SSH public-key authentication success for root",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "ssh-traffic"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "detectionReason": "Unusual user '${trigger.feature_value}' authenticated via SSH from an external source to this host",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1098.004",
+          "technique": "Account Manipulation",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Account Manipulation"
+      ],
+      "featureValue": "user",
+      "scopeValue": "EntityId('type: Device && direction: Dest')",
+      "trainOnCondition": "src_network_type = 'WAN'",
+      "actOnCondition": "src_network_type = 'WAN'",
+      "anomalyThreshold": "45 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "endpoint-login-activity",
+      "ruleGroupId": "el-source-endpoint-access-group",
+      "severity": "Medium",
+      "testMode": false
+    },
+    {
+      "templateId": "Prof-T1136-001-Backdoor-UID-0-Account-17",
+      "name": "T1136.001 — Backdoor UID-0 Account (Profiled)",
+      "description": "Backdoor UID-0 Account. SSH password login success for a newly-created local account",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "ssh-traffic"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "detectionReason": "First-ever login for user '${trigger.feature_value}' from an external source",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1136.001",
+          "technique": "Create Account",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Account Manipulation"
+      ],
+      "featureValue": "user",
+      "scopeValue": "'org'",
+      "trainOnCondition": "src_network_type = 'WAN'",
+      "actOnCondition": "src_network_type = 'WAN'",
+      "anomalyThreshold": "45 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "endpoint-login-activity",
+      "ruleGroupId": "el-first-account-group",
+      "severity": "Medium",
+      "testMode": false
+    },
+    {
+      "templateId": "Prof-T1195-001-Malicious-pip-Package-Postinstall-18",
+      "name": "T1195.001 — Malicious pip Package Postinstall (Profiled)",
+      "description": "Malicious pip Package Postinstall. pip3 install executed on a build host",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "detectionReason": "Unusual process '${trigger.feature_value}' executed",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1195.001",
+          "technique": "Supply Chain Compromise: Compromise Software Dependencies and Development Tools",
+          "tactic": "Initial Access",
+          "tacticKey": "TA0001"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "featureValue": "process_path",
+      "scopeValue": "'org'",
+      "trainOnCondition": "true",
+      "actOnCondition": "true",
+      "anomalyThreshold": "21 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "process-creation-activity",
+      "ruleGroupId": "pc-process-execution-group",
+      "severity": "Medium",
+      "testMode": false
+    },
+    {
+      "templateId": "Prof-T1078-004-Impossible-Travel-Sign-In-21",
+      "name": "T1078.004 — Impossible Travel Sign-In (Profiled)",
+      "description": "Impossible Travel Sign-In. Successful Entra ID sign-in from a new geography for this user",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-login"
+          ],
+          "category": [
+            "SignInLogs"
+          ],
+          "platform": [
+            "Microsoft 365"
+          ]
+        }
+      ],
+      "detectionReason": "Successful sign-in from an unusual country: '${trigger.feature_value}'",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1078.004",
+          "technique": "Valid Accounts: Cloud Accounts",
+          "tactic": "Privilege Escalation",
+          "tacticKey": "TA0004"
+        }
+      ],
+      "useCases": [
+        "Privilege Abuse"
+      ],
+      "featureValue": "GetGeoInfo('country', src_ip)",
+      "scopeValue": "'org'",
+      "trainOnCondition": "outcome = 'success'",
+      "actOnCondition": "outcome = 'success'",
+      "anomalyThreshold": "45 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "app-login-activity",
+      "ruleGroupId": "al-source-endpoint-access-group",
+      "severity": "Medium",
+      "testMode": false
+    },
+    {
+      "templateId": "Prof-T1552-001-Key-Vault-Bulk-Secret-Retrieval-26",
+      "name": "T1552.001 — Key Vault Bulk Secret Retrieval (Profiled)",
+      "description": "Key Vault Bulk Secret Retrieval. Application never previously seen accessing this Key Vault retrieves a secret",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "secret-read"
+          ],
+          "platform": [
+            "Azure Key Vault"
+          ]
+        }
+      ],
+      "detectionReason": "Unusual Key Vault resource accessed: '${trigger.feature_value}'",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1552.001",
+          "technique": "Unsecured Credentials",
+          "tactic": "Credential Access",
+          "tacticKey": "TA0006"
+        }
+      ],
+      "useCases": [
+        "Privilege Escalation"
+      ],
+      "featureValue": "resource_name",
+      "scopeValue": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "operation = 'SecretGet' && operation_type = 'AuditEvent'",
+      "actOnCondition": "operation = 'SecretGet' && operation_type = 'AuditEvent'",
+      "anomalyThreshold": "30 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "password-checkout-activity",
+      "ruleGroupId": "pwd-first-user-activity-group",
+      "severity": "Medium",
+      "testMode": false
+    },
+    {
+      "templateId": "Prof-T1578-001-GPU-VM-in-Unused-Region-28",
+      "name": "T1578.001 — GPU VM in Unused Region (Profiled)",
+      "description": "GPU VM in Unused Region. Compute instance created in a region/SKU combination never previously used by this subscription",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "category": [
+            "Administrative"
+          ],
+          "platform": [
+            "Azure"
+          ]
+        }
+      ],
+      "detectionReason": "Unusual compute operation: '${trigger.feature_value}'",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1578.001",
+          "technique": "Modify Cloud Compute Infrastructure",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Cloud Data Protection"
+      ],
+      "featureValue": "operation",
+      "scopeValue": "'org'",
+      "trainOnCondition": "operation = 'Microsoft.Compute/virtualMachines/write'",
+      "actOnCondition": "operation = 'Microsoft.Compute/virtualMachines/write'",
+      "anomalyThreshold": "45 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "general-activity",
+      "ruleGroupId": "ga-region-group",
+      "severity": "Medium",
+      "testMode": false
+    },
+    {
+      "templateId": "Prof-T1136-003-Service-Account-Key-Minted-Off-Hours-29",
+      "name": "T1136.003 — Service Account Key Minted Off-Hours (Profiled)",
+      "description": "Service Account Key Minted Off-Hours. Service account key created outside business hours from a non-corporate IP",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "platform": [
+            "GCP"
+          ]
+        }
+      ],
+      "detectionReason": "Service account key created by an identity with no prior history of doing so",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1136.003",
+          "technique": "Create Account",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Account Manipulation"
+      ],
+      "featureValue": "operation",
+      "scopeValue": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "toLower(operation) = 'google.iam.admin.v1.createserviceaccountkey'",
+      "actOnCondition": "toLower(operation) = 'google.iam.admin.v1.createserviceaccountkey'",
+      "anomalyThreshold": "30 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "cloud-policy-management-activity",
+      "ruleGroupId": "cpm-first-user-activity-group",
+      "severity": "Medium",
+      "testMode": false
+    },
+    {
+      "templateId": "Prof-T1578-002-High-CPU-Instances-in-Unused-Region-30",
+      "name": "T1578.002 — High-CPU Instances in Unused Region (Profiled)",
+      "description": "High-CPU Instances in Unused Region. Compute-optimised instance created in a region never previously used by this project",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "endpoint-create"
+          ],
+          "platform": [
+            "GCP"
+          ]
+        }
+      ],
+      "detectionReason": "Unusual instance location: '${trigger.feature_value}'",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1578.002",
+          "technique": "Modify Cloud Compute Infrastructure",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Cloud Data Protection"
+      ],
+      "featureValue": "resource_dir",
+      "scopeValue": "'org'",
+      "trainOnCondition": "toLower(operation) = 'v1.compute.instances.insert'",
+      "actOnCondition": "toLower(operation) = 'v1.compute.instances.insert'",
+      "anomalyThreshold": "45 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "general-activity",
+      "ruleGroupId": "ga-region-group",
+      "severity": "Medium",
+      "testMode": false
+    },
+    {
+      "templateId": "Prof-T1078-004-MFA-Hijack-via-SMS-Swap-34",
+      "name": "T1078.004 — MFA Hijack via SMS Swap (Profiled)",
+      "description": "MFA Hijack via SMS Swap. Successful login from an unrecognised ASN/geography using a non-browser user agent, flagged threatSuspected",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "endpoint-login"
+          ],
+          "platform": [
+            "Okta Adaptive MFA"
+          ]
+        }
+      ],
+      "detectionReason": "Login from an unusual country for this user: '${trigger.feature_value}'",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1078.004",
+          "technique": "Valid Accounts: Cloud Accounts",
+          "tactic": "Privilege Escalation",
+          "tacticKey": "TA0004"
+        }
+      ],
+      "useCases": [
+        "Privilege Abuse"
+      ],
+      "featureValue": "location_country",
+      "scopeValue": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "toLower(operation) = 'core.user_auth.login_success'",
+      "actOnCondition": "toLower(operation) = 'core.user_auth.login_success'",
+      "anomalyThreshold": "45 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "app-login-activity",
+      "ruleGroupId": "al-source-endpoint-access-group",
+      "severity": "Medium",
+      "testMode": false
+    },
+    {
+      "templateId": "Prof-T1556-006-MFA-Reset-via-Help-Desk-Impersonation-35",
+      "name": "T1556.006 — MFA Reset via Help Desk Impersonation (Profiled)",
+      "description": "MFA Reset via Help Desk Impersonation. New MFA factor enrolled for the target user from a location with no prior history for that user",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "platform": [
+            "Okta Adaptive MFA"
+          ]
+        }
+      ],
+      "detectionReason": "MFA factor enrolled from an unusual country for this user: '${trigger.feature_value}'",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1556.006",
+          "technique": "Modify Authentication Process: Multi-Factor Authentication",
+          "tactic": "Credential Access",
+          "tacticKey": "TA0006"
+        }
+      ],
+      "useCases": [
+        "Compromised Credentials"
+      ],
+      "featureValue": "location_country",
+      "scopeValue": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "toLower(operation) = 'user.mfa.factor.enroll'",
+      "actOnCondition": "toLower(operation) = 'user.mfa.factor.enroll'",
+      "anomalyThreshold": "45 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "app-login-activity",
+      "ruleGroupId": "al-source-endpoint-access-group",
+      "severity": "Medium",
+      "testMode": false
+    },
+    {
+      "templateId": "Prof-T1098-001-Broad-Scope-API-Key-Created-Off-Hours-37",
+      "name": "T1098.001 — Broad-Scope API Key Created Off-Hours (Profiled)",
+      "description": "Broad-Scope API Key Created Off-Hours. New API key created with management read/write scope outside business hours",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "operation": [
+            "api_key.created"
+          ],
+          "platform": [
+            "OpenAI"
+          ]
+        }
+      ],
+      "detectionReason": "API key created by an identity with no prior history of doing so: '${trigger.feature_value}'",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1098.001",
+          "technique": "Account Manipulation",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Account Manipulation"
+      ],
+      "featureValue": "email_address",
+      "scopeValue": "'org'",
+      "trainOnCondition": "toLower(operation) = 'api_key.created'",
+      "actOnCondition": "toLower(operation) = 'api_key.created'",
+      "anomalyThreshold": "21 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "ai-activity",
+      "ruleGroupId": "ai-guardrail-first-user-activity-group",
+      "severity": "Medium",
+      "testMode": false
+    }
+  ]
+}
