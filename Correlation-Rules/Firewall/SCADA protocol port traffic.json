@@ -1,0 +1,42 @@
+{
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "name": "SCADA protocol port traffic from External Source",
+            "description": "SCADA protocol port traffic from External Source",
+            "useCase": "malware",
+            "mitre": [
+                {
+                    "tacticKey": "TA0001",
+                    "tactic": "Initial Access",
+                    "techniqueKey": "T1190",
+                    "technique": "Exploit Public-Facing Application"
+                }
+            ],
+            "sequencesExecution": "CREATION_ORDER",
+            "severity": "critical",
+            "sequencesConfig": {
+                "sequences": [
+                    {
+                        "name": "Common ICS/SCADA protocol ports",
+                        "query": "dest_port: (102, 502, 1911, 2222, 2404, 4840, 4911, 20000, 44818, 47808) AND NOT dest_ip: NULL AND NOT src_ip: [10.0.0.0/8] AND NOT src_ip: [172.16.0.0/12] AND NOT src_ip: [192.168.0.0/16]",
+                        "condition": {
+                            "groupByOption": true,
+                            "groupBy": [
+                                "dest_ip",
+                                "dest_port",
+                                "src_ip"
+                            ],
+                            "triggerOnAnyMatch": true
+                        },
+                        "id": "a89ad209-1ac8-4fe5-bb00-652bd2640a50"
+                    }
+                ],
+                "commonProperties": null,
+                "restrictToSite": null,
+                "outcomes": null
+            },
+            "scheduleConfig": null
+        }
+    ]
+}
