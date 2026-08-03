@@ -20,3 +20,6 @@ dest_port: (6881, 6882, 6883, 6884, 6885, 6886, 6887, 6888, 6889)  AND NOT dest_
 
 # Network Time Protocol configured for External Destinations
 dest_port: 123 AND NOT dest_ip: [10.0.0.0/8] AND NOT dest_ip: [172.16.0.0/12] AND NOT dest_ip: [192.168.0.0/16] AND NOT dest_ip: NULL
+
+# SCADA System Traffic from External Source
+dest_port: (44818, 2222, 102, 502) AND NOT dest_ip: NULL AND NOT src_ip: [10.0.0.0/8] AND NOT src_ip: [172.16.0.0/12] AND NOT src_ip: [192.168.0.0/16]
