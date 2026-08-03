@@ -5,14 +5,14 @@
 
 Search: src_ip IN "CISA_AA26-097A_IP_IOCs"."IP Address (v4/v6)"
 Timeframe: 50 days
-Search Name: CISA AA26-097A IP Indicatiors of Compromise (Source)
+Search Name: CISA AA26-097A IP Indicators of Compromise (Source)
 Search Description: AA26-097A Iranian-Affiliated Cyber Actors Exploit Programmable Logic Controllers Across US Critical Infrastructure
 Reference: https://www.cisa.gov/news-events/cybersecurity-advisories/aa26-097a
 
 
 Search: dest_ip IN "CISA_AA26-097A_IP_IOCs"."IP Address (v4/v6)"
 Timeframe: 50 days
-Search Name: CISA AA26-097A IP Indicatiors of Compromise (Destination)
+Search Name: CISA AA26-097A IP Indicators of Compromise (Destination)
 Search Description: AA26-097A Iranian-Affiliated Cyber Actors Exploit Programmable Logic Controllers Across US Critical Infrastructure
 Reference: https://www.cisa.gov/news-events/cybersecurity-advisories/aa26-097a
 
