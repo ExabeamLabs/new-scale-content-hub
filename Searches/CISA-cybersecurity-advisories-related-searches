@@ -38,7 +38,7 @@ Search Description: AA25-141B Threat Actors Deploy LummaC2 Malware to Exfiltrate
 Reference: https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-141b
 
 
-Search: dest_port: [5900 to 5910]
+Search: dest_port: [5900 TO 5910]
 Timeframe: 30 days
 Search Name: Review VNC Destination Ports
 Search Description: AA25-343A Review virtual network computing (VNC) connections
