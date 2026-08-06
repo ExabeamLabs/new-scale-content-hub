@@ -1,0 +1,37 @@
+{
+  "order": [
+    "tenant_id",
+    "client_id",
+    "client_secret"
+  ],
+  "required": [
+    "tenant_id",
+    "client_id",
+    "client_secret"
+  ],
+  "properties": {
+    "tenant_id": {
+      "type": "string",
+      "title": "tenant_id",
+      "default": "",
+      "nullable": false,
+      "description": "Microsoft Entra tenant ID"
+    },
+    "client_id": {
+      "type": "string",
+      "title": "client_id",
+      "default": "",
+      "nullable": false,
+      "password": true,
+      "description": "Microsoft Entra application client ID"
+    },
+    "client_secret": {
+      "type": "string",
+      "title": "client_secret",
+      "default": "",
+      "nullable": false,
+      "password": true,
+      "description": "Microsoft Entra application client secret"
+    }
+  }
+}
