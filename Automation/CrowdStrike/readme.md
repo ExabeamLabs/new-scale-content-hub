@@ -24,10 +24,10 @@ Author: Nick O'Neill US Service Consultant - August 2026 - Added to GitHub<br>
 3. **Add Service Instance**
    - Click on Instances tab
    - Click + Add Instance
-   - Provide instance name: CrowdStrike
+   - Provide instance name: CrowdStrike_falcon
    - CLIENT_ID variable - Provide your CrowdStrike Falcon API Client ID
    - CLIENT_SECRET variable - Provide your CrowdStrike Falcon API Client Secret
-   - HOST variable - Provide your CrowdStrike Falcon URL.
+   - BASE_URL variable - Provide your CrowdStrike Falcon Base URL.
    - Save
   
 4. **Edit Action**
