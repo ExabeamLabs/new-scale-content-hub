@@ -1,0 +1,26 @@
+{
+	"order": [
+		"client_id",
+		"client_secret",
+		"base_url"
+	],
+	"required": [],
+	"properties": {
+		"client_id": {
+			"type": "string",
+			"default": "",
+			"description": "CrowdStrike Falcon API Client ID"
+		},
+		"client_secret": {
+			"type": "string",
+			"default": "",
+			"password": true,
+			"description": "CrowdStrike Falcon API Client Secret"
+		},
+		"base_url": {
+			"type": "string",
+			"default": "https://api.us-2.crowdstrike.com",
+			"description": "CrowdStrike Falcon API URL"
+		}
+	}
+}
