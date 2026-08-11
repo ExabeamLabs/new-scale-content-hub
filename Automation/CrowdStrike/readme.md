@@ -27,7 +27,7 @@ Author: Nick O'Neill US Service Consultant - August 2026 - Added to GitHub<br>
    - Provide instance name: CrowdStrike
    - CLIENT_ID variable - Provide your CrowdStrike Falcon API Client ID
    - CLIENT_SECRET variable - Provide your CrowdStrike Falcon API Client Secret
-   - HOST variable - Provide your CrowdStrike Falcon URL. For example https://api.us-2.crowdstrike.com
+   - HOST variable - Provide your CrowdStrike Falcon URL.
    - Save
   
 4. **Edit Action**
