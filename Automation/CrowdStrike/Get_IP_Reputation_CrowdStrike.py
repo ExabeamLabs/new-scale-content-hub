@@ -35,7 +35,7 @@ def get_ip_reputation(ip):
     return data
 
 
-def main(ip):
+def main(ip, asHTML: bool):
     if isinstance(ip, list):
         ip = ip[0] if ip else ""
     return get_ip_reputation(ip)
