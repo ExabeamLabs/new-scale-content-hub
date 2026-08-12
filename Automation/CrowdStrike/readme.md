@@ -25,27 +25,27 @@ Author: Nick O'Neill US Service Consultant - August 2026 - Added to GitHub<br>
    - Save
   
 4. **Edit Action**
-   - Edit action name:  Get IP Reputation
+   - Edit action name:  Get_IP_Reputation_CrowdStrike
    - Description:  Retrieves the reputation of a given IP address.
-   - Paste code contents from action file:  [Get_IP_Reputation-CrowdStrike.py](../CrowdStrike/Get_IP_Reputation-CrowdStrike.py)
+   - Paste code contents from action file:  [Get_IP_Reputation_CrowdStrike.py](../CrowdStrike/Get_IP_Reputation_CrowdStrike.py)
    - Deploy
      
 5. **Edit Action**
-   - Edit action name:  Get Domain Reputation
+   - Edit action name:  Get_Domain_Reputation_CrowdStrike
    - Description:  Retrieves the Reputation for a given Domain. 
-   - Paste code contents from action file:  [Get_Domain_Reputation-CrowdStrike.py](../CrowdStrike/Get_Domain_Reputation-CrowdStrike.py)
+   - Paste code contents from action file:  [Get_Domain_Reputation_CrowdStrike.py](../CrowdStrike/Get_Domain_Reputation_CrowdStrike.py)
    - Deploy
      
 6. **Edit Action**
-   - Edit action name:  Get Device details
+   - Edit action name:  Get_Device_details_CrowdStrike
    - Description:  Get Device details
-   - Paste code contents from action file:  [Get_Device_Details-CrowdStrike.py](../CrowdStrike/Get_Device_Details-CrowdStrike.py)
+   - Paste code contents from action file:  [Get_Device_Details_CrowdStrike.py](../CrowdStrike/Get_Device_Details_CrowdStrike.py)
    - Deploy
      
 7. **Add Action**
-   - Edit action name:  Contain Device
-   - Description:  Contain Device
-   - Paste code contents from action file:  [Contain Device-CrowdStrike.py](../CrowdStrike/Contain Device-CrowdStrike.py)
+   - Edit action name:  Contain_Device_CrowdStrike
+   - Description:  Contain a Device
+   - Paste code contents from action file:  [Contain Device_CrowdStrike.py](../CrowdStrike/Contain_Device_CrowdStrike.py)
    - Deploy   
 
 
