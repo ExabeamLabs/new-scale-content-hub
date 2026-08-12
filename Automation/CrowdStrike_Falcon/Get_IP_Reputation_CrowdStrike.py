@@ -1,3 +1,6 @@
+#TODO - Add try catch & http Response codes
+#TODO - Add asHTML option.  Need to see and select the various information.
+
 import requests
 import urllib.parse
 import wmill

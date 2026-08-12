@@ -1,10 +1,13 @@
+#TODO - Add try catch & http Response codes
+#TODO - Add asHTML option.  Need to see and select the various information.
+
 import requests
 import urllib.parse
 import wmill
 
 CLIENT_ID = wmill.get_variable("f/exabeam/CrowdStrike_Falcon/Falcon_API/CLIENT_ID"),
 CLIENT_SECRET = wmill.get_variable("f/exabeam/CrowdStrike_Falcon/Falcon_API/CLIENT_SECRET"),
-BASE_URL =  wmill.get_variable("f/exabeam/CrowdStrike_Falcon/Falcon_API/BASE_URL")
+BASE_URL =  wmill.get_variable("f/exabeam/CrowdStrike_Falcon/CrowdStrike_Falcon/BASE_URL")
 
 
 def get_oauth2_token():
