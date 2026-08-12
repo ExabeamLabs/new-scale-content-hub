@@ -7,16 +7,10 @@ Author: Nick O'Neill US Service Consultant - August 2026 - Added to GitHub<br>
 ## Setup Service
 
 1. **Add Service**
-   - Service name:  CrowdStrike Falcon
-   - Service Description:  CrowdStrike Falcon integration version 1.0
-   - Click Import from File or URL
-   - Paste URL...   `https://raw.githubusercontent.com/ExabeamLabs/new-scale-content-hub/refs/heads/main/Automation/CrowdStrike/Exabeam_Service_Import-CrowdStrike-Version_1.0.json`
-   - Click Confirm and Validate
-   - Click Import and Next
-
-2. **Configure Service Parameters**
-   - Service configuration parameters
-   - Edit service configuration parameters
+   - Service name:  CrowdStrike_Falcon
+   - Service Description:  CrowdStrike Falcon API integration version 1.0
+   - Click Create Manually
+   - Click Next
    - Click JSON editor
    - Paste contents from [service_configuration_parameters.json](../CrowdStrike/service_configuration_parameters.json)
    - Save
