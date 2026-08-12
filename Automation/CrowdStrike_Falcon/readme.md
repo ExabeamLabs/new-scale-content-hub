@@ -12,7 +12,7 @@ Author: Nick O'Neill US Service Consultant - August 2026 - Added to GitHub<br>
    - Click Create Manually
    - Click Next
    - Click JSON editor
-   - Paste contents from [service_configuration_parameters.json](../CrowdStrike/service_configuration_parameters.json)
+   - Paste contents from [service_configuration_parameters.json](../CrowdStrike_Falcon/service_configuration_parameters.json)
    - Save
 
 2. **Add Service Instance**
