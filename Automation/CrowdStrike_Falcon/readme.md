@@ -75,13 +75,13 @@ Author: Nick O'Neill US Service Consultant - August 2026 - Added to GitHub<br>
    - Deploy
 
 2. **Create Playbook**
-   - Name: CrowdStrike Contain a Device
+   - Name: CrowdStrike Device and User Enrichment
    - Add Step
    - Select Action > Exabeam > Get_Device_Details_CrowdStrike
-   - hostname > plug-in > flow_input.??????
+   - hostname > plug-in > flow_input.src_hosts
    - Add Step
    - Select Action > Exabeam > Contain_Device_CrowdStrike
-   - hostname > plug-in > flow_input.??????
+   - username > plug-in > flow_input.users
    - Deploy
 
 ## Reference Materials:
