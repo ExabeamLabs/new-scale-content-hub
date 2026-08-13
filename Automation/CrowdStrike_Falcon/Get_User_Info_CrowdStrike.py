@@ -1,3 +1,5 @@
+#Reference:  https://developer.crowdstrike.com/api-reference/collections/user-management/#queryuserv1
+
 import json
 import wmill
 from html import escape
@@ -27,7 +29,7 @@ def fetch_user_data(falcon: UserManagement, username: str, asHTML: bool) -> dict
     try:
         # 1. Query user UUID using FQL filter
         # User's UID in Falcon is typically their email/username
-        fql_filter = f"uid:'{username}'"
+        fql_filter = f"uid:*'{username}*'"
         query_resp = falcon.query_users(filter=fql_filter)
         query_status = query_resp.get("status_code", 500)
 
@@ -110,3 +112,4 @@ def main(username, asHTML: bool):
     # Fetch user data
     result = fetch_user_data(falcon, username, asHTML)
     return result
+
