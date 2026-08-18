@@ -1,3 +1,5 @@
+# Reference:  https://developer.crowdstrike.com/api-reference/collections/intel/#queryintelindicatorentities
+
 #TODO - Add try catch & http Response codes
 #TODO - Add asHTML option.  Need to see and select the various information.
 

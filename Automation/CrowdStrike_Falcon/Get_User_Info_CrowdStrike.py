@@ -1,4 +1,4 @@
-#Reference:  https://developer.crowdstrike.com/api-reference/collections/user-management/#queryuserv1
+# Reference:  https://developer.crowdstrike.com/api-reference/collections/user-management/#queryuserv1
 
 import json
 import wmill

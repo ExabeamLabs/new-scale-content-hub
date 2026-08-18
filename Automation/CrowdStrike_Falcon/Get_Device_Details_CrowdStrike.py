@@ -1,3 +1,5 @@
+# Reference:  https://developer.crowdstrike.com/api-reference/collections/hosts/#querydevicesbyfilter
+
 import requests
 import urllib.parse
 import wmill

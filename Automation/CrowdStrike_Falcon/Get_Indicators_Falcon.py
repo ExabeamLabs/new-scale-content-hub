@@ -1,3 +1,5 @@
+# Reference:  https://developer.crowdstrike.com/api-reference/collections/ioc/#getindicatorsreport
+
 import json
 import ipaddress
 import wmill
@@ -43,5 +45,3 @@ def main(ip):
 
     report = get_ip_reputation(ip)
     return report
-
-#Reference: https://developer.crowdstrike.com/api-reference/collections/ioc/#getindicatorsreport
