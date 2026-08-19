@@ -1,4 +1,6 @@
 # Reference:  https://developer.crowdstrike.com/api-reference/collections/hosts/#performactionv2
+#TODO deprecated
+
 
 import requests
 import urllib.parse
@@ -45,6 +47,7 @@ def contain_device(device_id, token):
         'Authorization': f'Bearer {token}',
         'Content-Type': 'application/json'
     }
+    # New API endpoint for containment action
     url = f"{BASE_URL}/devices/entities/devices-actions/v2?action_name=contain"
     data = {
         "ids": [device_id]
