@@ -27,12 +27,12 @@ Create and activate a virtual environment in the script's directory:
 
 *   **macOS / Linux:**
     ```bash
-    python3 -m venv venv
+    python3 -m venv .venv
     source venv/bin/activate
     ```
 *   **Windows (Command Prompt):**
     ```cmd
-    python -m venv venv
+    python -m venv .venv
     venv\Scripts\activate
     ```
 
