@@ -8,10 +8,9 @@ import base64
 import time
 import concurrent.futures
 import argparse
+import sys
 from colorama import Fore, Style, init
 from urllib.parse import quote
-
-# TODO: Future improvements: Add a cmd line arg that will take in how far back to run the search 
 
 def get_config_from_args():
     """Parses command-line arguments and returns a configuration dictionary."""
@@ -53,33 +52,51 @@ def get_config_from_args():
 
 def get_bearer_token(config):
     url = f"https://api.{config['region']}.exabeam.cloud/auth/v1/token"
+    try:
+        env_vars = dotenv_values(config["token_file"])
+        client_id = env_vars["CLIENT_ID"]
+        client_secret = env_vars["CLIENT_SECRET"]
+    except KeyError as e:
+        print(f"{Fore.RED}Error: Key {e} was not found in token file '{config['token_file']}'.")
+        sys.exit(-1)
+    except Exception as e:
+        print(f"{Fore.RED}Error loading token file '{config['token_file']}': {e}")
+        sys.exit(-1)
+
     payload = {
         "grant_type": "client_credentials",
-        "client_id": dotenv_values(config["token_file"])["CLIENT_ID"],
-        "client_secret": dotenv_values(config["token_file"])["CLIENT_SECRET"],
+        "client_id": client_id,
+        "client_secret": client_secret,
     }
     headers = {"accept": "application/json", "content-type": "application/json"}
     response = requests.post(url, json=payload, headers=headers)
     if response.status_code != 200:
-        print(
-            f"{Fore.RED}Something went wrong getting the access token: \n{response.text}"
-        )
+        print(f"{Fore.RED}Something went wrong getting the access token: \n{response.text}")
         print(
             f"{Fore.RED}Your region may be selected incorrectly or your env file may be structured improperly."
         )
-        exit(-1)
+        sys.exit(-1)
     print(f"{Fore.GREEN}Successfully obtained access token.")
     return json.loads(response.text).get("access_token")
 
 
 def _get_region_url_specifier(region):
-    if region == "us-west":
-        return ""
-    elif region == "us-east":
-        return ".use1"
-    elif region == "ca":
-        return ".ca"
-    print(f"Region code could not be loaded for region {region}.")
+    region_mapping = {
+        "us-west": "",
+        "us-east": ".use1",
+        "ca": ".ca",
+        "sg": ".sg",
+        "jp": ".jp",
+        "eu": ".eu",
+        "au": ".au",
+        "ch": ".ch",
+        "sa": ".sa",
+        "uk": ".uk",
+    }
+    if region in region_mapping:
+        return region_mapping[region]
+
+    print(f"{Fore.YELLOW}Warning: Region code specifier could not be resolved for region: '{region}'. Defaulting to empty specifier.")
     return ""
 
 
@@ -207,7 +224,6 @@ def main():
     print(
         f"{Fore.CYAN}https://{config['env_name']}{_get_region_url_specifier(config['region'])}.exabeam.cloud/app/search/query/results#z_H4sIAAAAAAAAE2WMTwuCMByGv8r4nSpc6DSC3cqkS2RNPdRFhi2R8k%2BbOwzxu4chInR9nud9O8i0lFctpAEKUXAK%2FBiVKk9b0wgL%2BWFyjherJeJqomlW66pFRxYmF7y%2FTRyF7BCwORnLXeSDBW1RCsarXADt4CnrEigQm2ywQzBxY2dLHZd69toj5D7k9cy79p%2F%2F6CJ7jX%2Fw5qrFW%2FzgRg1T0wzwV0DffwGfZgq84wAAAA%3D%3D"
     )
-    # TODO: Add output of vendor, product query to confirm that all vendors and products are expected. Unexpected vendors and products may indicate misparsing. 
     script_end_time = time.time()
     print(
         f"\n{Fore.GREEN}Script finished in {script_end_time - script_start_time:.2f} seconds."

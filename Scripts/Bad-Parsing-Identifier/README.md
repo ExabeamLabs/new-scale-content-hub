@@ -14,6 +14,9 @@ Whenever potential parsing issues are detected, the tool generates direct, pre-f
 - **Customizable Scope**: Accepts an optional search query prefix to isolate analysis (e.g., target a specific vendor, product, or log source).
 - **CSV Export**: Automatically exports all successfully matched anomalies and their direct drill-down links to a local `output.csv`.
 
+## Future features (todo):
+- Add output of vendor, product query to confirm that all vendors and products are expected. Unexpected vendors and products may indicate misparsing. 
+
 ## Prerequisites
 
 Make sure Python 3 is installed. It is highly recommended to run this tool within a Python virtual environment (`venv`) to keep your dependencies isolated.
@@ -45,6 +48,8 @@ pip install requests python-dotenv colorama
 This script requires a valid API Client ID and Secret to fetch access tokens from Exabeam. https://docs.exabeam.com/en/apis/all/api-get-started-guide/api-keys/create-an-api-key.html 
 
 Create a `.env` file (e.g., `credentials.env`) in your working directory with the following variables:
+
+> ⚠️ **Important:** Ensure that your `.env` or `credentials.env` files are added to your `.gitignore` so they are never committed to your public repository.
 
 ```env
 CLIENT_ID="your_client_id_here"
