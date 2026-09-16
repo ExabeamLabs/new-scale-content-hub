@@ -1,0 +1,13 @@
+Title: GRU 29155 CYBER ACTORS
+Source: https://www.fbi.gov/wanted/cyber/gru-29155-cyber-actors
+
+Search(es):
+full_name: RGXi("Vlad Borovkov|Vladislav Yevgenyevich Borovkov|Denis Denisenko|Denis Igorevich Denisenko|Yuriy Fedorovich Denisov|Dmitriy Yuryevich Goloshubov|Nikolay Aleksandrovich Korchagin|Amin Stigal|Amin Timovich Stigal")
+OR 
+dest_full_name: RGXi("Vlad Borovkov|Vladislav Yevgenyevich Borovkov|Denis Denisenko|Denis Igorevich Denisenko|Yuriy Fedorovich Denisov|Dmitriy Yuryevich Goloshubov|Nikolay Aleksandrovich Korchagin|Amin Stigal|Amin Timovich Stigal")
+OR 
+email_subject: RGXi("Vlad Borovkov|Vladislav Yevgenyevich Borovkov|Denis Denisenko|Denis Igorevich Denisenko|Yuriy Fedorovich Denisov|Dmitriy Yuryevich Goloshubov|Nikolay Aleksandrovich Korchagin|Amin Stigal|Amin Timovich Stigal")
+OR 
+attachment: RGXi("Vlad Borovkov|Vladislav Yevgenyevich Borovkov|Denis Denisenko|Denis Igorevich Denisenko|Yuriy Fedorovich Denisov|Dmitriy Yuryevich Goloshubov|Nikolay Aleksandrovich Korchagin|Amin Stigal|Amin Timovich Stigal")
+OR 
+file_name: RGXi("Vlad Borovkov|Vladislav Yevgenyevich Borovkov|Denis Denisenko|Denis Igorevich Denisenko|Yuriy Fedorovich Denisov|Dmitriy Yuryevich Goloshubov|Nikolay Aleksandrovich Korchagin|Amin Stigal|Amin Timovich Stigal")
