@@ -7,3 +7,13 @@ Search: src_ip: [10.0.0.0/8] AND dest_port: 6881
 Timeframe: 24 hours
 Search Name: PUP - BitTorrent Peer-to-peer file share detected 
 Search Description: Potentially Unwanted Program - BitTorrent software or web connection detected on internal network.
+
+Search: activity_type: "process-create" AND process_name: RGXi("ZohoURS\.exe|ZohoURSService\.exe|ZA_Upgrader\.exe")
+Timeframe: 24 hours
+Search Name: PUP - Zoho Assist and Unattended Remote Desktop Access
+Search Description: Potentially Unwanted Program - Zoho Assist is often used by Small Businesses. Zoho Assist is a tool that allows Unattended Remote Desktop Access
+
+Search: activity_type: "process-create" AND (process_command_line: RGXi("MoveMouse Installer\.exe|Move Mouse Installer\.exe|MouseJiggle\.exe|Wiggler.*Installer\.exe|Caffeine\.exe|Insomnia\.exe|StayAwake\.exe|PreventTurnOff\.exe|DontSleep\.exe|NoSleep\.exe|StatusHolder\.exe|MouseClicker\.exe") OR process_command_line: RGXi("Auto Mouse Jiggler Mover\.app|Jiggler\.app|Computer Mouse Jiggler\.app|Mouse Shaker\.app|Mouse Mover|pip install jiggler"))
+Timeframe: 24 hours
+Search Name: PUP - Mouse Movers and Jigglers
+Search Description: Potentially Unwanted Program - This search intends to find some of the most popular software Mouse Movers and Jigglers for Windows and MacOS.
