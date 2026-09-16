@@ -1,0 +1,13 @@
+Title: FRAUDULENT REMOTE IT WORKERS FROM DPRK
+Source: https://www.fbi.gov/wanted/cyber/dprk-it-workers
+
+Search(es): 
+full_name: RGXi("Zheng Chenghua|Jong Song Hwa|Jin Liuxing|Kim Ryu Song|Li Gyong Sik|Ri Kyong Sik|Rim Un Chol|Kim Mu Rim|Cho Chung Pom|Hyon Chol Song|Son Un Chol|Sok Kwang Hyok|Choe Jong Yong|Ko Chung Sok|Kim Ye Won|Jong Kyong Chol|Jang Chol Myong")
+OR 
+dest_user_full_name: RGXi("Zheng Chenghua|Jong Song Hwa|Jin Liuxing|Kim Ryu Song|Li Gyong Sik|Ri Kyong Sik|Rim Un Chol|Kim Mu Rim|Cho Chung Pom|Hyon Chol Song|Son Un Chol|Sok Kwang Hyok|Choe Jong Yong|Ko Chung Sok|Kim Ye Won|Jong Kyong Chol|Jang Chol Myong")
+OR 
+email_subject: RGXi("Zheng Chenghua|Jong Song Hwa|Jin Liuxing|Kim Ryu Song|Li Gyong Sik|Ri Kyong Sik|Rim Un Chol|Kim Mu Rim|Cho Chung Pom|Hyon Chol Song|Son Un Chol|Sok Kwang Hyok|Choe Jong Yong|Ko Chung Sok|Kim Ye Won|Jong Kyong Chol|Jang Chol Myong")
+OR 
+attachment: RGXi("Zheng Chenghua|Jong Song Hwa|Jin Liuxing|Kim Ryu Song|Li Gyong Sik|Ri Kyong Sik|Rim Un Chol|Kim Mu Rim|Cho Chung Pom|Hyon Chol Song|Son Un Chol|Sok Kwang Hyok|Choe Jong Yong|Ko Chung Sok|Kim Ye Won|Jong Kyong Chol|Jang Chol Myong")
+OR 
+file_name: RGXi("Zheng Chenghua|Jong Song Hwa|Jin Liuxing|Kim Ryu Song|Li Gyong Sik|Ri Kyong Sik|Rim Un Chol|Kim Mu Rim|Cho Chung Pom|Hyon Chol Song|Son Un Chol|Sok Kwang Hyok|Choe Jong Yong|Ko Chung Sok|Kim Ye Won|Jong Kyong Chol|Jang Chol Myong")
