@@ -1,18 +1,17 @@
 # Exabeam Automation Management - Integration with VirusTotal
 
 Description: Automation Management integration with VirusTotal V3 APIs.<br>
-Version: 1.1<br>
-Author: Charlie Mac UK TAM - May 2025 - Email If Stuck<br>
-Author: Mark Ulmer US Service Consultant - December 2025 - Moved api_key to instance variable<br>
-Author: Mark Ulmer US Service Consultant - July 2026 - Added Get Domain Report and Get URL Report<br>
+Version: 1.2<br>
+Author: Exabeam Labs<br>
+Date updated: Sept 21 2026<br>
 
 ## Setup Service
 
 1. **Add Service**
    - Service name:  VirusTotal
-   - Service Description:  VirusTotal integration version 1.1
+   - Service Description:  VirusTotal integration version 1.2
    - Click Import from File or URL
-   - Paste URL...   `https://raw.githubusercontent.com/ExabeamLabs/new-scale-content-hub/refs/heads/main/Automation/VirusTotal/Exabeam_Service_Import-VirusTotal-Version_1.1.json`
+   - Paste URL...   `https://raw.githubusercontent.com/ExabeamLabs/new-scale-content-hub/refs/heads/main/Automation/VirusTotal/Exabeam_Service_Import-VirusTotal-Version_1.2.json`
    - Click Confirm and Validate
    - Click Import and Next
 
@@ -31,43 +30,71 @@ Author: Mark Ulmer US Service Consultant - July 2026 - Added Get Domain Report a
    - Save
   
 4. **Edit Action**
-   - Edit action name:  Get an IP address report
+   - Edit action name:  VirusTotal_Action_Get_IP_Report
    - Description:  Retrieves a report for a given IP address. The report includes threat reputation from various antivirus engines.
    - Paste code contents from action file:  [VirusTotal_Action_Get_IP_Report.py](../VirusTotal/VirusTotal_Action_Get_IP_Report.py)
    - Deploy
      
 5. **Edit Action**
-   - Edit action name:  Get a Domain report
+   - Edit action name:  VirusTotal_Action_Get_Domain_Report
    - Description:  Retrieves a report for a given Domain. The report includes threat reputation from various antivirus engines.
    - Paste code contents from action file:  [VirusTotal_Action_Get_Domain_Report.py](../VirusTotal/VirusTotal_Action_Get_Domain_Report.py)
    - Deploy
      
 6. **Edit Action**
-   - Edit action name:  Get a URL report
+   - Edit action name:  VirusTotal_Action_Get_URL_Report
    - Description:  Retrieves a report for a given URL. The report includes threat reputation from various antivirus engines.
    - Paste code contents from action file:  [VirusTotal_Action_Get_URL_Report.py](../VirusTotal/VirusTotal_Action_Get_URL_Report.py)
    - Deploy
      
 7. **Add Action**
-   - Edit action name:  Extract_publc_ip_addresses
+   - Edit action name:  Extract_Public_IP_Addresses
    - Description:  Extract and return only public ip addresses.
-   - Paste code contents from action file:  [Extract_public_ip_addresses.py](../VirusTotal/Extract_public_ip_addresses.py)
+   - Paste code contents from action file:  [Extract_Public_IP_Addresses.py](../VirusTotal/Extract_Public_IP_Addresses.py)
    - Deploy   
+
+8. **Add Action**
+   - Edit action name:  Format_Report_HTML
+   - Description:  Format a VirusTotal report as HTML, including only fields with values.
+   - Paste code contents from action file:  [Format_Report_HTML.py](../VirusTotal/Format_Report_HTML.py)
+   - Deploy
+
+## Report HTML Formatting
+
+The IP, domain, and URL report actions return a JSON object with a `status_code` and either `data` or `error`:
+
+```json
+{
+   "status_code": 200,
+   "data": {
+      "ip": "8.8.8.8"
+   }
+}
+```
+
+Use [Format_Report_HTML.py](../VirusTotal/Format_Report_HTML.py) as a separate formatter action, passing it either one report object or an array of report objects from the three report actions. It returns a JSON object with `status_code` and an `html` block containing only fields with values. It can also be run standalone with the report JSON as a command-line argument or through standard input.
 
 
 
 ## Playbook Demonstration
 1. **Create Playbook**
-   - Name: VirusTotal IP Lookup
+   - Name: VirusTotal Playbook
    - Add Step
-   - Select Action > Exabeam > Get an IP address report
-   - ip_to_check > plug-in > flow_input.dest_ips
+   - Select Action > Exabeam > Extract_Public_IP_Addresses
+   - src_ips > plug-in > flow_input.src_ips
+   - dest_ips > plug-in > flow_input.dest_ips
+   - Add Step
+   - Select  For loop 
+   - Iterator expression: results.a
+   - Add Step
+   - Select Action > Exabeam > VirusTotal_Action_Get_IP_Report
+   - ip_to_check > plug-in > flow_input.iter.value
    - Deploy
 
 2. **Run Playbook from Threat Center**
    - Select a Case
    - Run a Playbook
-   - Select VirusTotal IP Lookup
+   - Select VirusTotal Playbook
    - Run
 
 
