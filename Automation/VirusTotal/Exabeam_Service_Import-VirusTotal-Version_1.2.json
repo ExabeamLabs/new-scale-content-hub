@@ -1,5 +1,5 @@
 {
-    "openapi": "3.0.0",
+    "openapi": "3.0.3",
     "info": {
         "title": "VirusTotal v3 API - IP, Domain, and URL Reports",
         "description": "A subset of the VirusTotal v3 API for retrieving analysis reports for IP addresses, domains, and URLs.",
@@ -9,6 +9,20 @@
         {
             "url": "https://www.virustotal.com/api/v3",
             "description": "VirusTotal v3 API Server"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "apiKeyAuth": {
+                "type": "apiKey",
+                "in": "header",
+                "name": "x-apikey"
+            }
+        }
+    },
+    "security": [
+        {
+            "apiKeyAuth": []
         }
     ],
     "paths": {
@@ -62,7 +76,7 @@
             "get": {
                 "summary": "Get a URL report",
                 "description": "Retrieves a report for a given URL. The report provides threat reputation, contextual information, and analysis results from various antivirus engines.",
-                "operationId": "getURLReport",
+                "operationId": "getUrlReport",
                 "parameters": [
                     {
                         "name": "url_id",
