@@ -28,7 +28,7 @@
     "paths": {
         "/ip_addresses/{ip}": {
             "get": {
-                "summary": "Get an IP address report",
+                "summary": "VirusTotal_Action_Get_IP_Report",
                 "description": "Retrieves a report for a given IP address. The report includes threat reputation, contextual information, and detection details from various antivirus engines.",
                 "operationId": "getIpAddressReport",
                 "parameters": [
@@ -68,7 +68,7 @@
         },
         "/domains/{domain}": {
             "get": {
-                "summary": "Get a Domain report",
+                "summary": "VirusTotal_Action_Get_Domain_Report",
                 "description": "Retrieves a report for a given domain. The report provides threat reputation, contextual information, and analysis results from various antivirus engines.",
                 "operationId": "getDomainReport",
                 "parameters": [
@@ -108,7 +108,7 @@
         },
         "/urls/{url_id}": {
             "get": {
-                "summary": "Get a URL report",
+                "summary": "VirusTotal_Action_Get_URL_Report",
                 "description": "Retrieves a report for a given URL. The report provides threat reputation, contextual information, and analysis results from various antivirus engines.",
                 "operationId": "getUrlReport",
                 "parameters": [
