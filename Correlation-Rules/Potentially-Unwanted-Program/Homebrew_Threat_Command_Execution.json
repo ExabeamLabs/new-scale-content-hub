@@ -1,0 +1,39 @@
+{
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "name": "Homebrew Threat Command Execution",
+            "description": "Alerts when process name matches in the 'Threat Homebrew Commands' context table, indicating potential malicious activity.",
+            "useCase": "malware",
+            "mitre": [
+                {
+                    "tacticKey": "TA0002",
+                    "tactic": "Execution",
+                    "techniqueKey": "T1059",
+                    "technique": "Command and Scripting Interpreter"
+                }
+            ],
+            "sequencesExecution": "CREATION_ORDER",
+            "severity": "high",
+            "sequencesConfig": {
+                "sequences": [
+                    {
+                        "name": "Homebrew threat command execution",
+                        "query": "process_name IN \"Threat Homebrew Commands\".\"Key\"",
+                        "condition": {
+                            "groupByOption": false,
+                            "groupBy": [
+                            ],
+                            "triggerOnAnyMatch": true
+                        },
+                        "id": "71358f99-6681-4e45-9741-8369c29a6668"
+                    }
+                ],
+                "commonProperties": null,
+                "restrictToSite": null,
+                "outcomes": null
+            },
+            "scheduleConfig": null
+        }
+    ]
+}
