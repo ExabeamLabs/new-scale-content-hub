@@ -19,14 +19,15 @@
                 "sequences": [
                     {
                         "name": "Homebrew threat command execution",
-                        "query": "process_name IN \"Threat Homebrew Commands\".\"Key\"",
+                        "query": "process_name IN \"Homebrew Threat Commands\".\"Key\" AND process_command_line: \"homebrew\"",
                         "condition": {
-                            "groupByOption": false,
+                            "groupByOption": true,
                             "groupBy": [
+                                "src_host"
                             ],
                             "triggerOnAnyMatch": true
                         },
-                        "id": "71358f99-6681-4e45-9741-8369c29a6668"
+                        "id": "20041007-6aa2-4ec3-bfcb-76e5d684b1cb"
                     }
                 ],
                 "commonProperties": null,
