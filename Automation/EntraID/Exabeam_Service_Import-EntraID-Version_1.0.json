@@ -1,0 +1,303 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Microsoft Entra ID Actions for AAM",
+    "description": "AAM import specification for Microsoft Entra ID",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://graph.microsoft.com/v1.0",
+      "description": "Microsoft Graph v1.0 Production Server"
+    }
+  ],
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "paths": {
+    "/users/{user_id}/revokeSignInSessions": {
+      "post": {
+        "operationId": "revokeSession",
+        "summary": "Revoke session",
+        "description": "Revokes active sign-in sessions for a Microsoft Entra ID user.",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "description": "The user object ID or userPrincipalName",
+            "schema": {
+              "type": "string",
+              "example": "user@contoso.com"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response from Microsoft Graph",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "x-action-file": "EntraID_Action_RevokeSession.py",
+        "x-graph-method": "POST",
+        "x-graph-path": "/users/{id or userPrincipalName}/revokeSignInSessions"
+      }
+    },
+    "/actions/users/{user_id}/changePassword": {
+      "patch": {
+        "operationId": "changePassword",
+        "summary": "Change password",
+        "description": "Generates a temporary password, changes the user password, and forces the user to change it at next sign-in.",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "description": "The user object ID or userPrincipalName",
+            "schema": {
+              "type": "string",
+              "example": "user@contoso.com"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response from the action wrapper, including the generated temporary password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status_code": {
+                      "type": "integer",
+                      "example": 204
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "generated_password": {
+                      "type": "string",
+                      "description": "Generated temporary password returned"
+                    },
+                    "forceChangePasswordNextSignIn": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  },
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Password updated successfully with no response body"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "x-action-file": "EntraID_Action_ChangePassword.py",
+        "x-graph-method": "PATCH",
+        "x-graph-path": "/users/{id or userPrincipalName}",
+        "x-generated-password": true,
+        "x-force-change-password-next-sign-in": true
+      }
+    },
+    "/actions/users/{user_id}/disable": {
+      "patch": {
+        "operationId": "disableUser",
+        "summary": "Disable user",
+        "description": "Disables a Microsoft Entra ID user account.",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "description": "The user object ID or userPrincipalName",
+            "schema": {
+              "type": "string",
+              "example": "user@contoso.com"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response from Microsoft Graph or action wrapper",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "User disabled successfully with no response body"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "x-action-file": "EntraID_Action_DisableUser.py",
+        "x-graph-method": "PATCH",
+        "x-graph-path": "/users/{id or userPrincipalName}"
+      }
+    },
+    "/actions/users/{user_id}/lock": {
+      "post": {
+        "operationId": "lockUser",
+        "summary": "Lock user",
+        "description": "Locks a Microsoft Entra ID user for this action set by disabling the account and revoking sign-in sessions.",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "description": "The user object ID or userPrincipalName",
+            "schema": {
+              "type": "string",
+              "example": "user@contoso.com"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response containing disable_user and revoke_session results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "x-action-file": "EntraID_Action_LockUser.py",
+        "x-graph-operations": [
+          {
+            "method": "PATCH",
+            "path": "/users/{id or userPrincipalName}"
+          },
+          {
+            "method": "POST",
+            "path": "/users/{id or userPrincipalName}/revokeSignInSessions"
+          }
+        ]
+      }
+    },
+    "/actions/users/{user_id}/enable": {
+      "patch": {
+        "operationId": "enableUser",
+        "summary": "Enable user",
+        "description": "Enables a Microsoft Entra ID user account.",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "description": "The user object ID or userPrincipalName",
+            "schema": {
+              "type": "string",
+              "example": "user@contoso.com"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response from Microsoft Graph",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "User enabled successfully with no response body"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "x-action-file": "EntraID_Action_EnableUser.py",
+        "x-graph-method": "PATCH",
+        "x-graph-path": "/users/{id or userPrincipalName}"
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Bearer token obtained using the platform client credentials flow"
+      }
+    }
+  }
+}
