@@ -3,3 +3,7 @@ Timeframe: 24 hours
 Search Name: Pythonic Web Server started
 Search Description: Python can invoke a web server on any port and serve up the current working directory of the file system for download.
 
+Search: activity_type: "process-create" AND process_name: RGXi("caffeinate") AND NOT process_command_line: "caffeinate -i -t 300"
+Timeframe: 24 hours
+Search Name: MacOS users extending system sleep defaults
+Search Description: MacOS users extending system sleep defaults possibly leaving workstations open more than intended

@@ -1,0 +1,47 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1531-Bulk-User-Deletion-via-API-Key-82",
+      "name": "T1531 — Bulk User Deletion via API Key (Fact #82)",
+      "description": "Bulk User Deletion via API Key. Trigger: User deleted from the workspace by an API-key identity rather than a named admin",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "platform": [
+            "OpenAI"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation",
+        "credential_type"
+      ],
+      "detectionReason": "User deleted from the workspace by an actor with credential_type={credential_type}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1531",
+          "technique": "Account Access Removal",
+          "tactic": "Impact",
+          "tacticKey": "TA0040"
+        }
+      ],
+      "useCases": [
+        "Account Manipulation"
+      ],
+      "value": "toLower(operation) = 'user.deleted' && toLower(credential_type) = 'api_key'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "ai-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "ai-guardrail-first-user-activity-group"
+    }
+  ]
+}

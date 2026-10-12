@@ -1,0 +1,49 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Prof-T1078-003-Built-in-Admin-Re-Enabled-PtH-5",
+      "name": "T1078.003 — Built-in Admin Re-Enabled + PtH (Profiled)",
+      "description": "Built-in Admin Re-Enabled + PtH. NTLM network logon (Type 3) immediately following account re-enablement",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "endpoint-login"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "4624"
+          ]
+        }
+      ],
+      "detectionReason": "Unusual login type '${trigger.feature_value}' for this account",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1078.003",
+          "technique": "Valid Accounts",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Lateral Movement"
+      ],
+      "featureValue": "login_type",
+      "scopeValue": "EntityId('type: User && direction: Dest')",
+      "trainOnCondition": "true",
+      "actOnCondition": "true",
+      "anomalyThreshold": "30 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "endpoint-login-activity",
+      "ruleGroupId": "el-authentication-package-group",
+      "severity": "Medium",
+      "testMode": false
+    }
+  ]
+}

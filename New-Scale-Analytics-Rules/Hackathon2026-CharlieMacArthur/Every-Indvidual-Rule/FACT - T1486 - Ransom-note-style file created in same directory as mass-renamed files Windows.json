@@ -1,0 +1,50 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1486-Ransomware-File-Rename-lockbit-22",
+      "name": "T1486 — Ransomware File Rename (.lockbit) (Fact #22)",
+      "description": "Ransomware File Rename (.lockbit). Trigger: Ransom-note-style file created in same directory as mass-renamed files",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "file-write"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "11"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "file_name"
+      ],
+      "detectionReason": "Ransom-note file '{file_name}' created in {file_dir}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1486",
+          "technique": "Data Encrypted for Impact",
+          "tactic": "Impact",
+          "tacticKey": "TA0040"
+        }
+      ],
+      "useCases": [
+        "Ransomware"
+      ],
+      "value": "containsAny(toLower(file_name), 'read_me', 'readme', 'decrypt') && endsWith(toLower(file_name), '.txt')",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "file-write-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "filew-file-process-group"
+    }
+  ]
+}

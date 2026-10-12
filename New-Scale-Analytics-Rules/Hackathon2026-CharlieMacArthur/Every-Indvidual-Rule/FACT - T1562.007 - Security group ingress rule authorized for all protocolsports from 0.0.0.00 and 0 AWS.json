@@ -1,0 +1,47 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1562-007-Security-Group-Opened-69",
+      "name": "T1562.007 — Security Group Opened (Fact #69)",
+      "description": "Security Group Opened. Trigger: Security group ingress rule authorized for all protocols/ports from 0.0.0.0/0 and ::/0",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "platform": [
+            "AWS"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation",
+        "ipProtocol"
+      ],
+      "detectionReason": "{user} called {operation} via {user_agent_client}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1562.007",
+          "technique": "Impair Defenses",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Evasion"
+      ],
+      "value": "toLower(operation) = 'authorizesecuritygroupingress'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "network-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "ntw-critical-session-group"
+    }
+  ]
+}

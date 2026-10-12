@@ -1,0 +1,53 @@
+{
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "name": "Passwd or Shadow file read via command",
+            "description": "Detects suspicious access to Linux credential files that may indicate credential dumping or privilege discovery ",
+            "useCase": "compromised_credentials",
+            "mitre": [
+                {
+                    "tacticKey": "TA0006",
+                    "tactic": "Credential Access",
+                    "techniqueKey": "T1003",
+                    "technique": "OS Credential Dumping"
+                },
+                {
+                    "tacticKey": "TA0007",
+                    "tactic": "Discovery",
+                    "techniqueKey": "T1087",
+                    "technique": "Account Discovery"
+                }
+            ],
+            "sequencesExecution": "CREATION_ORDER",
+            "severity": "high",
+            "sequencesConfig": {
+                "sequences": [
+                    {
+                        "name": "",
+                        "query": "activity_type:\"process-create\"\nAND (\n  (\n    process_command_line:RGXi(\"(/etc/sudoers|/etc/sudoers\\\\.d/)\")\n    AND process_name:(\"cat\",\"grep\",\"awk\",\"sed\",\"less\",\"more\",\"head\",\"tail\",\"strings\",\"nl\",\"vi\",\"vim\",\"nano\")\n  )\n  OR\n  (\n    process_command_line:RGXi(\"(/etc/shadow|/etc/gshadow)\")\n    AND process_name:(\"cat\",\"less\",\"more\",\"head\",\"tail\",\"awk\",\"grep\",\"sed\",\"strings\",\"nl\",\"vi\",\"vim\",\"nano\")\n  )\n)\nAND NOT user=\"root\"\nAND NOT parent_process_name:(\"useradd\",\"usermod\",\"passwd\",\"chage\",\"logrotate\")\nAND NOT process_command_line:RGXi(\"logrotate|puppet|chef|ansible|salt\")\n",
+                        "condition": {
+                            "groupByOption": true,
+                            "groupBy": [
+                                "host",
+                                "user"
+                            ],
+                            "functionType": "count",
+                            "subject": "event",
+                            "field": "",
+                            "operator": "more_than",
+                            "value": "1",
+                            "time": 10,
+                            "unit": "m",
+                            "triggerOnAnyMatch": false
+                        },
+                        "id": "78ce895b-6ac1-4f38-8464-72977a5dd855"
+                    }
+                ],
+                "commonProperties": null,
+                "outcomes": null
+            },
+            "scheduleConfig": null
+        }
+    ]
+}

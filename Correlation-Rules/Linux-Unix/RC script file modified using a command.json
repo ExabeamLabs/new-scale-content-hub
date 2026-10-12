@@ -1,0 +1,35 @@
+{
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "name": "RC script file modified using a command",
+            "description": "Linux RC Startup Script Modification",
+            "useCase": "privileged_activity",
+            "mitre": [
+                {
+                    "tacticKey": "TA0003",
+                    "tactic": "Persistence",
+                    "techniqueKey": "T1037",
+                    "technique": "Boot or Logon Initialization Scripts"
+                }
+            ],
+            "sequencesExecution": "CREATION_ORDER",
+            "severity": "medium",
+            "sequencesConfig": {
+                "sequences": [
+                    {
+                        "name": "",
+                        "query": "activity_type:\"process-create\" AND platform:\"Unix\" AND process_command_line:(\"/etc/rc.local\",\"/etc/rc.common\")\nAND (process_command_line:(\"> \",\">>\",\"tee \",\"sed \",\"vi \",\"vim \",\"nano \",\"truncate \",\"cp \",\"mv \"))",
+                        "condition": {
+                            "triggerOnAnyMatch": true
+                        },
+                        "id": "bd7f642a-189b-4071-a0f1-2dad3f46c2a1"
+                    }
+                ],
+                "commonProperties": null,
+                "outcomes": null
+            },
+            "scheduleConfig": null
+        }
+    ]
+}

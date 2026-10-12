@@ -1,0 +1,50 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1059-VM-Custom-Script-Extension-59",
+      "name": "T1059 — VM Custom Script Extension (Fact #59)",
+      "description": "VM Custom Script Extension. Trigger: Custom Script Extension applied to a VM with a Base64-encoded PowerShell payload",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "category": [
+            "Administrative"
+          ],
+          "platform": [
+            "Azure"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "category",
+        "operation"
+      ],
+      "detectionReason": "Custom Script Extension applied to a VM: {operation}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1059",
+          "technique": "Command and Scripting Interpreter",
+          "tactic": "Execution",
+          "tacticKey": "TA0002"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "value": "operation = 'Microsoft.Compute/virtualMachines/extensions/write'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "compute-vm-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "cvma-remote-command-group"
+    }
+  ]
+}

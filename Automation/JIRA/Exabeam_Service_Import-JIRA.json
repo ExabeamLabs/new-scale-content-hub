@@ -1,0 +1,47 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "JIRA",
+        "description": "A subset of JIRA APIs that are used with Exabeam Threat Center Cases.",
+        "version": "1.0"
+    },
+    "servers": [{"url": "https://your-domain.atlassian.net"}],
+    "paths": {
+        "/create_issue": {
+            "post": {
+                "summary": "Create Issue in JIRA",
+                "description": "Create External Issue in JIRA",
+                "operationId": "createIssue",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/add_comment": {
+            "post": {
+                "summary": "Add Comment to Issue in JIRA",
+                "description": "Add Comment to Issue in JIRA",
+                "operationId": "addComment",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/get_issue": {
+            "get": {
+                "summary": "Get Issue Details from JIRA",
+                "description": "Get Issue Details from JIRA",
+                "operationId": "getIssue",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        }
+    }
+}

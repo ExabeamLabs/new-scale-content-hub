@@ -1,0 +1,51 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1530-Storage-Container-Made-Public-58",
+      "name": "T1530 — Storage Container Made Public (Fact #58)",
+      "description": "Storage Container Made Public. Trigger: Anonymous, unauthenticated blob read from a container recently made public",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "category": [
+            "StorageRead"
+          ],
+          "platform": [
+            "Azure"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "category",
+        "operation",
+        "src_network_type"
+      ],
+      "detectionReason": "Anonymous blob read ({operation}) from external IP {src_ip}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1530",
+          "technique": "Data from Cloud Storage",
+          "tactic": "Collection",
+          "tacticKey": "TA0009"
+        }
+      ],
+      "useCases": [
+        "Cloud Data Protection"
+      ],
+      "value": "operation = 'GetBlob' && src_network_type = 'WAN'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "file-read-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "filer-critical-endpoint-group"
+    }
+  ]
+}

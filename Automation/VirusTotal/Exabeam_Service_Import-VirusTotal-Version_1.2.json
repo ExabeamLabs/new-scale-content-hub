@@ -1,0 +1,150 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "VirusTotal v3 API - IP, Domain, and URL Reports",
+        "description": "A subset of the VirusTotal v3 API for retrieving analysis reports for IP addresses, domains, and URLs.",
+        "version": "1.2"
+    },
+    "servers": [
+        {
+            "url": "https://www.virustotal.com/api/v3",
+            "description": "VirusTotal v3 API Server"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "apiKeyAuth": {
+                "type": "apiKey",
+                "in": "header",
+                "name": "x-apikey"
+            }
+        }
+    },
+    "security": [
+        {
+            "apiKeyAuth": []
+        }
+    ],
+    "paths": {
+        "/ip_addresses/{ip}": {
+            "get": {
+                "summary": "VirusTotal_Action_Get_IP_Report",
+                "description": "Retrieves a report for a given IP address. The report includes threat reputation, contextual information, and detection details from various antivirus engines.",
+                "operationId": "getIpAddressReport",
+                "parameters": [
+                    {
+                        "name": "ip",
+                        "in": "path",
+                        "required": true,
+                        "description": "The IP address to retrieve the report for.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response containing the IP address report.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "429": {
+                        "description": "Rate limit exceeded"
+                    }
+                }
+            }
+        },
+        "/domains/{domain}": {
+            "get": {
+                "summary": "VirusTotal_Action_Get_Domain_Report",
+                "description": "Retrieves a report for a given domain. The report provides threat reputation, contextual information, and analysis results from various antivirus engines.",
+                "operationId": "getDomainReport",
+                "parameters": [
+                    {
+                        "name": "domain",
+                        "in": "path",
+                        "required": true,
+                        "description": "The domain name to retrieve the report for.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response containing the domain report.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "429": {
+                        "description": "Rate limit exceeded"
+                    }
+                }
+            }
+        },
+        "/urls/{url_id}": {
+            "get": {
+                "summary": "VirusTotal_Action_Get_URL_Report",
+                "description": "Retrieves a report for a given URL. The report provides threat reputation, contextual information, and analysis results from various antivirus engines.",
+                "operationId": "getUrlReport",
+                "parameters": [
+                    {
+                        "name": "url_id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The URL ID (SHA-256 of the URL or base64 without padding).",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response containing the URL report.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "429": {
+                        "description": "Rate limit exceeded"
+                    }
+                }
+            }
+        }
+    }
+}

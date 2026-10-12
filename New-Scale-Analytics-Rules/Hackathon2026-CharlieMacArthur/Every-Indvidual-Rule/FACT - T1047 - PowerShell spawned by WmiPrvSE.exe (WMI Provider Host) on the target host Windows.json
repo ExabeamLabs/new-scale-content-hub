@@ -1,0 +1,50 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1047-WMI-Lateral-Movement-Plaintext-Credential-29",
+      "name": "T1047 — WMI Lateral Movement, Plaintext Credential (Fact #29)",
+      "description": "WMI Lateral Movement, Plaintext Credential. Trigger: PowerShell spawned by WmiPrvSE.exe (WMI Provider Host) on the target host",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "endpoint-notification"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "4688"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "host"
+      ],
+      "detectionReason": "A 4688 process-creation audit event was logged on {host} shortly after the WMI remote-execution attempt (parent process not visible via this builder)",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1047",
+          "technique": "Windows Management Instrumentation",
+          "tactic": "Execution",
+          "tacticKey": "TA0002"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "value": "host = 'WS-CORP-20'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-parent-process-name-group"
+    }
+  ]
+}

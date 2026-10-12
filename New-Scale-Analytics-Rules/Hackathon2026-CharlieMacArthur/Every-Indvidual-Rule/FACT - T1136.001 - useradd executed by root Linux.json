@@ -1,0 +1,46 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1136-001-Backdoor-UID-0-Account-36",
+      "name": "T1136.001 — Backdoor UID-0 Account (Fact #36)",
+      "description": "Backdoor UID-0 Account. Trigger: useradd executed by root",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "process_path"
+      ],
+      "detectionReason": "useradd executed on {host}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1136.001",
+          "technique": "Create Account",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Account Manipulation"
+      ],
+      "value": "toLower(process_path) = '/usr/sbin/useradd'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-process-execution-group"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1556-006-MFA-Reset-via-Help-Desk-Impersonation-75",
+      "name": "T1556.006 — MFA Reset via Help Desk Impersonation (Fact #75)",
+      "description": "MFA Reset via Help Desk Impersonation. Trigger: Successful login for the same user immediately follows the suspicious factor re-enrollment",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "endpoint-login"
+          ],
+          "platform": [
+            "Okta Adaptive MFA"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation"
+      ],
+      "detectionReason": "{email_address} logged in successfully",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1556.006",
+          "technique": "Modify Authentication Process: Multi-Factor Authentication",
+          "tactic": "Credential Access",
+          "tacticKey": "TA0006"
+        }
+      ],
+      "useCases": [
+        "Compromised Credentials"
+      ],
+      "value": "toLower(operation) = 'core.user_auth.login_success'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "app-login-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "al-mfa-status-group"
+    }
+  ]
+}

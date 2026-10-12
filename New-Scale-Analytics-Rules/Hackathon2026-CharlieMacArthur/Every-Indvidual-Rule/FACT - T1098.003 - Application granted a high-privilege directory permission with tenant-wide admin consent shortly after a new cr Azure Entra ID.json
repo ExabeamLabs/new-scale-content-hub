@@ -1,0 +1,50 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1098-003-App-Registration-Granted-Directory-ReadWrite-54",
+      "name": "T1098.003 — App Registration Granted Directory.ReadWrite.All (Fact #54)",
+      "description": "App Registration Granted Directory.ReadWrite.All. Trigger: Application granted a high-privilege directory permission with tenant-wide admin consent shortly after a new credential was added",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "category": [
+            "Administrative"
+          ],
+          "platform": [
+            "Azure"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "category",
+        "operation"
+      ],
+      "detectionReason": "App role assignment added to a service principal: {operation}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1098.003",
+          "technique": "Additional Cloud Roles",
+          "tactic": "Privilege Escalation",
+          "tacticKey": "TA0004"
+        }
+      ],
+      "useCases": [
+        "Privilege Escalation"
+      ],
+      "value": "operation = 'Add app role assignment to service principal'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "app-consent-grant-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "acg-permissions-group"
+    }
+  ]
+}

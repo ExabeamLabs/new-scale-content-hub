@@ -1,0 +1,46 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1564-008-Inbox-Rules-Suppressing-Security-Alerts-80",
+      "name": "T1564.008 — Inbox Rules Suppressing Security Alerts (Fact #80)",
+      "description": "Inbox Rules Suppressing Security Alerts. Trigger: Inbox rule created that moves or deletes messages matching security-alert keywords",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "email_rule-create"
+          ],
+          "operation": [
+            "MoveToFolder"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation"
+      ],
+      "detectionReason": "Inbox rule (MoveToFolder) created for {email_address}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1564.008",
+          "technique": "Hide Artifacts",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Evasion"
+      ],
+      "value": "toLower(operation) = 'movetofolder'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "email-rule-create-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "emailrc-susp-forward-rule-group"
+    }
+  ]
+}

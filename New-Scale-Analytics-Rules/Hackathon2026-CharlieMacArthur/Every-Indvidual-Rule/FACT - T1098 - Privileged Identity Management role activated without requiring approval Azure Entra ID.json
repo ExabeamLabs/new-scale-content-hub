@@ -1,0 +1,50 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1098-PIM-Role-Self-Activated-No-Approval-52",
+      "name": "T1098 — PIM Role Self-Activated, No Approval (Fact #52)",
+      "description": "PIM Role Self-Activated, No Approval. Trigger: Privileged Identity Management role activated without requiring approval",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "category": [
+            "Administrative"
+          ],
+          "platform": [
+            "Azure"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "category",
+        "operation"
+      ],
+      "detectionReason": "PIM role activated: {operation}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1098",
+          "technique": "Account Manipulation",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Privilege Escalation"
+      ],
+      "value": "operation = 'Add member to role completed (PIM activation)'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "cloud-policy-management-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "cpm-role-assign-group"
+    }
+  ]
+}

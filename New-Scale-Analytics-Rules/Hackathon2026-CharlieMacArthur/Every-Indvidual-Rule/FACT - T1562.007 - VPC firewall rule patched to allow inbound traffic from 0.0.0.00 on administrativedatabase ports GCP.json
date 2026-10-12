@@ -1,0 +1,47 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1562-007-VPC-Firewall-Widened-66",
+      "name": "T1562.007 — VPC Firewall Widened (Fact #66)",
+      "description": "VPC Firewall Widened. Trigger: VPC firewall rule patched to allow inbound traffic from 0.0.0.0/0 on administrative/database ports",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "platform": [
+            "GCP"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation",
+        "sourceRanges"
+      ],
+      "detectionReason": "{email_address} patched firewall rule {resource_name}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1562.007",
+          "technique": "Impair Defenses",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Evasion"
+      ],
+      "value": "toLower(operation) = 'v1.compute.firewalls.patch'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "network-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "ntw-critical-session-group"
+    }
+  ]
+}

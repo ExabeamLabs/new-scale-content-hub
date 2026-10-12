@@ -1,0 +1,46 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Cntx-T1569-001-Systemd-Timer-Persistence-46",
+      "name": "T1569.001 — Systemd Timer Persistence (Context #46)",
+      "description": "Systemd Timer Persistence. Trigger: Systemd reports a new timer-triggered service started",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "endpoint-activity"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "process_name"
+      ],
+      "detectionReason": "systemd reported activity on {host}",
+      "type": "contextFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1569.001",
+          "technique": "System Services",
+          "tactic": "Execution",
+          "tacticKey": "TA0002"
+        }
+      ],
+      "useCases": [
+        "Privilege Escalation"
+      ],
+      "value": "toLower(process_name) = 'systemd'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "scheduled-task-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "stc-process-name-group"
+    }
+  ]
+}

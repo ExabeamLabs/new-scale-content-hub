@@ -1,0 +1,46 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1136-001-Backdoor-UID-0-Account-37",
+      "name": "T1136.001 — Backdoor UID-0 Account (Fact #37)",
+      "description": "Backdoor UID-0 Account. Trigger: passwd executed by root immediately after a new account is created",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "process_path"
+      ],
+      "detectionReason": "passwd executed on {host}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1136.001",
+          "technique": "Create Account",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Account Manipulation"
+      ],
+      "value": "toLower(process_path) = '/usr/bin/passwd'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-process-execution-group"
+    }
+  ]
+}

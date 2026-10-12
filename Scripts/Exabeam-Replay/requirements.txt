@@ -1,0 +1,11 @@
+# Exabeam Replay runtime dependencies
+# Supported interpreter: Python 3.10 or newer.
+#
+# Tkinter is part of standard Python on Windows and macOS and is not
+# distributed through PyPI. On Debian/Ubuntu install it with:
+#   sudo apt install python3-tk
+#
+# Windows credential encryption uses the built-in current-user DPAPI and has
+# no third-party runtime dependency. macOS and Linux use cryptography for
+# encrypted destination-token storage.
+cryptography>=42.0,<47.0; sys_platform != "win32"

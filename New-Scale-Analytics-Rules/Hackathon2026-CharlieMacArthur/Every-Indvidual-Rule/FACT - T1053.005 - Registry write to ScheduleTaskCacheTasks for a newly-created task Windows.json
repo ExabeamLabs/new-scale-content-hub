@@ -1,0 +1,51 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1053-005-Scheduled-Task-Masquerading-as-Windows-Update-7",
+      "name": "T1053.005 — Scheduled Task Masquerading as Windows Update (Fact #7)",
+      "description": "Scheduled Task Masquerading as Windows Update. Trigger: Registry write to Schedule\\TaskCache\\Tasks for a newly-created task",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "registry-modify"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "13"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "registry_path",
+        "registry_key"
+      ],
+      "detectionReason": "Registry entry written for new scheduled task: {registry_path}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1053.005",
+          "technique": "Scheduled Task/Job: Scheduled Task",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Evasion"
+      ],
+      "value": "contains(toLower(registry_path), 'schedule\\\\taskcache\\\\tasks') && contains(toLower(registry_key), 'actions')",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "registry-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "registryw-first-write-group"
+    }
+  ]
+}

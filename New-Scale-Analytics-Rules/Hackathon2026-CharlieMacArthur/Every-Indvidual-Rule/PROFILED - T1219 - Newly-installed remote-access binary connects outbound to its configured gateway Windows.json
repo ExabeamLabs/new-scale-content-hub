@@ -1,0 +1,49 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Prof-T1219-NetSupport-RAT-via-Fake-Browser-Update-10",
+      "name": "T1219 — NetSupport RAT via Fake Browser Update (Profiled)",
+      "description": "NetSupport RAT via Fake Browser Update. Newly-installed remote-access binary connects outbound to its configured gateway",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "network-session"
+          ],
+          "platform": [
+            "Network"
+          ],
+          "event_code": [
+            "3"
+          ]
+        }
+      ],
+      "detectionReason": "Process '${trigger.feature_value}' made its first-ever outbound connection from this host",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1219",
+          "technique": "Remote Access Tools",
+          "tactic": "Command and Control",
+          "tacticKey": "TA0011"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "featureValue": "process_name",
+      "scopeValue": "EntityId('type: Device && direction: Source')",
+      "trainOnCondition": "true",
+      "actOnCondition": "true",
+      "anomalyThreshold": "45 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "network-activity",
+      "ruleGroupId": "ntw-process-name-group",
+      "severity": "Medium",
+      "testMode": false
+    }
+  ]
+}

@@ -1,0 +1,282 @@
+"""
+=============================================================================
+Windmill Action: Remote PowerShell Script Runner (via WinRM)
+=============================================================================
+
+WHAT THIS SCRIPT DOES
+---------------------
+This is a generic Windmill action that connects to a remote Windows machine
+over WinRM (Windows Remote Management) and executes any PowerShell script
+you point it at — passing whatever arguments that script needs.
+
+It was originally built to trigger firewall automation scripts, but it works
+for any PowerShell script on any reachable Windows host. Examples:
+
+  - Firewall block/unblock actions (FortiGate, Palo Alto, Windows Firewall)
+  - Active Directory user management (disable account, reset password)
+  - EDR or AV response scripts (isolate host, trigger scan)
+  - Custom remediation scripts of any kind
+
+WinRM is Microsoft's built-in remote management protocol — think of it as
+SSH for Windows. It must be enabled and configured on the target host before
+this script will work (see README for setup steps).
+
+HOW IT WORKS
+------------
+1. Windmill calls this Python function with your parameters.
+2. pywinrm opens an authenticated WinRM session to the target Windows host
+   using NTLM authentication (standard Windows credential auth).
+3. It runs PowerShell on the remote machine, passing your script path and
+   any script arguments you've defined.
+4. It captures stdout, stderr, and the exit code, then returns them all
+   so you can see exactly what happened — useful for debugging and audit trails.
+
+AUTHENTICATION
+--------------
+WinRM uses NTLM by default here, which is standard Windows authentication.
+The `username` and `password` are credentials for a Windows account on the
+target machine (or a domain account with access to it).
+
+IMPORTANT: Always store passwords as Windmill Secrets, never hardcode them.
+In the Windmill flow editor, set the `password` (and any other secret) inputs
+to reference a secret variable rather than typing the value directly.
+
+INPUTS (Windmill function parameters)
+--------------------------------------
+These appear as form fields in the Windmill UI when you configure this step.
+
+  password      (str)  — Password for the Windows account used to authenticate
+                         the WinRM session. STORE AS A WINDMILL SECRET.
+
+  target        (str)  — IP address or hostname of the Windows machine to
+                         connect to. Must have WinRM enabled on port 5985.
+                         Example: "192.168.1.50" or "winhost.domain.local"
+
+  username      (str)  — Windows account to authenticate as.
+                         For domain accounts use: "DOMAIN\\username"
+                         For local accounts use:  "username"
+
+  script_path   (str)  — Full path to the PowerShell script ON THE REMOTE
+                         machine. The script must already exist there.
+                         Example: "C:\\Scripts\\MyScript.ps1"
+
+  script_args   (dict) — A dictionary of named arguments to pass to the
+                         PowerShell script. Each key becomes a -Parameter
+                         name, and its value becomes the argument value.
+
+                         Example:
+                           { "UserName": "admin", "Action": "block", "Target": "1.2.3.4" }
+                         Becomes:
+                           powershell ... -UserName admin -Action block -Target 1.2.3.4
+
+                         This is the main thing you customise per use case.
+                         Match the keys exactly to your PowerShell script's
+                         parameter names (case-insensitive in PowerShell, but
+                         keep them consistent for readability).
+
+OUTPUTS
+--------
+Returns a formatted string containing:
+  - A summary of what was run (host, script, args)
+  - The PowerShell script's stdout output
+  - The PowerShell script's stderr output (if any)
+  - The exit/return code (0 = success in most scripts)
+
+This output is captured in the Windmill flow result and can be passed to
+downstream steps (e.g. the Exabeam case note writer).
+
+THINGS YOU MIGHT WANT TO CHANGE
+---------------------------------
+  - The WinRM port is hardcoded to 5985 (standard HTTP). If your environment
+    uses HTTPS WinRM on port 5986, change the endpoint line and add SSL params.
+
+  - NTLM is used for auth. If your environment uses Kerberos or Basic auth,
+    change the `transport` value in the winrm.Session call.
+
+  - `script_args` is a dict here for flexibility. If your script has positional
+    arguments rather than named ones, you'd need to adjust the args-building
+    logic in the loop below.
+
+DEPENDENCIES
+-------------
+  # requirements:
+  # pywinrm
+  This must be in the Windmill script header so Windmill installs it automatically.
+  pywinrm is the Python library that implements the WinRM client protocol.
+
+=============================================================================
+"""
+
+# requirements:
+# pywinrm
+
+import winrm
+
+
+def main(
+    # -------------------------------------------------------------------------
+    # SECRETS — always put credential parameters first in Windmill.
+    # Windmill treats the first parameters as candidates for secret binding
+    # in the UI. Store these as Windmill Secret variables, not plain text.
+    # -------------------------------------------------------------------------
+
+    password: str,              # Password for the Windows account (WinRM auth)
+
+    # -------------------------------------------------------------------------
+    # CONNECTION PARAMETERS — where to connect and as whom
+    # -------------------------------------------------------------------------
+
+    target: str = "192.168.1.50",
+    # IP address or hostname of the remote Windows machine.
+    # WinRM must be enabled on this host (see README for setup).
+    # Can be an IP or a resolvable hostname / FQDN.
+
+    username: str = "DOMAIN\\ServiceAccount",
+    # Windows account to authenticate with.
+    # Domain account format:  "DOMAIN\\username"  (note the double backslash in Python)
+    # Local account format:   "username"
+    # Use a dedicated service account with least-privilege access.
+
+    # -------------------------------------------------------------------------
+    # SCRIPT PARAMETERS — what to run and with what arguments
+    # -------------------------------------------------------------------------
+
+    script_path: str = r"C:\Scripts\Invoke-Action.ps1",
+    # Full path to the PowerShell script ON THE REMOTE MACHINE.
+    # The script must already exist at this path on the target host.
+    # Use a raw string (r"...") or double backslashes for Windows paths.
+
+    script_args: dict = {},
+    # Named arguments to pass to the PowerShell script.
+    # Keys = PowerShell parameter names, Values = argument values.
+    #
+    # Example for a firewall block script:
+    #   { "Action": "block", "IPAddress": "1.2.3.4", "Group": "blocklist" }
+    #
+    # Example for an AD disable-account script:
+    #   { "Username": "jsmith", "Reason": "Automated SOC response" }
+    #
+    # Leave as {} if your script takes no arguments.
+
+) -> str:
+
+    # =========================================================================
+    # STEP 1: BUILD THE WINRM ENDPOINT URL
+    # =========================================================================
+    # WinRM listens on port 5985 for HTTP (unencrypted, suitable for internal
+    # networks) or port 5986 for HTTPS.
+    #
+    # For most internal SOC/SOAR use cases on a trusted network, 5985 is fine.
+    # If your security policy requires encrypted WinRM, switch to 5986 and
+    # add ssl=True to the winrm.Session() call below.
+    #
+    # The /wsman path is the standard WinRM endpoint path — don't change it.
+    # =========================================================================
+
+    endpoint = f"http://{target}:5985/wsman"
+
+    # =========================================================================
+    # STEP 2: OPEN A WINRM SESSION
+    # =========================================================================
+    # winrm.Session creates an authenticated connection to the remote host.
+    #
+    # transport="ntlm" — uses NTLM authentication, which is standard Windows
+    # credential auth and works for both domain and local accounts without
+    # any additional infrastructure.
+    #
+    # Other transport options if needed:
+    #   "basic"    — simple username/password (requires HTTPS)
+    #   "kerberos" — Kerberos tickets (requires domain-joined Windmill host)
+    #   "credssp"  — CredSSP (for double-hop scenarios)
+    # =========================================================================
+
+    session = winrm.Session(
+        endpoint,
+        auth=(username, password),
+        transport="ntlm",
+    )
+
+    # =========================================================================
+    # STEP 3: BUILD THE POWERSHELL ARGUMENT LIST
+    # =========================================================================
+    # PowerShell is invoked with these standard flags:
+    #
+    #   -NoProfile        — skips loading the user's PS profile, making execution
+    #                       faster and more predictable in automation contexts.
+    #
+    #   -ExecutionPolicy Bypass — overrides the machine's execution policy just
+    #                       for this run, allowing unsigned scripts to execute.
+    #                       This does NOT permanently change the machine policy.
+    #
+    #   -File <path>      — tells PowerShell to run a script file rather than
+    #                       an inline command.
+    #
+    # After those flags, we append the named arguments from script_args as
+    # -Key Value pairs, which PowerShell maps to the script's [Parameter] block.
+    # =========================================================================
+
+    ps_args = [
+        "-NoProfile",
+        "-ExecutionPolicy", "Bypass",
+        "-File", script_path,
+    ]
+
+    # Append each script argument as a -Key Value pair
+    # e.g. {"Action": "block", "IP": "1.2.3.4"} → ["-Action", "block", "-IP", "1.2.3.4"]
+    for key, value in script_args.items():
+        ps_args.append(f"-{key}")
+        ps_args.append(str(value))  # str() ensures non-string values (int, bool) are safe
+
+    # =========================================================================
+    # STEP 4: EXECUTE THE SCRIPT ON THE REMOTE HOST
+    # =========================================================================
+    # session.run_cmd("powershell", ps_args) runs PowerShell as a command on
+    # the remote machine, passing our argument list.
+    #
+    # result contains three things:
+    #   result.std_out     — bytes: whatever the script printed to stdout
+    #   result.std_err     — bytes: any errors or warnings the script emitted
+    #   result.status_code — int: exit code (0 typically means success)
+    #
+    # We decode the byte output with errors="ignore" to handle any unusual
+    # characters in the output without crashing.
+    # =========================================================================
+
+    result = session.run_cmd("powershell", ps_args)
+
+    stdout = result.std_out.decode(errors="ignore").strip()
+    stderr = result.std_err.decode(errors="ignore").strip()
+
+    # =========================================================================
+    # STEP 5: BUILD AND RETURN THE RESULT SUMMARY
+    # =========================================================================
+    # Return a human-readable summary of everything that happened.
+    # This is what Windmill shows in the step result, and what downstream
+    # steps (like the Exabeam case note writer) can use for their output.
+    #
+    # Including the args, stdout, stderr, and exit code gives a full audit
+    # trail of exactly what ran, on what host, with what result.
+    # =========================================================================
+
+    # Build a readable summary of which arguments were passed to the script
+    args_summary = "\n".join(
+        [f"  -{k}: {v}" for k, v in script_args.items()]
+    ) or "  <none>"
+
+    return "\n".join([
+        "=== WinRM PowerShell Execution Summary ===",
+        f"Target Host:  {target}",
+        f"Username:     {username}",
+        f"Script Path:  {script_path}",
+        "",
+        "Script Arguments:",
+        args_summary,
+        "",
+        f"Return Code: {result.status_code}  (0 = success)",
+        "",
+        "--- STDOUT ---",
+        stdout or "<empty>",
+        "",
+        "--- STDERR ---",
+        stderr or "<empty>",
+    ])

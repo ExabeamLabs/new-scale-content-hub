@@ -1,0 +1,41 @@
+{
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "name": "Bash /dev/tcp & Socat Reverse Shell",
+            "description": "Linux Reverse Shell via Bash TCP or Socat",
+            "useCase": "malware",
+            "mitre": [
+                {
+                    "tacticKey": "TA0011",
+                    "tactic": "Command and Control",
+                    "techniqueKey": "T1071",
+                    "technique": "Application Layer Protocol"
+                },
+                {
+                    "tacticKey": "TA0002",
+                    "tactic": "Execution",
+                    "techniqueKey": "T1059",
+                    "technique": "Command and Scripting Interpreter"
+                }
+            ],
+            "sequencesExecution": "CREATION_ORDER",
+            "severity": "high",
+            "sequencesConfig": {
+                "sequences": [
+                    {
+                        "name": "",
+                        "query": "activity_type:\"process-create\"\r\nAND\r\n(\r\n  process_command_line:RGXi(\"/dev/tcp/[0-9]{1,3}\")\r\n  OR\r\n  (\r\n    process_command_line:RGXi(\"socat\")\r\n    AND process_command_line:RGXi(\"TCP:\")\r\n    AND process_command_line:RGXi(\"EXEC:\")\r\n  )\r\n)\r\nAND NOT user=\"root\"",
+                        "condition": {
+                            "triggerOnAnyMatch": true
+                        },
+                        "id": "cc4b0722-5672-400a-809d-aef6725c5e9a"
+                    }
+                ],
+                "commonProperties": null,
+                "outcomes": null
+            },
+            "scheduleConfig": null
+        }
+    ]
+}

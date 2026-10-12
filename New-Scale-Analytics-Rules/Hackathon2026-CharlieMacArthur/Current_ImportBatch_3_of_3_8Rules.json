@@ -1,0 +1,370 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "NumC-T1070-001-Event-Log-Cleared-on-DC-1",
+      "name": "T1070.001 — Event Log Cleared on DC (Numeric Count)",
+      "description": "Event Log Cleared on DC. Abnormal number of wevtutil log-clear commands for this host within a short window",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "1"
+          ]
+        }
+      ],
+      "detectionReason": "Abnormal number (${trigger.numeric_value}) of wevtutil log-clear commands on ${event.host}",
+      "type": "numericCountProfiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1070.001",
+          "technique": "Indicator Removal",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Audit Tampering"
+      ],
+      "trainOnCondition": "toLower(process_name) = 'wevtutil.exe' && contains(toLower(process_command_line), 'cl ')",
+      "actOnCondition": "toLower(process_name) = 'wevtutil.exe' && contains(toLower(process_command_line), 'cl ')",
+      "query": "(activity_type = \"process-create\") AND (platform = \"Windows\") AND (event_code = \"1\") AND (contains(toLower(process_name), \"wevtutil\"))",
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "process-creation-activity",
+      "ruleGroupId": "pc-event-log-tampering-group",
+      "severity": "Medium",
+      "testMode": false,
+      "scopeValue": "toLower(process_name) = 'wevtutil.exe' && contains(toLower(process_command_line), 'cl ')",
+      "windowDuration": "90 days",
+      "windowPeriod": "12 hours",
+      "logBase": 2.0,
+      "minOrderOfMagnitude": 32,
+      "anomalyThreshold": "1 days",
+      "checkScopeMaturity": false,
+      "countPer": "host"
+    },
+    {
+      "templateId": "NumC-T1070-001-Shadow-Copy-Deletion-Triple-VSS-Wipe-2",
+      "name": "T1070.001 — Shadow Copy Deletion (Triple VSS Wipe) (Numeric Count)",
+      "description": "Shadow Copy Deletion (Triple VSS Wipe). Three distinct shadow-copy deletion techniques executed against the same host within seconds",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "endpoint-notification"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "4688"
+          ]
+        }
+      ],
+      "detectionReason": "Abnormal burst (${trigger.numeric_value}) of process-creation audit events on ${event.host}",
+      "type": "numericCountProfiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1070.001",
+          "technique": "Indicator Removal",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Ransomware"
+      ],
+      "trainOnCondition": "true",
+      "actOnCondition": "true",
+      "query": "(activity_type = \"endpoint-notification\") AND (platform = \"Windows\") AND (event_code = \"4688\")",
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "process-creation-activity",
+      "ruleGroupId": "pc-shadow-copy-delete-group",
+      "severity": "Medium",
+      "testMode": false,
+      "scopeValue": "true",
+      "windowDuration": "90 days",
+      "windowPeriod": "12 hours",
+      "logBase": 2.0,
+      "minOrderOfMagnitude": 32,
+      "anomalyThreshold": "1 days",
+      "checkScopeMaturity": false,
+      "countPer": "host"
+    },
+    {
+      "templateId": "NumC-T1486-Ransomware-File-Rename-lockbit-3",
+      "name": "T1486 — Ransomware File Rename (.lockbit) (Numeric Count)",
+      "description": "Ransomware File Rename (.lockbit). Abnormal rate of file renames to the same new extension within seconds for this host",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "file-time-modify"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "2"
+          ]
+        }
+      ],
+      "detectionReason": "Abnormal rate (${trigger.numeric_value}) of file renames to .lockbit on ${event.host}",
+      "type": "numericCountProfiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1486",
+          "technique": "Data Encrypted for Impact",
+          "tactic": "Impact",
+          "tacticKey": "TA0040"
+        }
+      ],
+      "useCases": [
+        "Ransomware"
+      ],
+      "trainOnCondition": "endsWith(toLower(file_name), '.lockbit')",
+      "actOnCondition": "endsWith(toLower(file_name), '.lockbit')",
+      "query": "(activity_type = \"file-time-modify\") AND (platform = \"Windows\") AND (event_code = \"2\") AND (endsWith(toLower(file_name), \".lockbit\"))",
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "file-write-activity",
+      "ruleGroupId": "filew-file-process-group",
+      "severity": "Medium",
+      "testMode": false,
+      "scopeValue": "endsWith(toLower(file_name), '.lockbit')",
+      "windowDuration": "90 days",
+      "windowPeriod": "12 hours",
+      "logBase": 2.0,
+      "minOrderOfMagnitude": 32,
+      "anomalyThreshold": "1 days",
+      "checkScopeMaturity": false,
+      "countPer": "host"
+    },
+    {
+      "templateId": "NumC-T1489-fail2ban-ClamAV-Killed-Before-Brute-Force-4",
+      "name": "T1489 — fail2ban/ClamAV Killed Before Brute Force (Numeric Count)",
+      "description": "fail2ban/ClamAV Killed Before Brute Force. Same identity uses sudo to stop a second security daemon within seconds",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "detectionReason": "Abnormal number (${trigger.numeric_value}) of sudo systemctl-stop commands on ${event.host}",
+      "type": "numericCountProfiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1489",
+          "technique": "Service Stop",
+          "tactic": "Impact",
+          "tacticKey": "TA0040"
+        }
+      ],
+      "useCases": [
+        "Destruction of Data"
+      ],
+      "trainOnCondition": "toLower(process_name) = 'sudo' && contains(toLower(process_command_line), 'stop')",
+      "actOnCondition": "toLower(process_name) = 'sudo' && contains(toLower(process_command_line), 'stop')",
+      "query": "(activity_type = \"process-create\") AND (platform = \"Unix\") AND (contains(toLower(process_name), \"sudo\"))",
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "process-creation-activity",
+      "ruleGroupId": "pc-sudo-command-group",
+      "severity": "Medium",
+      "testMode": false,
+      "scopeValue": "toLower(process_name) = 'sudo' && contains(toLower(process_command_line), 'stop')",
+      "windowDuration": "90 days",
+      "windowPeriod": "12 hours",
+      "logBase": 2.0,
+      "minOrderOfMagnitude": 32,
+      "anomalyThreshold": "1 days",
+      "checkScopeMaturity": false,
+      "countPer": "host"
+    },
+    {
+      "templateId": "NumDC-T1078-004-Impossible-Travel-Sign-In-5",
+      "name": "T1078.004 — Impossible Travel Sign-In (Numeric Distinct Count)",
+      "description": "Impossible Travel Sign-In. Two successful sign-ins for the same user from geographically-impossible locations within an implausible travel window",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-login"
+          ],
+          "category": [
+            "SignInLogs"
+          ],
+          "platform": [
+            "Microsoft 365"
+          ]
+        }
+      ],
+      "detectionReason": "Impossible travel: successive sign-ins from ${event.src_ip} shortly after a sign-in from a different country",
+      "type": "numericDistinctCountProfiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1078.004",
+          "technique": "Valid Accounts: Cloud Accounts",
+          "tactic": "Privilege Escalation",
+          "tacticKey": "TA0004"
+        }
+      ],
+      "useCases": [
+        "Privilege Abuse"
+      ],
+      "trainOnCondition": "outcome = 'success'",
+      "actOnCondition": "outcome = 'success'",
+      "query": "(activity_type = \"app-login\") AND (category = \"SignInLogs\") AND (platform = \"Microsoft 365\") AND (outcome = \"success\")",
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "app-login-activity",
+      "ruleGroupId": "al-source-endpoint-access-group",
+      "severity": "Medium",
+      "testMode": false,
+      "featureValue": "GetGeoInfo('country', src_ip)",
+      "scopeValue": "EntityId('type: User && direction: Source')",
+      "windowDuration": "1 days",
+      "windowPeriod": "12 hours",
+      "logBase": 2.0,
+      "minOrderOfMagnitude": 32,
+      "anomalyThreshold": "1 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false
+    },
+    {
+      "templateId": "NumC-T1552-001-Key-Vault-Bulk-Secret-Retrieval-6",
+      "name": "T1552.001 — Key Vault Bulk Secret Retrieval (Numeric Count)",
+      "description": "Key Vault Bulk Secret Retrieval. Same identity retrieves multiple unrelated secrets within seconds",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "secret-read"
+          ],
+          "platform": [
+            "Azure Key Vault"
+          ]
+        }
+      ],
+      "detectionReason": "Abnormal number (${trigger.numeric_value}) of Key Vault secret retrievals from ${event.src_ip}",
+      "type": "numericCountProfiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1552.001",
+          "technique": "Unsecured Credentials",
+          "tactic": "Credential Access",
+          "tacticKey": "TA0006"
+        }
+      ],
+      "useCases": [
+        "Privilege Escalation"
+      ],
+      "trainOnCondition": "operation = 'SecretGet' && operation_type = 'AuditEvent'",
+      "actOnCondition": "operation = 'SecretGet' && operation_type = 'AuditEvent'",
+      "query": "(activity_type = \"secret-read\") AND (platform = \"Azure Key Vault\") AND (operation = \"SecretGet\") AND (operation_type = \"AuditEvent\")",
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "password-checkout-activity",
+      "ruleGroupId": "pwd-event-count-magnitude-group",
+      "severity": "Medium",
+      "testMode": false,
+      "scopeValue": "operation = 'SecretGet' && operation_type = 'AuditEvent'",
+      "windowDuration": "90 days",
+      "windowPeriod": "12 hours",
+      "logBase": 2.0,
+      "minOrderOfMagnitude": 32,
+      "anomalyThreshold": "1 days",
+      "checkScopeMaturity": false,
+      "countPer": "src_ip"
+    },
+    {
+      "templateId": "NumC-T1578-002-High-CPU-Instances-in-Unused-Region-7",
+      "name": "T1578.002 — High-CPU Instances in Unused Region (Numeric Count)",
+      "description": "High-CPU Instances in Unused Region. A second identical high-CPU instance created by the same identity within two minutes",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "endpoint-create"
+          ],
+          "platform": [
+            "GCP"
+          ]
+        }
+      ],
+      "detectionReason": "Abnormal number (${trigger.numeric_value}) of compute instance creations by ${event.email_address}",
+      "type": "numericCountProfiledFeature",
+      "mitre": [],
+      "useCases": [
+        "Cloud Data Protection"
+      ],
+      "trainOnCondition": "toLower(operation) = 'v1.compute.instances.insert'",
+      "actOnCondition": "toLower(operation) = 'v1.compute.instances.insert'",
+      "query": "(activity_type = \"endpoint-create\") AND (platform = \"GCP\") AND (toLower(operation) = \"v1.compute.instances.insert\")",
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "general-activity",
+      "ruleGroupId": "go-operation-count-magnitude-group",
+      "severity": "Medium",
+      "testMode": false,
+      "scopeValue": "toLower(operation) = 'v1.compute.instances.insert'",
+      "windowDuration": "90 days",
+      "windowPeriod": "12 hours",
+      "logBase": 2.0,
+      "minOrderOfMagnitude": 32,
+      "anomalyThreshold": "1 days",
+      "checkScopeMaturity": false,
+      "countPer": "email_address"
+    },
+    {
+      "templateId": "NumC-T1531-Bulk-User-Deletion-via-API-Key-8",
+      "name": "T1531 — Bulk User Deletion via API Key (Numeric Count)",
+      "description": "Bulk User Deletion via API Key. Abnormal number of user deletions by the same API key within a short window",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "platform": [
+            "OpenAI"
+          ]
+        }
+      ],
+      "detectionReason": "Abnormal number (${trigger.numeric_value}) of user deletions via API key",
+      "type": "numericCountProfiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1531",
+          "technique": "Account Access Removal",
+          "tactic": "Impact",
+          "tacticKey": "TA0040"
+        }
+      ],
+      "useCases": [
+        "Account Manipulation"
+      ],
+      "trainOnCondition": "toLower(operation) = 'user.deleted' && toLower(credential_type) = 'api_key'",
+      "actOnCondition": "toLower(operation) = 'user.deleted' && toLower(credential_type) = 'api_key'",
+      "query": "(activity_type = \"app-activity\") AND (platform = \"OpenAI\") AND (toLower(operation) = \"user.deleted\") AND (toLower(credential_type) = \"api_key\")",
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "ai-activity",
+      "ruleGroupId": "ai-guardrail-event-count-magnitude-group",
+      "severity": "Medium",
+      "testMode": false,
+      "scopeValue": "toLower(operation) = 'user.deleted' && toLower(credential_type) = 'api_key'",
+      "windowDuration": "90 days",
+      "windowPeriod": "12 hours",
+      "logBase": 2.0,
+      "minOrderOfMagnitude": 32,
+      "anomalyThreshold": "1 days",
+      "checkScopeMaturity": false
+    }
+  ]
+}

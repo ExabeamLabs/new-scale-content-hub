@@ -1,0 +1,52 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1070-001-Event-Log-Cleared-on-DC-10",
+      "name": "T1070.001 — Event Log Cleared on DC (Fact #10)",
+      "description": "Event Log Cleared on DC. Trigger: wevtutil.exe used to clear Security/System/PowerShell event logs",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "1"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "process_name",
+        "process_command_line"
+      ],
+      "detectionReason": "'{process_name}' cleared the event log: {process_command_line}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1070.001",
+          "technique": "Indicator Removal",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Audit Tampering",
+        "Evasion"
+      ],
+      "value": "toLower(process_name) = 'wevtutil.exe' && containsAny(toLower(process_command_line), 'cl security', 'cl system', 'cl \\\"windows powershell\\\"')",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-event-log-tampering-group"
+    }
+  ]
+}

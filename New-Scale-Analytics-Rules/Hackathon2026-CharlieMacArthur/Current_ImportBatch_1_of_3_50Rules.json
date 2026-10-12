@@ -1,0 +1,2206 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1003-001-LSASS-Dump-via-rundll32-comsvcs-1",
+      "name": "T1003.001 — LSASS Dump via rundll32 comsvcs (Fact #1)",
+      "description": "LSASS Dump via rundll32 comsvcs. Trigger: rundll32.exe opens lsass.exe with GrantedAccess 0x1FFFFF, comsvcs.dll in call trace",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "10"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "process_name",
+        "parent_process_name",
+        "result"
+      ],
+      "detectionReason": "'{parent_process_name}' opened {process_name} with GrantedAccess {result}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1003.001",
+          "technique": "OS Credential Dumping",
+          "tactic": "Credential Access",
+          "tacticKey": "TA0006"
+        }
+      ],
+      "useCases": [
+        "Compromised Credentials"
+      ],
+      "value": "toLower(process_name) = 'lsass.exe' && toLower(parent_process_name) = 'rundll32.exe' && result = '0x1FFFFF'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "High",
+      "testMode": false,
+      "ruleGroupId": "pc-lsass-memory-dump"
+    },
+    {
+      "templateId": "Fact-T1003-001-LSASS-Dump-via-rundll32-comsvcs-2",
+      "name": "T1003.001 — LSASS Dump via rundll32 comsvcs (Fact #2)",
+      "description": "LSASS Dump via rundll32 comsvcs. Trigger: rundll32.exe executed with comsvcs.dll MiniDump command-line arguments",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "1"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "process_name",
+        "process_command_line"
+      ],
+      "detectionReason": "'{process_name}' ran with comsvcs.dll MiniDump arguments: {process_command_line}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1003.001",
+          "technique": "OS Credential Dumping",
+          "tactic": "Credential Access",
+          "tacticKey": "TA0006"
+        }
+      ],
+      "useCases": [
+        "Compromised Credentials"
+      ],
+      "value": "toLower(process_name) = 'rundll32.exe' && contains(toLower(process_command_line), 'comsvcs.dll') && contains(toLower(process_command_line), 'minidump')",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "High",
+      "testMode": false,
+      "ruleGroupId": "pc-process-execution-group"
+    },
+    {
+      "templateId": "Fact-T1003-001-LSASS-Dump-via-rundll32-comsvcs-3",
+      "name": "T1003.001 — LSASS Dump via rundll32 comsvcs (Fact #3)",
+      "description": "LSASS Dump via rundll32 comsvcs. Trigger: New file created matching lsass*.dmp in a non-system directory",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "file-write"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "11"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "file_name",
+        "file_dir"
+      ],
+      "detectionReason": "Dump file '{file_name}' created in {file_dir} by {process_name}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1003.001",
+          "technique": "OS Credential Dumping",
+          "tactic": "Credential Access",
+          "tacticKey": "TA0006"
+        }
+      ],
+      "useCases": [
+        "Compromised Credentials"
+      ],
+      "value": "endsWith(toLower(file_name), '.dmp') && toLower(file_dir) != 'c:\\\\windows\\\\temp\\\\'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "file-write-activity",
+      "severity": "High",
+      "testMode": false,
+      "ruleGroupId": "filew-file-process-group"
+    },
+    {
+      "templateId": "Fact-T1027-JScript-Loader-from-Outlook-4",
+      "name": "T1027 — JScript Loader from Outlook (Fact #4)",
+      "description": "JScript Loader from Outlook. Trigger: scrrun.dll (FileSystemObject) loaded by wscript.exe",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "dll-load"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "7"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "file_name",
+        "process_name"
+      ],
+      "detectionReason": "scrrun.dll loaded by '{process_name}'",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1027",
+          "technique": "Obfuscated Files or Information",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "value": "toLower(file_name) = 'scrrun.dll' && toLower(process_name) = 'wscript.exe'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "dll-load-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "dllname-group"
+    },
+    {
+      "templateId": "Fact-T1027-JScript-Loader-from-Outlook-5",
+      "name": "T1027 — JScript Loader from Outlook (Fact #5)",
+      "description": "JScript Loader from Outlook. Trigger: Process makes outbound HTTP connection within seconds of spawning from an Office application",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "network-session"
+          ],
+          "platform": [
+            "Network"
+          ],
+          "event_code": [
+            "3"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "process_name",
+        "dest_network_type"
+      ],
+      "detectionReason": "'{process_name}' made an outbound network connection to {dest_host}:{dest_port}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1027",
+          "technique": "Obfuscated Files or Information",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "value": "toLower(process_name) = 'wscript.exe' && dest_network_type = 'WAN'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "network-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "ntw-process-name-group"
+    },
+    {
+      "templateId": "Fact-T1053-005-Scheduled-Task-Masquerading-as-Windows-Update-6",
+      "name": "T1053.005 — Scheduled Task Masquerading as Windows Update (Fact #6)",
+      "description": "Scheduled Task Masquerading as Windows Update. Trigger: schtasks.exe creates a task under \\Microsoft\\Windows\\UpdateOrchestrator\\ executing a PowerShell download cradle",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "1"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "process_name",
+        "process_command_line"
+      ],
+      "detectionReason": "schtasks.exe created a task masquerading as Windows Update: {process_command_line}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1053.005",
+          "technique": "Scheduled Task/Job: Scheduled Task",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Evasion"
+      ],
+      "value": "toLower(process_name) = 'schtasks.exe' && contains(toLower(process_command_line), 'updateorchestrator') && contains(toLower(process_command_line), 'powershell')",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-task-creation-group"
+    },
+    {
+      "templateId": "Fact-T1053-005-Scheduled-Task-Masquerading-as-Windows-Update-7",
+      "name": "T1053.005 — Scheduled Task Masquerading as Windows Update (Fact #7)",
+      "description": "Scheduled Task Masquerading as Windows Update. Trigger: Registry write to Schedule\\TaskCache\\Tasks for a newly-created task",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "registry-modify"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "13"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "registry_path",
+        "registry_key"
+      ],
+      "detectionReason": "Registry entry written for new scheduled task: {registry_path}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1053.005",
+          "technique": "Scheduled Task/Job: Scheduled Task",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Evasion"
+      ],
+      "value": "contains(toLower(registry_path), 'schedule\\\\taskcache\\\\tasks') && contains(toLower(registry_key), 'actions')",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "registry-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "registryw-first-write-group"
+    },
+    {
+      "templateId": "Fact-T1055-Process-Injection-into-Notepad-8",
+      "name": "T1055 — Process Injection into Notepad (Fact #8)",
+      "description": "Process Injection into Notepad. Trigger: CreateRemoteThread from an AppData-hosted binary into notepad.exe",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Windows"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "process_name",
+        "dest_process_name",
+        "process_dir"
+      ],
+      "detectionReason": "'{process_name}' created a remote thread in {dest_process_name}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1055",
+          "technique": "Process Injection",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "value": "toLower(process_name) = 'update.exe' && toLower(dest_process_name) = 'notepad.exe' && contains(toLower(process_dir), 'appdata')",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-process-memory-dump-group"
+    },
+    {
+      "templateId": "Fact-T1055-Process-Injection-into-Notepad-9",
+      "name": "T1055 — Process Injection into Notepad (Fact #9)",
+      "description": "Process Injection into Notepad. Trigger: Process opened with PROCESS_ALL_ACCESS (0x1F3FFF) by a non-system binary",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "10"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "process_name",
+        "parent_process_name",
+        "result"
+      ],
+      "detectionReason": "'{parent_process_name}' opened {process_name} with GrantedAccess {result} (PROCESS_ALL_ACCESS)",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1055",
+          "technique": "Process Injection",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "value": "toLower(process_name) = 'notepad.exe' && toLower(parent_process_name) = 'update.exe' && result = '0x1F3FFF'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-process-memory-dump-group"
+    },
+    {
+      "templateId": "Fact-T1070-001-Event-Log-Cleared-on-DC-10",
+      "name": "T1070.001 — Event Log Cleared on DC (Fact #10)",
+      "description": "Event Log Cleared on DC. Trigger: wevtutil.exe used to clear Security/System/PowerShell event logs",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "1"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "process_name",
+        "process_command_line"
+      ],
+      "detectionReason": "'{process_name}' cleared the event log: {process_command_line}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1070.001",
+          "technique": "Indicator Removal",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Audit Tampering",
+        "Evasion"
+      ],
+      "value": "toLower(process_name) = 'wevtutil.exe' && containsAny(toLower(process_command_line), 'cl security', 'cl system', 'cl \\\"windows powershell\\\"')",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-event-log-tampering-group"
+    },
+    {
+      "templateId": "Fact-T1070-001-Shadow-Copy-Deletion-Triple-VSS-Wipe-11",
+      "name": "T1070.001 — Shadow Copy Deletion (Triple VSS Wipe) (Fact #11)",
+      "description": "Shadow Copy Deletion (Triple VSS Wipe). Trigger: A shadow-copy-deletion technique (vssadmin.exe, wmic.exe, or PowerShell WMI — command line not visible via this WinAD builder, so the specific tool cannot be confirmed) executed against the host NOTE: COLLAPSED from 3 near-duplicate rows (vssadmin/wmic/PowerShell variants) — all 3 reduced to byte-identical detection logic given this WinAD source's lack of command-line visibility; kept as one rule rather than importing 3 rules that fire identically",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "endpoint-notification"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "4688"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "host"
+      ],
+      "detectionReason": "A 4688 process-creation audit event was logged on {host} (command-line not visible via this builder — see note)",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1070.001",
+          "technique": "Indicator Removal",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Ransomware"
+      ],
+      "value": "host = 'FS-SHARE-01'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-shadow-copy-delete-group"
+    },
+    {
+      "templateId": "Fact-T1078-003-Built-in-Admin-Re-Enabled-PtH-12",
+      "name": "T1078.003 — Built-in Admin Re-Enabled + PtH (Fact #12)",
+      "description": "Built-in Admin Re-Enabled + PtH. Trigger: Built-in Administrator (RID-500) account re-enabled",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "endpoint-notification"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "4722"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "host"
+      ],
+      "detectionReason": "A 4722 (account-enabled) audit event was logged on {host}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1078.003",
+          "technique": "Valid Accounts",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Account Manipulation"
+      ],
+      "value": "host = 'WS-ACCT-03'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "user-modification-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "um-uac-change-group"
+    },
+    {
+      "templateId": "Fact-T1133-RDP-to-DC-via-Compromised-Service-Account-13",
+      "name": "T1133 — RDP to DC via Compromised Service Account (Fact #13)",
+      "description": "RDP to DC via Compromised Service Account. Trigger: Logon session granted sensitive privileges (SeBackup/SeDebug) for a service account",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "user-privilege-assign"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "4672"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "user"
+      ],
+      "detectionReason": "Service account {domain_user_name} was granted a 4672 special-privilege logon on {host}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1133",
+          "technique": "External Remote Services",
+          "tactic": "Initial Access",
+          "tacticKey": "TA0001"
+        }
+      ],
+      "useCases": [
+        "Compromised Credentials"
+      ],
+      "value": "event_code = '4672' && contains(toLower(user), 'svc')",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "privilege-use-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pu-first-user-activity-group"
+    },
+    {
+      "templateId": "Fact-T1133-RDP-to-DC-via-Compromised-Service-Account-14",
+      "name": "T1133 — RDP to DC via Compromised Service Account (Fact #14)",
+      "description": "RDP to DC via Compromised Service Account. Trigger: Recon command chain (whoami && net user && ipconfig) within seconds of a new interactive logon",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "endpoint-notification"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "4688"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "host"
+      ],
+      "detectionReason": "A 4688 process-creation audit event was logged on {host} shortly after a new interactive logon (command detail not visible via this builder)",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1133",
+          "technique": "External Remote Services",
+          "tactic": "Initial Access",
+          "tacticKey": "TA0001"
+        }
+      ],
+      "useCases": [
+        "Compromised Credentials"
+      ],
+      "value": "host = 'DC01'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-account-discovery-group"
+    },
+    {
+      "templateId": "Fact-T1197-BITS-Job-Abuse-15",
+      "name": "T1197 — BITS Job Abuse (Fact #15)",
+      "description": "BITS Job Abuse. Trigger: bitsadmin.exe downloads a file via a BITS transfer job",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "1"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "process_name",
+        "process_command_line"
+      ],
+      "detectionReason": "'{process_name}' downloaded a file via a BITS transfer job: {process_command_line}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1197",
+          "technique": "BITS Jobs",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "value": "toLower(process_name) = 'bitsadmin.exe' && contains(toLower(process_command_line), '/transfer')",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-bits-job-execution-group"
+    },
+    {
+      "templateId": "Fact-T1197-BITS-Job-Abuse-16",
+      "name": "T1197 — BITS Job Abuse (Fact #16)",
+      "description": "BITS Job Abuse. Trigger: Newly-written executable in ProgramData executed by cmd.exe within seconds",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "1"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "process_name",
+        "process_command_line"
+      ],
+      "detectionReason": "cmd.exe executed a file from ProgramData: {process_command_line}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1197",
+          "technique": "BITS Jobs",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "value": "toLower(process_name) = 'cmd.exe' && contains(toLower(process_command_line), 'programdata')",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-process-execution-group"
+    },
+    {
+      "templateId": "Fact-T1204-004-ClickFix-Paste-and-Run-17",
+      "name": "T1204.004 — ClickFix Paste-and-Run (Fact #17)",
+      "description": "ClickFix Paste-and-Run. Trigger: mshta.exe executes inline JavaScript that spawns PowerShell",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "1"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "process_name",
+        "process_command_line"
+      ],
+      "detectionReason": "mshta.exe executed inline JavaScript spawning a shell: {process_command_line}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1204.004",
+          "technique": "User Execution",
+          "tactic": "Execution",
+          "tacticKey": "TA0002"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "value": "toLower(process_name) = 'mshta.exe' && contains(toLower(process_command_line), 'activexobject')",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-html-execution-group"
+    },
+    {
+      "templateId": "Fact-T1204-004-ClickFix-Paste-and-Run-18",
+      "name": "T1204.004 — ClickFix Paste-and-Run (Fact #18)",
+      "description": "ClickFix Paste-and-Run. Trigger: PowerShell launched with -w hidden -nop and Base64 command, parented by mshta.exe",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "1"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "process_name",
+        "process_command_line",
+        "parent_process_name"
+      ],
+      "detectionReason": "PowerShell launched hidden with an encoded command, parented by mshta.exe",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1204.004",
+          "technique": "User Execution",
+          "tactic": "Execution",
+          "tacticKey": "TA0002"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "value": "toLower(process_name) = 'powershell.exe' && contains(toLower(process_command_line), '-w hidden') && contains(toLower(process_command_line), '-nop') && toLower(parent_process_name) = 'mshta.exe'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-powershell-encoded-command-group"
+    },
+    {
+      "templateId": "Fact-T1204-004-ClickFix-Paste-and-Run-19",
+      "name": "T1204.004 — ClickFix Paste-and-Run (Fact #19)",
+      "description": "ClickFix Paste-and-Run. Trigger: PowerShell connects outbound to a non-standard high port immediately after spawning",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "network-session"
+          ],
+          "platform": [
+            "Network"
+          ],
+          "event_code": [
+            "3"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "process_name",
+        "dest_port"
+      ],
+      "detectionReason": "PowerShell connected to {dest_host}:{dest_port}, a port commonly associated with C2 frameworks",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1204.004",
+          "technique": "User Execution",
+          "tactic": "Execution",
+          "tacticKey": "TA0002"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "value": "toLower(process_name) = 'powershell.exe' && dest_port = '4444'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "network-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "ntw-process-name-group"
+    },
+    {
+      "templateId": "Fact-T1219-NetSupport-RAT-via-Fake-Browser-Update-20",
+      "name": "T1219 — NetSupport RAT via Fake Browser Update (Fact #20)",
+      "description": "NetSupport RAT via Fake Browser Update. Trigger: Registry write configuring a remote-access gateway address",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "registry-modify"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "13"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "registry_path",
+        "registry_value",
+        "gateway"
+      ],
+      "detectionReason": "Registry entry configured a NetSupport gateway: {registry_value}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1219",
+          "technique": "Remote Access Tools",
+          "tactic": "Command and Control",
+          "tacticKey": "TA0011"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "value": "contains(toLower(registry_path), 'netsupport') && contains(toLower(registry_value), 'gateway=')",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "registry-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "registryw-first-write-group"
+    },
+    {
+      "templateId": "Fact-T1486-Ransomware-File-Rename-lockbit-21",
+      "name": "T1486 — Ransomware File Rename (.lockbit) (Fact #21)",
+      "description": "Ransomware File Rename (.lockbit). Trigger: explorer.exe renames files to a known ransomware extension",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "file-time-modify"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "2"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "file_name"
+      ],
+      "detectionReason": "'{process_name}' changed the creation time of {file_name} to a known ransomware extension (Sysmon rule: FileCreateTime — its proxy for file rename)",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1486",
+          "technique": "Data Encrypted for Impact",
+          "tactic": "Impact",
+          "tacticKey": "TA0040"
+        }
+      ],
+      "useCases": [
+        "Ransomware"
+      ],
+      "value": "endsWith(toLower(file_name), '.lockbit')",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "file-write-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "filew-file-process-group"
+    },
+    {
+      "templateId": "Fact-T1486-Ransomware-File-Rename-lockbit-22",
+      "name": "T1486 — Ransomware File Rename (.lockbit) (Fact #22)",
+      "description": "Ransomware File Rename (.lockbit). Trigger: Ransom-note-style file created in same directory as mass-renamed files",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "file-write"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "11"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "file_name"
+      ],
+      "detectionReason": "Ransom-note file '{file_name}' created in {file_dir}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1486",
+          "technique": "Data Encrypted for Impact",
+          "tactic": "Impact",
+          "tacticKey": "TA0040"
+        }
+      ],
+      "useCases": [
+        "Ransomware"
+      ],
+      "value": "containsAny(toLower(file_name), 'read_me', 'readme', 'decrypt') && endsWith(toLower(file_name), '.txt')",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "file-write-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "filew-file-process-group"
+    },
+    {
+      "templateId": "Fact-T1547-001-Registry-Run-Key-Persistence-23",
+      "name": "T1547.001 — Registry Run Key Persistence (Fact #23)",
+      "description": "Registry Run Key Persistence. Trigger: New HKCU Run key value created pointing to a recently-dropped AppData binary",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "registry-modify"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "13"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "registry_path"
+      ],
+      "detectionReason": "New Run key value created: {registry_key} = {registry_value}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1547.001",
+          "technique": "Boot or Logon Autostart Execution",
+          "tactic": "Privilege Escalation",
+          "tacticKey": "TA0004"
+        }
+      ],
+      "useCases": [
+        "Privilege Escalation"
+      ],
+      "value": "contains(toLower(registry_path), 'currentversion\\\\run')",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "registry-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "registryw-first-write-group"
+    },
+    {
+      "templateId": "Fact-T1555-003-Browser-Credential-Theft-Infostealer-24",
+      "name": "T1555.003 — Browser Credential Theft (Infostealer) (Fact #24)",
+      "description": "Browser Credential Theft (Infostealer). Trigger: Process opens lsass.exe with PROCESS_VM_READ from a masquerading svchost-named binary in AppData\\Temp",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "10"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "result",
+        "process_name",
+        "parent_process_dir"
+      ],
+      "detectionReason": "'{parent_process_name}' from AppData\\Temp opened lsass.exe with GrantedAccess {result} (PROCESS_VM_READ)",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1555.003",
+          "technique": "Credentials from Password Stores",
+          "tactic": "Credential Access",
+          "tacticKey": "TA0006"
+        }
+      ],
+      "useCases": [
+        "Compromised Credentials"
+      ],
+      "value": "result = '0x1010' && toLower(process_name) = 'lsass.exe' && contains(toLower(parent_process_dir), 'appdata\\\\local\\\\temp')",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "High",
+      "testMode": false,
+      "ruleGroupId": "pc-lsass-memory-dump"
+    },
+    {
+      "templateId": "Fact-T1555-003-Browser-Credential-Theft-Infostealer-25",
+      "name": "T1555.003 — Browser Credential Theft (Infostealer) (Fact #25)",
+      "description": "Browser Credential Theft (Infostealer). Trigger: Process touches Chrome/Edge 'Login Data' credential store file",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "file-write"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "11"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "file_name"
+      ],
+      "detectionReason": "'{process_name}' accessed browser credential store: {file_path}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1555.003",
+          "technique": "Credentials from Password Stores",
+          "tactic": "Credential Access",
+          "tacticKey": "TA0006"
+        }
+      ],
+      "useCases": [
+        "Compromised Credentials"
+      ],
+      "value": "contains(toLower(file_name), 'login data')",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "file-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "file-critical-file-group"
+    },
+    {
+      "templateId": "Fact-T1555-003-Browser-Credential-Theft-Infostealer-26",
+      "name": "T1555.003 — Browser Credential Theft (Infostealer) (Fact #26)",
+      "description": "Browser Credential Theft (Infostealer). Trigger: Same masquerading process makes an outbound HTTPS connection immediately after touching browser credential stores",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "network-session"
+          ],
+          "platform": [
+            "Network"
+          ],
+          "event_code": [
+            "3"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "process_dir",
+        "dest_port"
+      ],
+      "detectionReason": "A process running from AppData\\Temp made an outbound HTTPS connection to {dest_ip}:{dest_port}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1555.003",
+          "technique": "Credentials from Password Stores",
+          "tactic": "Credential Access",
+          "tacticKey": "TA0006"
+        }
+      ],
+      "useCases": [
+        "Compromised Credentials"
+      ],
+      "value": "contains(toLower(process_dir), 'appdata\\\\local\\\\temp') && dest_port = '443'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "network-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "ntw-process-name-group"
+    },
+    {
+      "templateId": "Fact-T1047-WMI-Lateral-Movement-Plaintext-Credential-27",
+      "name": "T1047 — WMI Lateral Movement, Plaintext Credential (Fact #27)",
+      "description": "WMI Lateral Movement, Plaintext Credential. Trigger: wmic.exe /node executes a remote process with credentials supplied in plaintext on the command line",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "endpoint-notification"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "4688"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "host"
+      ],
+      "detectionReason": "A 4688 process-creation audit event was logged on {host} (command-line not visible via this builder)",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1047",
+          "technique": "Windows Management Instrumentation",
+          "tactic": "Execution",
+          "tacticKey": "TA0002"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "value": "host = 'WS-CORP-14'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-process-execution-group"
+    },
+    {
+      "templateId": "Fact-T1047-WMI-Lateral-Movement-Plaintext-Credential-28",
+      "name": "T1047 — WMI Lateral Movement, Plaintext Credential (Fact #28)",
+      "description": "WMI Lateral Movement, Plaintext Credential. Trigger: Network logon (Type 3) on target host immediately follows a WMI remote-execution attempt from a peer workstation",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "endpoint-login"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "4624"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "login_type",
+        "user"
+      ],
+      "detectionReason": "Network logon (Type 3) for {user} on {host} from {src_ip}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1047",
+          "technique": "Windows Management Instrumentation",
+          "tactic": "Execution",
+          "tacticKey": "TA0002"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "value": "login_type = '3' && toLower(user) = 'administrator'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "endpoint-login-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "el-source-endpoint-access-group"
+    },
+    {
+      "templateId": "Fact-T1047-WMI-Lateral-Movement-Plaintext-Credential-29",
+      "name": "T1047 — WMI Lateral Movement, Plaintext Credential (Fact #29)",
+      "description": "WMI Lateral Movement, Plaintext Credential. Trigger: PowerShell spawned by WmiPrvSE.exe (WMI Provider Host) on the target host",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "endpoint-notification"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "4688"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "host"
+      ],
+      "detectionReason": "A 4688 process-creation audit event was logged on {host} shortly after the WMI remote-execution attempt (parent process not visible via this builder)",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1047",
+          "technique": "Windows Management Instrumentation",
+          "tactic": "Execution",
+          "tacticKey": "TA0002"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "value": "host = 'WS-CORP-20'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-parent-process-name-group"
+    },
+    {
+      "templateId": "Fact-T1005-Finance-Directory-Archived-and-Staged-30",
+      "name": "T1005 — Finance Directory Archived and Staged (Fact #30)",
+      "description": "Finance Directory Archived and Staged. Trigger: Privileged execution of gpg as root immediately following an archive utility",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "process_path",
+        "user_id"
+      ],
+      "detectionReason": "Privileged (root) execution of gpg on {host}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1005",
+          "technique": "Data from Local System",
+          "tactic": "Collection",
+          "tacticKey": "TA0009"
+        }
+      ],
+      "useCases": [
+        "Evasion"
+      ],
+      "value": "toLower(process_path) = '/usr/bin/gpg' && user_id = '0'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-process-execution-group"
+    },
+    {
+      "templateId": "Fact-T1005-Finance-Directory-Archived-and-Staged-31",
+      "name": "T1005 — Finance Directory Archived and Staged (Fact #31)",
+      "description": "Finance Directory Archived and Staged. Trigger: Privileged execution of curl as root immediately following file-encryption activity",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "process_path",
+        "user_id"
+      ],
+      "detectionReason": "Privileged (root) execution of curl on {host}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1005",
+          "technique": "Data from Local System",
+          "tactic": "Collection",
+          "tacticKey": "TA0009"
+        }
+      ],
+      "useCases": [
+        "Data Access"
+      ],
+      "value": "toLower(process_path) = '/usr/bin/curl' && user_id = '0'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-process-execution-group"
+    },
+    {
+      "templateId": "Fact-T1027-002-UPX-Packed-ELF-from-dev-shm-32",
+      "name": "T1027.002 — UPX-Packed ELF from /dev/shm (Fact #32)",
+      "description": "UPX-Packed ELF from /dev/shm. Trigger: Privileged chmod execution by root immediately after a download utility",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "process_path",
+        "user_id"
+      ],
+      "detectionReason": "Privileged (root) chmod executed on {host}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1027.002",
+          "technique": "Obfuscated Files or Information",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Evasion"
+      ],
+      "value": "toLower(process_path) = '/bin/chmod' && user_id = '0'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-process-execution-group"
+    },
+    {
+      "templateId": "Fact-T1027-002-UPX-Packed-ELF-from-dev-shm-33",
+      "name": "T1027.002 — UPX-Packed ELF from /dev/shm (Fact #33)",
+      "description": "UPX-Packed ELF from /dev/shm. Trigger: Execution of a binary located in /dev/shm",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "process_dir"
+      ],
+      "detectionReason": "'{process_name}' executed directly from {process_dir}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1027.002",
+          "technique": "Obfuscated Files or Information",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Evasion"
+      ],
+      "value": "toLower(process_dir) = '/dev/shm/'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-process-execution-group"
+    },
+    {
+      "templateId": "Fact-T1046-nmap-Sweep-from-Compromised-Web-Server-34",
+      "name": "T1046 — nmap Sweep from Compromised Web Server (Fact #34)",
+      "description": "nmap Sweep from Compromised Web Server. Trigger: nmap executed by a web-application service account (www-data)",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "process_path",
+        "user_id"
+      ],
+      "detectionReason": "'{process_name}' executed by uid {user_id} (www-data) on {host}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1046",
+          "technique": "Network Service Discovery",
+          "tactic": "Discovery",
+          "tacticKey": "TA0007"
+        }
+      ],
+      "useCases": [
+        "Compromised Credentials"
+      ],
+      "value": "toLower(process_path) = '/usr/bin/nmap' && user_id = '33'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-process-execution-group"
+    },
+    {
+      "templateId": "Fact-T1046-nmap-Sweep-from-Compromised-Web-Server-35",
+      "name": "T1046 — nmap Sweep from Compromised Web Server (Fact #35)",
+      "description": "nmap Sweep from Compromised Web Server. Trigger: netcat executed by the same service account shortly after a port-scanning utility",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "process_path",
+        "user_id"
+      ],
+      "detectionReason": "netcat executed on {host} by uid {user_id}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1046",
+          "technique": "Network Service Discovery",
+          "tactic": "Discovery",
+          "tacticKey": "TA0007"
+        }
+      ],
+      "useCases": [
+        "Compromised Credentials"
+      ],
+      "value": "toLower(process_path) = '/usr/bin/nc' && user_id = '33'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-process-execution-group"
+    },
+    {
+      "templateId": "Fact-T1136-001-Backdoor-UID-0-Account-36",
+      "name": "T1136.001 — Backdoor UID-0 Account (Fact #36)",
+      "description": "Backdoor UID-0 Account. Trigger: useradd executed by root",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "process_path"
+      ],
+      "detectionReason": "useradd executed on {host}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1136.001",
+          "technique": "Create Account",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Account Manipulation"
+      ],
+      "value": "toLower(process_path) = '/usr/sbin/useradd'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-process-execution-group"
+    },
+    {
+      "templateId": "Fact-T1136-001-Backdoor-UID-0-Account-37",
+      "name": "T1136.001 — Backdoor UID-0 Account (Fact #37)",
+      "description": "Backdoor UID-0 Account. Trigger: passwd executed by root immediately after a new account is created",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "process_path"
+      ],
+      "detectionReason": "passwd executed on {host}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1136.001",
+          "technique": "Create Account",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Account Manipulation"
+      ],
+      "value": "toLower(process_path) = '/usr/bin/passwd'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-process-execution-group"
+    },
+    {
+      "templateId": "Fact-T1195-001-Malicious-pip-Package-Postinstall-38",
+      "name": "T1195.001 — Malicious pip Package Postinstall (Fact #38)",
+      "description": "Malicious pip Package Postinstall. Trigger: python3 executed immediately following a package installation",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "process_path"
+      ],
+      "detectionReason": "python3 executed on {host}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1195.001",
+          "technique": "Supply Chain Compromise: Compromise Software Dependencies and Development Tools",
+          "tactic": "Initial Access",
+          "tacticKey": "TA0001"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "value": "toLower(process_path) = '/usr/bin/python3'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-process-execution-group"
+    },
+    {
+      "templateId": "Fact-T1195-001-Malicious-pip-Package-Postinstall-39",
+      "name": "T1195.001 — Malicious pip Package Postinstall (Fact #39)",
+      "description": "Malicious pip Package Postinstall. Trigger: curl executed by the same build-pipeline identity immediately after script execution",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "process_path"
+      ],
+      "detectionReason": "curl executed on {host}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1195.001",
+          "technique": "Supply Chain Compromise: Compromise Software Dependencies and Development Tools",
+          "tactic": "Initial Access",
+          "tacticKey": "TA0001"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "value": "toLower(process_path) = '/usr/bin/curl'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-process-execution-group"
+    },
+    {
+      "templateId": "Fact-T1489-fail2ban-ClamAV-Killed-Before-Brute-Force-40",
+      "name": "T1489 — fail2ban/ClamAV Killed Before Brute Force (Fact #40)",
+      "description": "fail2ban/ClamAV Killed Before Brute Force. Trigger: www-data account uses sudo to stop the fail2ban service",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "process_name",
+        "process_command_line"
+      ],
+      "detectionReason": "{user} used sudo to stop the fail2ban service on {host}: {process_command_line}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1489",
+          "technique": "Service Stop",
+          "tactic": "Impact",
+          "tacticKey": "TA0040"
+        }
+      ],
+      "useCases": [
+        "Destruction of Data"
+      ],
+      "value": "toLower(process_name) = 'sudo' && contains(toLower(process_command_line), 'stop fail2ban')",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-sudo-command-group"
+    },
+    {
+      "templateId": "Fact-T1489-fail2ban-ClamAV-Killed-Before-Brute-Force-41",
+      "name": "T1489 — fail2ban/ClamAV Killed Before Brute Force (Fact #41)",
+      "description": "fail2ban/ClamAV Killed Before Brute Force. Trigger: Repeated SSH authentication failures for root from the same source IP immediately after security daemons are stopped",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "endpoint-login"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "outcome",
+        "user",
+        "src_network_type"
+      ],
+      "detectionReason": "Repeated SSH authentication failures for root on {host} from {src_ip}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1489",
+          "technique": "Service Stop",
+          "tactic": "Impact",
+          "tacticKey": "TA0040"
+        }
+      ],
+      "useCases": [
+        "Destruction of Data"
+      ],
+      "value": "outcome = 'fail' && toLower(user) = 'root' && src_network_type = 'WAN'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "endpoint-login-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "el-failed-login-group"
+    },
+    {
+      "templateId": "Fact-T1552-001-Bulk-grep-for-Credentials-42",
+      "name": "T1552.001 — Bulk grep for Credentials (Fact #42)",
+      "description": "Bulk grep for Credentials. Trigger: grep executed across multiple home directories searching credential-related keywords",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "process_path"
+      ],
+      "detectionReason": "grep executed on {host}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1552.001",
+          "technique": "Unsecured Credentials",
+          "tactic": "Credential Access",
+          "tacticKey": "TA0006"
+        }
+      ],
+      "useCases": [
+        "Privilege Escalation"
+      ],
+      "value": "toLower(process_path) = '/usr/bin/grep'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-process-execution-group"
+    },
+    {
+      "templateId": "Fact-T1552-001-Bulk-grep-for-Credentials-43",
+      "name": "T1552.001 — Bulk grep for Credentials (Fact #43)",
+      "description": "Bulk grep for Credentials. Trigger: cat executed against multiple different users' files immediately following a recursive credential search",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "process_path"
+      ],
+      "detectionReason": "'{process_name}' executed on {host}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1552.001",
+          "technique": "Unsecured Credentials",
+          "tactic": "Credential Access",
+          "tacticKey": "TA0006"
+        }
+      ],
+      "useCases": [
+        "Privilege Escalation"
+      ],
+      "value": "toLower(process_path) = '/bin/cat'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-process-execution-group"
+    },
+    {
+      "templateId": "Fact-T1552-001-Bulk-grep-for-Credentials-44",
+      "name": "T1552.001 — Bulk grep for Credentials (Fact #44)",
+      "description": "Bulk grep for Credentials. Trigger: tar executed immediately after reading multiple users' sensitive files",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "process_path"
+      ],
+      "detectionReason": "'{process_name}' executed on {host}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1552.001",
+          "technique": "Unsecured Credentials",
+          "tactic": "Credential Access",
+          "tacticKey": "TA0006"
+        }
+      ],
+      "useCases": [
+        "Privilege Escalation"
+      ],
+      "value": "toLower(process_path) = '/usr/bin/tar'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-process-execution-group"
+    },
+    {
+      "templateId": "Fact-T1569-001-Systemd-Timer-Persistence-45",
+      "name": "T1569.001 — Systemd Timer Persistence (Fact #45)",
+      "description": "Systemd Timer Persistence. Trigger: systemctl enable --now executed for a newly-created timer unit",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "process_path"
+      ],
+      "detectionReason": "systemctl executed on {host}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1569.001",
+          "technique": "System Services",
+          "tactic": "Execution",
+          "tacticKey": "TA0002"
+        }
+      ],
+      "useCases": [
+        "Privilege Escalation"
+      ],
+      "value": "toLower(process_path) = '/bin/systemctl'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-task-creation-group"
+    },
+    {
+      "templateId": "Cntx-T1569-001-Systemd-Timer-Persistence-46",
+      "name": "T1569.001 — Systemd Timer Persistence (Context #46)",
+      "description": "Systemd Timer Persistence. Trigger: Systemd reports a new timer-triggered service started",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "endpoint-activity"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "process_name"
+      ],
+      "detectionReason": "systemd reported activity on {host}",
+      "type": "contextFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1569.001",
+          "technique": "System Services",
+          "tactic": "Execution",
+          "tacticKey": "TA0002"
+        }
+      ],
+      "useCases": [
+        "Privilege Escalation"
+      ],
+      "value": "toLower(process_name) = 'systemd'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "scheduled-task-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "stc-process-name-group"
+    },
+    {
+      "templateId": "Fact-T1569-001-Systemd-Timer-Persistence-47",
+      "name": "T1569.001 — Systemd Timer Persistence (Fact #47)",
+      "description": "Systemd Timer Persistence. Trigger: bash executed by root as the payload of a scheduled unit, followed by a network connection",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "process_path"
+      ],
+      "detectionReason": "bash executed on {host}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1569.001",
+          "technique": "System Services",
+          "tactic": "Execution",
+          "tacticKey": "TA0002"
+        }
+      ],
+      "useCases": [
+        "Privilege Escalation"
+      ],
+      "value": "toLower(process_path) = '/bin/bash'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-process-execution-group"
+    },
+    {
+      "templateId": "Fact-T1574-006-LD-PRELOAD-Hijacking-48",
+      "name": "T1574.006 — LD_PRELOAD Hijacking (Fact #48)",
+      "description": "LD_PRELOAD Hijacking. Trigger: echo used to write into a system linker-configuration path as root NOTE: args not captured by confirmed Unix format; inferred from context",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "process_path",
+        "user_id"
+      ],
+      "detectionReason": "Privileged (root) echo execution on {host}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1574.006",
+          "technique": "Hijack Execution Flow",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Privilege Escalation"
+      ],
+      "value": "toLower(process_path) = '/usr/bin/echo' && user_id = '0'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-process-execution-group"
+    },
+    {
+      "templateId": "Fact-T1574-006-LD-PRELOAD-Hijacking-49",
+      "name": "T1574.006 — LD_PRELOAD Hijacking (Fact #49)",
+      "description": "LD_PRELOAD Hijacking. Trigger: SSH password authentication success on the same host shortly after a linker-configuration file is modified",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "ssh-traffic"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "user"
+      ],
+      "detectionReason": "SSH login success for root on {host} from {src_ip}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1574.006",
+          "technique": "Hijack Execution Flow",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Privilege Escalation"
+      ],
+      "value": "toLower(user) = 'root'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "endpoint-login-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "el-source-endpoint-access-group"
+    },
+    {
+      "templateId": "Fact-T1621-MFA-Push-Bombing-51",
+      "name": "T1621 — MFA Push Bombing (Fact #51)",
+      "description": "MFA Push Bombing. Trigger: MFA push denied by user",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-login"
+          ],
+          "category": [
+            "SignInLogs"
+          ],
+          "platform": [
+            "Microsoft 365"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "category",
+        "error_code"
+      ],
+      "detectionReason": "MFA-interrupted sign-in (error 50074) from {src_ip}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1621",
+          "technique": "Multi-Factor Authentication Request Generation",
+          "tactic": "Credential Access",
+          "tacticKey": "TA0006"
+        }
+      ],
+      "useCases": [
+        "Brute Force Attack"
+      ],
+      "value": "error_code = '50074'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "app-login-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "al-mfa-status-group"
+    }
+  ]
+}

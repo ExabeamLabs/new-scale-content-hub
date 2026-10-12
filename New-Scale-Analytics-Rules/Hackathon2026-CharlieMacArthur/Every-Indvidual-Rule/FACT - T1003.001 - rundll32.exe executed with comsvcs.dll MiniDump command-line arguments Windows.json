@@ -1,0 +1,51 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1003-001-LSASS-Dump-via-rundll32-comsvcs-2",
+      "name": "T1003.001 — LSASS Dump via rundll32 comsvcs (Fact #2)",
+      "description": "LSASS Dump via rundll32 comsvcs. Trigger: rundll32.exe executed with comsvcs.dll MiniDump command-line arguments",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "1"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "process_name",
+        "process_command_line"
+      ],
+      "detectionReason": "'{process_name}' ran with comsvcs.dll MiniDump arguments: {process_command_line}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1003.001",
+          "technique": "OS Credential Dumping",
+          "tactic": "Credential Access",
+          "tacticKey": "TA0006"
+        }
+      ],
+      "useCases": [
+        "Compromised Credentials"
+      ],
+      "value": "toLower(process_name) = 'rundll32.exe' && contains(toLower(process_command_line), 'comsvcs.dll') && contains(toLower(process_command_line), 'minidump')",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "High",
+      "testMode": false,
+      "ruleGroupId": "pc-process-execution-group"
+    }
+  ]
+}

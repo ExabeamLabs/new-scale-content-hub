@@ -1,0 +1,35 @@
+{
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "name": "NMAP Network Enumeration Linux",
+            "description": "This rule detects attempts to enumerate open network ports. It checks for the use of the 'nmap' command. Such enumeration activities could be indicative of an attacker trying to gather information for further attacks.",
+            "useCase": "evasion",
+            "mitre": [
+                {
+                    "tacticKey": "TA0007",
+                    "tactic": "Discovery",
+                    "techniqueKey": "T1046",
+                    "technique": "Network Service Discovery"
+                }
+            ],
+            "sequencesExecution": "CREATION_ORDER",
+            "severity": "low",
+            "sequencesConfig": {
+                "sequences": [
+                    {
+                        "name": "",
+                        "query": "process_command_line:\"nmap \"",
+                        "condition": {
+                            "triggerOnAnyMatch": true
+                        },
+                        "id": "ad0dc5b3-3e37-4c9f-8e8d-4a9d76179367"
+                    }
+                ],
+                "commonProperties": null,
+                "outcomes": null
+            },
+            "scheduleConfig": null
+        }
+    ]
+}

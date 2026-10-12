@@ -1,0 +1,48 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1489-fail2ban-ClamAV-Killed-Before-Brute-Force-41",
+      "name": "T1489 — fail2ban/ClamAV Killed Before Brute Force (Fact #41)",
+      "description": "fail2ban/ClamAV Killed Before Brute Force. Trigger: Repeated SSH authentication failures for root from the same source IP immediately after security daemons are stopped",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "endpoint-login"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "outcome",
+        "user",
+        "src_network_type"
+      ],
+      "detectionReason": "Repeated SSH authentication failures for root on {host} from {src_ip}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1489",
+          "technique": "Service Stop",
+          "tactic": "Impact",
+          "tacticKey": "TA0040"
+        }
+      ],
+      "useCases": [
+        "Destruction of Data"
+      ],
+      "value": "outcome = 'fail' && toLower(user) = 'root' && src_network_type = 'WAN'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "endpoint-login-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "el-failed-login-group"
+    }
+  ]
+}

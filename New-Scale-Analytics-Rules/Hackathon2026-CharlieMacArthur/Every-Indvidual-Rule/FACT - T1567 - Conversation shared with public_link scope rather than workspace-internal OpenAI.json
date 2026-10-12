@@ -1,0 +1,48 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1567-Conversation-Shared-Publicly-83",
+      "name": "T1567 — Conversation Shared Publicly (Fact #83)",
+      "description": "Conversation Shared Publicly. Trigger: Conversation shared with public_link scope rather than workspace-internal",
+      "applicableEvents": [
+        {
+          "operation": [
+            "conversation.shared"
+          ],
+          "platform": [
+            "OpenAI"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation",
+        "share_scope",
+        "credential_type"
+      ],
+      "detectionReason": "Conversation shared by {email_address} ({event_name})",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1567",
+          "technique": "Exfiltration Over Web Service",
+          "tactic": "Exfiltration",
+          "tacticKey": "TA0010"
+        }
+      ],
+      "useCases": [
+        "Data Exfiltration"
+      ],
+      "value": "toLower(operation) = 'conversation.shared'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "ai-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "ai-conversation-share-count-magnitude-group"
+    }
+  ]
+}

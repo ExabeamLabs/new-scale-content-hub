@@ -1,0 +1,47 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1489-fail2ban-ClamAV-Killed-Before-Brute-Force-40",
+      "name": "T1489 — fail2ban/ClamAV Killed Before Brute Force (Fact #40)",
+      "description": "fail2ban/ClamAV Killed Before Brute Force. Trigger: www-data account uses sudo to stop the fail2ban service",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "process_name",
+        "process_command_line"
+      ],
+      "detectionReason": "{user} used sudo to stop the fail2ban service on {host}: {process_command_line}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1489",
+          "technique": "Service Stop",
+          "tactic": "Impact",
+          "tacticKey": "TA0040"
+        }
+      ],
+      "useCases": [
+        "Destruction of Data"
+      ],
+      "value": "toLower(process_name) = 'sudo' && contains(toLower(process_command_line), 'stop fail2ban')",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "process-creation-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "pc-sudo-command-group"
+    }
+  ]
+}

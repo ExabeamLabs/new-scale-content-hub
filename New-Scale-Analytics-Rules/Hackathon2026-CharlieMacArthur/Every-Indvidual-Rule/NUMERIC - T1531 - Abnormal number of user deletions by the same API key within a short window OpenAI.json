@@ -1,0 +1,49 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "NumC-T1531-Bulk-User-Deletion-via-API-Key-8",
+      "name": "T1531 — Bulk User Deletion via API Key (Numeric Count)",
+      "description": "Bulk User Deletion via API Key. Abnormal number of user deletions by the same API key within a short window",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "platform": [
+            "OpenAI"
+          ]
+        }
+      ],
+      "detectionReason": "Abnormal number (${trigger.numeric_value}) of user deletions via API key",
+      "type": "numericCountProfiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1531",
+          "technique": "Account Access Removal",
+          "tactic": "Impact",
+          "tacticKey": "TA0040"
+        }
+      ],
+      "useCases": [
+        "Account Manipulation"
+      ],
+      "trainOnCondition": "toLower(operation) = 'user.deleted' && toLower(credential_type) = 'api_key'",
+      "actOnCondition": "toLower(operation) = 'user.deleted' && toLower(credential_type) = 'api_key'",
+      "query": "(activity_type = \"app-activity\") AND (platform = \"OpenAI\") AND (toLower(operation) = \"user.deleted\") AND (toLower(credential_type) = \"api_key\")",
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "ai-activity",
+      "ruleGroupId": "ai-guardrail-event-count-magnitude-group",
+      "severity": "Medium",
+      "testMode": false,
+      "scopeValue": "toLower(operation) = 'user.deleted' && toLower(credential_type) = 'api_key'",
+      "windowDuration": "90 days",
+      "windowPeriod": "12 hours",
+      "logBase": 2.0,
+      "minOrderOfMagnitude": 32,
+      "anomalyThreshold": "1 days",
+      "checkScopeMaturity": false
+    }
+  ]
+}

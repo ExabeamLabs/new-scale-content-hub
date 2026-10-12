@@ -1,0 +1,53 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "NumC-T1486-Ransomware-File-Rename-lockbit-3",
+      "name": "T1486 — Ransomware File Rename (.lockbit) (Numeric Count)",
+      "description": "Ransomware File Rename (.lockbit). Abnormal rate of file renames to the same new extension within seconds for this host",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "file-time-modify"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "2"
+          ]
+        }
+      ],
+      "detectionReason": "Abnormal rate (${trigger.numeric_value}) of file renames to .lockbit on ${event.host}",
+      "type": "numericCountProfiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1486",
+          "technique": "Data Encrypted for Impact",
+          "tactic": "Impact",
+          "tacticKey": "TA0040"
+        }
+      ],
+      "useCases": [
+        "Ransomware"
+      ],
+      "trainOnCondition": "endsWith(toLower(file_name), '.lockbit')",
+      "actOnCondition": "endsWith(toLower(file_name), '.lockbit')",
+      "query": "(activity_type = \"file-time-modify\") AND (platform = \"Windows\") AND (event_code = \"2\") AND (endsWith(toLower(file_name), \".lockbit\"))",
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "file-write-activity",
+      "ruleGroupId": "filew-file-process-group",
+      "severity": "Medium",
+      "testMode": false,
+      "scopeValue": "endsWith(toLower(file_name), '.lockbit')",
+      "windowDuration": "90 days",
+      "windowPeriod": "12 hours",
+      "logBase": 2.0,
+      "minOrderOfMagnitude": 32,
+      "anomalyThreshold": "1 days",
+      "checkScopeMaturity": false,
+      "countPer": "host"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Prof-T1078-004-MFA-Hijack-via-SMS-Swap-34",
+      "name": "T1078.004 — MFA Hijack via SMS Swap (Profiled)",
+      "description": "MFA Hijack via SMS Swap. Successful login from an unrecognised ASN/geography using a non-browser user agent, flagged threatSuspected",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "endpoint-login"
+          ],
+          "platform": [
+            "Okta Adaptive MFA"
+          ]
+        }
+      ],
+      "detectionReason": "Login from an unusual country for this user: '${trigger.feature_value}'",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1078.004",
+          "technique": "Valid Accounts: Cloud Accounts",
+          "tactic": "Privilege Escalation",
+          "tacticKey": "TA0004"
+        }
+      ],
+      "useCases": [
+        "Privilege Abuse"
+      ],
+      "featureValue": "location_country",
+      "scopeValue": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "toLower(operation) = 'core.user_auth.login_success'",
+      "actOnCondition": "toLower(operation) = 'core.user_auth.login_success'",
+      "anomalyThreshold": "45 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "app-login-activity",
+      "ruleGroupId": "al-source-endpoint-access-group",
+      "severity": "Medium",
+      "testMode": false
+    }
+  ]
+}

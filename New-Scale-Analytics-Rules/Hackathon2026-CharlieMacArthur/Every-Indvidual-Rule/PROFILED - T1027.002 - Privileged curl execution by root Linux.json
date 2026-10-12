@@ -1,0 +1,46 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Prof-T1027-002-UPX-Packed-ELF-from-dev-shm-14",
+      "name": "T1027.002 — UPX-Packed ELF from /dev/shm (Profiled)",
+      "description": "UPX-Packed ELF from /dev/shm. Privileged curl execution by root",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "process-create"
+          ],
+          "platform": [
+            "Unix"
+          ]
+        }
+      ],
+      "detectionReason": "Unusual host running privileged curl: '${trigger.feature_value}'",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1027.002",
+          "technique": "Obfuscated Files or Information",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Evasion"
+      ],
+      "featureValue": "process_path",
+      "scopeValue": "EntityId('type: Device && direction: Source')",
+      "trainOnCondition": "user_id = '0' && contains(toLower(process_path), 'curl')",
+      "actOnCondition": "user_id = '0' && contains(toLower(process_path), 'curl')",
+      "anomalyThreshold": "21 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "process-creation-activity",
+      "ruleGroupId": "pc-process-execution-group",
+      "severity": "Medium",
+      "testMode": false
+    }
+  ]
+}

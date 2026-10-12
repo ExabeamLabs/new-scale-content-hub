@@ -1,0 +1,53 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "NumC-T1070-001-Shadow-Copy-Deletion-Triple-VSS-Wipe-2",
+      "name": "T1070.001 — Shadow Copy Deletion (Triple VSS Wipe) (Numeric Count)",
+      "description": "Shadow Copy Deletion (Triple VSS Wipe). Three distinct shadow-copy deletion techniques executed against the same host within seconds",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "endpoint-notification"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "4688"
+          ]
+        }
+      ],
+      "detectionReason": "Abnormal burst (${trigger.numeric_value}) of process-creation audit events on ${event.host}",
+      "type": "numericCountProfiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1070.001",
+          "technique": "Indicator Removal",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Ransomware"
+      ],
+      "trainOnCondition": "true",
+      "actOnCondition": "true",
+      "query": "(activity_type = \"endpoint-notification\") AND (platform = \"Windows\") AND (event_code = \"4688\")",
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "process-creation-activity",
+      "ruleGroupId": "pc-shadow-copy-delete-group",
+      "severity": "Medium",
+      "testMode": false,
+      "scopeValue": "true",
+      "windowDuration": "90 days",
+      "windowPeriod": "12 hours",
+      "logBase": 2.0,
+      "minOrderOfMagnitude": 32,
+      "anomalyThreshold": "1 days",
+      "checkScopeMaturity": false,
+      "countPer": "host"
+    }
+  ]
+}

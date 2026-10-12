@@ -1,0 +1,50 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1547-001-Registry-Run-Key-Persistence-23",
+      "name": "T1547.001 — Registry Run Key Persistence (Fact #23)",
+      "description": "Registry Run Key Persistence. Trigger: New HKCU Run key value created pointing to a recently-dropped AppData binary",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "registry-modify"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "13"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "registry_path"
+      ],
+      "detectionReason": "New Run key value created: {registry_key} = {registry_value}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1547.001",
+          "technique": "Boot or Logon Autostart Execution",
+          "tactic": "Privilege Escalation",
+          "tacticKey": "TA0004"
+        }
+      ],
+      "useCases": [
+        "Privilege Escalation"
+      ],
+      "value": "contains(toLower(registry_path), 'currentversion\\\\run')",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "registry-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "registryw-first-write-group"
+    }
+  ]
+}

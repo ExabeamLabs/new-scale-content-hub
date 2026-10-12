@@ -1,0 +1,59 @@
+{
+	"order": [
+		"region",
+		"key_id",
+		"key_secret"
+	],
+	"required": [
+		"region",
+		"key_id",
+		"key_secret"
+	],
+	"properties": {
+		"region": {
+			"enum": [
+				"au",
+				"ca",
+				"eu",
+				"jp",
+				"sa",
+				"sg",
+				"ch",
+				"uk",
+				"us-east",
+				"us-west"
+			],
+			"type": "string",
+			"default": "",
+			"nullable": false,
+			"enumLabels": {
+				"au": "Australia",
+				"ca": "Canada",
+				"ch": "Switzerland",
+				"eu": "Europe",
+				"jp": "Japan",
+				"sa": "Saudi Arabia",
+				"sg": "Singapore",
+				"uk": "United Kingdom",
+				"us-east": "US East",
+				"us-west": "US West"
+			},
+			"description": "The cloud service region."
+		},
+		"key_id": {
+			"type": "string",
+			"title": "Key ID",
+			"default": "",
+			"nullable": false,
+			"description": "The ID of the access key."
+		},
+		"key_secret": {
+			"type": "string",
+			"title": "Key Secret",
+			"default": "",
+			"nullable": false,
+			"password": true,
+			"description": "The secret portion of the access key. This is a sensitive value."
+		}
+	}
+}

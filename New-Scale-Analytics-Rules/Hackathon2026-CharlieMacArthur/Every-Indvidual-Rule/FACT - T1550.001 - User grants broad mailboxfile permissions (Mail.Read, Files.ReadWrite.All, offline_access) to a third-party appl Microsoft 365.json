@@ -1,0 +1,47 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1550-001-OAuth-Consent-Phishing-78",
+      "name": "T1550.001 — OAuth Consent Phishing (Fact #78)",
+      "description": "OAuth Consent Phishing. Trigger: User grants broad mailbox/file permissions (Mail.Read, Files.ReadWrite.All, offline_access) to a third-party application",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "operation": [
+            "Consent to application"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation",
+        "app"
+      ],
+      "detectionReason": "{email_address} granted consent to an application ({event_name})",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1550.001",
+          "technique": "Use Alternate Authentication Material",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Abnormal Authentication & Access"
+      ],
+      "value": "toLower(operation) = 'consent to application'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "app-consent-grant-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "acg-permissions-group"
+    }
+  ]
+}

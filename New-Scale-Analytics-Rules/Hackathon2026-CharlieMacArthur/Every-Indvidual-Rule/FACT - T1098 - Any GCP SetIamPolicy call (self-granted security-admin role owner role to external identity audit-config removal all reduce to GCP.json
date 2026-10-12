@@ -1,0 +1,46 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1098-GCP-IAM-Policy-Modified-via-SetIamPolicy-61",
+      "name": "T1098 — GCP IAM Policy Modified via SetIamPolicy (Fact #61)",
+      "description": "GCP IAM Policy Modified via SetIamPolicy. Trigger: Any GCP SetIamPolicy call (self-granted security-admin role / owner role to external identity / audit-config removal all reduce to this same event given confirmed CIM data — see note) NOTE: COLLAPSED from 3 near-duplicate rows (this scenario, T1098.001 'Owner Role Granted to External Gmail', and T1562.001 'Audit Logging Disabled') — none of the 3 could isolate the actual policy-delta content from confirmed CIM data, so all 3 reduced to the identical bare condition 'a SetIamPolicy call happened'. Kept as one broad rule rather than 3 rules that fire identically and indistinguishably on ANY IAM policy change, including benign ones. Recommend re-splitting once a production sample with the request.policy delta field is available.",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "platform": [
+            "GCP"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation"
+      ],
+      "detectionReason": "{email_address} called SetIamPolicy on {resource_name}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1098",
+          "technique": "Account Manipulation",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Privilege Escalation"
+      ],
+      "value": "toLower(operation) = 'setiampolicy'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "cloud-policy-management-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "cpm-role-assign-group"
+    }
+  ]
+}

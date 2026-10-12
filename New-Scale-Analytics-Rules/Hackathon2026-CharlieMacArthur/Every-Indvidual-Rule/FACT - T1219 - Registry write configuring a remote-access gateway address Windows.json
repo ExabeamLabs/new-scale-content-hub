@@ -1,0 +1,52 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1219-NetSupport-RAT-via-Fake-Browser-Update-20",
+      "name": "T1219 — NetSupport RAT via Fake Browser Update (Fact #20)",
+      "description": "NetSupport RAT via Fake Browser Update. Trigger: Registry write configuring a remote-access gateway address",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "registry-modify"
+          ],
+          "platform": [
+            "Windows"
+          ],
+          "event_code": [
+            "13"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "event_code",
+        "registry_path",
+        "registry_value",
+        "gateway"
+      ],
+      "detectionReason": "Registry entry configured a NetSupport gateway: {registry_value}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1219",
+          "technique": "Remote Access Tools",
+          "tactic": "Command and Control",
+          "tacticKey": "TA0011"
+        }
+      ],
+      "useCases": [
+        "Malware"
+      ],
+      "value": "contains(toLower(registry_path), 'netsupport') && contains(toLower(registry_value), 'gateway=')",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "registry-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "registryw-first-write-group"
+    }
+  ]
+}

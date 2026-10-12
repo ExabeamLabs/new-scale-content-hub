@@ -1,0 +1,53 @@
+{
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "name": "Unauthorized Root Access Linux",
+            "description": "Unauthorized Root Access Attempt on Linux",
+            "useCase": "privilege_escalation",
+            "mitre": [
+                {
+                    "tacticKey": "TA0004",
+                    "tactic": "Privilege Escalation",
+                    "techniqueKey": "T1068",
+                    "technique": "Exploitation for Privilege Escalation"
+                },
+                {
+                    "tacticKey": "TA0004",
+                    "tactic": "Privilege Escalation",
+                    "techniqueKey": "T1548",
+                    "technique": "Abuse Elevation Control Mechanism"
+                }
+            ],
+            "sequencesExecution": "CREATION_ORDER",
+            "severity": "medium",
+            "sequencesConfig": {
+                "sequences": [
+                    {
+                        "name": "",
+                        "query": "activity_type:\"process-create\"\r\nAND platform:\"Unix\"\r\nAND (\r\n      (process_name:\"su\" AND process_command_line:\" root\")\r\n      OR\r\n      (process_name:\"sudo\" AND process_command_line:\" su\")\r\n      OR\r\n      (process_name:\"sudo\" AND process_command_line:\" -i\")\r\n)\r\nAND NOT user:\"root\"\r\nAND NOT parent_process_name:(\"ansible\",\"puppet\",\"chef\",\"salt\",\"cloud-init\")",
+                        "condition": {
+                            "groupByOption": true,
+                            "groupBy": [
+                                "user",
+                                "host"
+                            ],
+                            "functionType": "count",
+                            "subject": "event",
+                            "field": "",
+                            "operator": "more_than",
+                            "value": "3",
+                            "time": 5,
+                            "unit": "m",
+                            "triggerOnAnyMatch": false
+                        },
+                        "id": "e6c2143f-fbc0-4867-8aea-4f98b4898846"
+                    }
+                ],
+                "commonProperties": null,
+                "outcomes": null
+            },
+            "scheduleConfig": null
+        }
+    ]
+}

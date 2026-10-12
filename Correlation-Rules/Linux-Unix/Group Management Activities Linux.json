@@ -1,0 +1,35 @@
+{
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "name": "Group Management Activities Linux",
+            "description": "Linux Group Membership Change",
+            "useCase": "privileged_activity",
+            "mitre": [
+                {
+                    "tacticKey": "TA0003",
+                    "tactic": "Persistence",
+                    "techniqueKey": "T1098",
+                    "technique": "Account Manipulation"
+                }
+            ],
+            "sequencesExecution": "CREATION_ORDER",
+            "severity": "medium",
+            "sequencesConfig": {
+                "sequences": [
+                    {
+                        "name": "",
+                        "query": "activity_type:\"process-create\"\nAND platform:\"Unix\"\nAND\n(\n  (process_name:\"usermod\" AND (process_command_line:\" -aG \" OR process_command_line:\" -G \"))\n  OR\n  (process_name:\"gpasswd\" AND (process_command_line:\" -a \" OR process_command_line:\" -M \"))\n  OR\n  (process_name:\"adduser\" AND process_command_line:\" sudo\")\n  OR\n  (process_name:\"adduser\" AND process_command_line:\" wheel\")\n)\nAND NOT parent_process_name:(\"puppet\",\"chef\",\"ansible\",\"salt\",\"cloud-init\")",
+                        "condition": {
+                            "triggerOnAnyMatch": true
+                        },
+                        "id": "6fec30f0-9572-4bca-81fd-14012e789e9e"
+                    }
+                ],
+                "commonProperties": null,
+                "outcomes": null
+            },
+            "scheduleConfig": null
+        }
+    ]
+}

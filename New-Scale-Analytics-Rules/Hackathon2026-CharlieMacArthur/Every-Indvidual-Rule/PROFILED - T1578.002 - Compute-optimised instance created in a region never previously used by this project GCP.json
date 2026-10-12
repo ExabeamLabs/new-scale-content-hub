@@ -1,0 +1,46 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Prof-T1578-002-High-CPU-Instances-in-Unused-Region-30",
+      "name": "T1578.002 — High-CPU Instances in Unused Region (Profiled)",
+      "description": "High-CPU Instances in Unused Region. Compute-optimised instance created in a region never previously used by this project",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "endpoint-create"
+          ],
+          "platform": [
+            "GCP"
+          ]
+        }
+      ],
+      "detectionReason": "Unusual instance location: '${trigger.feature_value}'",
+      "type": "profiledFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1578.002",
+          "technique": "Modify Cloud Compute Infrastructure",
+          "tactic": "Defense Evasion",
+          "tacticKey": "TA0005"
+        }
+      ],
+      "useCases": [
+        "Cloud Data Protection"
+      ],
+      "featureValue": "resource_dir",
+      "scopeValue": "'org'",
+      "trainOnCondition": "toLower(operation) = 'v1.compute.instances.insert'",
+      "actOnCondition": "toLower(operation) = 'v1.compute.instances.insert'",
+      "anomalyThreshold": "45 days",
+      "checkScopeMaturity": false,
+      "checkFeatureMaturity": false,
+      "scoreUnless": [],
+      "suppressThreshold": "",
+      "familyId": "general-activity",
+      "ruleGroupId": "ga-region-group",
+      "severity": "Medium",
+      "testMode": false
+    }
+  ]
+}

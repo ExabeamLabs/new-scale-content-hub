@@ -1,0 +1,46 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1136-003-Service-Account-Key-Minted-Off-Hours-63",
+      "name": "T1136.003 — Service Account Key Minted Off-Hours (Fact #63)",
+      "description": "Service Account Key Minted Off-Hours. Trigger: Same identity enumerates existing keys on the account immediately after minting a new one",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "platform": [
+            "GCP"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation"
+      ],
+      "detectionReason": "{email_address} enumerated existing service account keys",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1136.003",
+          "technique": "Create Account",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Account Manipulation"
+      ],
+      "value": "toLower(operation) = 'google.iam.admin.v1.listserviceaccountkeys'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "cloud-policy-management-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "cpm-first-user-activity-group"
+    }
+  ]
+}

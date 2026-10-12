@@ -1,0 +1,46 @@
+{
+  "version": "1",
+  "ruleDefinitions": [
+    {
+      "templateId": "Fact-T1098-001-Super-Admin-Granted-to-API-Integration-73",
+      "name": "T1098.001 — Super Admin Granted to API Integration (Fact #73)",
+      "description": "Super Admin Granted to API Integration. Trigger: New API token generated immediately after the granting identity received elevated privilege",
+      "applicableEvents": [
+        {
+          "activity_type": [
+            "app-activity"
+          ],
+          "platform": [
+            "Okta Adaptive MFA"
+          ]
+        }
+      ],
+      "requiredFields": [
+        "operation"
+      ],
+      "detectionReason": "New API token generated for {email_address}",
+      "type": "factFeature",
+      "mitre": [
+        {
+          "techniqueKey": "T1098.001",
+          "technique": "Account Manipulation",
+          "tactic": "Persistence",
+          "tacticKey": "TA0003"
+        }
+      ],
+      "useCases": [
+        "Account Manipulation"
+      ],
+      "value": "toLower(operation) = 'system.api_token.create'",
+      "actOnCondition": "true",
+      "suppressThreshold": "10 minutes",
+      "suppressScope": "EntityId('type: User && direction: Source')",
+      "trainOnCondition": "true",
+      "scoreUnless": [],
+      "familyId": "cloud-policy-management-activity",
+      "severity": "Medium",
+      "testMode": false,
+      "ruleGroupId": "cpm-role-assign-group"
+    }
+  ]
+}
