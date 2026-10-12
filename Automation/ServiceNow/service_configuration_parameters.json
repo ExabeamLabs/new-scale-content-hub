@@ -1,0 +1,26 @@
+{
+	"type": "object",
+	"order": [
+		"instance_id",
+		"username",
+		"password"
+	],
+	"properties": {
+		"instance_id": {
+			"type": "string",
+			"default": "",
+			"description": "Your ServiceNow instance id"
+		},
+		"username": {
+			"type": "string",
+			"description": "Your ServiceNow username"
+		},
+		"password": {
+			"type": "string",
+			"password": true,
+			"nullable": false,
+			"password": true,
+			"description": "Your ServiceNow password"
+		}
+	}
+}
