@@ -10,7 +10,7 @@ Author: US Services Consultants - Oct 2026<br>
    - Service name:  ServiceNow
    - Service Description:  ServiceNow integration version 1.0
    - Click Import from File or URL
-   - Paste URL...   `https://raw.githubusercontent.com/ExabeamLabs/new-scale-content-hub/refs/heads/main/Automation/ServiceNow/Exabeam_Service_Import-SNOW_ITSM_IncidentTable.json`
+   - Paste URL to raw file...   `https://raw.githubusercontent.com/ExabeamLabs/new-scale-content-hub/refs/heads/main/Automation/ServiceNow/Exabeam_Service_Import-SNOW_ITSM_IncidentTable.json`
    - Click Confirm and Validate
    - Click Import and Next
 
