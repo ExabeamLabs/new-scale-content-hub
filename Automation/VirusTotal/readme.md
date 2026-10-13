@@ -11,7 +11,7 @@ Date updated: Sept 21 2026<br>
    - Service name:  VirusTotal
    - Service Description:  VirusTotal integration version 1.2
    - Click Import from File or URL
-   - Paste URL...   `https://raw.githubusercontent.com/ExabeamLabs/new-scale-content-hub/refs/heads/main/Automation/VirusTotal/Exabeam_Service_Import-VirusTotal-Version_1.2.json`
+   - Paste URL to raw file...   `https://raw.githubusercontent.com/ExabeamLabs/new-scale-content-hub/refs/heads/main/Automation/VirusTotal/Exabeam_Service_Import-VirusTotal-Version_1.2.json`
    - Click Confirm and Validate
    - Click Import and Next
 
