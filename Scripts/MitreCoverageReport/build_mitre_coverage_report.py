@@ -28,9 +28,12 @@ import requests
 # -----------------------------
 # ANSI colour codes (terminal)
 # -----------------------------
-ANSI_GREEN = "\033[92m"
-ANSI_YELLOW = "\033[93m"
-ANSI_RESET = "\033[0m"
+if os.name == "nt":
+    os.system("")  # enables ANSI colour handling in older Windows consoles (PowerShell 5.1, cmd)
+_COLOUR = sys.stdout.isatty() and not os.environ.get("NO_COLOR")
+ANSI_GREEN = "\033[92m" if _COLOUR else ""
+ANSI_YELLOW = "\033[93m" if _COLOUR else ""
+ANSI_RESET = "\033[0m" if _COLOUR else ""
 
 # =========================================================
 # 1) DEFAULT CONFIGURATION (all overridable from the command line)
