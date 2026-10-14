@@ -96,6 +96,7 @@ TACTIC_ORDER = [
     ("TA0003", "Persistence"),
     ("TA0004", "Privilege Escalation"),
     ("TA0005", "Defense Evasion"),
+    ("TA0112", "Defense Impairment"),  # newer ATT&CK releases split Impair Defenses (T1562) out of Defense Evasion
     ("TA0006", "Credential Access"),
     ("TA0007", "Discovery"),
     ("TA0008", "Lateral Movement"),
@@ -717,12 +718,14 @@ def filterable_panel(title: str, sub: str, rows: list[dict], table_id: str, plac
       </div>"""
 
 
-def card(label: str, value: Any, hint: str, tone: str = "", delta: str = "") -> str:
+def card(label: str, value: Any, hint: str, tone: str = "", delta: str = "", meter: float | None = None) -> str:
     delta_html = f'<div class="delta">{esc(delta)}</div>' if delta else ""
+    meter_html = f'<div class="meter"><i style="width:{max(0.0, min(meter, 100.0)):.1f}%"></i></div>' \
+        if meter is not None else ""
     return f"""
       <div class="card">
         <div class="label">{esc(label)}</div>
-        <div class="value {tone}">{esc(value)}</div>{delta_html}
+        <div class="value {tone}">{esc(value)}</div>{delta_html}{meter_html}
         <div class="hint">{hint}</div>
       </div>"""
 
@@ -790,93 +793,99 @@ HTML_TEMPLATE = """<!doctype html>
 <title>Exabeam MITRE Coverage Report</title>
 <style>
   :root {
-    --bg: #0b0f14; --panel: #0f1720; --panel2: #111b26; --border: #223042;
-    --text: #e7eef8; --muted: #9fb1c6;
-    --good: #34d399; --warn: #fbbf24; --orange: #fb923c; --bad: #fb7185; --none: #1a2533;
-    --shadow: rgba(0,0,0,0.35); --radius: 16px;
+    /* Palette sampled from the Exabeam Nova UI */
+    --bg: #05060f; --panel: #040b1b; --panel-2: #060f22; --line: #0f1f3a;
+    --text: #e6ebf2; --muted: #8b97ab;
+    --grad-a: #2aa90f; --grad-b: #0573da;      /* green -> blue border fade */
+    --accent: #0371e0; --track: #013870; --link: #4fa3f7;
+    --good: #3fbf3a; --warn: #f0b429; --orange: #f08a3c; --bad: #f0506e;
+    --st-validated: #34b53a; --st-quiet: #e3a826; --st-unvalidated: #e2702f; --st-none: #0a1529;
+    --radius: 2px;
     --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    --sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   }
-  body {
-    margin:0; font-family: var(--sans); color: var(--text);
-    background: radial-gradient(1200px 600px at 15% 10%, #122033, transparent 60%),
-                radial-gradient(900px 500px at 85% 0%, #101a26, transparent 55%), var(--bg);
-  }
+  body { margin:0; font-family: var(--sans); color: var(--text); background: var(--bg); }
   .wrap { max-width: 1400px; margin: 0 auto; padding: 20px 18px 60px; }
-  .topbar {
-    display:flex; align-items:center; justify-content:space-between; gap: 14px;
-    padding: 14px 16px; border: 1px solid var(--border);
-    background: linear-gradient(180deg, var(--panel), rgba(15,23,32,0.65));
-    box-shadow: 0 10px 28px var(--shadow); border-radius: var(--radius);
+
+  /* Gradient border used on every widget */
+  .topbar, .card, .panel, #techDetail {
+    border: 1px solid transparent; border-radius: var(--radius);
+    background: linear-gradient(var(--panel), var(--panel)) padding-box,
+                linear-gradient(to bottom right, var(--grad-a), var(--grad-b)) border-box;
   }
+
+  .topbar { display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 14px 18px; }
   .brand { display:flex; align-items:center; gap: 12px; min-width: 260px; }
-  .logo { width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, #1a2a3a, #0e1620);
-          border: 1px dashed #2b3c52; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+  .logo { width: 40px; height: 40px; border-radius: var(--radius); background: var(--panel-2);
+          border: 1px solid var(--line); display:flex; align-items:center; justify-content:center; overflow:hidden; }
   .logo img { width:100%; height:100%; object-fit:contain; display:block; }
   .logo .fallback { color: var(--muted); font-size: 11px; font-family: var(--mono); }
-  .title { display:flex; flex-direction:column; line-height:1.15; }
-  .title h1 { margin:0; font-size: 16px; letter-spacing: 0.2px; }
-  .title .sub { margin-top:4px; font-size: 12px; color: var(--muted); font-family: var(--mono); }
-  .meta { text-align:right; color: var(--muted); font-size: 12px; font-family: var(--mono); }
+  .title { display:flex; flex-direction:column; line-height:1.2; }
+  .title h1 { margin:0; font-size: 17px; font-weight: 500; }
+  .title .sub { margin-top:4px; font-size: 12px; color: var(--muted); }
+  .meta { text-align:right; color: var(--muted); font-size: 12px; }
 
-  .grid { margin-top: 18px; display:grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
-  .card { grid-column: span 3; padding: 14px; border: 1px solid var(--border);
-          background: linear-gradient(180deg, var(--panel2), rgba(17,27,38,0.75));
-          border-radius: var(--radius); box-shadow: 0 10px 24px var(--shadow); }
-  .card .label { color: var(--muted); font-size: 12px; margin-bottom: 8px; }
-  .card .value { font-size: 28px; font-weight: 700; letter-spacing: 0.2px; }
-  .card .delta { margin-top: 4px; font-size: 12px; font-family: var(--mono); color: var(--muted); }
-  .card .hint { margin-top: 10px; font-size: 12px; color: var(--muted); }
+  .grid { margin-top: 16px; display:grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
+  .card { grid-column: span 3; padding: 16px 18px; }
+  .card .label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+  .card .value { font-size: 28px; font-weight: 600; }
+  .card .delta { margin-top: 4px; font-size: 12px; color: var(--muted); }
+  .card .hint { margin-top: 10px; font-size: 12px; color: var(--muted); line-height: 1.4; }
+  .meter { margin-top: 10px; height: 3px; background: var(--track); }
+  .meter > i { display:block; height: 100%; background: var(--accent); }
   .value.good { color: var(--good); } .value.warn { color: var(--warn); }
   .value.orange { color: var(--orange); } .value.bad { color: var(--bad); }
 
-  .panel { grid-column: span 12; padding: 14px 14px 6px; border: 1px solid var(--border);
-           background: linear-gradient(180deg, var(--panel), rgba(15,23,32,0.7));
-           border-radius: var(--radius); box-shadow: 0 10px 24px var(--shadow); min-width: 0; }
+  .panel { grid-column: span 12; padding: 16px 18px 8px; min-width: 0; }
   .panel.half { grid-column: span 6; }
-  .panel h2 { margin: 2px 0 8px; font-size: 14px; letter-spacing: 0.2px; }
+  .panel h2 { margin: 0 0 6px; font-size: 15px; font-weight: 500; }
   .panel .sub { margin: 0 0 10px; color: var(--muted); font-size: 12px; }
   .controls { display:flex; flex-wrap:wrap; gap: 10px; margin: 8px 0 12px; align-items:center; }
-  .controls input[type=text] { flex: 1; min-width: 240px; background: #0b121a; color: var(--text);
-    border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; outline: none;
-    font-family: var(--mono); font-size: 12px; }
+  .controls input[type=text] { flex: 1; min-width: 240px; background: var(--panel-2); color: var(--text);
+    border: 1px solid var(--line); border-radius: var(--radius); padding: 9px 12px; outline: none; font-size: 12px; }
+  .controls input[type=text]:focus { border-color: var(--accent); }
+  .controls input[type=checkbox] { accent-color: var(--accent); }
   .controls label { color: var(--muted); font-size: 12px; display:flex; gap:6px; align-items:center; }
-  .pill { border: 1px solid var(--border); color: var(--muted); border-radius: 999px; padding: 8px 10px;
-          font-family: var(--mono); font-size: 12px; background: rgba(0,0,0,0.15); }
+  .pill { border: 1px solid var(--line); color: var(--muted); border-radius: var(--radius); padding: 8px 10px;
+          font-size: 12px; background: var(--panel-2); }
 
-  .table-wrap { overflow-x: auto; max-height: 560px; overflow-y: auto; margin: 10px 0 16px; border-radius: 14px; }
-  table.data-table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 12px; }
-  table.data-table thead th { text-align:left; background: #0b121a; color: var(--muted);
-    border-bottom: 1px solid var(--border); padding: 10px; position: sticky; top: 0; z-index: 2; white-space: nowrap; }
-  table.data-table tbody td { padding: 9px 10px; border-bottom: 1px solid rgba(34,48,66,0.6); vertical-align: top; }
-  table.data-table tbody tr:hover { background: rgba(125,211,252,0.06); }
+  .table-wrap { overflow-x: auto; max-height: 560px; overflow-y: auto; margin: 10px 0 14px; }
+  table.data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  table.data-table thead th { text-align:left; background: var(--panel-2); color: var(--muted); font-weight: 500;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--line); padding: 9px 10px; position: sticky; top: 0; z-index: 2; white-space: nowrap; }
+  table.data-table tbody td { padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  table.data-table tbody tr:hover { background: rgba(3,113,224,0.08); }
+  .table-wrap::-webkit-scrollbar, .matrix::-webkit-scrollbar { width: 8px; height: 8px; }
+  .table-wrap::-webkit-scrollbar-thumb, .matrix::-webkit-scrollbar-thumb { background: var(--track); }
 
   .legend { display:flex; flex-wrap:wrap; gap: 14px; font-size: 12px; color: var(--muted); margin: 4px 0 10px; }
   .legend span { display:flex; align-items:center; gap:6px; }
-  .sw { width: 12px; height: 12px; border-radius: 3px; display:inline-block; }
-  .s-validated { background: var(--good); color: #062018; }
-  .s-quiet { background: var(--warn); color: #241a02; }
-  .s-unvalidated { background: var(--orange); color: #2a1404; }
-  .s-none { background: var(--none); color: var(--muted); }
+  .sw { width: 12px; height: 12px; border-radius: var(--radius); display:inline-block; }
+  .s-validated { background: var(--st-validated); color: #03140a; }
+  .s-quiet { background: var(--st-quiet); color: #1f1500; }
+  .s-unvalidated { background: var(--st-unvalidated); color: #200c02; }
+  .s-none { background: var(--st-none); color: var(--muted); }
+  .sw.s-none, .cell.s-none { box-shadow: inset 0 0 0 1px var(--line); }
   .matrix { display:flex; gap: 6px; overflow-x:auto; padding-bottom: 10px; }
   .col { min-width: 132px; flex: 1 0 132px; }
-  .col h3 { margin: 0 0 6px; font-size: 11px; font-weight: 600; color: var(--text); min-height: 28px; }
-  .col h3 small { display:block; color: var(--muted); font-weight: 400; font-family: var(--mono); }
-  .cell { font-size: 10.5px; line-height: 1.25; padding: 5px 6px; border-radius: 6px; margin-bottom: 4px;
+  .col h3 { margin: 0 0 6px; font-size: 11px; font-weight: 500; color: var(--text); min-height: 28px;
+            padding-bottom: 6px; border-bottom: 2px solid var(--accent); }
+  .col h3 small { display:block; color: var(--muted); font-weight: 400; margin-top: 2px; }
+  .cell { font-size: 10.5px; line-height: 1.25; padding: 5px 6px; border-radius: var(--radius); margin-bottom: 4px;
           cursor: pointer; border: 1px solid transparent; }
-  .cell:hover { border-color: #e7eef8; }
-  .cell.viasub { background-image: repeating-linear-gradient(135deg, rgba(0,0,0,0.18) 0 4px, transparent 4px 8px); }
+  .cell:hover { border-color: var(--link); }
+  .cell.viasub { background-image: repeating-linear-gradient(135deg, rgba(0,0,0,0.2) 0 4px, transparent 4px 8px); }
   .cell .tid { font-family: var(--mono); opacity: 0.8; }
   .cell .cnt { float: right; font-family: var(--mono); font-weight: 700; }
-  #techDetail { font-size: 12px; margin: 8px 0 14px; padding: 12px; border: 1px solid var(--border);
-                border-radius: 12px; background: #0b121a; display:none; }
-  #techDetail a { color: #7dd3fc; }
+  #techDetail { font-size: 12px; margin: 8px 0 14px; padding: 12px 14px; display:none; }
+  #techDetail a { color: var(--link); }
   #techDetail ul { margin: 6px 0; padding-left: 18px; }
-  .tag { font-family: var(--mono); font-size: 11px; padding: 1px 6px; border-radius: 6px; }
+  .tag { font-family: var(--mono); font-size: 11px; padding: 1px 6px; border-radius: var(--radius); }
 
   @media (max-width: 980px) { .card { grid-column: span 6; } .panel.half { grid-column: span 12; } .meta { display:none; } }
   @media (max-width: 560px) { .card { grid-column: span 12; } }
-  .footer-note { margin: 8px 0 10px; color: var(--muted); font-size: 12px; font-family: var(--mono); }
+  .footer-note { margin: 8px 0 10px; color: var(--muted); font-size: 12px; }
 </style>
 </head>
 <body>
@@ -1016,13 +1025,13 @@ def build_html_report(path: str, ctx: dict) -> None:
              delta_text(k["enabledRules"], prev_kpis, "enabledRules")),
         card("Parent techniques covered", f"{k['parentsCoveredPct']:.1f}%",
              f"{k['parentsCoveredInclSubs']}/{k['parentsTotal']} incl. via sub-techniques • {k['parentsCovered']} mapped directly",
-             "warn", delta_text(k["parentsCoveredPct"], prev_kpis, "parentsCoveredPct", " pts")),
+             "warn", delta_text(k["parentsCoveredPct"], prev_kpis, "parentsCoveredPct", " pts"), meter=k["parentsCoveredPct"]),
         card("Validated coverage", f"{k['validatedPct']:.1f}%",
              f"{k['parentsValidated']}/{k['parentsTotal']} parent techniques have a rule that fired in the last {stale} days",
              "good" if k["validatedPct"] >= k["parentsCoveredPct"] * 0.75 else "warn",
-             delta_text(k["validatedPct"], prev_kpis, "validatedPct", " pts")),
+             delta_text(k["validatedPct"], prev_kpis, "validatedPct", " pts"), meter=k["validatedPct"]),
         card("Sub-techniques covered", f"{k['subsCoveredPct']:.1f}%", f"{k['subsCovered']}/{k['subsTotal']}", "",
-             delta_text(k["subsCoveredPct"], prev_kpis, "subsCoveredPct", " pts")),
+             delta_text(k["subsCoveredPct"], prev_kpis, "subsCoveredPct", " pts"), meter=k["subsCoveredPct"]),
         card("Rules gone quiet", k["rulesQuiet"],
              f"Fired before, but not in the last {stale} days - check log sources and rule logic",
              "warn" if k["rulesQuiet"] else "good", delta_text(k["rulesQuiet"], prev_kpis, "rulesQuiet")),
@@ -1242,7 +1251,8 @@ def main() -> None:
     for tid in unknown_keys:
         rule_names = sorted({c["ruleName"] for c in coverage if c["techniqueKey"] == tid})
         rule_gaps.append({"issueType": "UnknownTechnique", "ruleId": "", "ruleName": "; ".join(rule_names),
-                          "notes": f"Rules map to {tid}, which is not in the MITRE technique list (deprecated or typo?)"})
+                          "notes": f"Rules map to {tid}, which is not in the MITRE technique list "
+                                   "(retired or renumbered in a newer ATT&CK release?) - remap these rules"})
 
     gaps = build_technique_gaps(all_mitre, tech_status, priorities)
     for g in rule_gaps:
