@@ -1,0 +1,149 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "GreyNoise API - IP Reputation",
+        "description": "A subset of the GreyNoise v3 API for retrieving IP reputation from the Internet Scanner Intelligence (noise) and Business Service Intelligence (RIOT) datasets.",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "https://api.greynoise.io",
+            "description": "GreyNoise API Server"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "apiKeyAuth": {
+                "type": "apiKey",
+                "in": "header",
+                "name": "key"
+            }
+        }
+    },
+    "security": [
+        {
+            "apiKeyAuth": []
+        }
+    ],
+    "paths": {
+        "/v3/ip/{ip}": {
+            "get": {
+                "summary": "GreyNoise_Get_IP_Reputation",
+                "description": "Retrieves full GreyNoise context for an IP address, including classification, actor, tags, CVEs, VPN/Tor flags, network metadata, and business service (RIOT) information. Requires a paid or trial GreyNoise plan.",
+                "operationId": "getIpReputation",
+                "parameters": [
+                    {
+                        "name": "ip",
+                        "in": "path",
+                        "required": true,
+                        "description": "The IP address to look up.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "quick",
+                        "in": "query",
+                        "required": false,
+                        "description": "If true, only the IP address and the classification or trust level are returned.",
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response containing the IP context.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "206": {
+                        "description": "Partial content - only a subset of fields is returned due to plan limitations."
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "429": {
+                        "description": "Rate limit exceeded"
+                    }
+                }
+            }
+        },
+        "/v3/community/{ip}": {
+            "get": {
+                "summary": "GreyNoise_Community_IP_Lookup",
+                "description": "Retrieves the free GreyNoise Community subset of IP context: noise, riot, classification, name, link, and last seen date.",
+                "operationId": "getCommunityIp",
+                "parameters": [
+                    {
+                        "name": "ip",
+                        "in": "path",
+                        "required": true,
+                        "description": "The IPv4 address to look up.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A noise or RIOT record was found for the IP address.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Not a valid routable IPv4 address"
+                    },
+                    "404": {
+                        "description": "IP not observed scanning the internet or contained in the RIOT data set"
+                    },
+                    "429": {
+                        "description": "Rate limit exceeded"
+                    }
+                }
+            }
+        },
+        "/ping": {
+            "get": {
+                "summary": "GreyNoise_Test_Connection",
+                "description": "Checks GreyNoise API status and validates the API key.",
+                "operationId": "ping",
+                "responses": {
+                    "200": {
+                        "description": "Ping successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        }
+    }
+}

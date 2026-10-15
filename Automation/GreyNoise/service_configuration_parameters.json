@@ -1,0 +1,18 @@
+{
+	"order": [
+		"GN_API_KEY"
+	],
+	"required": [
+		"GN_API_KEY"
+	],
+	"properties": {
+		"GN_API_KEY": {
+			"type": "string",
+			"default": "",
+			"nullable": false,
+			"password": true,
+			"description": "Your GreyNoise API Key",
+			"placeholder": ""
+		}
+	}
+}
