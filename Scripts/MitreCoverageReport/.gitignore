@@ -2,3 +2,4 @@ output/
 raw_*.json
 .venv/
 __pycache__/
+.cache/

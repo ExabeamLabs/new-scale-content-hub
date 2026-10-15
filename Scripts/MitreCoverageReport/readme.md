@@ -23,7 +23,12 @@ A single Python script that:
 
   Within a band, each extra rule in that state adds 5 points. The overall **MITRE ATT&CK Coverage Score** is the average across all techniques, the same formula the Outcomes Navigator uses (see "How was this calculated?" in the report).
 
-  Click a technique for a summary popover, then **See Details** for its full description, mapped rules and sub-techniques. The handle on the right of a tile expands its sub-techniques. **Export MITRE ATT&CK Coverage (CSV)** downloads the matrix sorted by tactic, with MITRE links.
+  Click a technique for a summary popover, then **See Details** for its full description, mapped rules and sub-techniques. The handle on the right of a tile expands its sub-techniques. **Export MITRE ATT&CK Coverage** downloads the matrix as CSV, sorted by tactic, with platforms, threat groups and MITRE links. The export follows any filters you have applied.
+- **Tailoring to your organisation** – on first open (or with **Tailor report**), choose:
+  - **Your sector**: technique tiles show how many threat groups that target your sector use them. A **Priority gaps** panel ranks the uncovered or unvalidated techniques those groups use.
+  - **Your platforms** (Windows, macOS, Linux, cloud and so on): techniques that can't apply to your environment are hidden and left out of the score, like hidden techniques in the Outcomes Navigator.
+
+  Platforms and threat groups come from the latest MITRE ATT&CK Enterprise release. The script downloads it at most every 30 days and caches it in `.cache/`. MITRE doesn't tag groups by sector, so sectors are matched from keywords in each group's description. The report lists the groups behind every count so you can check them. Choices are remembered in the browser.
 - **Detection health**:
   - **Gone quiet**: rules that used to fire but haven't in 30 days. This often means a log source or parser has broken.
   - **Never fired**: rules that have never been validated.
@@ -80,6 +85,8 @@ MAC / LINUX
 | `--no-compare` | off | Skip the comparison with a previous run. |
 | `--save-raw` | off | Save raw API responses (`raw_*.json`) into the run folder. |
 | `--replay` | | Rebuild the report from a folder of `raw_*.json` files without calling the API. |
+| `--attack-data` | `auto` | MITRE ATT&CK platform/threat-group data: `auto` (cached, refreshed every 30 days), `refresh` (always download), `off`. |
+| `--attack-cache` | `.cache/attack_context.json` | Where the MITRE ATT&CK data is cached. |
 
 ## Troubleshooting
 
@@ -112,3 +119,7 @@ output/
 - A parent technique counts as covered if any of its sub-techniques is covered. The matrix has a toggle to show direct mappings only.
 - "Never fired" doesn't necessarily mean broken: some behaviours are rare. It does mean that the detection hasn't been proven to work.
 - Trigger data comes from the `lastTriggeredAt` / `timesTriggered` fields on `/correlation-rules/v2/rules`.
+- MITRE ATT&CK data is downloaded from MITRE's GitHub (`mitre-attack/attack-stix-data`, about 55 MB). If it can't be reached, the report is still built, but without platform and sector filters.
+
+© 2023 The MITRE Corporation. This work is reproduced and distributed with the permission of The MITRE Corporation. https://attack.mitre.org/resources/terms-of-use/
+ATT&CK is subject to the license linked here and the following copyright: © 2023 The MITRE Corporation. This work is reproduced and distributed with the permission of The MITRE Corporation. MITRE ATT&CK and ATT&CK are trademarks of The MITRE Corporation. Exabeam is not affiliated with, sponsored, or endorsed by The MITRE Corporation.
