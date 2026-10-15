@@ -95,8 +95,7 @@ TACTIC_ORDER = [
     ("TA0002", "Execution"),
     ("TA0003", "Persistence"),
     ("TA0004", "Privilege Escalation"),
-    ("TA0005", "Defense Evasion"),
-    ("TA0112", "Defense Impairment"),  # newer ATT&CK releases split Impair Defenses (T1562) out of Defense Evasion
+    ("TA0005", "Stealth"),  # named "Defense Evasion" before ATT&CK v19
     ("TA0006", "Credential Access"),
     ("TA0007", "Discovery"),
     ("TA0008", "Lateral Movement"),
@@ -104,6 +103,7 @@ TACTIC_ORDER = [
     ("TA0011", "Command and Control"),
     ("TA0010", "Exfiltration"),
     ("TA0040", "Impact"),
+    ("TA0112", "Defense Impairment"),  # added in ATT&CK v19 (absorbed Impair Defenses, T1562)
 ]
 
 
@@ -644,7 +644,7 @@ def write_json(path: str, data: Any) -> None:
         json.dump(data, f, indent=2, default=str)
 
 
-NAV_COLOURS = {TS_VALIDATED: "#34d399", TS_QUIET: "#fbbf24", TS_UNVALIDATED: "#fb923c"}
+NAV_COLOURS = {TS_VALIDATED: "#31a717", TS_QUIET: "#1f72d0", TS_UNVALIDATED: "#9b1fc0"}  # Outcomes Navigator bands
 
 
 def build_navigator_layer(all_mitre: list[dict], tech_status: dict[str, dict], region: str, generated: str) -> dict:
@@ -745,35 +745,57 @@ def tactic_key(raw: str) -> str:
     return re.sub(r"[^a-z0-9]", "", raw.lower())
 
 
+# Score bands mirror the Exabeam Outcomes Navigator legend (<=0, 1-49, 50-74, 75-100)
+SCORE_BANDS = {TS_VALIDATED: (75, 100), TS_QUIET: (50, 74), TS_UNVALIDATED: (20, 49)}
+
+
+def tech_score(status: str, rule_statuses: list[str]) -> int:
+    """0-100 score: the band comes from the technique status, depth within the band from how many
+    rules share that status (each extra rule adds 5 points)."""
+    if status not in SCORE_BANDS:
+        return 0
+    lo, hi = SCORE_BANDS[status]
+    n = sum(1 for s in rule_statuses if RULE_TO_TECH_STATUS.get(s, TS_UNVALIDATED) == status)
+    return min(hi, lo + (max(n, 1) - 1) * 5)
+
+
 def build_matrix_data(all_mitre: list[dict], tech_status: dict[str, dict]) -> list[dict]:
-    """Columns of parent techniques per tactic, with sub-technique detail for the heatmap."""
+    """Columns of parent techniques per tactic, with sub-technique detail for the matrix."""
     alias: dict[str, tuple[str, str]] = {}
     for tid, name in TACTIC_ORDER:
         for a in (tid, name, name.replace(" ", "-")):
             alias[tactic_key(a)] = (tid, name)
+
+    def rule_view(rules: list[dict]) -> list[dict]:
+        return [{"name": x["ruleName"], "status": x["status"], "last": x["lastTriggeredAt"]} for x in rules]
 
     subs_by_parent: dict[str, list[dict]] = {}
     for r in all_mitre:
         if r["isSubtechnique"]:
             t = tech_status[r["techniqueId"]]
             subs_by_parent.setdefault(r["parentTechniqueId"], []).append({
-                "id": r["techniqueId"], "name": r["name"], "status": t["status"],
-                "rules": [x["ruleName"] for x in t["rules"]],
+                "id": r["techniqueId"], "name": r["name"], "status": t["status"], "rules": rule_view(t["rules"]),
             })
 
-    columns: dict[str, dict] = {}
-    for tid, name in TACTIC_ORDER:
-        columns[tid] = {"id": tid, "name": name, "techs": []}
+    columns: dict[str, dict] = {tid: {"id": tid, "name": name, "techs": []} for tid, name in TACTIC_ORDER}
 
     for r in all_mitre:
         if r["isSubtechnique"]:
             continue
         t = tech_status[r["techniqueId"]]
+        subs = subs_by_parent.get(r["techniqueId"], [])
+        direct = {x["ruleId"] or x["ruleName"]: x["status"] for x in t["rules"]}
+        rolled = dict(direct)
+        for s in subs:
+            for x in tech_status[s["id"]]["rules"]:
+                rolled[x["ruleId"] or x["ruleName"]] = x["status"]
         tech = {
             "id": r["techniqueId"], "name": r["name"], "link": r["externalLink"],
             "status": t["status"], "rolled": t["rolled"], "viaSub": t["viaSub"],
-            "rules": [{"name": x["ruleName"], "status": x["status"], "last": x["lastTriggeredAt"]} for x in t["rules"]],
-            "subs": subs_by_parent.get(r["techniqueId"], []),
+            "score": tech_score(t["status"], list(direct.values())),
+            "rolledScore": tech_score(t["rolled"], list(rolled.values())),
+            "rules": rule_view(t["rules"]),
+            "subs": subs,
         }
         for raw in [x.strip() for x in (r["tactics"] or "").split(",") if x.strip()] or ["Unmapped"]:
             tid, name = alias.get(tactic_key(raw), (raw, raw.replace("-", " ").title()))
@@ -781,7 +803,8 @@ def build_matrix_data(all_mitre: list[dict], tech_status: dict[str, dict]) -> li
 
     out = [c for c in columns.values() if c["techs"]]
     for c in out:
-        c["techs"].sort(key=lambda t: t["name"].lower())
+        # Like the Outcomes Navigator: covered techniques first (highest score first), then the rest A-Z
+        c["techs"].sort(key=lambda t: (-t["rolledScore"], t["name"].lower()))
     return out
 
 
@@ -793,59 +816,71 @@ HTML_TEMPLATE = """<!doctype html>
 <title>Exabeam MITRE Coverage Report</title>
 <style>
   :root {
-    /* Palette sampled from the Exabeam Nova UI */
-    --bg: #05060f; --panel: #040b1b; --panel-2: #060f22; --line: #0f1f3a;
-    --text: #e6ebf2; --muted: #8b97ab;
-    --grad-a: #2aa90f; --grad-b: #0573da;      /* green -> blue border fade */
-    --accent: #0371e0; --track: #013870; --link: #4fa3f7;
-    --good: #3fbf3a; --warn: #f0b429; --orange: #f08a3c; --bad: #f0506e;
-    --st-validated: #34b53a; --st-quiet: #e3a826; --st-unvalidated: #e2702f; --st-none: #0a1529;
+    /* Palette sampled from the Exabeam New-Scale / Outcomes Navigator UI */
+    --bg: #05060f; --panel: #040b1b; --panel-2: #0b0e17; --line: #1d2130;
+    --tile: #13151d; --tile-scored: #3c434f; --tile-border: #42444a; --tick: #757a83;
+    --text: #ffffff; --text-2: #e6ebf2; --muted: #a3aab5; --muted-2: #7d8592;
+    --grad-a: #2aa90f; --grad-b: #0573da;      /* green -> blue widget border */
+    --brand-green: #2aa90f; --accent: #0371e0; --track: #013870; --link: #4fa3f7;
+    --band-zero: #a3aab5; --band-low: #9b1fc0; --band-mid: #1f72d0; --band-high: #31a717;
+    --bad: #f0506e;
     --radius: 2px;
     --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     --sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   }
-  body { margin:0; font-family: var(--sans); color: var(--text); background: var(--bg); }
-  .wrap { max-width: 1400px; margin: 0 auto; padding: 20px 18px 60px; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: var(--sans); color: var(--text-2); background: var(--bg); font-size: 13px; }
+  .wrap { padding: 18px 24px 60px; }
 
-  /* Gradient border used on every widget */
-  .topbar, .card, .panel, #techDetail {
+  /* Gradient border used on widgets */
+  .card, .panel, .drawer {
     border: 1px solid transparent; border-radius: var(--radius);
     background: linear-gradient(var(--panel), var(--panel)) padding-box,
                 linear-gradient(to bottom right, var(--grad-a), var(--grad-b)) border-box;
   }
 
-  .topbar { display:flex; align-items:center; justify-content:space-between; gap: 14px; padding: 14px 18px; }
-  .brand { display:flex; align-items:center; gap: 12px; min-width: 260px; }
-  .logo { width: 40px; height: 40px; border-radius: var(--radius); background: var(--panel-2);
-          border: 1px solid var(--line); display:flex; align-items:center; justify-content:center; overflow:hidden; }
+  /* Header */
+  .topbar { display:flex; align-items:center; justify-content:space-between; gap: 14px; margin-bottom: 18px; }
+  .brand { display:flex; align-items:center; gap: 14px; }
+  .logo { width: 34px; height: 34px; display:flex; align-items:center; justify-content:center; overflow:hidden; }
   .logo img { width:100%; height:100%; object-fit:contain; display:block; }
   .logo .fallback { color: var(--muted); font-size: 11px; font-family: var(--mono); }
-  .title { display:flex; flex-direction:column; line-height:1.2; }
-  .title h1 { margin:0; font-size: 17px; font-weight: 500; }
+  .title h1 { margin:0; font-size: 18px; font-weight: 400; color: var(--brand-green); text-transform: uppercase; letter-spacing: 0.01em; }
   .title .sub { margin-top:4px; font-size: 12px; color: var(--muted); }
   .meta { text-align:right; color: var(--muted); font-size: 12px; }
 
-  .grid { margin-top: 16px; display:grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
+  /* Tabs (Outcomes Navigator style) */
+  .tabs { display:flex; gap: 2px; margin-bottom: 18px; flex-wrap: wrap; }
+  .tab { background: var(--panel-2); color: var(--text-2); border: 0; border-top: 2px solid transparent;
+         padding: 16px 22px; font: 500 13px var(--sans); cursor: pointer; }
+  .tab:hover { color: var(--text); background: #12161f; }
+  .tab.active { background: var(--bg); color: var(--text); border-top-color: var(--accent);
+                box-shadow: inset 1px 0 var(--line), inset -1px 0 var(--line); }
+  .tab .count { margin-left: 6px; font-size: 11px; color: var(--muted); }
+  .tabpane { display:none; }
+  .tabpane.active { display:block; }
+
+  /* KPI cards */
+  .grid { display:grid; grid-template-columns: repeat(12, 1fr); gap: 14px; margin-bottom: 18px; }
   .card { grid-column: span 3; padding: 16px 18px; }
   .card .label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
-  .card .value { font-size: 28px; font-weight: 600; }
+  .card .value { font-size: 28px; font-weight: 600; color: var(--text); }
   .card .delta { margin-top: 4px; font-size: 12px; color: var(--muted); }
   .card .hint { margin-top: 10px; font-size: 12px; color: var(--muted); line-height: 1.4; }
   .meter { margin-top: 10px; height: 3px; background: var(--track); }
   .meter > i { display:block; height: 100%; background: var(--accent); }
-  .value.good { color: var(--good); } .value.warn { color: var(--warn); }
-  .value.orange { color: var(--orange); } .value.bad { color: var(--bad); }
+  .value.good { color: var(--band-high); } .value.blue { color: #3d8fe8; }
+  .value.purple { color: #b45ad6; } .value.bad { color: var(--bad); } .value.warn { color: #f0b429; }
 
+  /* Panels */
   .panel { grid-column: span 12; padding: 16px 18px 8px; min-width: 0; }
   .panel.half { grid-column: span 6; }
-  .panel h2 { margin: 0 0 6px; font-size: 15px; font-weight: 500; }
+  .panel h2 { margin: 0 0 6px; font-size: 15px; font-weight: 500; color: var(--text); }
   .panel .sub { margin: 0 0 10px; color: var(--muted); font-size: 12px; }
   .controls { display:flex; flex-wrap:wrap; gap: 10px; margin: 8px 0 12px; align-items:center; }
   .controls input[type=text] { flex: 1; min-width: 240px; background: var(--panel-2); color: var(--text);
     border: 1px solid var(--line); border-radius: var(--radius); padding: 9px 12px; outline: none; font-size: 12px; }
   .controls input[type=text]:focus { border-color: var(--accent); }
-  .controls input[type=checkbox] { accent-color: var(--accent); }
-  .controls label { color: var(--muted); font-size: 12px; display:flex; gap:6px; align-items:center; }
   .pill { border: 1px solid var(--line); color: var(--muted); border-radius: var(--radius); padding: 8px 10px;
           font-size: 12px; background: var(--panel-2); }
 
@@ -856,35 +891,82 @@ HTML_TEMPLATE = """<!doctype html>
     border-bottom: 1px solid var(--line); padding: 9px 10px; position: sticky; top: 0; z-index: 2; white-space: nowrap; }
   table.data-table tbody td { padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
   table.data-table tbody tr:hover { background: rgba(3,113,224,0.08); }
-  .table-wrap::-webkit-scrollbar, .matrix::-webkit-scrollbar { width: 8px; height: 8px; }
-  .table-wrap::-webkit-scrollbar-thumb, .matrix::-webkit-scrollbar-thumb { background: var(--track); }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-thumb { background: #2a2f3c; }
+  ::-webkit-scrollbar-track { background: transparent; }
 
-  .legend { display:flex; flex-wrap:wrap; gap: 14px; font-size: 12px; color: var(--muted); margin: 4px 0 10px; }
-  .legend span { display:flex; align-items:center; gap:6px; }
-  .sw { width: 12px; height: 12px; border-radius: var(--radius); display:inline-block; }
-  .s-validated { background: var(--st-validated); color: #03140a; }
-  .s-quiet { background: var(--st-quiet); color: #1f1500; }
-  .s-unvalidated { background: var(--st-unvalidated); color: #200c02; }
-  .s-none { background: var(--st-none); color: var(--muted); }
-  .sw.s-none, .cell.s-none { box-shadow: inset 0 0 0 1px var(--line); }
-  .matrix { display:flex; gap: 6px; overflow-x:auto; padding-bottom: 10px; }
-  .col { min-width: 132px; flex: 1 0 132px; }
-  .col h3 { margin: 0 0 6px; font-size: 11px; font-weight: 500; color: var(--text); min-height: 28px;
-            padding-bottom: 6px; border-bottom: 2px solid var(--accent); }
-  .col h3 small { display:block; color: var(--muted); font-weight: 400; margin-top: 2px; }
-  .cell { font-size: 10.5px; line-height: 1.25; padding: 5px 6px; border-radius: var(--radius); margin-bottom: 4px;
-          cursor: pointer; border: 1px solid transparent; }
-  .cell:hover { border-color: var(--link); }
-  .cell.viasub { background-image: repeating-linear-gradient(135deg, rgba(0,0,0,0.2) 0 4px, transparent 4px 8px); }
-  .cell .tid { font-family: var(--mono); opacity: 0.8; }
-  .cell .cnt { float: right; font-family: var(--mono); font-weight: 700; }
-  #techDetail { font-size: 12px; margin: 8px 0 14px; padding: 12px 14px; display:none; }
-  #techDetail a { color: var(--link); }
-  #techDetail ul { margin: 6px 0; padding-left: 18px; }
-  .tag { font-family: var(--mono); font-size: 11px; padding: 1px 6px; border-radius: var(--radius); }
+  /* Coverage & score legend */
+  .legendbar { display:flex; flex-wrap:wrap; align-items:center; gap: 18px; margin: 0 0 16px; font-size: 13px; color: var(--muted); }
+  .legendbar strong { color: var(--text); font-weight: 600; text-transform: uppercase; font-size: 13px; }
+  .legendbar .item { display:flex; align-items:center; gap: 8px; }
+  .lg-box { width: 22px; height: 16px; display:inline-block; border-radius: var(--radius); }
+  .lg-box.nocov { border: 1px dashed var(--tile-border); }
+  .lg-box.plain { background: var(--tile); border: 1px solid var(--tile-border); }
+  .lg-box.scored { background: var(--tile-scored); border: 1px solid var(--tile-scored); }
+  .lg-line { width: 10px; height: 4px; display:inline-block; }
+  .legendbar .sep { width: 1px; height: 18px; background: var(--line); }
+  .toolbar { display:flex; justify-content:flex-end; gap: 22px; margin: -6px 0 14px; flex-wrap: wrap; }
+  .switch { display:flex; align-items:center; gap: 10px; color: var(--text-2); font-size: 12px; cursor: pointer; user-select: none; }
+  .switch input { display:none; }
+  .switch .knob { width: 30px; height: 16px; border-radius: 999px; background: #2a2f3c; position: relative; transition: background .15s; }
+  .switch .knob::after { content:""; position:absolute; top: 2px; left: 2px; width: 12px; height: 12px; border-radius: 50%;
+                         background: #fff; transition: left .15s; }
+  .switch input:checked + .knob { background: var(--accent); }
+  .switch input:checked + .knob::after { left: 16px; }
 
-  @media (max-width: 980px) { .card { grid-column: span 6; } .panel.half { grid-column: span 12; } .meta { display:none; } }
-  @media (max-width: 560px) { .card { grid-column: span 12; } }
+  /* ATT&CK matrix (Outcomes Navigator style) */
+  .matrix { display:flex; gap: 10px; overflow-x:auto; padding-bottom: 12px; }
+  .col { min-width: 170px; flex: 1 0 170px; }
+  .col h3 { margin: 0 0 10px; font-size: 13px; font-weight: 600; color: var(--text); }
+  .col h3 small { display:block; color: var(--muted); font-weight: 400; font-size: 12px; margin-top: 3px; }
+  .tile { padding: 12px 16px 8px; margin-bottom: 6px; border-radius: var(--radius); cursor: pointer;
+          background: var(--tile); border: 1px solid var(--tile-border); }
+  .tile.scored { background: var(--tile-scored); border-color: var(--tile-scored); }
+  .tile.nocov { background: transparent; border: 1px dashed var(--tile-border); padding-bottom: 12px; }
+  .tile:hover { border-color: var(--link); border-style: solid; }
+  .tile .tname { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.4; }
+  .tile.nocov .tname { font-weight: 400; color: var(--muted); }
+  .bar { position: relative; height: 10px; margin-top: 10px;
+    background:
+      linear-gradient(var(--tick), var(--tick)) 0% 100% / 1px 8px no-repeat,
+      linear-gradient(var(--tick), var(--tick)) 25% 100% / 1px 8px no-repeat,
+      linear-gradient(var(--tick), var(--tick)) 50% 100% / 1px 8px no-repeat,
+      linear-gradient(var(--tick), var(--tick)) 75% 100% / 1px 8px no-repeat,
+      linear-gradient(var(--tick), var(--tick)) 100% 100% / 1px 8px no-repeat; }
+  .bar b { position:absolute; left: 0; bottom: 2px; height: 3px; }
+  .b-low  { background: linear-gradient(to right, rgba(155,31,192,0), var(--band-low)); }
+  .b-mid  { background: linear-gradient(to right, rgba(31,114,208,0), var(--band-mid)); }
+  .b-high { background: linear-gradient(to right, rgba(49,167,23,0), var(--band-high)); }
+
+  /* Status tags */
+  .tag { display:inline-block; font-size: 11px; padding: 2px 7px; border-radius: var(--radius); font-weight: 500; }
+  .s-validated { background: rgba(49,167,23,0.18); color: #6fd35a; }
+  .s-quiet { background: rgba(31,114,208,0.22); color: #6fb0f5; }
+  .s-unvalidated { background: rgba(155,31,192,0.22); color: #cf86ea; }
+  .s-none { background: rgba(163,170,181,0.12); color: var(--muted); }
+
+  /* Detail drawer */
+  .drawer { position: fixed; top: 0; right: 0; height: 100vh; width: min(460px, 100vw); z-index: 20;
+            padding: 20px 22px; overflow-y: auto; transform: translateX(105%); transition: transform .2s ease;
+            box-shadow: -20px 0 40px rgba(0,0,0,0.5); }
+  .drawer.open { transform: translateX(0); }
+  .drawer .close { position:absolute; top: 14px; right: 16px; background: none; border: 0; color: var(--muted);
+                   font-size: 22px; cursor: pointer; }
+  .drawer .close:hover { color: var(--text); }
+  .drawer .tid { font-family: var(--mono); color: var(--muted); font-size: 12px; }
+  .drawer h3 { margin: 4px 30px 10px 0; font-size: 17px; font-weight: 500; color: var(--text); }
+  .drawer .score { display:flex; align-items:center; gap: 12px; margin: 12px 0 16px; }
+  .drawer .score .num { font-size: 26px; font-weight: 600; color: var(--text); }
+  .drawer .score .bar { flex: 1; margin-top: 0; }
+  .drawer h4 { margin: 18px 0 6px; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+  .drawer ul { list-style: none; margin: 0; padding: 0; }
+  .drawer li { padding: 8px 0; border-bottom: 1px solid var(--line); line-height: 1.45; }
+  .drawer li .when { color: var(--muted); font-size: 12px; }
+  .drawer a { color: var(--link); }
+  .drawer .note { color: var(--muted); font-size: 12px; }
+
+  @media (max-width: 1100px) { .card { grid-column: span 6; } .panel.half { grid-column: span 12; } .meta { display:none; } }
+  @media (max-width: 560px) { .card { grid-column: span 12; } .wrap { padding: 14px 16px 40px; } }
   .footer-note { margin: 8px 0 10px; color: var(--muted); font-size: 12px; }
 </style>
 </head>
@@ -892,111 +974,163 @@ HTML_TEMPLATE = """<!doctype html>
   <div class="wrap">
     <div class="topbar">
       <div class="brand">
-        <div class="logo" title="Put a logo.png next to this HTML file to display it.">
+        <div class="logo">
           <img src="logo.png" alt="Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
           <span class="fallback" style="display:none;">LOGO</span>
         </div>
         <div class="title">
-          <h1>MITRE Coverage Report</h1>
-          <div class="sub">Exabeam Correlation Rules • Region: %%REGION%% • Generated: %%GENERATED%% • Quiet after %%STALE%% days</div>
+          <h1>MITRE ATT&amp;CK Coverage Report</h1>
+          <div class="sub">Exabeam Correlation Rules • Region: %%REGION%% • Generated: %%GENERATED%%</div>
         </div>
       </div>
       <div class="meta">%%COMPARE_META%%</div>
     </div>
 
-    <div class="grid">
-      %%CARDS%%
-      %%CHANGES%%
-
-      <div class="panel">
-        <h2>ATT&amp;CK coverage matrix</h2>
-        <p class="sub">Each cell is a technique, coloured by its best mapped rule. Hatched cells are covered only through a sub-technique. Click a cell for details.</p>
-        <div class="legend">
-          <span><i class="sw s-validated"></i>Validated - a rule fired in the last %%STALE%% days</span>
-          <span><i class="sw s-quiet"></i>Quiet - rules fired before, not recently</span>
-          <span><i class="sw s-unvalidated"></i>Unvalidated - rules have never fired</span>
-          <span><i class="sw s-none"></i>Not covered</span>
-        </div>
-        <div class="controls">
-          <label><input type="checkbox" id="rollup" checked onchange="renderMatrix()"> Count sub-technique coverage toward parent</label>
-          <label><input type="checkbox" id="hideNone" onchange="renderMatrix()"> Hide not covered</label>
-        </div>
-        <div id="techDetail"></div>
-        <div class="matrix" id="matrix"></div>
-      </div>
-
-      %%HEALTH_PANELS%%
-
-      <div class="panel half">
-        <h2>Rules per tactic</h2>
-        %%TACTIC_TABLE%%
-        <div class="footer-note">uniqueRules = distinct rules per tactic. mappingRows = total mappings per tactic.</div>
-      </div>
-      <div class="panel half">
-        <h2>Top techniques by mapping count</h2>
-        %%TECH_COUNTS_TABLE%%
-      </div>
-
-      %%PRIORITY_PANEL%%
-      %%DATA_PANELS%%
+    <div class="tabs" role="tablist">
+      <button class="tab" data-tab="coverage">MITRE ATT&amp;CK&reg; Coverage</button>
+      <button class="tab" data-tab="health">Detection Health</button>
+      <button class="tab" data-tab="changes">Changes<span class="count">%%CHANGE_COUNT%%</span></button>
+      <button class="tab" data-tab="data">Data Tables</button>
     </div>
+
+    <section class="tabpane" id="tab-coverage">
+      <div class="grid">%%COVERAGE_CARDS%%</div>
+
+      <div class="legendbar">
+        <strong>Coverage &amp; Score</strong>
+        <span class="item"><i class="lg-box nocov"></i>No coverage</span>
+        <span class="item"><i class="lg-box plain"></i>Via sub-technique</span>
+        <span class="item"><i class="lg-box scored"></i>Coverage</span>
+        <span class="sep"></span>
+        <span class="item"><i class="lg-line" style="background:var(--band-zero)"></i>&le; 0</span>
+        <span class="item"><i class="lg-line" style="background:var(--band-low)"></i>1-49 Unvalidated</span>
+        <span class="item"><i class="lg-line" style="background:var(--band-mid)"></i>50-74 Quiet</span>
+        <span class="item"><i class="lg-line" style="background:var(--band-high)"></i>75-100 Validated</span>
+      </div>
+      <div class="toolbar">
+        <label class="switch"><input type="checkbox" id="rollup" checked onchange="renderMatrix()"><span class="knob"></span>Count sub-technique coverage</label>
+        <label class="switch"><input type="checkbox" id="showNone" checked onchange="renderMatrix()"><span class="knob"></span>Show uncovered techniques</label>
+      </div>
+      <div class="matrix" id="matrix"></div>
+      <div class="footer-note">
+        Score: Validated (a mapped rule fired in the last %%STALE%% days) = 75-100, Quiet (mapped rules fired before, but not recently) = 50-74,
+        Unvalidated (mapped rules have never fired) = 20-49, Not covered = 0. Each additional rule in the same state adds 5 points within its band.
+        Click a technique for details.
+      </div>
+    </section>
+
+    <section class="tabpane" id="tab-health">
+      <div class="grid">%%HEALTH_CARDS%%%%HEALTH_PANELS%%</div>
+    </section>
+
+    <section class="tabpane" id="tab-changes">
+      <div class="grid">%%CHANGES%%</div>
+    </section>
+
+    <section class="tabpane" id="tab-data">
+      <div class="grid">
+        <div class="panel half">
+          <h2>Rules per tactic</h2>
+          %%TACTIC_TABLE%%
+          <div class="footer-note">uniqueRules = distinct rules per tactic. mappingRows = total mappings per tactic.</div>
+        </div>
+        <div class="panel half">
+          <h2>Top techniques by mapping count</h2>
+          %%TECH_COUNTS_TABLE%%
+        </div>
+        %%PRIORITY_PANEL%%
+        %%DATA_PANELS%%
+      </div>
+    </section>
   </div>
+
+  <aside class="drawer" id="drawer" aria-hidden="true">
+    <button class="close" onclick="closeDrawer()" aria-label="Close">&times;</button>
+    <div id="drawerBody"></div>
+  </aside>
 
 <script id="matrixData" type="application/json">%%MATRIX_JSON%%</script>
 <script>
 const MATRIX = JSON.parse(document.getElementById('matrixData').textContent);
 const LABEL = {validated: 'Validated', quiet: 'Quiet', unvalidated: 'Unvalidated', none: 'Not covered'};
+const RULE_CLASS = {Active: 'validated', Quiet: 'quiet', NeverFired: 'unvalidated', Unknown: 'unvalidated'};
+const RULE_LABEL = {Active: 'Active', Quiet: 'Quiet', NeverFired: 'Never fired', Unknown: 'Unknown'};
 
 function escHtml(s) {
   return String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 }
+function bandClass(score) { return score <= 0 ? '' : score < 50 ? 'b-low' : score < 75 ? 'b-mid' : 'b-high'; }
+function barHtml(score) {
+  const cls = bandClass(score);
+  return `<div class="bar">${cls ? `<b class="${cls}" style="width:${score}%"></b>` : ''}</div>`;
+}
+function view(t) {
+  const rollup = document.getElementById('rollup').checked;
+  return rollup ? {status: t.rolled, score: t.rolledScore, viaSub: t.viaSub}
+                : {status: t.status, score: t.score, viaSub: false};
+}
 
 function renderMatrix() {
-  const rollup = document.getElementById('rollup').checked;
-  const hideNone = document.getElementById('hideNone').checked;
+  const showNone = document.getElementById('showNone').checked;
   const root = document.getElementById('matrix');
   root.innerHTML = '';
   MATRIX.forEach((col, ci) => {
-    const techs = col.techs.filter(t => !hideNone || (rollup ? t.rolled : t.status) !== 'none');
-    const covered = col.techs.filter(t => (rollup ? t.rolled : t.status) !== 'none').length;
+    const covered = col.techs.filter(t => view(t).status !== 'none').length;
+    let html = `<h3>${escHtml(col.name)}<small>${col.techs.length} Techniques &bull; ${covered} covered</small></h3>`;
+    col.techs.forEach((t, ti) => {
+      const v = view(t);
+      if (!showNone && v.status === 'none') return;
+      const cls = v.status === 'none' ? 'nocov' : v.viaSub ? 'plain' : 'scored';
+      html += `<div class="tile ${cls}" onclick="openTech(${ci},${ti})" title="${escHtml(t.id)} - ${LABEL[v.status]} (score ${v.score})">`
+           + `<div class="tname">${escHtml(t.name)}</div>${v.status === 'none' ? '' : barHtml(v.score)}</div>`;
+    });
     const div = document.createElement('div');
     div.className = 'col';
-    let html = `<h3>${escHtml(col.name)}<small>${covered}/${col.techs.length} covered</small></h3>`;
-    techs.forEach((t, ti) => {
-      const st = rollup ? t.rolled : t.status;
-      const via = rollup && t.viaSub ? ' viasub' : '';
-      const subCov = t.subs.filter(s => s.status !== 'none').length;
-      const cnt = t.rules.length ? `<span class="cnt">${t.rules.length}</span>` : '';
-      const subTxt = t.subs.length ? ` <span class="tid">(${subCov}/${t.subs.length} subs)</span>` : '';
-      const idx = col.techs.indexOf(t);
-      html += `<div class="cell s-${st}${via}" onclick="showTech(${ci},${idx})" title="${escHtml(t.id)} ${escHtml(t.name)} - ${LABEL[st]}">`
-           + `${cnt}<span class="tid">${escHtml(t.id)}</span><br>${escHtml(t.name)}${subTxt}</div>`;
-    });
     div.innerHTML = html;
     root.appendChild(div);
   });
 }
 
-function showTech(ci, ti) {
-  const t = MATRIX[ci].techs[ti];
-  const el = document.getElementById('techDetail');
-  const ruleList = rs => rs.length
-    ? '<ul>' + rs.map(r => `<li>${escHtml(r.name)} <span class="tag s-${statusClass(r.status)}">${escHtml(r.status)}</span>${r.last ? ' last fired ' + escHtml(r.last) : ''}</li>`).join('') + '</ul>'
-    : '<div class="footer-note">No rules mapped directly.</div>';
-  const subs = t.subs.length
-    ? '<ul>' + t.subs.map(s => `<li><span class="tag s-${s.status}">${LABEL[s.status]}</span> ${escHtml(s.id)} ${escHtml(s.name)}${s.rules.length ? ' - ' + s.rules.map(escHtml).join(', ') : ''}</li>`).join('') + '</ul>'
-    : '';
-  el.innerHTML = `<strong>${escHtml(t.id)} ${escHtml(t.name)}</strong> <span class="tag s-${t.status}">${LABEL[t.status]}</span>`
-    + (t.link ? ` <a href="${escHtml(t.link)}" target="_blank" rel="noopener">MITRE page</a>` : '')
-    + `<div style="margin-top:8px;color:var(--muted)">Rules mapped to this technique:</div>${ruleList(t.rules)}`
-    + (subs ? `<div style="margin-top:8px;color:var(--muted)">Sub-techniques:</div>${subs}` : '');
-  el.style.display = 'block';
-  el.scrollIntoView({block: 'nearest', behavior: 'smooth'});
+function ruleList(rules) {
+  if (!rules.length) return '<div class="note">No rules mapped directly.</div>';
+  return '<ul>' + rules.map(r =>
+    `<li>${escHtml(r.name)}<br><span class="tag s-${RULE_CLASS[r.status] || 'none'}">${escHtml(RULE_LABEL[r.status] || r.status)}</span>`
+    + ` <span class="when">${r.last ? 'last fired ' + escHtml(r.last) : 'no trigger recorded'}</span></li>`).join('') + '</ul>';
 }
 
-function statusClass(ruleStatus) {
-  return {Active: 'validated', Quiet: 'quiet', NeverFired: 'unvalidated', Unknown: 'unvalidated'}[ruleStatus] || 'none';
+function openTech(ci, ti) {
+  const t = MATRIX[ci].techs[ti];
+  const v = view(t);
+  const subs = t.subs.length
+    ? '<ul>' + t.subs.map(s => `<li><span class="tag s-${s.status}">${LABEL[s.status]}</span> <span class="tid">${escHtml(s.id)}</span> ${escHtml(s.name)}`
+        + (s.rules.length ? '<br><span class="when">' + s.rules.map(r => escHtml(r.name)).join(', ') + '</span>' : '') + '</li>').join('') + '</ul>'
+    : '<div class="note">No sub-techniques.</div>';
+  document.getElementById('drawerBody').innerHTML =
+      `<div class="tid">${escHtml(t.id)} &bull; ${escHtml(MATRIX[ci].name)}</div>`
+    + `<h3>${escHtml(t.name)}</h3>`
+    + `<span class="tag s-${v.status}">${LABEL[v.status]}</span>${v.viaSub ? ' <span class="note">covered through a sub-technique</span>' : ''}`
+    + `<div class="score"><span class="num">${v.score}</span>${barHtml(v.score)}</div>`
+    + (t.link ? `<a href="${escHtml(t.link)}" target="_blank" rel="noopener">View on attack.mitre.org</a>` : '')
+    + `<h4>Rules mapped to this technique (${t.rules.length})</h4>${ruleList(t.rules)}`
+    + `<h4>Sub-techniques (${t.subs.filter(s => s.status !== 'none').length}/${t.subs.length} covered)</h4>${subs}`;
+  const d = document.getElementById('drawer');
+  d.classList.add('open');
+  d.setAttribute('aria-hidden', 'false');
 }
+function closeDrawer() {
+  const d = document.getElementById('drawer');
+  d.classList.remove('open');
+  d.setAttribute('aria-hidden', 'true');
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+
+function showTab(name) {
+  if (!document.getElementById('tab-' + name)) name = 'coverage';
+  document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+  document.querySelectorAll('.tabpane').forEach(p => p.classList.toggle('active', p.id === 'tab-' + name));
+  try { history.replaceState(null, '', '#' + name); } catch (e) {}
+}
+document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => showTab(b.dataset.tab)));
 
 function filterTable(tableId, query) {
   const q = (query || '').toLowerCase().trim();
@@ -1008,6 +1142,7 @@ function filterTable(tableId, query) {
 }
 
 renderMatrix();
+showTab((location.hash || '#coverage').slice(1));
 </script>
 </body>
 </html>
@@ -1019,38 +1154,38 @@ def build_html_report(path: str, ctx: dict) -> None:
     prev_kpis = ctx["prev"]["kpis"] if ctx["prev"] else None
     stale = ctx["stale_days"]
 
-    cards = "".join([
+    coverage_cards = "".join([
         card("Enabled rules", k["enabledRules"],
-             f"{k['testModeRules']} in test mode • {k['rulesReturned']} rules returned by API", "good",
+             f"{k['testModeRules']} in test mode • {k['rulesReturned']} rules returned by API", "",
              delta_text(k["enabledRules"], prev_kpis, "enabledRules")),
         card("Parent techniques covered", f"{k['parentsCoveredPct']:.1f}%",
              f"{k['parentsCoveredInclSubs']}/{k['parentsTotal']} incl. via sub-techniques • {k['parentsCovered']} mapped directly",
-             "warn", delta_text(k["parentsCoveredPct"], prev_kpis, "parentsCoveredPct", " pts"), meter=k["parentsCoveredPct"]),
+             "", delta_text(k["parentsCoveredPct"], prev_kpis, "parentsCoveredPct", " pts"), meter=k["parentsCoveredPct"]),
         card("Validated coverage", f"{k['validatedPct']:.1f}%",
              f"{k['parentsValidated']}/{k['parentsTotal']} parent techniques have a rule that fired in the last {stale} days",
-             "good" if k["validatedPct"] >= k["parentsCoveredPct"] * 0.75 else "warn",
-             delta_text(k["validatedPct"], prev_kpis, "validatedPct", " pts"), meter=k["validatedPct"]),
+             "good", delta_text(k["validatedPct"], prev_kpis, "validatedPct", " pts"), meter=k["validatedPct"]),
         card("Sub-techniques covered", f"{k['subsCoveredPct']:.1f}%", f"{k['subsCovered']}/{k['subsTotal']}", "",
              delta_text(k["subsCoveredPct"], prev_kpis, "subsCoveredPct", " pts"), meter=k["subsCoveredPct"]),
-        card("Rules gone quiet", k["rulesQuiet"],
-             f"Fired before, but not in the last {stale} days - check log sources and rule logic",
-             "warn" if k["rulesQuiet"] else "good", delta_text(k["rulesQuiet"], prev_kpis, "rulesQuiet")),
-        card("Rules never fired", k["rulesNeverFired"], "Enabled but never triggered - unvalidated detections",
-             "orange" if k["rulesNeverFired"] else "good", delta_text(k["rulesNeverFired"], prev_kpis, "rulesNeverFired")),
-        card("Rules auto-disabled", k["rulesAutoDisabled"], "Turned off by the platform - not counted as coverage",
-             "bad" if k["rulesAutoDisabled"] else "good", delta_text(k["rulesAutoDisabled"], prev_kpis, "rulesAutoDisabled")),
-        card("Rule hygiene issues", k["noMitreTag"] + k["exportMissing"],
-             f"{k['noMitreTag']} with no MITRE tags • {k['exportMissing']} missing from export"
-             + (f" • {k['unknownTechniques']} mapped to unknown techniques" if k["unknownTechniques"] else ""),
-             "warn" if (k["noMitreTag"] + k["exportMissing"]) else "good"),
     ])
 
+    health_cards = "".join([
+        card("Rules gone quiet", k["rulesQuiet"],
+             f"Fired before, but not in the last {stale} days - check log sources and rule logic",
+             "blue" if k["rulesQuiet"] else "good", delta_text(k["rulesQuiet"], prev_kpis, "rulesQuiet")),
+        card("Rules never fired", k["rulesNeverFired"], "Enabled but never triggered - unvalidated detections",
+             "purple" if k["rulesNeverFired"] else "good", delta_text(k["rulesNeverFired"], prev_kpis, "rulesNeverFired")),
+        card("Rules auto-disabled", k["rulesAutoDisabled"], "Turned off by the platform - not counted as coverage",
+             "bad" if k["rulesAutoDisabled"] else "good", delta_text(k["rulesAutoDisabled"], prev_kpis, "rulesAutoDisabled")),
+        card("Rule hygiene issues", k["noMitreTag"] + k["exportMissing"] + k["unknownTechniques"],
+             f"{k['noMitreTag']} with no MITRE tags • {k['exportMissing']} missing from export"
+             f" • {k['unknownTechniques']} mapped to retired techniques",
+             "warn" if (k["noMitreTag"] + k["exportMissing"] + k["unknownTechniques"]) else "good"),
+    ])
     if k["rulesUnknown"]:
-        cards += card("Trigger data unavailable", k["rulesUnknown"],
-                      "Enabled rules where the API returned no trigger history - treated as unvalidated", "warn")
+        health_cards += card("Trigger data unavailable", k["rulesUnknown"],
+                             "Enabled rules where the API returned no trigger history - treated as unvalidated", "warn")
 
     # Changes since last run
-    changes_html = ""
     if ctx["prev"]:
         prev_when = esc(ctx["prev"].get("generatedAt", ""))
         changes = ctx["changes"]
@@ -1061,9 +1196,17 @@ def build_html_report(path: str, ctx: dict) -> None:
         <p class="sub">Rules that stopped firing or were auto-disabled are listed first - these are the most likely signs that a log source or rule has broken.</p>
         {body}
       </div>"""
-        compare_meta = f"<div>Compared with run:</div><div>{prev_when}</div>"
+        compare_meta = f"<div>Compared with run</div><div>{prev_when}</div>"
+        change_count = str(len(changes))
     else:
-        compare_meta = "<div>No previous run to compare with.</div><div>Run again later to see changes.</div>"
+        changes_html = """
+      <div class="panel">
+        <h2>Changes since last run</h2>
+        <p class="sub">No previous run for this region was found. Run the report again later (for example weekly) to see rules that
+        stopped firing, were auto-disabled, and coverage gained or lost.</p>
+      </div>"""
+        compare_meta = "<div>No previous run to compare with</div>"
+        change_count = ""
 
     # Detection health panels
     health = ctx["health_enabled"]
@@ -1112,13 +1255,13 @@ def build_html_report(path: str, ctx: dict) -> None:
 
     data_html = "".join([
         filterable_panel("All MITRE techniques", "status = best status of any mapped rule.", ctx["all_mitre_view"],
-                         "tblAllMitre", "Filter (validated, T1110, credential-access, Brute Force)..."),
+                         "tblAllMitre", "Filter (validated, T1110, TA0006, Brute Force)..."),
         filterable_panel("Rule health", f"Every rule returned by the API. Quiet = no trigger for {stale}+ days.",
                          ctx["health_all"], "tblHealth", "Filter (Quiet, NeverFired, rule name)..."),
         filterable_panel("Current coverage", "Each row maps one rule to one technique.", ctx["coverage"],
                          "tblCoverage", "Filter (rule name, TA0006, T1003)..."),
         filterable_panel("Current gaps", "Uncovered techniques plus rule hygiene issues.", ctx["gaps"],
-                         "tblGaps", "Filter (NotCovered, NoMitreTag, T1556)..."),
+                         "tblGaps", "Filter (NotCovered, NoMitreTag, UnknownTechnique, T1556)..."),
     ])
 
     matrix_json = json.dumps(ctx["matrix"], separators=(",", ":")).replace("</", "<\\/")
@@ -1129,7 +1272,9 @@ def build_html_report(path: str, ctx: dict) -> None:
         "%%GENERATED%%": esc(ctx["generated"]),
         "%%STALE%%": str(stale),
         "%%COMPARE_META%%": compare_meta,
-        "%%CARDS%%": cards,
+        "%%CHANGE_COUNT%%": change_count,
+        "%%COVERAGE_CARDS%%": coverage_cards,
+        "%%HEALTH_CARDS%%": health_cards,
         "%%CHANGES%%": changes_html,
         "%%HEALTH_PANELS%%": health_html,
         "%%TACTIC_TABLE%%": to_html_table(ctx["tactic_summary"], "tblTacticSummary"),

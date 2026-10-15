@@ -15,7 +15,13 @@ A single Python script that:
   - **Unvalidated** – mapped rules have never fired
   - **Not covered** – no enabled rule maps to it
 
-  Click any cell to see the rules and sub-techniques behind it.
+  The matrix follows the Exabeam Outcomes Navigator layout and score bands:
+  - 75–100 = validated (green)
+  - 50–74 = quiet (blue)
+  - 20–49 = unvalidated (purple)
+  - 0 = not covered (dashed tile)
+
+  Within a band, each extra rule in that state adds 5 points. Click any technique to open a panel with the rules and sub-techniques behind it.
 - **Detection health**:
   - **Gone quiet**: rules that used to fire but haven't in 30 days. This often means a log source or parser has broken.
   - **Never fired**: rules that have never been validated.
