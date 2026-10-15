@@ -755,6 +755,7 @@ def tactic_key(raw: str) -> str:
 # =========================================================
 ATTACK_INDEX_URL = "https://raw.githubusercontent.com/mitre-attack/attack-stix-data/master/index.json"
 ATTACK_CACHE_MAX_AGE_DAYS = 30
+ATTACK_CACHE_SCHEMA = 2  # bump when build_attack_context() output changes, to force a refresh
 ATTACK_DOWNLOAD_TIMEOUT_SECONDS = 180
 
 # MITRE has no structured "targeted sector" field, so sectors are matched from keywords
@@ -822,12 +823,15 @@ def build_attack_context(bundle: dict, version: str) -> dict:
             "id": _stix_external_id(g),
             "name": g.get("name", ""),
             "url": _stix_url(g),
+            "aliases": [a for a in (g.get("aliases") or []) if a != g.get("name")][:10],
+            "description": clean_description(desc)[:900],
             "sectors": [s for s, pat in SECTOR_PATTERNS.items() if re.search(pat, desc, re.I)],
             "techniques": sorted(uses[gid]),
         })
     group_rows.sort(key=lambda g: g["name"].lower())
 
     return {
+        "schema": ATTACK_CACHE_SCHEMA,
         "version": version,
         "fetchedAt": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%SZ"),
         "platforms": platforms,
@@ -859,7 +863,8 @@ def load_attack_context(cache_path: str, mode: str) -> dict | None:
             cached = None
     if cached and mode == "auto":
         fetched = parse_ts(cached.get("fetchedAt"))
-        if fetched and (datetime.now(timezone.utc) - fetched).days < ATTACK_CACHE_MAX_AGE_DAYS:
+        if (cached.get("schema") == ATTACK_CACHE_SCHEMA and fetched
+                and (datetime.now(timezone.utc) - fetched).days < ATTACK_CACHE_MAX_AGE_DAYS):
             return cached
     try:
         ctx = download_attack_context()
@@ -1046,7 +1051,9 @@ def attack_for_html(attack: dict | None) -> dict | None:
         "version": attack["version"],
         "platforms": [p for p in PLATFORM_ORDER if p in present] + sorted(present - set(PLATFORM_ORDER)),
         "sectors": [{"name": s, "groups": n} for s, n in sector_counts.items() if n],
-        "groups": [{"id": g["id"], "name": g["name"], "url": g["url"], "sectors": g["sectors"]} for g in attack["groups"]],
+        "groups": [{"id": g["id"], "name": g["name"], "url": g["url"], "sectors": g["sectors"],
+                    "aliases": g.get("aliases", []), "desc": g.get("description", ""), "techniques": g["techniques"]}
+                   for g in attack["groups"]],
     }
 
 
@@ -1185,7 +1192,15 @@ HTML_TEMPLATE = """<!doctype html>
   .col h3 small { display:block; color: var(--muted); font-weight: 400; font-size: 12px; margin-top: 3px; }
   .tile { display:flex; margin-bottom: 6px; border-radius: var(--radius); cursor: pointer;
           background: var(--tile); border: 1px solid var(--tile-border); }
-  .tile.scored { background: var(--tile-scored); border-color: var(--tile-scored); }
+  .tile.scored, .tile.band-high { background: var(--tile-scored); border-color: #636972; }
+  /* Outcomes Navigator shades tiles by score band: lower bands sit closer to the page background */
+  .tile.band-mid { background: #2f343f; border-color: #575c66; }
+  .tile.band-low { background: #22232c; border-color: #4e4f56; }
+  .tile.hiddentile { opacity: 0.45; }
+  .tile.hiddentile .body { padding-right: 34px; }
+  .tile .hidico { position: absolute; top: 9px; right: 9px; color: #1b5ea5; }
+  .tile .hidico svg { width: 18px; height: 18px; }
+  .tile.dim { opacity: 0.18; }
   .tile.nocov { background: transparent; border: 1px dashed var(--tile-border); }
   .tile:hover { border-color: var(--link); border-style: solid; }
   .tile.sel { background: var(--tile-selected); border: 1px solid var(--tile-selected); }
@@ -1302,7 +1317,18 @@ HTML_TEMPLATE = """<!doctype html>
   .grouplist a { font-size: 12px; padding: 3px 8px; border: 1px solid #30323e; border-radius: var(--radius); text-decoration: none; color: var(--text-2); }
   .grouplist a:hover { border-color: var(--link); }
   .grouplist a.hit { border-color: rgba(240,80,110,0.6); color: #ff8fa3; }
-  #sectorPanel tr[data-open] { cursor: pointer; }
+  #sectorPanel tr[data-open], tr[data-tech], tr[data-group] { cursor: pointer; }
+  .select { background: var(--panel-2); color: var(--text); border: 1px solid var(--line); border-radius: var(--radius);
+            padding: 8px 10px; font: 500 12.5px var(--sans); min-width: 260px; }
+  .select:focus { outline: none; border-color: var(--accent); }
+  .covbar { display:inline-block; vertical-align: middle; width: 80px; height: 5px; background: var(--track); margin-right: 8px; }
+  .covbar i { display:block; height: 100%; background: var(--accent); }
+  .covbar i.validfill { background: var(--band-high); }
+  .covbar i.threatfill { background: #f0506e; }
+  .mini { display:inline-block; font-size: 10.5px; padding: 1px 6px; margin: 1px 0; border: 1px solid #30323e; border-radius: var(--radius);
+          color: var(--muted); white-space: nowrap; }
+  .mini.hit { border-color: rgba(240,80,110,0.6); color: #ff8fa3; }
+  .note { color: var(--muted); font-size: 12px; }
   .btn-export { background: transparent; color: var(--accent); border-color: #043c77; padding: 9px 16px; font-size: 13px; }
   .btn-export:hover { border-color: var(--accent); background: rgba(3,113,224,0.08); }
   .attver { font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--muted); letter-spacing: 0.02em; }
@@ -1335,6 +1361,7 @@ HTML_TEMPLATE = """<!doctype html>
 
     <div class="tabs" role="tablist">
       <button class="tab" data-tab="coverage">MITRE ATT&amp;CK&reg; Coverage</button>
+      <button class="tab" data-tab="groups">Threat Groups</button>
       <button class="tab" data-tab="health">Detection Health</button>
       <button class="tab" data-tab="changes">Changes<span class="count">%%CHANGE_COUNT%%</span></button>
       <button class="tab" data-tab="data">Data Tables</button>
@@ -1366,6 +1393,7 @@ HTML_TEMPLATE = """<!doctype html>
         <div class="group">
           <label class="switch"><input type="checkbox" id="rollup" checked onchange="renderMatrix()"><span class="knob"></span>Count sub-technique coverage</label>
           <label class="switch"><input type="checkbox" id="showNone" checked onchange="renderMatrix()"><span class="knob"></span>Show uncovered techniques</label>
+          <label class="switch"><input type="checkbox" id="showHidden" onchange="FILTER.showHidden = this.checked; saveFilter(); renderMatrix()"><span class="knob"></span>Show hidden techniques</label>
           <button class="btn btn-export" onclick="exportCsv()" title="Download the matrix as CSV (follows the current filters)">
             <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
             Export MITRE ATT&amp;CK Coverage
@@ -1380,6 +1408,8 @@ HTML_TEMPLATE = """<!doctype html>
       </div>
       <div class="grid" style="margin-top:18px"><div class="panel" id="sectorPanel" style="display:none"></div></div>
     </section>
+
+    <section class="tabpane" id="tab-groups"><div id="groupsView"></div></section>
 
     <section class="tabpane" id="tab-health">
       <div class="grid">%%HEALTH_CARDS%%%%HEALTH_PANELS%%</div>
@@ -1440,6 +1470,8 @@ const ICON = {
   target: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>',
   filter: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18l-7 8v6l-4 2v-8z"/></svg>',
   platform: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="12" rx="1"/><path d="M8 20h8M12 16v4"/></svg>',
+  eye: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+  eyeOff: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.9 17.9A10.4 10.4 0 0 1 12 19c-7 0-11-7-11-7a19 19 0 0 1 5.1-5.9M9.9 5.2A9.7 9.7 0 0 1 12 5c7 0 11 7 11 7a19 19 0 0 1-2.2 3.2M14.1 14.1a3 3 0 1 1-4.2-4.2"/><path d="M1 1l22 22"/></svg>',
 };
 
 /* ---------- Tailoring filters (sector + platforms), remembered per viewer ---------- */
@@ -1455,11 +1487,17 @@ const FILTER_KEY = 'exabeamMitreReport.filters.v1';
 let FILTER = loadFilter();
 let DRAFT = null;
 
-function defaultFilter() { return {sector: '', platforms: ALL_PLATFORMS.slice(), onlySector: false, saved: false}; }
+function defaultFilter() {
+  return {sector: '', platforms: ALL_PLATFORMS.slice(), onlySector: false, hidden: [], showHidden: false, saved: false};
+}
 function loadFilter() {
   const f = defaultFilter();
   try {
     const saved = JSON.parse(localStorage.getItem(FILTER_KEY) || 'null');
+    if (saved) {
+      f.hidden = Array.isArray(saved.hidden) ? saved.hidden.filter(x => typeof x === 'string') : [];
+      f.showHidden = !!saved.showHidden;
+    }
     if (saved && ATTACK) {
       f.sector = ATTACK.sectors.some(s => s.name === saved.sector) ? saved.sector : '';
       const plats = (saved.platforms || []).filter(p => ALL_PLATFORMS.includes(p));
@@ -1474,7 +1512,14 @@ function saveFilter() {
   try { localStorage.setItem(FILTER_KEY, JSON.stringify(FILTER)); } catch (e) {}
 }
 function platformFiltered() { return !!ATTACK && FILTER.platforms.length < ALL_PLATFORMS.length; }
-function filtersActive() { return platformFiltered() || (FILTER.onlySector && !!FILTER.sector); }
+function filtersActive() { return platformFiltered() || (FILTER.onlySector && !!FILTER.sector) || FILTER.hidden.length > 0; }
+function isManuallyHidden(id) { return FILTER.hidden.includes(id); }
+function toggleHidden(id) {
+  FILTER.hidden = isManuallyHidden(id) ? FILTER.hidden.filter(x => x !== id) : FILTER.hidden.concat([id]);
+  FILTER.saved = true;
+  saveFilter();
+  renderMatrix();
+}
 function platformOk(t) {
   if (!ATTACK || !t.plat || !t.plat.length) return true;
   return t.plat.some(p => FILTER.platforms.includes(p));
@@ -1483,9 +1528,14 @@ function sectorGroups(t) {
   if (!ATTACK || !FILTER.sector) return [];
   return (t.grp || []).filter(i => ATTACK.groups[i].sectors.includes(FILTER.sector));
 }
-function inScope(t) {
-  return platformOk(t) && (!FILTER.onlySector || !FILTER.sector || sectorGroups(t).length > 0);
+// Why a technique is hidden (left out of the matrix counts and the score), or '' when it is in scope
+function hiddenReason(t) {
+  if (isManuallyHidden(t.id)) return 'Hidden by you';
+  if (!platformOk(t)) return 'Not applicable to your platforms';
+  if (FILTER.onlySector && FILTER.sector && !sectorGroups(t).length) return `Not used by groups targeting ${FILTER.sector}`;
+  return '';
 }
+function inScope(t) { return !hiddenReason(t); }
 
 /* ---------- Helpers ---------- */
 const expanded = new Set();
@@ -1523,15 +1573,18 @@ function threatBadge(t) {
 }
 function tileHtml(t, key, isSub) {
   const v = view(t);
-  const cls = v.status === 'none' ? 'nocov' : v.viaSub ? 'plain' : 'scored';
+  const band = v.score >= 75 ? 'band-high' : v.score >= 50 ? 'band-mid' : 'band-low';
+  const hidden = isSub ? '' : hiddenReason(t);
+  const cls = (v.status === 'none' ? 'nocov' : v.viaSub ? 'plain' : band)
+    + (hidden ? ' hiddentile' : '') + (dimmed(t, isSub) ? ' dim' : '');
   const showNone = document.getElementById('showNone').checked;
   const subs = isSub ? [] : t.subs.filter(s => platformOk(s));
   const shownSubs = subs.filter(s => showNone || s.status !== 'none');
   const open = !isSub && expanded.has(t.id) && shownSubs.length;
   const handle = !isSub && subs.length
     ? `<div class="expander" data-expand="${escHtml(t.id)}" title="${open ? 'Hide' : 'Show'} ${subs.length} sub-techniques">${open ? '&#9650;' : '&#9660;'} ${subs.length}</div>` : '';
-  const badge = threatBadge(t);
-  let html = `<div class="tile ${cls}${badge ? ' has-threat' : ''}" data-key="${key}">`
+  const badge = hidden ? `<span class="hidico" title="${escHtml(hidden)}">${ICON.eyeOff}</span>` : threatBadge(t);
+  let html = `<div class="tile ${cls}${badge && !hidden ? ' has-threat' : ''}" data-key="${key}">`
     + `<div class="body">${badge}${isSub ? `<div class="tid">${escHtml(t.id)}</div>` : ''}<div class="tname">${escHtml(t.name)}</div>`
     + `${v.status === 'none' ? '' : barHtml(v.score)}</div>${handle}</div>`;
   if (open) {
@@ -1550,15 +1603,17 @@ function renderMatrix() {
     let html = `<div class="col"><div class="tcode">${escHtml(col.id)}</div>`
       + `<h3>${escHtml(col.name)}<small>${scoped.length} Techniques &bull; ${covered} covered</small></h3>`;
     col.techs.forEach((t, ti) => {
-      if (!inScope(t) || (!showNone && view(t).status === 'none')) return;
+      if ((!inScope(t) && !FILTER.showHidden) || (!showNone && view(t).status === 'none')) return;
       html += tileHtml(t, ci + ':' + ti, false);
     });
     return html + '</div>';
   }).join('');
   document.getElementById('threatLegend').style.display = FILTER.sector ? '' : 'none';
+  document.getElementById('showHidden').checked = FILTER.showHidden;
   renderCards();
   renderFilterBar();
   renderSectorPanel();
+  renderGroups();
 }
 
 function expandAll(on) {
@@ -1624,6 +1679,9 @@ function renderFilterBar() {
     + `<span class="chip${FILTER.sector ? ' sector' : ' muted'}">${ICON.target}${FILTER.sector ? escHtml(FILTER.sector) : 'No sector selected'}</span>`
     + `<span class="chip${platformFiltered() ? '' : ' muted'}">${ICON.platform}${escHtml(plats)}</span>`
     + (FILTER.onlySector && FILTER.sector ? `<span class="chip sector">Only techniques used against ${escHtml(FILTER.sector)}</span>` : '')
+    + (FILTER.hidden.length ? `<span class="chip">${ICON.eyeOff}${FILTER.hidden.length} hidden by you</span>` : '')
+    + (HIGHLIGHT !== null ? `<span class="chip sector">Highlighting ${escHtml(ATTACK.groups[HIGHLIGHT].name)}`
+       + ` <a href="#" class="helplink" onclick="clearHighlight(); return false;">&times; clear</a></span>` : '')
     + (filtersActive() ? `<button class="btn btn-ghost" onclick="resetFilters()">Clear filters</button>` : '');
 }
 if (ATTACK) {
@@ -1673,6 +1731,164 @@ document.getElementById('sectorPanel').addEventListener('click', e => {
   openModal();
 });
 
+/* ---------- Threat groups tab ---------- */
+const PARENTS = {};   // parent technique id -> matrix technique
+MATRIX.forEach(col => col.techs.forEach(t => { PARENTS[t.id] = t; }));
+const GROUP_PARENTS = ATTACK ? ATTACK.groups.map(g => new Set(g.techniques.map(id => id.split('.')[0]).filter(id => PARENTS[id]))) : [];
+const GROUP_IDS = ATTACK ? ATTACK.groups.map(g => new Set(g.techniques)) : [];
+
+function groupStats(i) {
+  const ids = [...GROUP_PARENTS[i]].filter(id => platformOk(PARENTS[id]) && !isManuallyHidden(id));
+  let covered = 0, validated = 0;
+  ids.forEach(id => {
+    const s = view(PARENTS[id]).status;
+    if (s !== 'none') covered++;
+    if (s === 'validated') validated++;
+  });
+  return {ids, total: ids.length, covered, validated, gaps: ids.length - covered};
+}
+function covBar(a, b, cls) {
+  return `<span class="covbar"><i class="${cls || ''}" style="width:${b ? Math.round(a / b * 100) : 0}%"></i></span>`;
+}
+function sectorSelect(id) {
+  return `<select class="select" id="${id}" onchange="setSector(this.value)">`
+    + `<option value="">All sectors</option>`
+    + ATTACK.sectors.map(s => `<option value="${escHtml(s.name)}"${FILTER.sector === s.name ? ' selected' : ''}>${escHtml(s.name)} (${s.groups} groups)</option>`).join('')
+    + `</select>`;
+}
+function setSector(name) {
+  FILTER.sector = name;
+  if (!name) FILTER.onlySector = false;
+  FILTER.saved = true;
+  saveFilter();
+  renderMatrix();
+}
+
+function renderGroups() {
+  const root = document.getElementById('groupsView');
+  if (!ATTACK) {
+    root.innerHTML = '<div class="panel"><h2>Threat groups</h2><p class="sub">MITRE ATT&amp;CK data could not be downloaded when this report was built.</p></div>';
+    return;
+  }
+  const sector = FILTER.sector;
+  const groups = ATTACK.groups.map((g, i) => ({g, i, st: groupStats(i)}))
+    .filter(x => !sector || x.g.sectors.includes(sector))
+    .sort((a, b) => b.st.total - a.st.total || a.g.name.localeCompare(b.g.name));
+
+  // Techniques used by these groups, ranked by how many of them use each one
+  const counts = {};
+  groups.forEach(x => x.st.ids.forEach(id => { counts[id] = (counts[id] || 0) + 1; }));
+  const ranked = Object.entries(counts).sort((a, b) => b[1] - a[1] || PARENTS[a[0]].name.localeCompare(PARENTS[b[0]].name));
+  const used = ranked.length;
+  const usedCovered = ranked.filter(([id]) => view(PARENTS[id]).status !== 'none').length;
+  const usedValidated = ranked.filter(([id]) => view(PARENTS[id]).status === 'validated').length;
+  const who = sector ? `known to target ${escHtml(sector)}` : 'in MITRE ATT&amp;CK';
+
+  const cards = card(sector ? `Threat groups targeting ${sector}` : 'Threat groups', groups.length,
+      sector ? `Groups whose MITRE description mentions ${escHtml(sector)}` : 'Choose a sector to focus on the groups that target it', '')
+    + card('Techniques they use', used, `Parent techniques used by these groups${platformFiltered() ? ' on your platforms' : ''}`, '')
+    + card('Covered', pct(usedCovered, used).toFixed(1) + '%', `${usedCovered}/${used} have at least one enabled rule`, '', '', pct(usedCovered, used))
+    + card('Validated', pct(usedValidated, used).toFixed(1) + '%', `${usedValidated}/${used} have a rule that fired in the last ${STALE_DAYS} days`, 'good', '', pct(usedValidated, used));
+
+  const maxCount = ranked.length ? ranked[0][1] : 1;
+  const topRows = ranked.slice(0, 25).map(([id, n]) => {
+    const t = PARENTS[id], v = view(t);
+    return `<tr data-tech="${escHtml(id)}"><td style="font-family:var(--mono)">${escHtml(id)}</td><td>${escHtml(t.name)}</td>`
+      + `<td>${covBar(n, maxCount, 'threatfill')}${n} of ${groups.length}</td>`
+      + `<td><span class="tag s-${v.status}">${LABEL[v.status]}</span></td><td>${v.score}</td></tr>`;
+  }).join('');
+
+  const groupRows = groups.map(x => {
+    const {g, i, st} = x;
+    const aliases = g.aliases && g.aliases.length ? `<div class="note">${escHtml(g.aliases.slice(0, 4).join(', '))}</div>` : '';
+    return `<tr data-group="${i}"><td><strong>${escHtml(g.name)}</strong> <span class="note" style="font-family:var(--mono)">${escHtml(g.id)}</span>${aliases}</td>`
+      + `<td>${g.sectors.map(s => `<span class="mini${s === sector ? ' hit' : ''}">${escHtml(s)}</span>`).join(' ') || '<span class="note">-</span>'}</td>`
+      + `<td>${st.total}</td>`
+      + `<td>${covBar(st.covered, st.total)}${st.covered}/${st.total}</td>`
+      + `<td>${covBar(st.validated, st.total, 'validfill')}${st.validated}/${st.total}</td>`
+      + `<td>${st.gaps}</td></tr>`;
+  }).join('');
+
+  root.innerHTML =
+      `<div class="filterbar"><span class="chip muted">${ICON.target}Sector</span>${sectorSelect('groupSector')}`
+    + `<span class="note">${groups.length} threat groups ${who}. MITRE does not tag groups by sector, so this is matched from keywords in each group's description.</span></div>`
+    + `<div class="grid">${cards}</div>`
+    + `<div class="grid">`
+    + `<div class="panel half"><h2>Most used ${sector ? 'against ' + escHtml(sector) : 'techniques'}</h2>`
+    + `<p class="sub">Techniques used by the most ${sector ? 'of these ' : ''}groups, with your coverage. Click a row for details.</p>`
+    + `<div class="table-wrap"><table class="data-table" id="tblTopTech"><thead><tr><th>ID</th><th>Technique</th><th>Groups</th><th>Status</th><th>Score</th></tr></thead><tbody>${topRows}</tbody></table></div></div>`
+    + `<div class="panel half"><h2>Threat groups (${groups.length})</h2>`
+    + `<p class="sub">Your coverage of the techniques each group uses. Click a group for its techniques, or to highlight them on the matrix.</p>`
+    + `<div class="controls"><input type="text" placeholder="Filter (name, alias, sector)..." oninput="filterTable('tblGroups', this.value)"></div>`
+    + `<div class="table-wrap"><table class="data-table" id="tblGroups"><thead><tr><th>Group</th><th>Sectors</th><th>Techniques</th><th>Covered</th><th>Validated</th><th>Gaps</th></tr></thead><tbody>${groupRows}</tbody></table></div></div>`
+    + `</div>`;
+}
+
+document.getElementById('groupsView').addEventListener('click', e => {
+  const tech = e.target.closest('tr[data-tech]');
+  if (tech && POS[tech.dataset.tech]) {
+    current = {ci: POS[tech.dataset.tech].ci, ti: POS[tech.dataset.tech].ti, si: undefined};
+    openModal();
+    return;
+  }
+  const grp = e.target.closest('tr[data-group]');
+  if (grp) openGroup(Number(grp.dataset.group));
+});
+
+function openGroup(i) {
+  const g = ATTACK.groups[i];
+  const st = groupStats(i);
+  const order = {none: 0, unvalidated: 1, quiet: 2, validated: 3};
+  const byTactic = MATRIX.map(col => {
+    const techs = col.techs.filter(t => st.ids.includes(t.id))
+      .sort((a, b) => order[view(a).status] - order[view(b).status] || a.name.localeCompare(b.name));
+    if (!techs.length) return '';
+    return `<h4>${escHtml(col.id)} ${escHtml(col.name)} (${techs.length})</h4>`
+      + `<div class="table-wrap" style="max-height:none"><table class="data-table"><tbody>`
+      + techs.map(t => {
+          const v = view(t);
+          const subs = t.subs.filter(s => GROUP_IDS[i].has(s.id)).map(s => s.id);
+          return `<tr data-tech="${escHtml(t.id)}"><td style="font-family:var(--mono);width:90px">${escHtml(t.id)}</td>`
+            + `<td>${escHtml(t.name)}${subs.length ? `<div class="note">uses ${subs.map(escHtml).join(', ')}</div>` : ''}</td>`
+            + `<td style="width:120px"><span class="tag s-${v.status}">${LABEL[v.status]}</span></td><td style="width:50px">${v.score}</td></tr>`;
+        }).join('') + `</tbody></table></div>`;
+  }).join('');
+  document.getElementById('modal').innerHTML =
+      `<button class="xbtn" onclick="closeModal()" aria-label="Close">&times;</button>`
+    + `<div class="ptitle">${escHtml(g.name)}</div>`
+    + `<div class="pid">${escHtml(g.id)}${g.aliases && g.aliases.length ? ' &bull; also known as ' + escHtml(g.aliases.join(', ')) : ''}</div>`
+    + (g.sectors.length ? `<div class="row">${g.sectors.map(s => `<span class="mini${s === FILTER.sector ? ' hit' : ''}">${escHtml(s)}</span>`).join(' ')}</div>` : '')
+    + (g.desc ? `<p class="desc">${escHtml(g.desc)}</p>` : '')
+    + `<div class="row"><span class="num">${st.covered}/${st.total}</span><span class="note">techniques covered &bull; ${st.validated} validated &bull; ${st.gaps} gaps</span></div>`
+    + `<div class="actions" style="justify-content:flex-start">`
+    + `<button class="btn btn-primary" onclick="highlightGroup(${i})">Highlight on matrix</button>`
+    + (g.url ? `<a class="btn btn-ghost" href="${escHtml(g.url)}" target="_blank" rel="noopener">${ICON.ext}View ${escHtml(g.id)} on attack.mitre.org</a>` : '')
+    + `</div>`
+    + byTactic;
+  closePop();
+  document.getElementById('overlay').classList.add('open');
+}
+document.getElementById('modal').addEventListener('click', e => {
+  const tech = e.target.closest('tr[data-tech]');
+  if (!tech || !POS[tech.dataset.tech]) return;
+  current = {ci: POS[tech.dataset.tech].ci, ti: POS[tech.dataset.tech].ti, si: undefined};
+  openModal();
+});
+
+let HIGHLIGHT = null;   // index into ATTACK.groups of the group highlighted on the matrix
+function highlightGroup(i) {
+  HIGHLIGHT = i;
+  closeModal();
+  showTab('coverage');
+  renderMatrix();
+  window.scrollTo({top: document.getElementById('matrix').getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth'});
+}
+function clearHighlight() { HIGHLIGHT = null; renderMatrix(); }
+function dimmed(t, isSub) {
+  if (HIGHLIGHT === null) return false;
+  return isSub ? !GROUP_IDS[HIGHLIGHT].has(t.id) : !GROUP_PARENTS[HIGHLIGHT].has(t.id);
+}
+
 /* ---------- Tailor dialog ---------- */
 function openSetup(first) {
   if (!ATTACK) return;
@@ -1711,7 +1927,7 @@ function togglePlatform(p, on, first) {
 function applySetup() {
   if (!DRAFT.platforms.length) { alert('Select at least one platform.'); return; }
   FILTER = {sector: DRAFT.sector, platforms: ALL_PLATFORMS.filter(p => DRAFT.platforms.includes(p)),
-            onlySector: DRAFT.onlySector && !!DRAFT.sector, saved: true};
+            onlySector: DRAFT.onlySector && !!DRAFT.sector, hidden: FILTER.hidden, showHidden: FILTER.showHidden, saved: true};
   saveFilter();
   closeModal();
   renderMatrix();
@@ -1755,7 +1971,10 @@ function openPop(tile, ci, ti, si) {
     + `<div class="pstats"><span>${ICON.shield}${v.score}</span><span class="tag s-${v.status}">${LABEL[v.status]}${v.viaSub ? ' via sub-technique' : ''}</span>`
     + `<span>${ICON.rules}${ruleCounts(t.rules)}</span>${subLine}</div>`
     + threatStats(t)
+    + (!isSub && hiddenReason(t) ? `<div class="pplat" style="margin:12px 0 0">${ICON.eyeOff}${escHtml(hiddenReason(t))} - not counted in the score</div>` : '')
     + `<div class="pactions">`
+    + (isSub ? '' : `<button class="btn btn-ghost" onclick="toggleHidden('${escHtml(t.id)}')" title="${isManuallyHidden(t.id) ? 'Unhide' : 'Hide'} this technique (hidden techniques are left out of the score)">`
+       + `${isManuallyHidden(t.id) ? ICON.eye : ICON.eyeOff}</button>`)
     + (t.link ? `<a class="btn btn-ghost" href="${escHtml(t.link)}" target="_blank" rel="noopener" title="Open on attack.mitre.org">${ICON.ext}MITRE ATT&amp;CK</a>` : '')
     + `<button class="btn btn-primary" onclick="openModal()">See Details</button></div>`;
 
