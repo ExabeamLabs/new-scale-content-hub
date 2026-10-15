@@ -15,6 +15,7 @@ Run with --help for all options.
 import argparse
 import csv
 import getpass
+import io
 import json
 import os
 import re
@@ -747,6 +748,7 @@ def tactic_key(raw: str) -> str:
 
 # Score bands mirror the Exabeam Outcomes Navigator legend (<=0, 1-49, 50-74, 75-100)
 SCORE_BANDS = {TS_VALIDATED: (75, 100), TS_QUIET: (50, 74), TS_UNVALIDATED: (20, 49)}
+DESCRIPTION_MAX_CHARS = 1500
 
 
 def tech_score(status: str, rule_statuses: list[str]) -> int:
@@ -759,12 +761,39 @@ def tech_score(status: str, rule_statuses: list[str]) -> int:
     return min(hi, lo + (max(n, 1) - 1) * 5)
 
 
-def build_matrix_data(all_mitre: list[dict], tech_status: dict[str, dict]) -> list[dict]:
-    """Columns of parent techniques per tactic, with sub-technique detail for the matrix."""
+def clean_description(text: str) -> str:
+    """Strip ATT&CK citation markers and markdown links from a technique description."""
+    s = re.sub(r"\(Citation:[^)]*\)", "", text or "")
+    s = re.sub(r"\[([^\]]+)\]\([^)]*\)", r"\1", s)
+    s = re.sub(r"<code>|</code>", "", s)
+    s = re.sub(r"\.(?=[A-Z])", ". ", s)          # paragraphs are joined without a space
+    s = re.sub(r"\s+", " ", s).strip()
+    if len(s) > DESCRIPTION_MAX_CHARS:
+        s = s[:DESCRIPTION_MAX_CHARS].rsplit(" ", 1)[0] + "..."
+    return s
+
+
+def mitre_descriptions(data: dict) -> dict[str, str]:
+    out: dict[str, str] = {}
+    if not isinstance(data, dict):
+        return out
+    for tech_id, tech in data.items():
+        if not isinstance(tech, dict):
+            continue
+        out[tech_id] = clean_description(tech.get("description", ""))
+        for sub in tech.get("subTechniques", []) or []:
+            if isinstance(sub, dict) and sub.get("id"):
+                out[sub["id"]] = clean_description(sub.get("description", ""))
+    return out
+
+
+def build_matrix_data(all_mitre: list[dict], tech_status: dict[str, dict], descriptions: dict[str, str]) -> list[dict]:
+    """Columns of parent techniques per tactic, each with its sub-techniques, for the matrix."""
     alias: dict[str, tuple[str, str]] = {}
     for tid, name in TACTIC_ORDER:
         for a in (tid, name, name.replace(" ", "-")):
             alias[tactic_key(a)] = (tid, name)
+    alias[tactic_key("Defense Evasion")] = ("TA0005", "Stealth")
 
     def rule_view(rules: list[dict]) -> list[dict]:
         return [{"name": x["ruleName"], "status": x["status"], "last": x["lastTriggeredAt"]} for x in rules]
@@ -773,8 +802,12 @@ def build_matrix_data(all_mitre: list[dict], tech_status: dict[str, dict]) -> li
     for r in all_mitre:
         if r["isSubtechnique"]:
             t = tech_status[r["techniqueId"]]
+            name = r["name"].split(": ", 1)[1] if ": " in r["name"] else r["name"]
             subs_by_parent.setdefault(r["parentTechniqueId"], []).append({
-                "id": r["techniqueId"], "name": r["name"], "status": t["status"], "rules": rule_view(t["rules"]),
+                "id": r["techniqueId"], "name": name, "fullName": r["name"], "link": r["externalLink"],
+                "desc": descriptions.get(r["techniqueId"], ""),
+                "status": t["status"], "score": tech_score(t["status"], [x["status"] for x in t["rules"]]),
+                "rules": rule_view(t["rules"]),
             })
 
     columns: dict[str, dict] = {tid: {"id": tid, "name": name, "techs": []} for tid, name in TACTIC_ORDER}
@@ -783,7 +816,7 @@ def build_matrix_data(all_mitre: list[dict], tech_status: dict[str, dict]) -> li
         if r["isSubtechnique"]:
             continue
         t = tech_status[r["techniqueId"]]
-        subs = subs_by_parent.get(r["techniqueId"], [])
+        subs = sorted(subs_by_parent.get(r["techniqueId"], []), key=lambda s: s["id"])
         direct = {x["ruleId"] or x["ruleName"]: x["status"] for x in t["rules"]}
         rolled = dict(direct)
         for s in subs:
@@ -791,6 +824,7 @@ def build_matrix_data(all_mitre: list[dict], tech_status: dict[str, dict]) -> li
                 rolled[x["ruleId"] or x["ruleName"]] = x["status"]
         tech = {
             "id": r["techniqueId"], "name": r["name"], "link": r["externalLink"],
+            "desc": descriptions.get(r["techniqueId"], ""),
             "status": t["status"], "rolled": t["rolled"], "viaSub": t["viaSub"],
             "score": tech_score(t["status"], list(direct.values())),
             "rolledScore": tech_score(t["rolled"], list(rolled.values())),
@@ -808,6 +842,40 @@ def build_matrix_data(all_mitre: list[dict], tech_status: dict[str, dict]) -> li
     return out
 
 
+MATRIX_CSV_COLUMNS = [
+    "tacticId", "tactic", "techniqueId", "techniqueName", "isSubtechnique", "parentTechniqueId",
+    "status", "score", "statusInclSubtechniques", "scoreInclSubtechniques",
+    "ruleCount", "activeRules", "quietRules", "neverFiredRules", "lastFired", "rules", "mitreUrl",
+]
+
+
+def build_matrix_csv_rows(matrix: list[dict]) -> list[dict]:
+    """One row per technique per tactic, in ATT&CK matrix order (tactic, then technique, then its sub-techniques)."""
+    rows: list[dict] = []
+
+    def row(col: dict, t: dict, parent: str, rolled_status: str, rolled_score: int) -> dict:
+        statuses = [x["status"] for x in t["rules"]]
+        last = max((x["last"] for x in t["rules"] if x["last"]), default="")
+        return {
+            "tacticId": col["id"], "tactic": col["name"],
+            "techniqueId": t["id"], "techniqueName": t.get("fullName", t["name"]),
+            "isSubtechnique": bool(parent), "parentTechniqueId": parent,
+            "status": TS_LABEL[t["status"]], "score": t["score"],
+            "statusInclSubtechniques": TS_LABEL[rolled_status], "scoreInclSubtechniques": rolled_score,
+            "ruleCount": len(t["rules"]),
+            "activeRules": statuses.count(RS_ACTIVE), "quietRules": statuses.count(RS_QUIET),
+            "neverFiredRules": statuses.count(RS_NEVER) + statuses.count(RS_UNKNOWN),
+            "lastFired": last, "rules": "; ".join(sorted(x["name"] for x in t["rules"])), "mitreUrl": t["link"],
+        }
+
+    for col in matrix:
+        for t in sorted(col["techs"], key=lambda x: x["id"]):
+            rows.append(row(col, t, "", t["rolled"], t["rolledScore"]))
+            for s in t["subs"]:
+                rows.append(row(col, s, t["id"], s["status"], s["score"]))
+    return rows
+
+
 HTML_TEMPLATE = """<!doctype html>
 <html lang="en">
 <head>
@@ -818,10 +886,11 @@ HTML_TEMPLATE = """<!doctype html>
   :root {
     /* Palette sampled from the Exabeam New-Scale / Outcomes Navigator UI */
     --bg: #05060f; --panel: #040b1b; --panel-2: #0b0e17; --line: #1d2130;
-    --tile: #13151d; --tile-scored: #3c434f; --tile-border: #42444a; --tick: #757a83;
-    --text: #ffffff; --text-2: #e6ebf2; --muted: #a3aab5; --muted-2: #7d8592;
+    --tile: #13151d; --tile-scored: #3c434f; --tile-border: #42444a; --tile-selected: #49586a; --tick: #757a83;
+    --pop: #22232c; --pop-border: #4e4f56; --pop-tick: #3a3c46;
+    --text: #ffffff; --text-2: #e6ebf2; --muted: #a3aab5; --muted-2: #8a8d96;
     --grad-a: #2aa90f; --grad-b: #0573da;      /* green -> blue widget border */
-    --brand-green: #2aa90f; --accent: #0371e0; --track: #013870; --link: #4fa3f7;
+    --brand-green: #2aa90f; --accent: #0371e0; --accent-hover: #1a82ec; --track: #013870; --link: #4fa3f7;
     --band-zero: #a3aab5; --band-low: #9b1fc0; --band-mid: #1f72d0; --band-high: #31a717;
     --bad: #f0506e;
     --radius: 2px;
@@ -831,9 +900,10 @@ HTML_TEMPLATE = """<!doctype html>
   * { box-sizing: border-box; }
   body { margin:0; font-family: var(--sans); color: var(--text-2); background: var(--bg); font-size: 13px; }
   .wrap { padding: 18px 24px 60px; }
+  svg.ic { width: 16px; height: 16px; flex: none; }
 
   /* Gradient border used on widgets */
-  .card, .panel, .drawer {
+  .card, .panel {
     border: 1px solid transparent; border-radius: var(--radius);
     background: linear-gradient(var(--panel), var(--panel)) padding-box,
                 linear-gradient(to bottom right, var(--grad-a), var(--grad-b)) border-box;
@@ -860,6 +930,16 @@ HTML_TEMPLATE = """<!doctype html>
   .tabpane { display:none; }
   .tabpane.active { display:block; }
 
+  /* Buttons */
+  .btn { display:inline-flex; align-items:center; gap: 8px; font: 500 12px var(--sans); padding: 8px 14px;
+         border-radius: var(--radius); cursor: pointer; text-decoration: none; border: 1px solid transparent; }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-outline { background: var(--panel-2); color: var(--link); border-color: var(--line); }
+  .btn-outline:hover { border-color: var(--link); }
+  .btn-ghost { background: transparent; color: var(--link); padding: 8px 10px; }
+  .btn-ghost:hover { background: rgba(79,163,247,0.1); }
+
   /* KPI cards */
   .grid { display:grid; grid-template-columns: repeat(12, 1fr); gap: 14px; margin-bottom: 18px; }
   .card { grid-column: span 3; padding: 16px 18px; }
@@ -867,6 +947,15 @@ HTML_TEMPLATE = """<!doctype html>
   .card .value { font-size: 28px; font-weight: 600; color: var(--text); }
   .card .delta { margin-top: 4px; font-size: 12px; color: var(--muted); }
   .card .hint { margin-top: 10px; font-size: 12px; color: var(--muted); line-height: 1.4; }
+  .card .value.score { display:flex; align-items:center; gap: 10px; }
+  .card .value.score svg.shield { width: 30px; height: 30px; color: #9b1fc0; }
+  .helplink { color: var(--link); text-decoration: none; }
+  .helplink:hover { text-decoration: underline; }
+  table.factors { width: 100%; border-collapse: collapse; margin-top: 14px; border: 1px solid #30323e; font-size: 13px; }
+  table.factors th, table.factors td { padding: 14px 16px; border-bottom: 1px solid #30323e; text-align: left; }
+  table.factors th { color: var(--muted); font-weight: 500; }
+  table.factors td:last-child, table.factors th:last-child { text-align: right; white-space: nowrap; }
+  table.factors tr.total td { font-weight: 600; color: var(--text); border-top: 1px solid #4e4f56; }
   .meter { margin-top: 10px; height: 3px; background: var(--track); }
   .meter > i { display:block; height: 100%; background: var(--accent); }
   .value.good { color: var(--band-high); } .value.blue { color: #3d8fe8; }
@@ -895,8 +984,8 @@ HTML_TEMPLATE = """<!doctype html>
   ::-webkit-scrollbar-thumb { background: #2a2f3c; }
   ::-webkit-scrollbar-track { background: transparent; }
 
-  /* Coverage & score legend */
-  .legendbar { display:flex; flex-wrap:wrap; align-items:center; gap: 18px; margin: 0 0 16px; font-size: 13px; color: var(--muted); }
+  /* Coverage & score legend + toolbar */
+  .legendbar { display:flex; flex-wrap:wrap; align-items:center; gap: 18px; margin: 0 0 14px; font-size: 13px; color: var(--muted); }
   .legendbar strong { color: var(--text); font-weight: 600; text-transform: uppercase; font-size: 13px; }
   .legendbar .item { display:flex; align-items:center; gap: 8px; }
   .lg-box { width: 22px; height: 16px; display:inline-block; border-radius: var(--radius); }
@@ -905,7 +994,8 @@ HTML_TEMPLATE = """<!doctype html>
   .lg-box.scored { background: var(--tile-scored); border: 1px solid var(--tile-scored); }
   .lg-line { width: 10px; height: 4px; display:inline-block; }
   .legendbar .sep { width: 1px; height: 18px; background: var(--line); }
-  .toolbar { display:flex; justify-content:flex-end; gap: 22px; margin: -6px 0 14px; flex-wrap: wrap; }
+  .toolbar { display:flex; justify-content:space-between; align-items:center; gap: 14px; margin: 0 0 14px; flex-wrap: wrap; }
+  .toolbar .group { display:flex; align-items:center; gap: 18px; flex-wrap: wrap; }
   .switch { display:flex; align-items:center; gap: 10px; color: var(--text-2); font-size: 12px; cursor: pointer; user-select: none; }
   .switch input { display:none; }
   .switch .knob { width: 30px; height: 16px; border-radius: 999px; background: #2a2f3c; position: relative; transition: background .15s; }
@@ -916,16 +1006,30 @@ HTML_TEMPLATE = """<!doctype html>
 
   /* ATT&CK matrix (Outcomes Navigator style) */
   .matrix { display:flex; gap: 10px; overflow-x:auto; padding-bottom: 12px; }
-  .col { min-width: 170px; flex: 1 0 170px; }
+  .col { min-width: 180px; flex: 1 0 180px; }
   .col h3 { margin: 0 0 10px; font-size: 13px; font-weight: 600; color: var(--text); }
   .col h3 small { display:block; color: var(--muted); font-weight: 400; font-size: 12px; margin-top: 3px; }
-  .tile { padding: 12px 16px 8px; margin-bottom: 6px; border-radius: var(--radius); cursor: pointer;
+  .tile { display:flex; margin-bottom: 6px; border-radius: var(--radius); cursor: pointer;
           background: var(--tile); border: 1px solid var(--tile-border); }
   .tile.scored { background: var(--tile-scored); border-color: var(--tile-scored); }
-  .tile.nocov { background: transparent; border: 1px dashed var(--tile-border); padding-bottom: 12px; }
+  .tile.nocov { background: transparent; border: 1px dashed var(--tile-border); }
   .tile:hover { border-color: var(--link); border-style: solid; }
+  .tile.sel { background: var(--tile-selected); border: 1px solid var(--tile-selected); }
+  .tile .body { flex: 1; min-width: 0; padding: 12px 14px 8px 16px; }
+  .tile.nocov .body { padding-bottom: 12px; }
   .tile .tname { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.4; }
   .tile.nocov .tname { font-weight: 400; color: var(--muted); }
+  /* Sub-technique expander - the side handle used by the MITRE ATT&CK Navigator */
+  .tile .expander { width: 18px; flex: none; display:flex; align-items:center; justify-content:center;
+                    border-left: 1px solid rgba(255,255,255,0.08); color: var(--muted); font-size: 10px;
+                    writing-mode: vertical-rl; letter-spacing: 1px; }
+  .tile .expander:hover { color: var(--text); background: rgba(255,255,255,0.06); }
+  .subs { margin: -2px 0 8px 10px; padding-left: 8px; border-left: 2px solid var(--tile-border); }
+  .subs .tile { margin-bottom: 4px; }
+  .subs .tile .body { padding: 8px 12px 6px 12px; }
+  .subs .tile.nocov .body { padding-bottom: 8px; }
+  .subs .tile .tname { font-size: 12px; font-weight: 500; }
+  .subs .tile .tid { font-family: var(--mono); font-size: 10.5px; color: var(--muted-2); margin-bottom: 2px; }
   .bar { position: relative; height: 10px; margin-top: 10px;
     background:
       linear-gradient(var(--tick), var(--tick)) 0% 100% / 1px 8px no-repeat,
@@ -933,40 +1037,67 @@ HTML_TEMPLATE = """<!doctype html>
       linear-gradient(var(--tick), var(--tick)) 50% 100% / 1px 8px no-repeat,
       linear-gradient(var(--tick), var(--tick)) 75% 100% / 1px 8px no-repeat,
       linear-gradient(var(--tick), var(--tick)) 100% 100% / 1px 8px no-repeat; }
+  .subs .bar { margin-top: 6px; }
   .bar b { position:absolute; left: 0; bottom: 2px; height: 3px; }
   .b-low  { background: linear-gradient(to right, rgba(155,31,192,0), var(--band-low)); }
   .b-mid  { background: linear-gradient(to right, rgba(31,114,208,0), var(--band-mid)); }
   .b-high { background: linear-gradient(to right, rgba(49,167,23,0), var(--band-high)); }
+  /* Large score bar used in the popover */
+  .bar.big { height: 40px; margin: 14px 0 16px;
+    background:
+      linear-gradient(var(--pop-tick), var(--pop-tick)) 0% 0 / 1px 100% no-repeat,
+      linear-gradient(var(--pop-tick), var(--pop-tick)) 25% 0 / 1px 100% no-repeat,
+      linear-gradient(var(--pop-tick), var(--pop-tick)) 50% 0 / 1px 100% no-repeat,
+      linear-gradient(var(--pop-tick), var(--pop-tick)) 75% 0 / 1px 100% no-repeat,
+      linear-gradient(var(--pop-tick), var(--pop-tick)) 100% 0 / 1px 100% no-repeat; }
+  .bar.big b { bottom: 9px; height: 22px; }
 
   /* Status tags */
-  .tag { display:inline-block; font-size: 11px; padding: 2px 7px; border-radius: var(--radius); font-weight: 500; }
+  .tag { display:inline-block; font-size: 11px; padding: 2px 7px; border-radius: var(--radius); font-weight: 500; white-space: nowrap; }
   .s-validated { background: rgba(49,167,23,0.18); color: #6fd35a; }
   .s-quiet { background: rgba(31,114,208,0.22); color: #6fb0f5; }
   .s-unvalidated { background: rgba(155,31,192,0.22); color: #cf86ea; }
   .s-none { background: rgba(163,170,181,0.12); color: var(--muted); }
 
-  /* Detail drawer */
-  .drawer { position: fixed; top: 0; right: 0; height: 100vh; width: min(460px, 100vw); z-index: 20;
-            padding: 20px 22px; overflow-y: auto; transform: translateX(105%); transition: transform .2s ease;
-            box-shadow: -20px 0 40px rgba(0,0,0,0.5); }
-  .drawer.open { transform: translateX(0); }
-  .drawer .close { position:absolute; top: 14px; right: 16px; background: none; border: 0; color: var(--muted);
-                   font-size: 22px; cursor: pointer; }
-  .drawer .close:hover { color: var(--text); }
-  .drawer .tid { font-family: var(--mono); color: var(--muted); font-size: 12px; }
-  .drawer h3 { margin: 4px 30px 10px 0; font-size: 17px; font-weight: 500; color: var(--text); }
-  .drawer .score { display:flex; align-items:center; gap: 12px; margin: 12px 0 16px; }
-  .drawer .score .num { font-size: 26px; font-weight: 600; color: var(--text); }
-  .drawer .score .bar { flex: 1; margin-top: 0; }
-  .drawer h4 { margin: 18px 0 6px; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
-  .drawer ul { list-style: none; margin: 0; padding: 0; }
-  .drawer li { padding: 8px 0; border-bottom: 1px solid var(--line); line-height: 1.45; }
-  .drawer li .when { color: var(--muted); font-size: 12px; }
-  .drawer a { color: var(--link); }
-  .drawer .note { color: var(--muted); font-size: 12px; }
+  /* Technique popover (Outcomes Navigator style) */
+  .pop { position: absolute; z-index: 30; width: 380px; display: none; padding: 20px 22px 18px;
+         background: var(--pop); border: 1px solid var(--pop-border); border-radius: var(--radius);
+         box-shadow: 0 16px 40px rgba(0,0,0,0.55); }
+  .pop.open { display: block; }
+  .pop .ptitle { font-size: 15px; font-weight: 600; color: var(--text); padding-right: 24px; line-height: 1.35; }
+  .pop .pid { margin-top: 4px; font-size: 12px; color: var(--muted-2); }
+  .pop .pdesc { font-size: 12px; color: var(--text-2); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 4;
+                -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 14px; }
+  .pop .plabel, .modal h4 { font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.03em; color: var(--muted); margin: 0 0 8px; }
+  .pop .pstats { display:flex; flex-wrap: wrap; gap: 8px 18px; font-size: 12px; color: var(--text); font-weight: 600; }
+  .pop .pstats span { display:flex; align-items:center; gap: 6px; }
+  .pop .pstats span.muted { color: var(--muted); font-weight: 400; }
+  .pop .pactions { display:flex; justify-content:flex-end; align-items:center; gap: 10px; margin-top: 18px; }
+  .xbtn { position:absolute; top: 12px; right: 12px; background: none; border: 0; color: var(--muted); font-size: 20px;
+          line-height: 1; cursor: pointer; padding: 4px; }
+  .xbtn:hover { color: var(--text); }
+
+  /* Technique details modal */
+  .overlay { position: fixed; inset: 0; z-index: 40; background: rgba(2,3,8,0.7); display: none;
+             align-items: flex-start; justify-content: center; padding: 6vh 16px; overflow-y: auto; }
+  .overlay.open { display: flex; }
+  .modal { position: relative; width: min(820px, 100%); background: var(--pop); border: 1px solid var(--pop-border);
+           border-radius: var(--radius); padding: 24px 26px; box-shadow: 0 24px 60px rgba(0,0,0,0.6); }
+  .modal .ptitle { font-size: 19px; font-weight: 600; color: var(--text); padding-right: 30px; }
+  .modal .pid { margin-top: 6px; font-size: 12px; color: var(--muted-2); }
+  .modal .row { display:flex; align-items:center; gap: 14px; flex-wrap: wrap; margin-top: 14px; }
+  .modal .row .num { font-size: 28px; font-weight: 600; color: var(--text); }
+  .modal .row .bar.big { flex: 1; min-width: 200px; margin: 0; }
+  .modal p.desc { font-size: 13px; line-height: 1.6; color: var(--text-2); margin: 16px 0 6px; }
+  .modal h4 { margin-top: 22px; }
+  .modal table.data-table { background: rgba(0,0,0,0.15); }
+  .modal table.data-table thead th { background: #1a1b23; }
+  .modal table.data-table tbody td { border-bottom-color: #30323e; }
+  .modal .note { color: var(--muted); font-size: 12px; }
+  .modal a { color: var(--link); }
 
   @media (max-width: 1100px) { .card { grid-column: span 6; } .panel.half { grid-column: span 12; } .meta { display:none; } }
-  @media (max-width: 560px) { .card { grid-column: span 12; } .wrap { padding: 14px 16px 40px; } }
+  @media (max-width: 560px) { .card { grid-column: span 12; } .wrap { padding: 14px 16px 40px; } .pop { width: calc(100vw - 32px); } }
   .footer-note { margin: 8px 0 10px; color: var(--muted); font-size: 12px; }
 </style>
 </head>
@@ -1008,14 +1139,24 @@ HTML_TEMPLATE = """<!doctype html>
         <span class="item"><i class="lg-line" style="background:var(--band-high)"></i>75-100 Validated</span>
       </div>
       <div class="toolbar">
-        <label class="switch"><input type="checkbox" id="rollup" checked onchange="renderMatrix()"><span class="knob"></span>Count sub-technique coverage</label>
-        <label class="switch"><input type="checkbox" id="showNone" checked onchange="renderMatrix()"><span class="knob"></span>Show uncovered techniques</label>
+        <div class="group">
+          <button class="btn btn-outline" onclick="expandAll(true)">Expand all sub-techniques</button>
+          <button class="btn btn-outline" onclick="expandAll(false)">Collapse all</button>
+        </div>
+        <div class="group">
+          <label class="switch"><input type="checkbox" id="rollup" checked onchange="renderMatrix()"><span class="knob"></span>Count sub-technique coverage</label>
+          <label class="switch"><input type="checkbox" id="showNone" checked onchange="renderMatrix()"><span class="knob"></span>Show uncovered techniques</label>
+          <button class="btn btn-outline" onclick="exportCsv()">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+            Export MITRE ATT&amp;CK Coverage (CSV)
+          </button>
+        </div>
       </div>
       <div class="matrix" id="matrix"></div>
       <div class="footer-note">
         Score: Validated (a mapped rule fired in the last %%STALE%% days) = 75-100, Quiet (mapped rules fired before, but not recently) = 50-74,
         Unvalidated (mapped rules have never fired) = 20-49, Not covered = 0. Each additional rule in the same state adds 5 points within its band.
-        Click a technique for details.
+        Click a technique for details; use the handle on the right of a tile to show its sub-techniques.
       </div>
     </section>
 
@@ -1044,88 +1185,245 @@ HTML_TEMPLATE = """<!doctype html>
     </section>
   </div>
 
-  <aside class="drawer" id="drawer" aria-hidden="true">
-    <button class="close" onclick="closeDrawer()" aria-label="Close">&times;</button>
-    <div id="drawerBody"></div>
-  </aside>
+  <div class="pop" id="pop" role="dialog" aria-modal="false"></div>
+  <div class="overlay" id="overlay" onclick="if (event.target === this) closeModal()">
+    <div class="modal" id="modal" role="dialog" aria-modal="true"></div>
+  </div>
 
 <script id="matrixData" type="application/json">%%MATRIX_JSON%%</script>
+<script id="matrixCsv" type="application/json">%%MATRIX_CSV%%</script>
 <script>
 const MATRIX = JSON.parse(document.getElementById('matrixData').textContent);
+const CSV_NAME = %%MATRIX_CSV_NAME%%;
+const SCORE = %%SCORE_JSON%%;
 const LABEL = {validated: 'Validated', quiet: 'Quiet', unvalidated: 'Unvalidated', none: 'Not covered'};
 const RULE_CLASS = {Active: 'validated', Quiet: 'quiet', NeverFired: 'unvalidated', Unknown: 'unvalidated'};
 const RULE_LABEL = {Active: 'Active', Quiet: 'Quiet', NeverFired: 'Never fired', Unknown: 'Unknown'};
+const ICON = {
+  shield: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 2l8 3v6c0 5-3.4 9.4-8 11-4.6-1.6-8-6-8-11V5l8-3z"/></svg>',
+  rules: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>',
+  subs: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4v10a3 3 0 0 0 3 3h13"/><path d="M16 13l4 4-4 4"/></svg>',
+  ext: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>',
+};
+const expanded = new Set();
+let selectedTile = null;
+let current = null;   // {ci, ti, si} of the technique in the popover / modal
 
 function escHtml(s) {
-  return String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 function bandClass(score) { return score <= 0 ? '' : score < 50 ? 'b-low' : score < 75 ? 'b-mid' : 'b-high'; }
-function barHtml(score) {
+function barHtml(score, big) {
   const cls = bandClass(score);
-  return `<div class="bar">${cls ? `<b class="${cls}" style="width:${score}%"></b>` : ''}</div>`;
+  return `<div class="bar${big ? ' big' : ''}">${cls ? `<b class="${cls}" style="width:${score}%"></b>` : ''}</div>`;
 }
+function rollup() { return document.getElementById('rollup').checked; }
+// Effective status/score of a technique (or sub-technique) under the current toggle
 function view(t) {
-  const rollup = document.getElementById('rollup').checked;
-  return rollup ? {status: t.rolled, score: t.rolledScore, viaSub: t.viaSub}
-                : {status: t.status, score: t.score, viaSub: false};
+  if (t.subs === undefined) return {status: t.status, score: t.score, viaSub: false};
+  return rollup() ? {status: t.rolled, score: t.rolledScore, viaSub: t.viaSub}
+                  : {status: t.status, score: t.score, viaSub: false};
+}
+function lookup(ci, ti, si) {
+  const t = MATRIX[ci].techs[ti];
+  return si === undefined || si === null || si < 0 ? t : t.subs[si];
+}
+
+function tileHtml(t, key, isSub) {
+  const v = view(t);
+  const cls = v.status === 'none' ? 'nocov' : v.viaSub ? 'plain' : 'scored';
+  const showNone = document.getElementById('showNone').checked;
+  const subs = isSub ? [] : t.subs.filter(s => showNone || s.status !== 'none');
+  const open = !isSub && expanded.has(t.id) && subs.length;
+  const handle = !isSub && t.subs.length
+    ? `<div class="expander" data-expand="${escHtml(t.id)}" title="${open ? 'Hide' : 'Show'} ${t.subs.length} sub-techniques">${open ? '&#9650;' : '&#9660;'} ${t.subs.length}</div>` : '';
+  let html = `<div class="tile ${cls}" data-key="${key}">`
+    + `<div class="body">${isSub ? `<div class="tid">${escHtml(t.id)}</div>` : ''}<div class="tname">${escHtml(t.name)}</div>`
+    + `${v.status === 'none' ? '' : barHtml(v.score)}</div>${handle}</div>`;
+  if (open) {
+    html += '<div class="subs">' + t.subs.map((s, si) =>
+      (showNone || s.status !== 'none') ? tileHtml(s, key + ':' + si, true) : '').join('') + '</div>';
+  }
+  return html;
 }
 
 function renderMatrix() {
+  closePop();
   const showNone = document.getElementById('showNone').checked;
   const root = document.getElementById('matrix');
-  root.innerHTML = '';
-  MATRIX.forEach((col, ci) => {
+  root.innerHTML = MATRIX.map((col, ci) => {
     const covered = col.techs.filter(t => view(t).status !== 'none').length;
-    let html = `<h3>${escHtml(col.name)}<small>${col.techs.length} Techniques &bull; ${covered} covered</small></h3>`;
+    let html = `<div class="col"><h3>${escHtml(col.name)}<small>${col.techs.length} Techniques &bull; ${covered} covered</small></h3>`;
     col.techs.forEach((t, ti) => {
-      const v = view(t);
-      if (!showNone && v.status === 'none') return;
-      const cls = v.status === 'none' ? 'nocov' : v.viaSub ? 'plain' : 'scored';
-      html += `<div class="tile ${cls}" onclick="openTech(${ci},${ti})" title="${escHtml(t.id)} - ${LABEL[v.status]} (score ${v.score})">`
-           + `<div class="tname">${escHtml(t.name)}</div>${v.status === 'none' ? '' : barHtml(v.score)}</div>`;
+      if (!showNone && view(t).status === 'none') return;
+      html += tileHtml(t, ci + ':' + ti, false);
     });
-    const div = document.createElement('div');
-    div.className = 'col';
-    div.innerHTML = html;
-    root.appendChild(div);
-  });
+    return html + '</div>';
+  }).join('');
 }
 
-function ruleList(rules) {
-  if (!rules.length) return '<div class="note">No rules mapped directly.</div>';
-  return '<ul>' + rules.map(r =>
-    `<li>${escHtml(r.name)}<br><span class="tag s-${RULE_CLASS[r.status] || 'none'}">${escHtml(RULE_LABEL[r.status] || r.status)}</span>`
-    + ` <span class="when">${r.last ? 'last fired ' + escHtml(r.last) : 'no trigger recorded'}</span></li>`).join('') + '</ul>';
+function expandAll(on) {
+  expanded.clear();
+  if (on) MATRIX.forEach(col => col.techs.forEach(t => { if (t.subs.length) expanded.add(t.id); }));
+  renderMatrix();
 }
 
-function openTech(ci, ti) {
-  const t = MATRIX[ci].techs[ti];
+/* ---------- Popover ---------- */
+function ruleCounts(rules) {
+  const active = rules.filter(r => r.status === 'Active').length;
+  return `${rules.length} rule${rules.length === 1 ? '' : 's'}` + (rules.length ? ` &bull; ${active} active` : '');
+}
+function openPop(tile, ci, ti, si) {
+  const t = lookup(ci, ti, si);
   const v = view(t);
-  const subs = t.subs.length
-    ? '<ul>' + t.subs.map(s => `<li><span class="tag s-${s.status}">${LABEL[s.status]}</span> <span class="tid">${escHtml(s.id)}</span> ${escHtml(s.name)}`
-        + (s.rules.length ? '<br><span class="when">' + s.rules.map(r => escHtml(r.name)).join(', ') + '</span>' : '') + '</li>').join('') + '</ul>'
-    : '<div class="note">No sub-techniques.</div>';
-  document.getElementById('drawerBody').innerHTML =
-      `<div class="tid">${escHtml(t.id)} &bull; ${escHtml(MATRIX[ci].name)}</div>`
-    + `<h3>${escHtml(t.name)}</h3>`
-    + `<span class="tag s-${v.status}">${LABEL[v.status]}</span>${v.viaSub ? ' <span class="note">covered through a sub-technique</span>' : ''}`
-    + `<div class="score"><span class="num">${v.score}</span>${barHtml(v.score)}</div>`
-    + (t.link ? `<a href="${escHtml(t.link)}" target="_blank" rel="noopener">View on attack.mitre.org</a>` : '')
-    + `<h4>Rules mapped to this technique (${t.rules.length})</h4>${ruleList(t.rules)}`
-    + `<h4>Sub-techniques (${t.subs.filter(s => s.status !== 'none').length}/${t.subs.length} covered)</h4>${subs}`;
-  const d = document.getElementById('drawer');
-  d.classList.add('open');
-  d.setAttribute('aria-hidden', 'false');
-}
-function closeDrawer() {
-  const d = document.getElementById('drawer');
-  d.classList.remove('open');
-  d.setAttribute('aria-hidden', 'true');
-}
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+  const isSub = si !== undefined;
+  current = {ci, ti, si};
+  const subLine = isSub ? '' :
+    `<span class="${t.subs.length ? '' : 'muted'}">${ICON.subs}${t.subs.filter(s => s.status !== 'none').length}/${t.subs.length} sub-techniques covered</span>`;
+  const pop = document.getElementById('pop');
+  pop.innerHTML =
+      `<button class="xbtn" onclick="closePop()" aria-label="Close">&times;</button>`
+    + `<div class="ptitle">${escHtml(isSub ? t.fullName : t.name)}</div>`
+    + `<div class="pid">${escHtml(t.id)} &bull; ${escHtml(MATRIX[ci].name)}</div>`
+    + barHtml(v.score, true)
+    + (t.desc ? `<div class="pdesc">${escHtml(t.desc)}</div>` : '')
+    + `<div class="plabel">Coverage</div>`
+    + `<div class="pstats"><span>${ICON.shield}${v.score}</span><span class="tag s-${v.status}">${LABEL[v.status]}${v.viaSub ? ' via sub-technique' : ''}</span>`
+    + `<span>${ICON.rules}${ruleCounts(t.rules)}</span>${subLine}</div>`
+    + `<div class="pactions">`
+    + (t.link ? `<a class="btn btn-ghost" href="${escHtml(t.link)}" target="_blank" rel="noopener" title="Open on attack.mitre.org">${ICON.ext}MITRE ATT&amp;CK</a>` : '')
+    + `<button class="btn btn-primary" onclick="openModal()">See Details</button></div>`;
 
+  if (selectedTile) selectedTile.classList.remove('sel');
+  selectedTile = tile;
+  tile.classList.add('sel');
+
+  pop.classList.add('open');
+  positionPop();
+}
+function positionPop() {
+  const pop = document.getElementById('pop');
+  if (!selectedTile || !pop.classList.contains('open')) return;
+  const r = selectedTile.getBoundingClientRect();
+  const w = pop.offsetWidth, h = pop.offsetHeight, gap = 8;
+  let left = r.right + gap;
+  if (left + w > window.innerWidth - gap) left = r.left - w - gap;
+  left = Math.max(gap, Math.min(left, window.innerWidth - w - gap));
+  let top = Math.max(gap, Math.min(r.top, window.innerHeight - h - gap));
+  pop.style.left = (left + window.scrollX) + 'px';
+  pop.style.top = (top + window.scrollY) + 'px';
+}
+function closePop() {
+  document.getElementById('pop').classList.remove('open');
+  if (selectedTile) selectedTile.classList.remove('sel');
+  selectedTile = null;
+}
+
+/* ---------- Details modal ---------- */
+function rulesTable(rules) {
+  if (!rules.length) return '<div class="note">No rules mapped directly to this technique.</div>';
+  const order = {Active: 0, Quiet: 1, NeverFired: 2, Unknown: 3};
+  const rows = [...rules].sort((a, b) => (order[a.status] ?? 9) - (order[b.status] ?? 9) || a.name.localeCompare(b.name))
+    .map(r => `<tr><td>${escHtml(r.name)}</td><td><span class="tag s-${RULE_CLASS[r.status] || 'none'}">${escHtml(RULE_LABEL[r.status] || r.status)}</span></td>`
+      + `<td>${r.last ? escHtml(r.last) : '<span class="note">never</span>'}</td></tr>`).join('');
+  return `<div class="table-wrap" style="max-height:none"><table class="data-table"><thead><tr><th>Rule</th><th>Status</th><th>Last fired</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+function openModal() {
+  if (!current) return;
+  const {ci, ti, si} = current;
+  const t = lookup(ci, ti, si);
+  const v = view(t);
+  const isSub = si !== undefined;
+  let subs = '';
+  if (!isSub && t.subs.length) {
+    const rows = t.subs.map(s => `<tr><td style="font-family:var(--mono)">${escHtml(s.id)}</td>`
+      + `<td>${s.link ? `<a href="${escHtml(s.link)}" target="_blank" rel="noopener">${escHtml(s.name)}</a>` : escHtml(s.name)}</td>`
+      + `<td><span class="tag s-${s.status}">${LABEL[s.status]}</span></td><td>${s.score}</td>`
+      + `<td>${s.rules.length ? s.rules.map(r => escHtml(r.name)).join('<br>') : '<span class="note">-</span>'}</td></tr>`).join('');
+    subs = `<h4>Sub-techniques (${t.subs.filter(s => s.status !== 'none').length}/${t.subs.length} covered)</h4>`
+      + `<div class="table-wrap" style="max-height:none"><table class="data-table"><thead><tr><th>ID</th><th>Sub-technique</th><th>Status</th><th>Score</th><th>Rules</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  }
+  const tactics = MATRIX.filter(c => c.techs.some(x => x.id === (isSub ? MATRIX[ci].techs[ti].id : t.id))).map(c => c.name);
+  document.getElementById('modal').innerHTML =
+      `<button class="xbtn" onclick="closeModal()" aria-label="Close">&times;</button>`
+    + `<div class="ptitle">${escHtml(isSub ? t.fullName : t.name)}</div>`
+    + `<div class="pid">${escHtml(t.id)}${isSub ? ' &bull; sub-technique of ' + escHtml(MATRIX[ci].techs[ti].id) : ''} &bull; ${tactics.map(escHtml).join(', ')}</div>`
+    + `<div class="row"><span class="num">${v.score}</span>${barHtml(v.score, true)}<span class="tag s-${v.status}">${LABEL[v.status]}${v.viaSub ? ' via sub-technique' : ''}</span></div>`
+    + (t.desc ? `<p class="desc">${escHtml(t.desc)}</p>` : '')
+    + (t.link ? `<a class="btn btn-ghost" style="padding-left:0" href="${escHtml(t.link)}" target="_blank" rel="noopener">${ICON.ext}View ${escHtml(t.id)} on attack.mitre.org</a>` : '')
+    + `<h4>Correlation rules (${t.rules.length})</h4>${rulesTable(t.rules)}`
+    + subs;
+  closePop();
+  document.getElementById('overlay').classList.add('open');
+}
+function closeModal() { document.getElementById('overlay').classList.remove('open'); }
+
+function openScoreHelp() {
+  const fmt = n => Number(n).toLocaleString();
+  document.getElementById('modal').innerHTML =
+      `<button class="xbtn" onclick="closeModal()" aria-label="Close">&times;</button>`
+    + `<div class="ptitle">MITRE ATT&amp;CK Coverage Score Explanation</div>`
+    + `<p class="desc">The overall score is calculated the same way as the Exabeam Outcomes Navigator score: the scores of all techniques are added up, `
+    + `then divided by the number of techniques. The result is rounded to the nearest whole number.</p>`
+    + `<table class="factors"><thead><tr><th>Factor</th><th>Value</th></tr></thead><tbody>`
+    + `<tr><td>Sum of scores of all techniques</td><td>${fmt(SCORE.sum)}</td></tr>`
+    + `<tr><td>Total number of techniques</td><td>${fmt(SCORE.techniques)}</td></tr>`
+    + `<tr class="total"><td>Total average MITRE ATT&amp;CK Coverage Score</td><td>${SCORE.score}</td></tr>`
+    + `</tbody></table>`
+    + `<h4>How each technique is scored</h4>`
+    + `<p class="desc" style="margin-top:0">Unlike the Outcomes Navigator, which scores the data and content available for a technique, this report scores `
+    + `whether the correlation rules mapped to it actually fire:</p>`
+    + `<table class="factors"><thead><tr><th>Technique state</th><th>Score</th></tr></thead><tbody>`
+    + `<tr><td><span class="tag s-validated">Validated</span> a mapped rule fired in the last ${SCORE.staleDays} days</td><td>75 - 100</td></tr>`
+    + `<tr><td><span class="tag s-quiet">Quiet</span> mapped rules fired before, but not recently</td><td>50 - 74</td></tr>`
+    + `<tr><td><span class="tag s-unvalidated">Unvalidated</span> mapped rules have never fired</td><td>20 - 49</td></tr>`
+    + `<tr><td><span class="tag s-none">Not covered</span> no enabled rule is mapped</td><td>0</td></tr>`
+    + `</tbody></table>`
+    + `<p class="desc">Each additional rule in the same state adds 5 points within its band. A parent technique takes the best score of its own rules `
+    + `and its sub-techniques' rules. Only enabled correlation rules are counted.</p>`
+    + `<div style="text-align:right;margin-top:18px"><button class="btn btn-primary" onclick="closeModal()">Close</button></div>`;
+  closePop();
+  document.getElementById('overlay').classList.add('open');
+}
+
+/* ---------- Events ---------- */
+document.getElementById('matrix').addEventListener('click', e => {
+  const exp = e.target.closest('[data-expand]');
+  if (exp) {
+    e.stopPropagation();
+    const id = exp.dataset.expand;
+    expanded.has(id) ? expanded.delete(id) : expanded.add(id);
+    renderMatrix();
+    return;
+  }
+  const tile = e.target.closest('.tile');
+  if (!tile) return;
+  e.stopPropagation();
+  if (tile === selectedTile) { closePop(); return; }
+  const [ci, ti, si] = tile.dataset.key.split(':').map(Number);
+  openPop(tile, ci, ti, Number.isNaN(si) ? undefined : si);
+});
+document.getElementById('matrix').addEventListener('scroll', closePop);
+document.addEventListener('click', e => { if (!e.target.closest('#pop')) closePop(); });
+window.addEventListener('resize', positionPop);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closePop(); } });
+
+/* ---------- CSV export ---------- */
+function exportCsv() {
+  const csv = JSON.parse(document.getElementById('matrixCsv').textContent);
+  const blob = new Blob(['\\ufeff' + csv], {type: 'text/csv;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = CSV_NAME;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 0);
+}
+
+/* ---------- Tabs + tables ---------- */
 function showTab(name) {
   if (!document.getElementById('tab-' + name)) name = 'coverage';
+  closePop();
   document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
   document.querySelectorAll('.tabpane').forEach(p => p.classList.toggle('active', p.id === 'tab-' + name));
   try { history.replaceState(null, '', '#' + name); } catch (e) {}
@@ -1149,15 +1447,25 @@ showTab((location.hash || '#coverage').slice(1));
 """
 
 
+ICON_SHIELD = ('<svg class="shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
+               'stroke-linejoin="round"><path d="M12 2l8 3v6c0 5-3.4 9.4-8 11-4.6-1.6-8-6-8-11V5l8-3z"/></svg>')
+
+
 def build_html_report(path: str, ctx: dict) -> None:
     k = ctx["kpis"]
     prev_kpis = ctx["prev"]["kpis"] if ctx["prev"] else None
     stale = ctx["stale_days"]
 
-    coverage_cards = "".join([
-        card("Enabled rules", k["enabledRules"],
-             f"{k['testModeRules']} in test mode • {k['rulesReturned']} rules returned by API", "",
-             delta_text(k["enabledRules"], prev_kpis, "enabledRules")),
+    score_delta = delta_text(k["coverageScore"], prev_kpis, "coverageScore")
+    score_delta_html = f'<div class="delta">{esc(score_delta)}</div>' if score_delta else ""
+    coverage_cards = f"""
+      <div class="card">
+        <div class="label">MITRE ATT&amp;CK Coverage Score</div>
+        <div class="value score">{ICON_SHIELD}{k["coverageScore"]}</div>{score_delta_html}
+        <div class="meter"><i style="width:{k['coverageScore']}%"></i></div>
+        <div class="hint">Average of {k["coverageScoreTechniques"]} technique scores •
+          <a href="#" class="helplink" onclick="openScoreHelp(); return false;">How was this calculated?</a></div>
+      </div>""" + "".join([
         card("Parent techniques covered", f"{k['parentsCoveredPct']:.1f}%",
              f"{k['parentsCoveredInclSubs']}/{k['parentsTotal']} incl. via sub-techniques • {k['parentsCovered']} mapped directly",
              "", delta_text(k["parentsCoveredPct"], prev_kpis, "parentsCoveredPct", " pts"), meter=k["parentsCoveredPct"]),
@@ -1169,6 +1477,10 @@ def build_html_report(path: str, ctx: dict) -> None:
     ])
 
     health_cards = "".join([
+        card("Enabled rules", k["enabledRules"],
+             f"{k['testModeRules']} in test mode • {k['rulesReturned']} rules returned by API • "
+             f"{k['rulesActive']} fired in the last {stale} days", "",
+             delta_text(k["enabledRules"], prev_kpis, "enabledRules")),
         card("Rules gone quiet", k["rulesQuiet"],
              f"Fired before, but not in the last {stale} days - check log sources and rule logic",
              "blue" if k["rulesQuiet"] else "good", delta_text(k["rulesQuiet"], prev_kpis, "rulesQuiet")),
@@ -1264,7 +1576,8 @@ def build_html_report(path: str, ctx: dict) -> None:
                          "tblGaps", "Filter (NotCovered, NoMitreTag, UnknownTechnique, T1556)..."),
     ])
 
-    matrix_json = json.dumps(ctx["matrix"], separators=(",", ":")).replace("</", "<\\/")
+    def embed(value: Any) -> str:
+        return json.dumps(value, separators=(",", ":")).replace("</", "<\\/")
 
     html = HTML_TEMPLATE
     for token, value in {
@@ -1281,7 +1594,11 @@ def build_html_report(path: str, ctx: dict) -> None:
         "%%TECH_COUNTS_TABLE%%": to_html_table(ctx["tech_counts"], "tblTechCounts", max_rows=50),
         "%%PRIORITY_PANEL%%": priority_html,
         "%%DATA_PANELS%%": data_html,
-        "%%MATRIX_JSON%%": matrix_json,
+        "%%MATRIX_CSV_NAME%%": embed(ctx["matrix_csv_name"]),
+        "%%SCORE_JSON%%": embed({"score": k["coverageScore"], "sum": k["coverageScoreSum"],
+                                 "techniques": k["coverageScoreTechniques"], "staleDays": stale}),
+        "%%MATRIX_CSV%%": embed(ctx["matrix_csv"]),
+        "%%MATRIX_JSON%%": embed(ctx["matrix"]),
     }.items():
         html = html.replace(token, value)
 
@@ -1328,6 +1645,7 @@ def main() -> None:
         "gaps": os.path.join(out_dir, f"current_gaps_{region}_{ts}.csv"),
         "health": os.path.join(out_dir, f"rule_health_{region}_{ts}.csv"),
         "navigator": os.path.join(out_dir, f"navigator_layer_{region}_{ts}.json"),
+        "matrix": os.path.join(out_dir, f"attack_matrix_{region}_{ts}.csv"),
         "html": os.path.join(out_dir, f"mitre_coverage_report_{region}_{ts}.html"),
         "snapshot": os.path.join(out_dir, "snapshot.json"),
     }
@@ -1391,6 +1709,10 @@ def main() -> None:
     pairs, missing = match_definitions(in_scope, exported_defs)
     coverage, rule_gaps = build_coverage_and_rule_gaps(pairs, missing, health_by_id)
     tech_status = build_technique_status(all_mitre, coverage)
+    matrix = build_matrix_data(all_mitre, tech_status, mitre_descriptions(mitre_raw))
+    # Same method as the Outcomes Navigator: average technique score across all (parent) techniques
+    unique_scores = {t["id"]: t["rolledScore"] for col in matrix for t in col["techs"]}
+    score_sum = sum(unique_scores.values())
 
     unknown_keys = sorted({c["techniqueKey"] for c in coverage if c["techniqueKey"] and c["techniqueKey"] not in universe})
     for tid in unknown_keys:
@@ -1444,6 +1766,9 @@ def main() -> None:
         "exportMissing": sum(1 for g in rule_gaps if g["issueType"] == "ExportMissing"),
         "unknownTechniques": len(unknown_keys),
         "coverageRows": len(coverage),
+        "coverageScore": round(score_sum / len(unique_scores)) if unique_scores else 0,
+        "coverageScoreSum": score_sum,
+        "coverageScoreTechniques": len(unique_scores),
     }
 
     # --- Snapshot + comparison ---
@@ -1497,6 +1822,12 @@ def main() -> None:
                    "createdAt", "ruleAgeDays", "avgTriggersPerDay", "mitreMappings", "author"]
     write_csv(paths["health"], health_all, health_cols)
     write_json(paths["navigator"], build_navigator_layer(all_mitre, tech_status, region, generated))
+    matrix_rows = build_matrix_csv_rows(matrix)
+    write_csv(paths["matrix"], matrix_rows, MATRIX_CSV_COLUMNS)
+    matrix_csv = io.StringIO()
+    csv_writer = csv.DictWriter(matrix_csv, fieldnames=MATRIX_CSV_COLUMNS, lineterminator="\r\n")
+    csv_writer.writeheader()
+    csv_writer.writerows(matrix_rows)
     write_json(paths["snapshot"], snapshot)
 
     # --- Summary tables for the HTML ---
@@ -1537,11 +1868,14 @@ def main() -> None:
         "all_mitre_view": all_mitre_view,
         "tactic_summary": tactic_summary,
         "tech_counts": tech_counts_rows,
-        "matrix": build_matrix_data(all_mitre, tech_status),
+        "matrix": matrix,
+        "matrix_csv": matrix_csv.getvalue(),
+        "matrix_csv_name": os.path.basename(paths["matrix"]),
     })
 
     for label, key in (("All techniques", "all_mitre"), ("Coverage", "coverage"), ("Gaps", "gaps"),
-                       ("Rule health", "health"), ("Navigator layer", "navigator"), ("HTML report", "html")):
+                       ("Rule health", "health"), ("ATT&CK matrix", "matrix"), ("Navigator layer", "navigator"),
+                       ("HTML report", "html")):
         info(f"{label + ':':17} {paths[key]}")
 
     print(

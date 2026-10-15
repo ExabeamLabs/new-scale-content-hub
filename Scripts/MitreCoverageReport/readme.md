@@ -21,7 +21,9 @@ A single Python script that:
   - 20–49 = unvalidated (purple)
   - 0 = not covered (dashed tile)
 
-  Within a band, each extra rule in that state adds 5 points. Click any technique to open a panel with the rules and sub-techniques behind it.
+  Within a band, each extra rule in that state adds 5 points. The overall **MITRE ATT&CK Coverage Score** is the average across all techniques, the same formula the Outcomes Navigator uses (see "How was this calculated?" in the report).
+
+  Click a technique for a summary popover, then **See Details** for its full description, mapped rules and sub-techniques. The handle on the right of a tile expands its sub-techniques. **Export MITRE ATT&CK Coverage (CSV)** downloads the matrix sorted by tactic, with MITRE links.
 - **Detection health**:
   - **Gone quiet**: rules that used to fire but haven't in 30 days. This often means a log source or parser has broken.
   - **Never fired**: rules that have never been validated.
@@ -97,6 +99,7 @@ output/
     ├── current_coverage_<region>_<ts>.csv       # one row per rule -> technique mapping
     ├── current_gaps_<region>_<ts>.csv           # uncovered techniques + rule hygiene issues
     ├── rule_health_<region>_<ts>.csv            # every rule: status, last fired, trigger counts
+    ├── attack_matrix_<region>_<ts>.csv          # matrix by tactic: score, status, rules, MITRE URL
     ├── navigator_layer_<region>_<ts>.json       # load into https://mitre-attack.github.io/attack-navigator/
     ├── mitre_coverage_report_<region>_<ts>.html # the dashboard
     ├── snapshot.json                            # used to compare the next run with this one
