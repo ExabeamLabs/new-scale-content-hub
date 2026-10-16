@@ -25,6 +25,12 @@ from typing import Any
 
 import requests
 
+try:  # optional: the Word executive briefing needs python-docx
+    from executive_report import build_executive_report
+except ImportError as _docx_error:
+    build_executive_report = None
+    DOCX_IMPORT_ERROR = str(_docx_error)
+
 # -----------------------------
 # ANSI colour codes (terminal)
 # -----------------------------
@@ -149,6 +155,9 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--no-compare", action="store_true", help="Do not compare against a previous run")
     p.add_argument("--save-raw", action="store_true",
                    help="Save raw API responses into the run folder (useful for troubleshooting)")
+    p.add_argument("--sector", default="",
+                   help="Sector for the Word briefing's threat section, e.g. \"Healthcare\" (the HTML report lets each viewer choose)")
+    p.add_argument("--no-word", action="store_true", help="Do not generate the Word executive briefing")
     p.add_argument("--attack-data", choices=["auto", "refresh", "off"], default="auto",
                    help="MITRE ATT&CK platform/threat-group data for the report filters: 'auto' downloads it when the cache "
                         "is older than 30 days, 'refresh' always downloads, 'off' skips it (default: auto)")
@@ -422,6 +431,24 @@ def match_definitions(rules: list[dict], defs: list[dict]) -> tuple[list[tuple[d
 
     missing = [r for r in rules if get_rule_id(r) not in matched_ids]
     return pairs, missing
+
+
+def rule_query_products(defs: list[dict]) -> dict[str, list[str]]:
+    """Products named in each rule's sequence queries (product:"X" / product:("X","Y") / vendor:...)."""
+    pattern = re.compile(r'\b(product|vendor)\s*:\s*(\(([^)]*)\)|"([^"]*)")', re.I)
+    out: dict[str, list[str]] = {}
+    for d in defs:
+        query = " ".join(s.get("query", "") for s in ((d.get("sequencesConfig") or {}).get("sequences") or [])
+                         if isinstance(s, dict))
+        found: list[str] = []
+        for m in pattern.finditer(query):
+            values = re.findall(r'"([^"]+)"', m.group(3)) if m.group(3) is not None else [m.group(4)]
+            for v in values:
+                if v and v.lower() not in {x.lower() for x in found}:
+                    found.append(v)
+        if found:
+            out[get_rule_name(d)] = found
+    return out
 
 
 def build_coverage_and_rule_gaps(
@@ -2352,6 +2379,7 @@ def main() -> None:
         "navigator": os.path.join(out_dir, f"navigator_layer_{region}_{ts}.json"),
         "matrix": os.path.join(out_dir, f"attack_matrix_{region}_{ts}.csv"),
         "html": os.path.join(out_dir, f"mitre_coverage_report_{region}_{ts}.html"),
+        "word": os.path.join(out_dir, f"mitre_executive_briefing_{region}_{ts}.docx"),
         "snapshot": os.path.join(out_dir, "snapshot.json"),
     }
     info(f"Output folder: {out_dir}")
@@ -2579,10 +2607,40 @@ def main() -> None:
         "matrix_csv_name": os.path.basename(paths["matrix"]),
     })
 
+    # --- Word executive briefing ---
+    word_written = False
+    if not args.no_word:
+        sector = ""
+        if args.sector:
+            sector = next((x for x in SECTOR_PATTERNS if x.lower() == args.sector.strip().lower()), "")
+            if not sector:
+                warn(f"Unknown --sector '{args.sector}'. Options: {', '.join(SECTOR_PATTERNS)}")
+        if build_executive_report is None:
+            warn(f"Word briefing skipped - install python-docx (pip install -r requirements.txt): {DOCX_IMPORT_ERROR}")
+        else:
+            rule_techniques: dict[str, list[str]] = {}
+            for c in coverage:
+                if c["techniqueKey"] and c["techniqueKey"] not in rule_techniques.setdefault(c["ruleName"], []):
+                    rule_techniques[c["ruleName"]].append(c["techniqueKey"])
+            retired_rules = {c["ruleName"] for c in coverage if c["techniqueKey"] in unknown_keys}
+            logo = os.path.join(out_dir, "logo.png")
+            try:
+                build_executive_report(paths["word"], {
+                    "region": region, "generated": generated, "stale_days": args.stale_days, "kpis": kpis,
+                    "prev": prev, "changes": changes, "matrix": matrix, "attack": attack, "sector": sector,
+                    "health_enabled": health_enabled, "rule_products": rule_query_products(exported_defs),
+                    "rule_techniques": rule_techniques, "retired_ids": unknown_keys, "retired_rule_count": len(retired_rules),
+                    "logo": logo if os.path.exists(logo) else None,
+                })
+                word_written = True
+            except Exception as e:  # the briefing must never stop the main report
+                warn(f"Word briefing could not be generated: {type(e).__name__}: {e}")
+
     for label, key in (("All techniques", "all_mitre"), ("Coverage", "coverage"), ("Gaps", "gaps"),
                        ("Rule health", "health"), ("ATT&CK matrix", "matrix"), ("Navigator layer", "navigator"),
-                       ("HTML report", "html")):
-        info(f"{label + ':':17} {paths[key]}")
+                       ("HTML report", "html"), ("Word briefing", "word")):
+        if key != "word" or word_written:
+            info(f"{label + ':':17} {paths[key]}")
 
     print(
         f"\n{ANSI_GREEN}[SUMMARY]{ANSI_RESET} "

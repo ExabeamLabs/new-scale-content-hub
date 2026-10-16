@@ -3,7 +3,7 @@
 A single Python script that:
 1) Pulls MITRE technique metadata from Exabeam
 2) Pulls your correlation rules, their trigger history, and their MITRE mappings
-3) Produces CSVs, an ATT&CK Navigator layer, and a **single self-contained HTML dashboard** showing coverage, gaps, and detection health
+3) Produces CSVs, an ATT&CK Navigator layer, a **single self-contained HTML dashboard** showing coverage, gaps, and detection health, and a **Word executive briefing**
 
 <img width="1450" height="1270" alt="image" src="https://github.com/user-attachments/assets/b922f5e6-a2e9-450b-bafd-7aea64ce40be" />
 
@@ -29,6 +29,14 @@ A single Python script that:
   - **Your platforms** (Windows, macOS, Linux, cloud and so on): techniques that can't apply to your environment are hidden and left out of the score, like hidden techniques in the Outcomes Navigator.
 
   Platforms and threat groups come from the latest MITRE ATT&CK Enterprise release. The script downloads it at most every 30 days and caches it in `.cache/`. MITRE doesn't tag groups by sector, so sectors are matched from keywords in each group's description. The report lists the groups behind every count so you can check them. Choices are remembered in the browser.
+- **Executive briefing (Word)** – every run also writes a dark-themed, Exabeam-branded `.docx` summary for leadership. It covers:
+  - the coverage score and posture rating
+  - the gap between techniques covered and techniques validated
+  - detection health, including the rules that went quiet most recently
+  - coverage by tactic
+  - threat exposure, filtered to your sector with `--sector`
+  - an Echo validation plan that ranks never-fired rules for log replay
+  - recommended actions for the next 30 days
 - **Detection health**:
   - **Gone quiet**: rules that used to fire but haven't in 30 days. This often means a log source or parser has broken.
   - **Never fired**: rules that have never been validated.
@@ -85,6 +93,8 @@ MAC / LINUX
 | `--no-compare` | off | Skip the comparison with a previous run. |
 | `--save-raw` | off | Save raw API responses (`raw_*.json`) into the run folder. |
 | `--replay` | | Rebuild the report from a folder of `raw_*.json` files without calling the API. |
+| `--sector` | | Sector for the Word briefing's threat section, e.g. `"Healthcare"`. Viewers choose their own in the HTML report. |
+| `--no-word` | off | Skip the Word executive briefing. |
 | `--attack-data` | `auto` | MITRE ATT&CK platform/threat-group data: `auto` (cached, refreshed every 30 days), `refresh` (always download), `off`. |
 | `--attack-cache` | `.cache/attack_context.json` | Where the MITRE ATT&CK data is cached. |
 
@@ -109,6 +119,7 @@ output/
     ├── attack_matrix_<region>_<ts>.csv          # matrix by tactic: score, status, rules, MITRE URL
     ├── navigator_layer_<region>_<ts>.json       # load into https://mitre-attack.github.io/attack-navigator/
     ├── mitre_coverage_report_<region>_<ts>.html # the dashboard
+    ├── mitre_executive_briefing_<region>_<ts>.docx # executive summary (dark theme - view in Word's Print Layout)
     ├── snapshot.json                            # used to compare the next run with this one
     └── logo.png                                 # copied from assets/logo.png (if present)
 ```
