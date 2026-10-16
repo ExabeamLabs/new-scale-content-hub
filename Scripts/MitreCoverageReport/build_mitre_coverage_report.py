@@ -62,7 +62,19 @@ EXPORT_CHUNK_SIZE = 50
 # A rule that has fired before but not within this many days is flagged as "Quiet"
 STALE_DAYS = 30
 
+__version__ = "2.0.0"
+
+# Exabeam New-Scale API regions (api.<region>.exabeam.cloud)
+KNOWN_REGIONS = ["us-west", "us-east", "eu", "uk", "ca", "au", "sg", "jp", "ch", "sa"]
+
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Never crash on characters the console (or a redirected log file) cannot display
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(errors="replace")
+    except (AttributeError, ValueError):
+        pass
 PLACEHOLDER = "XYZ"
 
 # Rule health statuses
@@ -125,8 +137,36 @@ def fail(msg: str, resp: requests.Response | None = None) -> None:
     print(f"[ERROR] {msg}")
     if resp is not None:
         print(f"Status: {resp.status_code}")
-        print(resp.text)
+        print(resp.text[:2000])
     sys.exit(1)
+
+
+def explain_http_error(what: str, resp: requests.Response) -> str:
+    """A plain-English reason for a failed API call."""
+    hints = {
+        400: "the request was rejected - check --region and that the client ID and secret were pasted correctly",
+        401: "authentication failed - check the client ID and secret, and that the key has not expired or been revoked",
+        403: "the API key does not have permission for this - ask your Exabeam administrator to grant read access",
+        404: "the endpoint was not found - check --region matches your tenant",
+        429: "the API rate limit was hit - wait a few minutes and run again",
+    }
+    hint = hints.get(resp.status_code, "the Exabeam API returned an error" if resp.status_code >= 500 else "unexpected response")
+    return f"{what} failed (HTTP {resp.status_code}): {hint}."
+
+
+def explain_network_error(what: str, base_url: str, err: Exception) -> str:
+    if isinstance(err, requests.exceptions.SSLError) and ("hostname mismatch" in str(err).lower() or "not valid for" in str(err).lower()):
+        return (f"{what} failed: {base_url} is not a valid Exabeam API address. Check --region - it must be one of "
+                f"{', '.join(KNOWN_REGIONS)}.")
+    if isinstance(err, requests.exceptions.SSLError):
+        return (f"{what} failed: the TLS certificate could not be verified ({err}). If your network inspects HTTPS traffic, "
+                "set the REQUESTS_CA_BUNDLE environment variable to your organisation's CA certificate file.")
+    if isinstance(err, requests.exceptions.Timeout):
+        return f"{what} timed out contacting {base_url}. Check your connection and try again."
+    if isinstance(err, requests.exceptions.ConnectionError):
+        return (f"{what} failed: could not reach {base_url}. Check that --region is correct, that you are online, and - on "
+                "a corporate network - that the HTTPS_PROXY environment variable is set if a proxy is required.")
+    return f"{what} failed: {type(err).__name__}: {err}"
 
 
 # =========================================================
@@ -134,6 +174,7 @@ def fail(msg: str, resp: requests.Response | None = None) -> None:
 # =========================================================
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Build an Exabeam MITRE ATT&CK coverage report.")
+    p.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     p.add_argument("--region", default=os.environ.get("EXABEAM_REGION", REGION),
                    help=f"Exabeam API region, e.g. eu, us-west, us-east (default: {REGION})")
     p.add_argument("--base-url", default=os.environ.get("EXABEAM_BASE_URL", ""),
@@ -187,38 +228,39 @@ class ExabeamApi:
     def _headers(self) -> dict:
         return {"accept": "application/json", "authorization": f"Bearer {self.token}"}
 
+    def _request(self, what: str, method: str, path: str, **kwargs) -> Any:
+        """Call a core endpoint; exit with a plain-English message on any failure."""
+        try:
+            resp = requests.request(method, f"{self.base_url}{path}", **kwargs)
+        except requests.RequestException as e:
+            fail(explain_network_error(what, self.base_url, e))
+        if not resp.ok:
+            fail(explain_http_error(what, resp), resp)
+        try:
+            return resp.json()
+        except ValueError:
+            fail(f"{what} returned a response that was not JSON - check --region and --base-url.", resp)
+
     def authenticate(self) -> None:
-        resp = requests.post(
-            f"{self.base_url}/auth/v1/token",
-            data={
-                "grant_type": "client_credentials",
-                "client_id": self.client_id,
-                "client_secret": self.client_secret,
-            },
+        payload = self._request(
+            "Signing in to Exabeam", "POST", "/auth/v1/token",
+            data={"grant_type": "client_credentials", "client_id": self.client_id, "client_secret": self.client_secret},
             headers={"accept": "application/json", "content-type": "application/x-www-form-urlencoded"},
             timeout=TOKEN_TIMEOUT_SECONDS,
         )
-        if not resp.ok:
-            fail("Token request failed (check credentials and --region)", resp)
-        token = resp.json().get("access_token")
+        token = payload.get("access_token") if isinstance(payload, dict) else None
         if not token:
             fail("Token response missing access_token")
         self.token = token
 
     def get_mitre_techniques(self, name_contains: str) -> dict:
         params = {"nameContains": name_contains} if name_contains else None
-        resp = requests.get(f"{self.base_url}/mitre/v1/techniques", headers=self._headers(),
-                            params=params, timeout=API_TIMEOUT_SECONDS)
-        if not resp.ok:
-            fail("MITRE techniques request failed", resp)
-        return resp.json()
+        return self._request("Reading the MITRE technique list", "GET", "/mitre/v1/techniques",
+                             headers=self._headers(), params=params, timeout=API_TIMEOUT_SECONDS)
 
     def list_correlation_rules(self) -> Any:
-        resp = requests.get(f"{self.base_url}/correlation-rules/v2/rules", headers=self._headers(),
-                            timeout=API_TIMEOUT_SECONDS)
-        if not resp.ok:
-            fail("Correlation rules list request failed", resp)
-        return resp.json()
+        return self._request("Reading the correlation rules", "GET", "/correlation-rules/v2/rules",
+                             headers=self._headers(), timeout=API_TIMEOUT_SECONDS)
 
     def search_events(self, body: dict) -> tuple[bool, Any]:
         """POST /search/v2/events. Returns (ok, json) or (False, error text) - never exits."""
@@ -252,11 +294,9 @@ class ExabeamApi:
         all_defs: list[dict] = []
         for i in range(0, len(rule_ids), EXPORT_CHUNK_SIZE):
             batch = rule_ids[i:i + EXPORT_CHUNK_SIZE]
-            resp = requests.post(f"{self.base_url}/correlation-rules/v2/rules/export", headers=headers,
-                                 json={"ruleIds": batch}, timeout=API_TIMEOUT_SECONDS)
-            if not resp.ok:
-                fail("Correlation rules export request failed", resp)
-            defs = resp.json().get("ruleDefinitions", [])
+            payload = self._request("Exporting correlation rule definitions", "POST", "/correlation-rules/v2/rules/export",
+                                    headers=headers, json={"ruleIds": batch}, timeout=API_TIMEOUT_SECONDS)
+            defs = payload.get("ruleDefinitions", []) if isinstance(payload, dict) else []
             if isinstance(defs, list):
                 all_defs.extend(d for d in defs if isinstance(d, dict))
         return all_defs
@@ -466,9 +506,9 @@ def match_definitions(rules: list[dict], defs: list[dict]) -> tuple[list[tuple[d
     return pairs, missing
 
 
-def rule_query_products(defs: list[dict]) -> dict[str, list[str]]:
-    """Products named in each rule's sequence queries (product:"X" / product:("X","Y") / vendor:...)."""
-    pattern = re.compile(r'\b(product|vendor)\s*:\s*(\(([^)]*)\)|"([^"]*)")', re.I)
+def rule_query_products(defs: list[dict], fields: tuple[str, ...] = ("product", "vendor")) -> dict[str, list[str]]:
+    """Values of the given fields named in each rule's sequence queries (product:"X" / product:("X","Y"))."""
+    pattern = re.compile(r'\b(' + "|".join(fields) + r')\s*:\s*(\(([^)]*)\)|"([^"]*)")', re.I)
     out: dict[str, list[str]] = {}
     for d in defs:
         query = " ".join(s.get("query", "") for s in ((d.get("sequencesConfig") or {}).get("sequences") or [])
@@ -987,57 +1027,80 @@ def _product_name(value: Any) -> str:
     return str(value).strip()
 
 
+def _friendly_api_error(err: Any) -> str:
+    text = str(err)
+    if "HTTP 403" in text:
+        return text[:300] + " - the API key does not have permission for this; ask your Exabeam administrator to grant read access."
+    if "HTTP 401" in text:
+        return text[:300] + " - authentication was rejected for this API."
+    return text[:500]
+
+
+def grouped_search(api: "ExabeamApi", select: list[str], group: list[str], where: str, window: dict,
+                   limit: int, state: dict) -> tuple[bool, list[dict], list[str]]:
+    """Aggregate search (COUNT(*) AS events grouped by fields). Tries the SQL-style filter first, then the
+    fields/groupBy body, and remembers whichever works so later queries use it straight away."""
+    sql = f"SELECT {', '.join(select)}, COUNT(*) AS events" + (f" WHERE ({where})" if where else "") + f" GROUP-BY {', '.join(group)}"
+    styles = [
+        ("SQL filter", {"filter": sql, "fields": ["*"], "limit": limit, **window}),
+        ("fields+groupBy", {"filter": where or "", "fields": select + ["count(*) as events"], "groupBy": group,
+                            "limit": limit, **window}),
+    ]
+    if state.get("style"):
+        styles.sort(key=lambda s: s[0] != state["style"])
+    errors = []
+    for label, body in styles:
+        ok, data = api.search_events(body)
+        if ok:
+            state["style"] = label
+            rows = data.get("rows", []) if isinstance(data, dict) else []
+            rows.sort(key=_row_count, reverse=True)
+            return True, rows, errors
+        errors.append(f"{label}: {_friendly_api_error(data)}")
+    return False, [], errors
+
+
 def collect_attack_surface(api: "ExabeamApi", defs: list[dict], days: int, deep: bool, max_seconds: int) -> dict:
-    """Run the Attack Surface queries. Every response (or error) is kept so the run can be replayed."""
+    """Run the Attack Surface queries. Only aggregated counts are kept (no raw log content), plus any API errors."""
     import time
     now = datetime.now(timezone.utc)
     window = {"startTime": (now - timedelta(days=days)).strftime("%Y-%m-%dT%H:%M:%SZ"),
               "endTime": now.strftime("%Y-%m-%dT%H:%M:%SZ")}
     trig_window = {"startTime": (now - timedelta(days=30)).strftime("%Y-%m-%dT%H:%M:%SZ"), "endTime": window["endTime"]}
-    out: dict = {"schema": 1, "collectedAt": now.strftime("%Y-%m-%d %H:%M:%SZ"), "windowDays": days,
+    out: dict = {"schema": 2, "collectedAt": now.strftime("%Y-%m-%d %H:%M:%SZ"), "windowDays": days,
                  "events": None, "triggers": None, "cloudCollectors": None, "ruleQueries": {}, "errors": []}
+    state: dict = {}
 
-    # 1) Event volume per data source. Try the documented request styles until one works.
-    # product is the main key; vendor, product_category and platform are kept as context
-    grouped = {"fields": ["vendor", "product", "product_category", "platform", "count(*) as events"],
-               "groupBy": ["vendor", "product", "product_category", "platform"],
-               "orderBy": ["events DESC"], "limit": SURFACE_EVENTS_LIMIT, **window}
-    attempts = [
-        ("fields+groupBy, empty filter", {"filter": "", **grouped}),
-        ("SQL filter", {"filter": "SELECT vendor, product, product_category, platform, COUNT(*) AS events "
-                                  "GROUP-BY vendor, product, product_category, platform ORDER-BY events DESC",
-                        "fields": ["*"], "limit": SURFACE_EVENTS_LIMIT, **window}),
-        ("fields+groupBy, product:*", {"filter": "product:*", **grouped}),
-        ("fields+groupBy, NOT product:\"\"", {"filter": 'NOT product:""', **grouped}),
-    ]
-    for label, body in attempts:
-        ok, data = api.search_events(body)
-        if ok:
-            out["events"] = {"method": label, "body": body, "rows": data.get("rows", [])}
-            info(f"Attack surface: {len(out['events']['rows'])} data source rows over {days} days ({label})")
-            break
-        out["errors"].append({"step": f"events ({label})", "error": data})
-    else:
-        warn("Attack surface: could not query event volume per product - see raw_surface.json for the API errors")
-
-    # 2) Correlation rule trigger events (last 30 days): fields are learned from the data
-    ok, data = api.search_events({"filter": 'product:"Correlation Rule"', "fields": ["*"], "limit": 3000, **trig_window})
+    # 1) Event volume per data source - product is the key; vendor, category and platform are context
+    ok, rows, errors = grouped_search(api, ["vendor", "product", "product_category", "platform"],
+                                      ["vendor", "product", "product_category", "platform"], "", window,
+                                      SURFACE_EVENTS_LIMIT, state)
     if ok:
-        out["triggers"] = {"rows": data.get("rows", [])}
-        info(f"Attack surface: {len(out['triggers']['rows'])} correlation rule trigger events (30 days)")
+        out["events"] = {"method": state["style"], "rows": rows}
+        info(f"Attack surface: {len(rows)} data source rows over {days} days ({state['style']})")
     else:
-        out["errors"].append({"step": "rule triggers", "error": data})
+        out["errors"].extend({"step": "data sources", "error": e} for e in errors)
+        warn("Attack surface: could not query event volume per product - check the API key has Search access")
+
+    # 2) Correlation rule triggers in the last 30 days, counted per rule and source product
+    ok, rows, errors = grouped_search(api, ["rule", "src_product"], ["rule", "src_product"],
+                                      'product:"Correlation Rule"', trig_window, SURFACE_EVENTS_LIMIT, state)
+    if ok:
+        out["triggers"] = {"grouped": True, "rows": rows}
+        info(f"Attack surface: {sum(_row_count(r) for r in rows)} correlation rule triggers in 30 days")
+    else:
+        out["errors"].extend({"step": "rule triggers", "error": e} for e in errors)
 
     # 3) Cloud collectors
     ok, data = api.get_cloud_collectors()
     if ok:
         out["cloudCollectors"] = data
     else:
-        out["errors"].append({"step": "cloud collectors", "error": data})
+        out["errors"].append({"step": "cloud collectors", "error": _friendly_api_error(data)})
 
     # 4) Each rule's own query, grouped by product: which sources feed it (even product-agnostic rules)
     if deep and out["events"] is not None:
-        started, failures, done = time.monotonic(), 0, 0
+        started, done, failed_rules = time.monotonic(), 0, 0
         for d in defs:
             name = get_rule_name(d)
             queries = [s.get("query", "") for s in ((d.get("sequencesConfig") or {}).get("sequences") or [])
@@ -1050,23 +1113,23 @@ def collect_attack_surface(api: "ExabeamApi", defs: list[dict], days: int, deep:
                 break
             per_rule = {"products": {}, "errors": []}
             for q in queries:
-                ok, data = api.search_events({"filter": q, "fields": ["product", "count(*) as events"], "groupBy": ["product"],
-                                              "orderBy": ["events DESC"], "limit": SURFACE_RULE_QUERY_LIMIT, **window})
+                ok, rows, errors = grouped_search(api, ["product"], ["product"], q, window, SURFACE_RULE_QUERY_LIMIT, state)
                 if ok:
-                    failures = 0
-                    for row in data.get("rows", []):
+                    for row in rows:
                         p = _product_name(_ci(row, "product"))
                         per_rule["products"][p] = per_rule["products"].get(p, 0) + _row_count(row)
                 else:
-                    failures += 1
-                    per_rule["errors"].append(str(data)[:300])
+                    per_rule["errors"].extend(errors)
             out["ruleQueries"][name] = per_rule
             done += 1
+            failed_rules = failed_rules + 1 if per_rule["errors"] and not per_rule["products"] else 0
             if done % 25 == 0:
                 info(f"Attack surface: checked {done} rule queries...")
-            if failures >= 5 and done <= 5:
-                warn("Attack surface: rule queries are failing - skipping the rest (see raw_surface.json)")
+            if failed_rules >= 5 and done == failed_rules:
+                warn("Attack surface: the first rule queries all failed - skipping the rest (see Collection notes)")
+                out["errors"].append({"step": "rule queries", "error": per_rule["errors"][-1] if per_rule["errors"] else ""})
                 break
+        out["ruleQueryMethod"] = state.get("style", "")
         info(f"Attack surface: checked the queries of {done} rules against {days} days of data")
     return out
 
@@ -1086,6 +1149,7 @@ def _detect_key(rows: list[dict], candidates: set[str], exclude: set[str] = froz
 
 
 def build_attack_surface(raw: dict | None, health_all: list[dict], rule_products: dict[str, list[str]],
+                         rule_vendors: dict[str, list[str]],
                          rule_techniques: dict[str, list[str]], tech_names: dict[str, str]) -> dict | None:
     """Merge data-source volume, rule dependencies and rule health into one row per product."""
     if not raw:
@@ -1098,7 +1162,8 @@ def build_attack_surface(raw: dict | None, health_all: list[dict], rule_products
         key = name.lower()
         if key not in products:
             products[key] = {"product": name, "vendor": vendor, "events": 0, "namedBy": set(), "fedRules": set(),
-                             "triggers": 0, "collectors": [], "categories": set(), "platforms": set()}
+                             "triggers": 0, "triggerRules": set(), "vendorRules": set(), "collectors": [],
+                             "categories": set(), "platforms": set()}
         if vendor and not products[key]["vendor"]:
             products[key]["vendor"] = vendor
         return products[key]
@@ -1127,6 +1192,20 @@ def build_attack_surface(raw: dict | None, health_all: list[dict], rule_products
             for n in names:
                 if n.lower() not in internal:
                     product(n)["namedBy"].add(rule)
+    # vendor:"X" in a rule query *may* apply to any product from that vendor. It is listed, but does not change a
+    # product's status - the rule query results and triggers show whether the rule really uses that product.
+    # If no product from the vendor sends data at all, the rule cannot fire, which is flagged.
+    for rule, vendors in rule_vendors.items():
+        if rule not in health_by_name:
+            continue
+        for v in vendors:
+            if v.lower() == "exabeam":
+                continue
+            matches = [p for p in products.values() if (p["vendor"] or "").lower() == v.lower()]
+            for p in matches:
+                p["vendorRules"].add(rule)
+            if not matches:
+                product(f"{v} (any product)", v)["namedBy"].add(rule)
 
     starved = []
     for rule, res in (raw.get("ruleQueries") or {}).items():
@@ -1138,19 +1217,35 @@ def build_attack_surface(raw: dict | None, health_all: list[dict], rule_products
         if not fed and not res.get("errors"):
             starved.append(rule)
 
-    # Trigger events: work out which fields hold the rule name and the source product
-    trigger_rows = (raw.get("triggers") or {}).get("rows", [])
-    rule_key = _detect_key(trigger_rows, set(health_by_name))
-    source_key = _detect_key(trigger_rows, {p["product"] for p in products.values()}, exclude={"product", rule_key})
+    # Rule triggers: grouped counts (rule, src_product) from new runs, or raw trigger events from older files
+    trig = raw.get("triggers") or {}
+    trigger_rows = trig.get("rows", [])
     trigger_by_rule: dict[str, int] = {}
-    for row in trigger_rows:
-        if rule_key:
-            r = _product_name(row.get(rule_key))
-            trigger_by_rule[r] = trigger_by_rule.get(r, 0) + 1
-        if source_key:
-            src = _product_name(row.get(source_key))
-            if src.lower() in products:
+    attributed = 0
+    if trig.get("grouped"):
+        rule_key, source_key = "rule", "src_product"
+        for row in trigger_rows:
+            n = _row_count(row)
+            r = _product_name(_ci(row, "rule"))
+            trigger_by_rule[r] = trigger_by_rule.get(r, 0) + n
+            src = present(_ci(row, "src_product"))
+            if src and src.lower() in products:
+                products[src.lower()]["triggers"] += n
+                products[src.lower()]["triggerRules"].add(r)
+                attributed += n
+    else:
+        rule_key = _detect_key(trigger_rows, set(health_by_name))
+        source_key = _detect_key(trigger_rows, {p["product"] for p in products.values()}, exclude={"product", rule_key})
+        for row in trigger_rows:
+            r = _product_name(row.get(rule_key)) if rule_key else ""
+            if r:
+                trigger_by_rule[r] = trigger_by_rule.get(r, 0) + 1
+            src = present(row.get(source_key)) if source_key else ""
+            if src and src.lower() in products:
                 products[src.lower()]["triggers"] += 1
+                products[src.lower()]["triggerRules"].add(r)
+                attributed += 1
+    total_triggers = sum(trigger_by_rule.values())
 
     cc = raw.get("cloudCollectors")
     collectors = cc.get("items", cc.get("configs", [])) if isinstance(cc, dict) else (cc or [])
@@ -1174,7 +1269,7 @@ def build_attack_surface(raw: dict | None, health_all: list[dict], rule_products
 
     rows = []
     for p in products.values():
-        rules = sorted(p["namedBy"] | p["fedRules"])
+        rules = sorted(p["namedBy"] | p["fedRules"] | {r for r in p["triggerRules"] if r in health_by_name})
         statuses = [health_by_name[r]["status"] for r in rules if r in health_by_name]
         active = [r for r in rules if health_by_name.get(r, {}).get("status") == RS_ACTIVE]
         techniques = sorted({t for r in rules for t in rule_techniques.get(r, [])})
@@ -1190,6 +1285,7 @@ def build_attack_surface(raw: dict | None, health_all: list[dict], rule_products
         rows.append({
             "product": p["product"], "vendor": p["vendor"], "events": p["events"], "status": status,
             "categories": sorted(p["categories"]), "platforms": sorted(p["platforms"], key=str.lower),
+            "vendorRules": sorted(p["vendorRules"] - set(rules)),
             "rules": rules, "ruleCount": len(rules), "namedRules": len(p["namedBy"]), "fedRules": len(p["fedRules"]),
             "active": len(active), "quiet": statuses.count(RS_QUIET), "never": statuses.count(RS_NEVER),
             "triggers": p["triggers"], "techniques": techniques, "validatedTechniques": validated,
@@ -1198,7 +1294,7 @@ def build_attack_surface(raw: dict | None, health_all: list[dict], rule_products
     order = {"No data": 0, "No detections": 1, "Monitored, silent": 2, "Detecting": 3}
     rows.sort(key=lambda r: (order[r["status"]], -r["events"], r["product"].lower()))
 
-    rule_info = {r: {"status": h["status"], "last": h["lastTriggeredAt"],
+    rule_info = {r: {"status": h["status"], "last": h["lastTriggeredAt"], "triggers30d": trigger_by_rule.get(r, 0),
                      "techniques": [{"id": t, "name": tech_names.get(t, "")} for t in rule_techniques.get(r, [])]}
                  for r, h in health_by_name.items()}
     return {
@@ -1206,7 +1302,9 @@ def build_attack_surface(raw: dict | None, health_all: list[dict], rule_products
         "eventsMethod": (raw.get("events") or {}).get("method", ""),
         "eventsAvailable": raw.get("events") is not None,
         "deepChecked": len(raw.get("ruleQueries") or {}), "deepTruncated": bool(raw.get("ruleQueriesTruncated")),
-        "triggerEvents": len(trigger_rows), "triggerRuleField": rule_key, "triggerSourceField": source_key,
+        "triggerEvents": total_triggers, "triggerAttributed": attributed,
+        "triggerRuleField": rule_key, "triggerSourceField": source_key,
+        "ruleQueryMethod": raw.get("ruleQueryMethod", ""),
         "products": rows, "collectors": collector_rows,
         "starvedRules": sorted(starved),
         "rules": rule_info,
@@ -1777,6 +1875,7 @@ HTML_TEMPLATE = """<!doctype html>
     </section>
 
     <footer class="disclaimer">
+      <p>Exabeam MITRE Coverage Report v%%VERSION%%</p>
       <p>&copy; 2023 The MITRE Corporation. This work is reproduced and distributed with the permission of The MITRE Corporation.
         <a href="https://attack.mitre.org/resources/terms-of-use/" target="_blank" rel="noopener">https://attack.mitre.org/resources/terms-of-use/</a></p>
       <p>ATT&amp;CK is subject to the license linked here and the following copyright: &copy; 2023 The MITRE Corporation. This work is reproduced
@@ -2396,8 +2495,9 @@ function renderSurface() {
   if (SURFACE.eventsMethod) notes.push(`Data sources queried with: ${escHtml(SURFACE.eventsMethod)}.`);
   notes.push(SURFACE.deepChecked ? `${SURFACE.deepChecked} rule queries were run against the last ${days} days to see which sources feed each rule`
     + (SURFACE.deepTruncated ? ' (stopped early by the time limit).' : '.') : 'Rule queries were not run (--no-surface-deep), so only rules that name a product are linked to sources.');
-  notes.push(SURFACE.triggerEvents ? `${SURFACE.triggerEvents} correlation-rule trigger events read (30 days); rule field: ${escHtml(SURFACE.triggerRuleField || 'not found')}, `
-    + `source product field: ${escHtml(SURFACE.triggerSourceField || 'not found')}.` : 'No correlation-rule trigger events were returned.');
+  notes.push(SURFACE.triggerEvents ? `${SURFACE.triggerEvents.toLocaleString()} correlation rule triggers in the last 30 days; `
+    + `${SURFACE.triggerAttributed.toLocaleString()} of them name the source product that set them off (the rest are matched to sources through the rule queries).`
+    : 'No correlation rule triggers were returned for the last 30 days.');
   SURFACE.errors.forEach(e => notes.push(`<span style="color:var(--bad)">${escHtml(e.step)}: ${escHtml(String(e.error).slice(0, 240))}</span>`));
 
   root.innerHTML =
@@ -2433,6 +2533,7 @@ function openProduct(i) {
     const info = SURFACE.rules[r] || {techniques: []};
     return `<tr><td>${escHtml(r)}</td><td><span class="tag s-${RULE_CLASS[info.status] || 'none'}">${escHtml(RULE_LABEL[info.status] || info.status || '')}</span></td>`
       + `<td>${info.last ? escHtml(info.last) : '<span class="note">never</span>'}</td>`
+      + `<td>${info.triggers30d ? info.triggers30d.toLocaleString() : '<span class="note">0</span>'}</td>`
       + `<td style="font-family:var(--mono)">${info.techniques.map(t => escHtml(t.id)).join(', ') || '-'}</td></tr>`;
   }).join('');
   const techs = p.techniques.map(id => {
@@ -2449,8 +2550,11 @@ function openProduct(i) {
     + ((p.platforms || []).length ? `<div class="pid">Platform: ${escHtml(p.platforms.join(', '))}</div>` : '')
     + `<div class="row"><span class="tag ${SURFACE_TAG[p.status]}">${escHtml(p.status)}</span><span class="note">${escHtml(SURFACE_HELP[p.status])}</span></div>`
     + `<h4>Correlation rules using this source (${p.rules.length})</h4>`
-    + (ruleRows ? `<div class="table-wrap" style="max-height:none"><table class="data-table"><thead><tr><th>Rule</th><th>Status</th><th>Last fired</th><th>Techniques</th></tr></thead><tbody>${ruleRows}</tbody></table></div>`
+    + (ruleRows ? `<div class="table-wrap" style="max-height:none"><table class="data-table"><thead><tr><th>Rule</th><th>Status</th><th>Last fired</th><th>Triggers (30d)</th><th>Techniques</th></tr></thead><tbody>${ruleRows}</tbody></table></div>`
                 : '<div class="note">No enabled correlation rule uses this data. Consider content for it, or whether it is needed.</div>')
+    + ((p.vendorRules || []).length ? `<h4>Rules that filter on vendor ${escHtml(p.vendor)} - may apply (${p.vendorRules.length})</h4>`
+       + `<div class="note">These rules match on the vendor rather than the product, so they may or may not use this source: `
+       + p.vendorRules.map(escHtml).join(', ') + '</div>' : '')
     + `<h4>Techniques this source supports (${p.validatedTechniques.length}/${p.techniques.length} validated)</h4>`
     + (techs ? `<div class="table-wrap" style="max-height:none"><table class="data-table"><tbody>${techs}</tbody></table></div>` : '<div class="note">None.</div>');
   closePop();
@@ -2867,6 +2971,7 @@ def build_html_report(path: str, ctx: dict) -> None:
     html = HTML_TEMPLATE
     for token, value in {
         "%%REGION%%": esc(ctx["region"]),
+        "%%VERSION%%": __version__,
         "%%GENERATED%%": esc(ctx["generated"]),
         "%%STALE%%": str(stale),
         "%%COMPARE_META%%": compare_meta,
@@ -2935,6 +3040,7 @@ def main() -> None:
         "word": os.path.join(out_dir, f"mitre_executive_briefing_{region}_{ts}.docx"),
         "snapshot": os.path.join(out_dir, "snapshot.json"),
     }
+    info(f"Exabeam MITRE Coverage Report v{__version__}")
     info(f"Output folder: {out_dir}")
 
     # Optional logo: ./assets/logo.png, falling back to the one next to this script
@@ -2952,6 +3058,8 @@ def main() -> None:
         rules_raw = load_raw(args.replay, "rules")
         export_raw = load_raw(args.replay, "export")
     else:
+        if not args.base_url and region not in KNOWN_REGIONS:
+            warn(f"'{region}' is not a known Exabeam region ({', '.join(KNOWN_REGIONS)}) - trying it anyway")
         base_url = args.base_url or f"https://api.{region}.exabeam.cloud"
         cid, secret = resolve_credentials(args)
         api = ExabeamApi(base_url, cid, secret)
@@ -3027,7 +3135,8 @@ def main() -> None:
         if c["techniqueKey"] and c["techniqueKey"] not in rule_techniques.setdefault(c["ruleName"], []):
             rule_techniques[c["ruleName"]].append(c["techniqueKey"])
     rule_products = rule_query_products(exported_defs)
-    surface = build_attack_surface(surface_raw, health_all, rule_products, rule_techniques,
+    surface = build_attack_surface(surface_raw, health_all, rule_query_products(exported_defs, ("product",)),
+                                   rule_query_products(exported_defs, ("vendor",)), rule_techniques,
                                    {r["techniqueId"]: r["name"] for r in all_mitre})
 
     gaps = build_technique_gaps(all_mitre, tech_status, priorities)
@@ -3202,6 +3311,7 @@ def main() -> None:
                     "health_enabled": health_enabled, "rule_products": rule_products,
                     "rule_techniques": rule_techniques, "retired_ids": unknown_keys, "retired_rule_count": len(retired_rules),
                     "logo": logo if os.path.exists(logo) else None,
+                    "version": __version__,
                 })
                 word_written = True
             except Exception as e:  # the briefing must never stop the main report
@@ -3231,4 +3341,8 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\nCancelled.")
+        sys.exit(130)

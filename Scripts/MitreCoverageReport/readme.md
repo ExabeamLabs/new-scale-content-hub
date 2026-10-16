@@ -120,7 +120,7 @@ Each time you want a report, open a terminal in the tool's folder (Step 3), then
 
 The tool asks for your **client ID** and **client secret**. The secret is not shown as you type or paste it. That is normal. Press Enter after each one.
 
-A run usually takes a few minutes. When it finishes, it prints where the report was saved: a new date-stamped folder inside `output`. Open that folder and:
+A run usually takes a few minutes. The first run also downloads MITRE's public ATT&CK dataset (about 55 MB), which is then reused for 30 days. When it finishes, it prints where the report was saved: a new date-stamped folder inside `output`. Open that folder and:
 
 - double-click **`mitre_coverage_report_….html`** to open the interactive report in your browser
 - open **`mitre_executive_briefing_….docx`** in Microsoft Word for the executive summary
@@ -151,6 +151,18 @@ If you mistype a sector, the tool warns you, lists the valid names, and builds t
 ### Run it regularly
 
 Each run is compared with the previous one. The **Changes** tab shows rules that stopped firing, rules that were auto-disabled, and coverage gained or lost. Running the report weekly is a good way to catch a broken log source or rule early.
+
+### Updating to a newer version
+
+1. Download the new ZIP (Step 2).
+2. Copy your old `output` folder into the new `MitreCoverageReport` folder, so the next run can compare with your previous reports.
+3. Repeat Steps 3 and 4 in the new folder.
+
+To see which version you have, run the tool with `--version`. The version is also printed when the tool starts and shown at the bottom of each report.
+
+### Upgrading from version 1
+
+Version 1 of this script asked you to edit the region, client ID and secret into the script file. **That is no longer needed.** The tool asks for the credentials when it runs, and the region is set with `--region`. Don't put credentials in the script, especially if you keep it in a git repository. The command, file name and `output` folder are unchanged.
 
 ---
 
@@ -224,6 +236,28 @@ Usually the wrong `--region`. It must match your tenant's region:
 
 It can also mean the client ID or secret was pasted incorrectly. Run the command again and re-enter them.
 
+**"Could not reach …" or a certificate error on a corporate network**
+Your network may need a proxy, or it may inspect HTTPS traffic. Ask your IT team for the proxy address and/or your organisation's CA certificate file, then set them before running.
+
+Windows (PowerShell):
+
+```powershell
+$env:HTTPS_PROXY = "http://proxy.example.com:8080"            # if a proxy is required
+$env:REQUESTS_CA_BUNDLE = "C:\path\to\your-company-ca.pem"     # if HTTPS is inspected
+```
+
+Mac (Terminal):
+
+```bash
+export HTTPS_PROXY="http://proxy.example.com:8080"            # if a proxy is required
+export REQUESTS_CA_BUNDLE="/path/to/your-company-ca.pem"      # if HTTPS is inspected
+```
+
+These settings last until you close the window. Setting them also helps if Step 4 cannot download the libraries.
+
+**"is not a valid Exabeam API address" or "is not a known Exabeam region"**
+The `--region` value is misspelled. Use one of `us-west`, `us-east`, `eu`, `uk`, `ca`, `au`, `sg`, `jp`, `ch` or `sa`.
+
 **The Attack Surface tab is empty or shows errors**
 The API key probably lacks Search or Cloud Collector read access. The tab's *Collection notes* panel shows the reason. The rest of the report is unaffected.
 
@@ -232,6 +266,18 @@ The dependencies weren't installed into `.venv`. Repeat Step 4.
 
 **The run takes a long time**
 Most of the time goes on the Attack Surface checks, which run one search per rule. Add `--no-surface-deep` for a faster run, or `--no-surface` to skip that tab entirely.
+
+**The Word briefing looks different in Google Docs or Pages**
+The briefing is designed for Microsoft Word. Other editors can move tables and colours around.
+
+**Asking for help**
+Include:
+- the version (run with `--version`)
+- your operating system
+- the command you ran, with any secrets removed
+- the error message
+
+Never share your client secret. Don't post the `output` folder or any `raw_*.json` files publicly, because they describe your detections and gaps.
 
 ---
 
