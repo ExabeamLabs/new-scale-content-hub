@@ -1300,7 +1300,9 @@ def build_attack_surface(raw: dict | None, health_all: list[dict], rule_products
         "collectedAt": raw.get("collectedAt", ""), "windowDays": raw.get("windowDays"),
         "eventsMethod": (raw.get("events") or {}).get("method", ""),
         "eventsAvailable": raw.get("events") is not None,
-        "deepChecked": len(raw.get("ruleQueries") or {}), "deepTruncated": bool(raw.get("ruleQueriesTruncated")),
+        # only rule queries that actually ran count as checked
+        "deepChecked": sum(1 for r in (raw.get("ruleQueries") or {}).values() if not r.get("errors")),
+        "deepTruncated": bool(raw.get("ruleQueriesTruncated")),
         "triggerEvents": total_triggers, "triggerAttributed": attributed,
         "triggerRuleField": rule_key, "triggerSourceField": source_key,
         "ruleQueryMethod": raw.get("ruleQueryMethod", ""),
@@ -1779,6 +1781,16 @@ HTML_TEMPLATE = """<!doctype html>
   .mono { font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
   td.rank { font: 600 15px var(--sans); color: var(--muted); width: 36px; }
   .s-bad { background: rgba(240,80,110,0.18); color: var(--hot); }
+  .lead { font-size: 14px; line-height: 1.65; color: var(--text-2); margin: 0 0 8px; }
+  .lead strong { color: var(--text); }
+  table.data-table thead th { cursor: pointer; user-select: none; }
+  table.data-table thead th:hover { color: var(--text); }
+  table.data-table thead th[data-sort="asc"]::after { content: " ▲"; font-size: 9px; }
+  table.data-table thead th[data-sort="desc"]::after { content: " ▼"; font-size: 9px; }
+  details > summary { cursor: pointer; list-style: none; }
+  details > summary::-webkit-details-marker { display: none; }
+  details > summary h2::after { content: "  +"; color: var(--muted); }
+  details[open] > summary h2::after { content: "  -"; }
   ul.notes { margin: 0 0 10px; padding-left: 18px; color: var(--muted); font-size: 12px; line-height: 1.7; }
   .select { background: var(--panel-2); color: var(--text); border: 1px solid var(--line); border-radius: var(--radius);
             padding: 8px 10px; font: 500 12.5px var(--sans); min-width: 260px; }
@@ -2492,72 +2504,168 @@ function renderSurface() {
       + `Search and Cloud Collector APIs on a live run (not when replaying older raw files without raw_surface.json), unless --no-surface is used.</p></div>`;
     return;
   }
-  const P = SURFACE.products;
+  const P = SURFACE.products.map((p, i) => Object.assign({i}, p));
+  const days = SURFACE.windowDays;
   const sending = P.filter(p => p.events > 0);
-  const count = s => P.filter(p => p.status === s).length;
+  const total = sending.reduce((a, p) => a + p.events, 0) || 1;
+  const by = s => P.filter(p => p.status === s);
+  const dark = by('No data').sort((a, b) => b.ruleCount - a.ruleCount || a.product.localeCompare(b.product));
+  const unused = by('No detections').sort((a, b) => b.events - a.events);
+  const silent = by('Monitored, silent').sort((a, b) => b.ruleCount - a.ruleCount || b.events - a.events);
+  const working = by('Detecting').sort((a, b) => b.triggers - a.triggers || b.active - a.active || b.events - a.events);
+  const vol = list => list.reduce((a, p) => a + p.events, 0);
+  const share = list => Math.round(vol(list) / total * 1000) / 10;
+  const pctOf = n => { const v = n / total * 100; return v > 0 && v < 0.1 ? '<0.1%' : (Math.round(v * 10) / 10) + '%'; };
+  const fmt = n => Number(n).toLocaleString();
+  const compact = n => n >= 1e9 ? (n / 1e9).toFixed(1) + 'B' : n >= 1e6 ? (n / 1e6).toFixed(1) + 'M' : n >= 1e3 ? (n / 1e3).toFixed(1) + 'K' : String(n);
   const maxEv = Math.max(1, ...P.map(p => p.events));
   const cc = SURFACE.collectors;
-  const ccOk = cc.filter(c => c.health === 'Healthy').length;
-  const days = SURFACE.windowDays;
+  const ccBad = cc.filter(c => c.health !== 'Healthy');
 
-  const context = p => [p.vendor, (p.categories || []).join(', '), (p.platforms || []).length ? 'platform: ' + p.platforms.join(', ') : '']
+  const context = p => [p.vendor, (p.categories || []).join(', '), (p.platforms || []).length ? p.platforms.join(', ') : '']
     .filter(Boolean).map(escHtml).join(' &bull; ');
-  const rows = P.map((p, i) => `<tr data-product="${i}"><td><strong>${escHtml(p.product)}</strong>`
-      + (context(p) ? `<div class="note">${context(p)}</div>` : '') + `</td>`
-      + `<td>${covBar(p.events, maxEv)}${p.events.toLocaleString()}</td>`
-      + `<td>${p.ruleCount}<div class="note">${p.namedRules} named &bull; ${p.fedRules} fed</div></td>`
-      + `<td>${p.active}${p.quiet || p.never ? `<div class="note">${p.quiet} quiet &bull; ${p.never} never</div>` : ''}</td>`
-      + `<td>${p.validatedTechniques.length}/${p.techniques.length}</td>`
-      + `<td>${p.collectors.length ? escHtml(p.collectors.join(', ')) : '<span class="note">-</span>'}</td>`
-      + `<td><span class="tag ${SURFACE_TAG[p.status]}" title="${escHtml(SURFACE_HELP[p.status])}">${escHtml(p.status)}</span></td></tr>`).join('');
+  const source = p => `<td data-v="${escHtml(p.product.toLowerCase())}"><strong>${escHtml(p.product)}</strong>`
+    + (context(p) ? `<div class="note">${context(p)}</div>` : '') + `</td>`;
+  const events = p => `<td data-v="${p.events}">${covBar(p.events, maxEv)}${fmt(p.events)}</td>`;
+  const how = p => `${p.namedRules} name this source in their query; ${p.fedRules} match its events when their query is run`
+    + (p.triggers ? `; ${p.triggers} triggers in 30 days name it as the source` : '');
+  const rulesCell = p => `<td data-v="${p.ruleCount}" title="${escHtml(how(p))}">${p.ruleCount}</td>`;
+  const techCell = p => `<td data-v="${p.validatedTechniques.length}">${p.validatedTechniques.length} of ${p.techniques.length}</td>`;
 
-  const ccRows = cc.map(c => `<tr><td><strong>${escHtml(c.name)}</strong><div class="note">${escHtml(c.type)}</div></td><td>${escHtml(c.vendor)}</td>`
-      + `<td>${escHtml(c.site || '-')}</td><td>${escHtml(c.lastLogReceived || 'never')}`
+  const section = (n, title, list, tone, meaning, action, head, row, emptyText) =>
+    `<div class="panel"><h2><span class="tag ${tone}">${n}</span> ${title} <span class="note">(${list.length})</span></h2>`
+    + `<p class="sub"><strong>What it means:</strong> ${meaning}<br><strong>What to do:</strong> ${action}</p>`
+    + (list.length ? `<div class="table-wrap"><table class="data-table sortable surface-tbl"><thead><tr>${head}</tr></thead><tbody>`
+        + list.map(p => `<tr data-product="${p.i}">${row(p)}</tr>`).join('') + `</tbody></table></div>`
+      : `<div class="footer-note">${emptyText}</div>`)
+    + `</div>`;
+
+  // Plain-English summary
+  const summary = [];
+  summary.push(`In the last ${days} days, <strong>${sending.length} data sources</strong> sent <strong>${compact(vol(sending))} events</strong>.`);
+  summary.push(`Rules that use the data fired recently for <strong>${working.length}</strong> of them.`);
+  if (unused.length) summary.push(`<strong>${unused.length} sources (${share(unused)}% of all events)</strong> have no detection rules using their data${unused[0] ? `, led by ${escHtml(unused[0].product)} (${compact(unused[0].events)} events)` : ''}.`);
+  if (silent.length) summary.push(`${silent.length} more have rules that haven't fired recently.`);
+  if (dark.length) summary.push(`<strong>${dark.length} sources that your rules depend on sent nothing</strong>, so ${dark.reduce((a, p) => a + p.ruleCount, 0)} rules cannot fire.`);
+  if (ccBad.length) summary.push(`${ccBad.length} cloud collector${ccBad.length === 1 ? ' is' : 's are'} in error or silent.`);
+
+  const notes = [];
+  if (!SURFACE.eventsAvailable) notes.push('Event volume per source could not be queried - check that the API key can run searches.');
+  notes.push(`Data sources come from a grouped search of the last ${days} days by vendor, product, product category and platform`
+    + (SURFACE.eventsMethod ? ` (${escHtml(SURFACE.eventsMethod)})` : '') + '. Events generated by Exabeam itself are not counted.');
+  notes.push('A rule <em>uses</em> a source when its query names the product, when its query matches events from that source, or when its triggers name that source.');
+  notes.push(SURFACE.deepChecked ? `${SURFACE.deepChecked} rule queries were run against the last ${days} days to link rules to sources`
+    + (SURFACE.deepTruncated ? ' (stopped early by the time limit).' : '.')
+    : 'Rule queries were not run in this report (--no-surface-deep or not yet collected), so most rules are linked to sources only through their triggers. Run without --no-surface-deep for the full picture.');
+  notes.push(SURFACE.triggerEvents ? `${fmt(SURFACE.triggerEvents)} correlation rule triggers in the last 30 days, of which ${fmt(SURFACE.triggerAttributed)} name the source product.`
+    : 'No correlation rule triggers were returned for the last 30 days.');
+  SURFACE.errors.forEach(e => notes.push(`<span style="color:var(--bad)">${escHtml(e.step)}: ${escHtml(String(e.error).slice(0, 240))}</span>`));
+
+  const ccRows = cc.map(c => `<tr><td data-v="${escHtml(c.name.toLowerCase())}"><strong>${escHtml(c.name)}</strong><div class="note">${escHtml(c.type)}</div></td>`
+      + `<td>${escHtml(c.vendor)}</td><td>${escHtml(c.site || '-')}</td>`
+      + `<td data-v="${c.hoursSinceLastLog === null ? 1e9 : c.hoursSinceLastLog}">${escHtml(c.lastLogReceived || 'never')}`
       + (c.hoursSinceLastLog !== null ? `<div class="note">${c.hoursSinceLastLog}h ago</div>` : '') + `</td>`
       + `<td><span class="tag ${c.health === 'Healthy' ? 's-validated' : c.health === 'Silent' ? 's-quiet' : 's-bad'}">${escHtml(c.health)}</span></td></tr>`).join('');
-
   const starved = SURFACE.starvedRules.map(r => {
     const info = SURFACE.rules[r] || {techniques: []};
     return `<tr><td>${escHtml(r)}</td><td style="font-family:var(--mono)">${info.techniques.map(t => escHtml(t.id)).join(', ') || '-'}</td>`
       + `<td><span class="tag s-${RULE_CLASS[info.status] || 'none'}">${escHtml(RULE_LABEL[info.status] || info.status || '')}</span></td></tr>`;
   }).join('');
-
-  const notes = [];
-  if (!SURFACE.eventsAvailable) notes.push('Event volume per product could not be queried - check that the API key has Search permission.');
-  if (SURFACE.eventsMethod) notes.push(`Data sources queried with: ${escHtml(SURFACE.eventsMethod)}.`);
-  notes.push(SURFACE.deepChecked ? `${SURFACE.deepChecked} rule queries were run against the last ${days} days to see which sources feed each rule`
-    + (SURFACE.deepTruncated ? ' (stopped early by the time limit).' : '.') : 'Rule queries were not run (--no-surface-deep), so only rules that name a product are linked to sources.');
-  notes.push(SURFACE.triggerEvents ? `${SURFACE.triggerEvents.toLocaleString()} correlation rule triggers in the last 30 days; `
-    + `${SURFACE.triggerAttributed.toLocaleString()} of them name the source product that set them off (the rest are matched to sources through the rule queries).`
-    : 'No correlation rule triggers were returned for the last 30 days.');
-  SURFACE.errors.forEach(e => notes.push(`<span style="color:var(--bad)">${escHtml(e.step)}: ${escHtml(String(e.error).slice(0, 240))}</span>`));
+  const ccError = SURFACE.errors.find(e => e.step === 'cloud collectors');
 
   root.innerHTML =
-      `<div class="grid">`
-    + card('Data sources sending', sending.length, `products with events in the last ${days} days`, '')
-    + card('Detecting', count('Detecting'), 'sources whose data has rules firing on it', 'good', '', pct(count('Detecting'), sending.length))
-    + card('Blind spots', count('No detections') + count('Monitored, silent'),
-           `${count('No detections')} with no rules &bull; ${count('Monitored, silent')} with rules that are silent`, 'purple')
-    + card('Sources gone dark', count('No data'), 'named in rules but sending nothing - those rules cannot fire', count('No data') ? 'bad' : 'good')
-    + `</div>`
-    + `<div class="grid"><div class="panel"><h2>Data sources</h2>`
-    + `<p class="sub">Every product sending events in the last ${days} days, plus products your rules expect. <strong>Named</strong> = the rule query names the product; `
-    + `<strong>fed</strong> = the rule's query matches events from it. Click a source for its rules and techniques.</p>`
-    + `<div class="controls"><input type="text" placeholder="Filter (product, vendor, status)..." oninput="filterTable('tblSurface', this.value)"></div>`
-    + `<div class="table-wrap"><table class="data-table" id="tblSurface"><thead><tr><th>Source</th><th>Events (${days}d)</th><th>Rules</th><th>Firing</th>`
-    + `<th>Validated techniques</th><th>Collectors</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div></div></div>`
+      `<div class="grid"><div class="panel"><h2>What your data is telling you</h2><p class="lead">${summary.join(' ')}</p>`
+    + `<p class="sub">This tab compares the data Exabeam receives with the correlation rules that use it. Sections are in priority order. Click a source for its rules and techniques, `
+    + `or click a column heading to sort.</p>`
+    + (SURFACE.deepChecked ? '' : `<p class="sub" style="color:var(--warn)"><strong>Partial picture:</strong> the rule queries were not checked against your data in this report, `
+      + `so rules are linked to sources only when they name the product or their triggers name it. Some sources listed as unused may be used by rules that match them `
+      + `without naming them. Run without --no-surface-deep (and with Search access) for the full picture.</p>`)
+    + `</div></div>`
     + `<div class="grid">`
-    + `<div class="panel half"><h2>Cloud collectors (${ccOk}/${cc.length} healthy)</h2>`
-    + `<p class="sub">Cloud-to-cloud collection. Silent = no logs received for 24 hours.</p>`
-    + (cc.length ? `<div class="table-wrap"><table class="data-table"><thead><tr><th>Collector</th><th>Vendor</th><th>Site</th><th>Last log</th><th>Health</th></tr></thead><tbody>${ccRows}</tbody></table></div>`
-                 : '<div class="footer-note">No cloud collectors returned.</div>') + `</div>`
-    + `<div class="panel half"><h2>Starved rules (${SURFACE.starvedRules.length})</h2>`
-    + `<p class="sub">Enabled rules whose own query matched no events in the last ${days} days - no data reaches them, so they cannot fire.</p>`
-    + (starved ? `<div class="table-wrap"><table class="data-table"><thead><tr><th>Rule</th><th>Techniques</th><th>Status</th></tr></thead><tbody>${starved}</tbody></table></div>`
-               : `<div class="footer-note">${SURFACE.deepChecked ? 'None - every checked rule has matching data.' : 'Not checked in this run.'}</div>`) + `</div>`
+    + card("Rules can't fire", dark.length, `sources your rules depend on sent nothing (${dark.reduce((a, p) => a + p.ruleCount, 0)} rules affected)`, dark.length ? 'bad' : 'good')
+    + card('Unused data', unused.length, `sources with no detection rules - ${share(unused)}% of all events`, unused.length ? 'purple' : 'good')
+    + card('Silent', silent.length, 'sources whose rules have not fired recently', silent.length ? 'blue' : 'good')
+    + card('Working', working.length, `sources with rules firing in the last ${STALE_DAYS} days`, 'good', '', pct(working.length, sending.length))
     + `</div>`
-    + `<div class="grid"><div class="panel"><h2>Collection notes</h2><ul class="notes">${notes.map(n => `<li>${n}</li>`).join('')}</ul></div></div>`;
+    + `<div class="controls"><input type="text" placeholder="Find a source, vendor or platform in all sections..." oninput="filterSurface(this.value)"></div>`
+    + `<div class="grid">`
+    + section(1, "Rules that can't fire - sources gone dark", dark, 's-bad',
+        `rules expect data from these sources, but none arrived in the last ${days} days.`,
+        'check the source is still sending (collector, agent or log forwarding) and parsing. If the source has been retired, disable or update the rules.',
+        `<th>Source</th><th>Rules waiting on it</th><th>Techniques affected</th>`,
+        p => source(p) + rulesCell(p) + `<td data-v="${p.techniques.length}">${p.techniques.length}</td>`,
+        'None - every source your rules name is sending data.')
+    + section(2, 'Unused data - no detections', unused, 's-unvalidated',
+        `Exabeam receives this data, but no enabled correlation rule uses it. Together, these sources are ${share(unused)}% of the events received.`
+          + (SURFACE.deepChecked ? '' : ' (Partial check - see the note at the top.)'),
+        'build detections for the sources that matter (the Focus and Threat Groups tabs show what to prioritise), or review whether the data is needed.',
+        `<th>Source</th><th>Events (${days}d)</th><th>Share of all events</th>`,
+        p => source(p) + events(p) + `<td data-v="${p.events}">${pctOf(p.events)}</td>`,
+        'None - every source sending data is used by at least one rule.')
+    + section(3, 'Silent - rules exist but have not fired', silent, 's-quiet',
+        `rules use this data, but none of them has fired in the last ${STALE_DAYS} days.`,
+        'confirm the rules still match the data (field names and values change when parsers are updated), then prove them with a log replay such as Echo.',
+        `<th>Source</th><th>Events (${days}d)</th><th>Rules using it</th><th>Quiet</th><th>Never fired</th>`,
+        p => source(p) + events(p) + rulesCell(p) + `<td data-v="${p.quiet}">${p.quiet}</td><td data-v="${p.never}">${p.never}</td>`,
+        'None.')
+    + section(4, 'Working - rules firing on this data', working, 's-validated',
+        `rules that use this data fired in the last ${STALE_DAYS} days.`,
+        'keep these healthy - watch the Changes tab for rules that stop firing.',
+        `<th>Source</th><th>Events (${days}d)</th><th>Rules firing</th><th>Triggers (30d)</th><th>Techniques validated</th>`,
+        p => source(p) + events(p) + `<td data-v="${p.active}">${p.active} of ${p.ruleCount}</td>`
+          + `<td data-v="${p.triggers}">${p.triggers ? fmt(p.triggers) : '<span class="note">-</span>'}</td>` + techCell(p),
+        'None.')
+    + `</div>`
+    + `<div class="grid">`
+    + `<div class="panel half"><h2>Starved rules <span class="note">(${SURFACE.starvedRules.length})</span></h2>`
+    + `<p class="sub">Enabled rules whose own query matched no events at all in the last ${days} days, whatever the source. They cannot fire until matching data arrives.</p>`
+    + (starved ? `<div class="table-wrap"><table class="data-table sortable"><thead><tr><th>Rule</th><th>Techniques</th><th>Status</th></tr></thead><tbody>${starved}</tbody></table></div>`
+               : `<div class="footer-note">${SURFACE.deepChecked ? 'None - every checked rule has matching data.' : 'Not checked in this report.'}</div>`) + `</div>`
+    + `<div class="panel half"><h2>Cloud collectors <span class="note">(${ccError ? 'not available' : `${cc.length - ccBad.length} of ${cc.length} healthy`})</span></h2>`
+    + `<p class="sub">Cloud-to-cloud collection. Silent means no logs were received for 24 hours.</p>`
+    + (cc.length ? `<div class="table-wrap"><table class="data-table sortable"><thead><tr><th>Collector</th><th>Vendor</th><th>Site</th><th>Last log</th><th>Health</th></tr></thead><tbody>${ccRows}</tbody></table></div>`
+       : `<div class="footer-note">${ccError ? 'Not available - the API key does not have Cloud Collector access.' : 'No cloud collectors returned.'}</div>`) + `</div>`
+    + `</div>`
+    + `<div class="grid"><div class="panel"><details><summary><h2 style="display:inline">How this was worked out</h2></summary>`
+    + `<ul class="notes" style="margin-top:10px">${notes.map(n => `<li>${n}</li>`).join('')}</ul></details></div></div>`;
 }
+
+function filterSurface(query) {
+  const q = (query || '').toLowerCase().trim();
+  document.querySelectorAll('#surfaceView table.surface-tbl tbody tr').forEach(row => {
+    row.style.display = row.innerText.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+
+/* ---------- Click-to-sort for every data table ---------- */
+document.addEventListener('click', e => {
+  const th = e.target.closest('table.data-table thead th');
+  if (!th) return;
+  const table = th.closest('table');
+  const idx = Array.from(th.parentNode.children).indexOf(th);
+  const asc = !(th.dataset.sort === 'asc');
+  table.querySelectorAll('thead th').forEach(h => { delete h.dataset.sort; });
+  th.dataset.sort = asc ? 'asc' : 'desc';
+  const value = row => {
+    const cell = row.children[idx];
+    if (!cell) return '';
+    if (cell.dataset.v !== undefined) {
+      const n = Number(cell.dataset.v);
+      return Number.isNaN(n) ? cell.dataset.v : n;
+    }
+    const text = cell.innerText.trim();
+    const n = Number(text.replace(/,/g, '').replace(/%$/, ''));
+    return text !== '' && !Number.isNaN(n) ? n : text.toLowerCase();
+  };
+  const body = table.tBodies[0];
+  const rows = Array.from(body.rows);
+  rows.sort((a, b) => {
+    const x = value(a), y = value(b);
+    const r = typeof x === 'number' && typeof y === 'number' ? x - y : String(x).localeCompare(String(y));
+    return asc ? r : -r;
+  });
+  rows.forEach(r => body.appendChild(r));
+});
 
 function openProduct(i) {
   const p = SURFACE.products[i];
