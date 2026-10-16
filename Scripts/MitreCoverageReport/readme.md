@@ -160,7 +160,7 @@ If you mistype a sector, the tool warns you, lists the valid names, and builds t
 
 ### Run it regularly
 
-Each run is compared with the previous one. The **Changes** tab shows rules that stopped firing, rules that were auto-disabled, and coverage gained or lost. Running the report weekly is a good way to catch a broken log source or rule early.
+Each run is compared with the previous one. The **Changes** tab shows rules that stopped firing, rules that were auto-disabled, data sources that stopped sending, and coverage gained or lost. Running the report weekly is a good way to catch a broken log source or rule early.
 
 ### Updating to a newer version
 
@@ -185,7 +185,7 @@ Version 1 of this script asked you to edit the region, client ID and secret into
 | **Attack Surface** *(beta)* | Compares the data Exabeam receives with the rules that use it, in priority order: **rules that can't fire** (their data source sent nothing), **unused data** (sources no rule uses, by volume), **silent** sources (rules exist but haven't fired) and **working** sources. Also shows cloud collector health and rules whose query matches no data at all. |
 | **Threat Groups** | Threat groups known to target your sector, the techniques they use most, and how much of each group's activity you cover. |
 | **Detection Health** | Rules that have gone quiet, never fired, are noisiest, or were switched off by the platform. |
-| **Changes** | What changed since the previous run. |
+| **Changes** | What changed since the previous run: rules that stopped firing or were auto-disabled, coverage gained or lost, and data sources that stopped sending, started sending or lost their detections. |
 | **Data Tables** | Every technique, rule and gap, with filters. |
 
 Technique scores follow the Exabeam Outcomes Navigator colour bands:
@@ -206,6 +206,7 @@ The **Word briefing** summarises:
 - the coverage score
 - covered vs. proven detections
 - detection health and coverage by tactic
+- data sources: rules that can't fire because their source sent nothing, and the largest data sources with no detections
 - threat exposure for your sector
 - a validation plan for rules that have never fired, for example by replaying sample logs with a log-replay tool such as Echo
 - recommended next steps
@@ -316,6 +317,7 @@ Add any of these to the run command.
 | `--no-surface` | off | Skip the Attack Surface tab. |
 | `--no-surface-deep` | off | Faster Attack Surface: don't run each rule's search to see which data sources feed it. |
 | `--surface-days` | `7` | Days of data used for the Attack Surface tab. |
+| `--surface-workers` | `4` | How many per-rule searches run at once. Use `1` if your tenant's API rate limits are tight. |
 | `--surface-max-seconds` | `900` | Time limit for the per-rule searches. |
 | `--include-disabled` | off | Also count disabled rules as coverage. |
 | `--compare` | previous run | Compare against a specific earlier run folder. |

@@ -50,6 +50,11 @@ CLIENT_ID = "XYZ"
 CLIENT_SECRET = "XYZ"
 
 TOKEN_TIMEOUT_SECONDS = 30
+
+# Retries for rate limits and brief outages (HTTP 429 / 502 / 503 / 504, dropped connections, timeouts)
+RETRY_STATUSES = {429, 502, 503, 504}
+MAX_RETRIES = 3
+RETRY_BASE_SECONDS = 2
 API_TIMEOUT_SECONDS = 60
 
 # Optional MITRE filter ("" = everything)
@@ -202,6 +207,8 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--surface-days", type=int, default=7, help="Days of events used for the Attack Surface tab (default: 7)")
     p.add_argument("--no-surface-deep", action="store_true",
                    help="Do not run each rule's query against Search to find the data sources that feed it")
+    p.add_argument("--surface-workers", type=int, default=4,
+                   help="How many per-rule Attack Surface searches run at once (default: 4; 1 = one at a time)")
     p.add_argument("--surface-max-seconds", type=int, default=900,
                    help="Time budget for the per-rule Attack Surface queries (default: 900)")
     p.add_argument("--attack-data", choices=["auto", "refresh", "off"], default="auto",
@@ -227,10 +234,31 @@ class ExabeamApi:
     def _headers(self) -> dict:
         return {"accept": "application/json", "authorization": f"Bearer {self.token}"}
 
+    def _send(self, method: str, path: str, **kwargs) -> requests.Response:
+        """One HTTP call, retried with back-off on rate limits and brief outages. Raises the last network error."""
+        import time
+        for attempt in range(MAX_RETRIES + 1):
+            wait = RETRY_BASE_SECONDS * 2 ** attempt
+            try:
+                resp = requests.request(method, f"{self.base_url}{path}", **kwargs)
+            except requests.exceptions.SSLError:
+                raise                                   # certificate problems will not fix themselves
+            except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
+                if attempt == MAX_RETRIES:
+                    raise
+                time.sleep(wait)
+                continue
+            if resp.status_code in RETRY_STATUSES and attempt < MAX_RETRIES:
+                retry_after = resp.headers.get("Retry-After", "")
+                time.sleep(min(int(retry_after), 60) if retry_after.isdigit() else wait)
+                continue
+            return resp
+        raise RuntimeError("unreachable")
+
     def _request(self, what: str, method: str, path: str, **kwargs) -> Any:
         """Call a core endpoint; exit with a plain-English message on any failure."""
         try:
-            resp = requests.request(method, f"{self.base_url}{path}", **kwargs)
+            resp = self._send(method, path, **kwargs)
         except requests.RequestException as e:
             fail(explain_network_error(what, self.base_url, e))
         if not resp.ok:
@@ -264,8 +292,8 @@ class ExabeamApi:
     def search_events(self, body: dict) -> tuple[bool, Any]:
         """POST /search/v2/events. Returns (ok, json) or (False, error text) - never exits."""
         try:
-            resp = requests.post(f"{self.base_url}/search/v2/events", timeout=API_TIMEOUT_SECONDS * 3,
-                                 headers={**self._headers(), "content-type": "application/json"}, json=body)
+            resp = self._send("POST", "/search/v2/events", timeout=API_TIMEOUT_SECONDS * 3,
+                              headers={**self._headers(), "content-type": "application/json"}, json=body)
         except requests.RequestException as e:
             return False, f"{type(e).__name__}: {e}"
         if not resp.ok:
@@ -277,8 +305,8 @@ class ExabeamApi:
 
     def get_cloud_collectors(self) -> tuple[bool, Any]:
         try:
-            resp = requests.get(f"{self.base_url}/cloud-collectors/v1/configs", headers=self._headers(),
-                                timeout=API_TIMEOUT_SECONDS)
+            resp = self._send("GET", "/cloud-collectors/v1/configs", headers=self._headers(),
+                              timeout=API_TIMEOUT_SECONDS)
         except requests.RequestException as e:
             return False, f"{type(e).__name__}: {e}"
         if not resp.ok:
@@ -673,6 +701,50 @@ def find_previous_snapshot(out_root: str, current_dir: str, region: str) -> str:
     return ""
 
 
+def surface_snapshot(surface: dict | None) -> dict | None:
+    """The part of the Attack Surface kept between runs, to spot sources and collectors that change."""
+    if not surface or not surface.get("eventsAvailable"):
+        return None
+    return {
+        "windowDays": surface.get("windowDays"),
+        "products": {p["product"]: {"status": p["status"], "events": p["events"], "rules": p["ruleCount"]}
+                     for p in surface["products"]},
+        "collectors": {c["name"]: c["health"] for c in surface.get("collectors", [])},
+    }
+
+
+def compare_surface(prev: dict | None, cur: dict | None) -> list[dict]:
+    """Data-source and collector changes between two runs (only when both collected Attack Surface data)."""
+    if not prev or not cur:
+        return []
+    out = []
+    pp, cp = prev.get("products", {}), cur.get("products", {})
+    for name in sorted(set(pp) | set(cp), key=str.lower):
+        a, b = pp.get(name), cp.get(name)
+        a_ev, b_ev = (a or {}).get("events", 0), (b or {}).get("events", 0)
+        if a_ev > 0 and b_ev == 0:
+            rules = (b or a or {}).get("rules", 0)
+            out.append({"change": "Source stopped sending", "item": name, "from": f"{a_ev:,} events",
+                        "to": "no events" + (f" - {rules} rule{'s' if rules != 1 else ''} depend on it" if rules else "")})
+        elif a_ev == 0 and b_ev > 0:
+            out.append({"change": "New data source", "item": name, "from": "not sending", "to": f"{b_ev:,} events"})
+        elif a and b and a["status"] != b["status"]:
+            if b["status"] == "Detecting":
+                kind = "Source now detecting"
+            elif a["status"] == "Detecting":
+                kind = "Source stopped detecting"
+            else:
+                kind = "Source status changed"
+            out.append({"change": kind, "item": name, "from": a["status"], "to": b["status"]})
+    pc, cc = prev.get("collectors", {}), cur.get("collectors", {})
+    for name in sorted(set(pc) & set(cc), key=str.lower):
+        if pc[name] == "Healthy" and cc[name] != "Healthy":
+            out.append({"change": "Collector unhealthy", "item": name, "from": "Healthy", "to": cc[name]})
+        elif pc[name] != "Healthy" and cc[name] == "Healthy":
+            out.append({"change": "Collector recovered", "item": name, "from": pc[name], "to": "Healthy"})
+    return out
+
+
 def compare_snapshots(prev: dict, cur: dict) -> list[dict]:
     changes: list[dict] = []
 
@@ -721,9 +793,12 @@ def compare_snapshots(prev: dict, cur: dict) -> list[dict]:
             kind = "Rule status changed"
         changes.append({"change": kind, "item": name, "from": a["status"], "to": b["status"]})
 
-    order = ["Rule auto-disabled", "Rule stopped firing", "Coverage lost", "Technique degraded", "Rule disabled",
-             "Rule removed", "Coverage gained", "Technique improved", "Rule added", "Rule enabled",
-             "Rule started firing", "Rule status changed"]
+    changes.extend(compare_surface(prev.get("surface"), cur.get("surface")))
+
+    order = ["Rule auto-disabled", "Source stopped sending", "Rule stopped firing", "Collector unhealthy",
+             "Source stopped detecting", "Coverage lost", "Technique degraded", "Rule disabled", "Rule removed",
+             "Coverage gained", "Technique improved", "Source now detecting", "New data source", "Collector recovered",
+             "Rule added", "Rule enabled", "Rule started firing", "Source status changed", "Rule status changed"]
     changes.sort(key=lambda c: order.index(c["change"]))
     return changes
 
@@ -1059,7 +1134,8 @@ def grouped_search(api: "ExabeamApi", select: list[str], group: list[str], where
     return False, [], errors
 
 
-def collect_attack_surface(api: "ExabeamApi", defs: list[dict], days: int, deep: bool, max_seconds: int) -> dict:
+def collect_attack_surface(api: "ExabeamApi", defs: list[dict], days: int, deep: bool, max_seconds: int,
+                           workers: int = 4) -> dict:
     """Run the Attack Surface queries. Only aggregated counts are kept (no raw log content), plus any API errors."""
     import time
     now = datetime.now(timezone.utc)
@@ -1099,17 +1175,17 @@ def collect_attack_surface(api: "ExabeamApi", defs: list[dict], days: int, deep:
 
     # 4) Each rule's own query, grouped by product: which sources feed it (even product-agnostic rules)
     if deep and out["events"] is not None:
-        started, done, failed_rules = time.monotonic(), 0, 0
+        from concurrent.futures import ThreadPoolExecutor, as_completed
+        jobs = []
         for d in defs:
             name = get_rule_name(d)
             queries = [s.get("query", "") for s in ((d.get("sequencesConfig") or {}).get("sequences") or [])
                        if isinstance(s, dict) and s.get("query")]
-            if not name or not queries:
-                continue
-            if time.monotonic() - started > max_seconds:
-                warn(f"Attack surface: stopped rule queries after {max_seconds}s ({done} rules checked) - raise --surface-max-seconds")
-                out["ruleQueriesTruncated"] = True
-                break
+            if name and queries:
+                jobs.append((name, queries))
+
+        def check(job: tuple[str, list[str]]) -> tuple[str, dict]:
+            name, queries = job
             per_rule = {"products": {}, "errors": []}
             for q in queries:
                 ok, rows, errors = grouped_search(api, ["product"], ["product"], q, window, SURFACE_RULE_QUERY_LIMIT, state)
@@ -1119,15 +1195,44 @@ def collect_attack_surface(api: "ExabeamApi", defs: list[dict], days: int, deep:
                         per_rule["products"][p] = per_rule["products"].get(p, 0) + _row_count(row)
                 else:
                     per_rule["errors"].extend(errors)
+            return name, per_rule
+
+        started, done, idx, failed = time.monotonic(), 0, 0, 0
+        confirmed = False
+        # Run rules one at a time until one succeeds (this also settles which request style works); give up
+        # if the first five all fail, rather than repeating the same error for every rule
+        while idx < len(jobs) and not confirmed and failed < 5:
+            name, per_rule = check(jobs[idx])
             out["ruleQueries"][name] = per_rule
-            done += 1
-            failed_rules = failed_rules + 1 if per_rule["errors"] and not per_rule["products"] else 0
-            if done % 25 == 0:
-                info(f"Attack surface: checked {done} rule queries...")
-            if failed_rules >= 5 and done == failed_rules:
-                warn("Attack surface: the first rule queries all failed - skipping the rest (see Collection notes)")
-                out["errors"].append({"step": "rule queries", "error": per_rule["errors"][-1] if per_rule["errors"] else ""})
-                break
+            idx, done = idx + 1, done + 1
+            if per_rule["errors"]:
+                failed += 1
+            else:
+                confirmed = True
+        if not confirmed and jobs:
+            warn("Attack surface: the first rule queries all failed - skipping the rest (see Collection notes)")
+            last = out["ruleQueries"][jobs[idx - 1][0]]["errors"]
+            out["errors"].append({"step": "rule queries", "error": last[-1] if last else ""})
+        elif idx < len(jobs):
+            truncated = False
+            with ThreadPoolExecutor(max_workers=max(1, workers)) as pool:
+                futures = [pool.submit(check, j) for j in jobs[idx:]]
+                for fut in as_completed(futures):
+                    if fut.cancelled():
+                        continue
+                    name, per_rule = fut.result()
+                    out["ruleQueries"][name] = per_rule
+                    done += 1
+                    if done % 25 == 0:
+                        info(f"Attack surface: checked {done} of {len(jobs)} rule queries...")
+                    if not truncated and time.monotonic() - started > max_seconds:
+                        truncated = True
+                        for f in futures:
+                            f.cancel()
+                        warn(f"Attack surface: stopped rule queries after {max_seconds}s ({done} of {len(jobs)} rules checked)"
+                             " - raise --surface-max-seconds")
+            out["ruleQueriesTruncated"] = truncated
+        out["ruleQueries"] = dict(sorted(out["ruleQueries"].items()))
         out["ruleQueryMethod"] = state.get("style", "")
         info(f"Attack surface: checked the queries of {done} rules against {days} days of data")
     return out
@@ -3062,7 +3167,7 @@ def build_html_report(path: str, ctx: dict) -> None:
         changes_html = f"""
       <div class="panel">
         <h2>Changes since last run ({prev_when})</h2>
-        <p class="sub">Rules that stopped firing or were auto-disabled are listed first - these are the most likely signs that a log source or rule has broken.</p>
+        <p class="sub">Rules that were auto-disabled or stopped firing, and data sources that stopped sending, are listed first - these are the most likely signs that a log source or rule has broken.</p>
         {body}
       </div>"""
         compare_meta = f"<div>Compared with run</div><div>{prev_when}</div>"
@@ -3254,7 +3359,7 @@ def main() -> None:
                 surface_raw = json.load(f)
     elif not args.no_surface:
         surface_raw = collect_attack_surface(api, exported_defs, args.surface_days, not args.no_surface_deep,
-                                             args.surface_max_seconds)
+                                             args.surface_max_seconds, args.surface_workers)
         if args.save_raw:
             write_json(os.path.join(out_dir, "raw_surface.json"), surface_raw)
 
@@ -3364,6 +3469,7 @@ def main() -> None:
         "rules": {h["ruleId"]: {"name": h["ruleName"], "status": h["status"], "enabled": h["enabled"],
                                 "lastTriggeredAt": h["lastTriggeredAt"]}
                   for h in health_all if h["ruleId"]},
+        "surface": surface_snapshot(surface),
     }
 
     prev, changes = None, []
@@ -3475,6 +3581,7 @@ def main() -> None:
                     "rule_techniques": rule_techniques, "retired_ids": unknown_keys, "retired_rule_count": len(retired_rules),
                     "logo": logo if os.path.exists(logo) else None,
                     "version": __version__,
+                    "surface": surface,
                 })
                 word_written = True
             except Exception as e:  # the briefing must never stop the main report

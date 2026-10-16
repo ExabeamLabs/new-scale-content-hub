@@ -410,6 +410,13 @@ def join_names(items: list[str]) -> str:
     return ", ".join(items[:-1]) + " and " + items[-1]
 
 
+def compact(n: int) -> str:
+    for size, suffix in ((1e9, "B"), (1e6, "M"), (1e3, "K")):
+        if n >= size:
+            return f"{n / size:.1f}{suffix}"
+    return str(n)
+
+
 def plural(n: int, word: str, plural_word: str | None = None) -> str:
     return f"{n} {word if n == 1 else (plural_word or word + 's')}"
 
@@ -453,6 +460,11 @@ def build_executive_report(path: str, ctx: dict) -> None:
                          key=lambda t: (-threat_count(t), t["rolledScore"], t["name"]))
 
     doc = setup_document(ctx.get("logo"), ctx["region"], ctx["generated"])
+    section_no = [0]
+
+    def nxt() -> str:
+        section_no[0] += 1
+        return f"{section_no[0]:02d}"
 
     # ============================================================ COVER BLOCK
     p = para(doc, before=6, after=0)
@@ -496,7 +508,7 @@ def build_executive_report(path: str, ctx: dict) -> None:
     ])
 
     # ============================================================ 01 SITUATION
-    section_heading(doc, "01", "Situation report", "Where we stand")
+    section_heading(doc, nxt(), "Situation report", "Where we stand")
     rich(doc, [
         ("Exabeam correlation content maps to ", {}), (f"{covered} of {n_parents}", {"bold": True, "colour": WHITE}),
         (f" MITRE ATT&CK techniques ({cov_pct}%). Only ", {}), (f"{validated} ({val_pct}%)", {"bold": True, "colour": WHITE}),
@@ -567,7 +579,7 @@ def build_executive_report(path: str, ctx: dict) -> None:
     callout(doc, "Bottom line", bottom_line)
 
     # ============================================================ 02 TACTICS
-    section_heading(doc, "02", "Coverage by tactic", "Kill-chain coverage")
+    section_heading(doc, nxt(), "Coverage by tactic", "Kill-chain coverage")
     widths = [0.7, 1.75, 0.75, 0.75, 3.15]
     tt = fixed_table(doc, len(tactics) + 1, widths)
     for i, h in enumerate(["ID", "Tactic", "Covered", "Valid.", "Validated (green) + unproven (blue)"]):
@@ -594,7 +606,7 @@ def build_executive_report(path: str, ctx: dict) -> None:
     para(doc, after=6)
 
     # ============================================================ 03 DETECTION HEALTH
-    section_heading(doc, "03", "Detection health", "Are the detections alive?")
+    section_heading(doc, nxt(), "Detection health", "Are the detections alive?")
     kpi_tiles(doc, [
         ("Active", k["rulesActive"], f"fired in the last {stale} days", BAND_HIGH, None),
         ("Gone quiet", k["rulesQuiet"], "fired before, silent now - check log sources", BAND_MID, None),
@@ -611,9 +623,64 @@ def build_executive_report(path: str, ctx: dict) -> None:
         data_table(doc, ["Rule", "Last fired", "Silent", "Lifetime", "Log source in rule"], rows, [3.0, 0.95, 0.6, 0.75, 1.8],
                    mono_cols=(1, 2, 3), colour_cols={2: lambda v: BAND_MID})
 
-    # ============================================================ 04 THREAT EXPOSURE
+    # ============================================================ DATA SOURCES (Attack Surface)
+    surface = ctx.get("surface")
+    dark, unused = [], []
+    if surface and surface.get("eventsAvailable"):
+        products = surface["products"]
+        days = surface.get("windowDays")
+        sending = [p for p in products if p["events"] > 0]
+        total = sum(p["events"] for p in sending) or 1
+        dark = sorted([p for p in products if p["status"] == "No data"], key=lambda p: (-p["ruleCount"], p["product"]))
+        unused = sorted([p for p in products if p["status"] == "No detections"], key=lambda p: -p["events"])
+        silent = [p for p in products if p["status"] == "Monitored, silent"]
+        working = [p for p in products if p["status"] == "Detecting"]
+        unused_share = round(sum(p["events"] for p in unused) / total * 100, 1)
+        collectors = surface.get("collectors", [])
+        unhealthy = [c for c in collectors if c["health"] != "Healthy"]
+
+        section_heading(doc, nxt(), "Data sources", "Is the data reaching the detections?")
+        parts = [(f"In the last {days} days, ", {}), (f"{len(sending)} data sources", {"bold": True, "colour": WHITE}),
+                 (f" sent {compact(total)} events. Rules that use the data fired recently for ", {}),
+                 (f"{len(working)}", {"bold": True, "colour": WHITE}), (" of them. ", {})]
+        if unused:
+            parts += [(f"{len(unused)} sources ({unused_share}% of all events)", {"bold": True, "colour": WHITE}),
+                      (" have no detection rules using their data. ", {})]
+        if silent:
+            parts += [(f"{len(silent)} more have rules that have not fired recently. ", {})]
+        if dark:
+            parts += [(f"{len(dark)} sources that rules depend on sent nothing", {"bold": True, "colour": WHITE}),
+                      (f", so {sum(p['ruleCount'] for p in dark)} rules cannot fire.", {})]
+        rich(doc, parts)
+        kpi_tiles(doc, [
+            ("Sources sending", len(sending), f"{compact(total)} events in {days} days", ACCENT, None),
+            ("Rules can't fire", len(dark), "sources that rules depend on sent nothing", RED if dark else LINE, None),
+            ("Unused data", len(unused), f"sources with no detections - {unused_share}% of events", BAND_LOW if unused else LINE, None),
+            ("Working", len(working), "sources with rules firing", BAND_HIGH, None),
+        ])
+        if not surface.get("deepChecked"):
+            para(doc, "Partial picture: rule queries were not checked against the data in this run, so rules are linked to sources only "
+                      "when they name the product or their triggers do. Some sources counted as unused may be used by rules that match "
+                      "them without naming them.", 8, MUTED, italic=True, after=6)
+        if dark:
+            para(doc, "Rules that cannot fire - the source they depend on sent no events:", 9, MUTED,
+                 after=4).paragraph_format.keep_with_next = True
+            data_table(doc, ["Source", "Rules waiting on it", "Techniques affected"],
+                       [[p["product"], p["ruleCount"], len(p["techniques"])] for p in dark[:10]], [3.9, 1.6, 1.6], mono_cols=(1, 2))
+        if unused:
+            para(doc, "Largest data sources with no detection rules:", 9, MUTED, after=4).paragraph_format.keep_with_next = True
+            data_table(doc, ["Source", "Vendor", f"Events ({days}d)", "Share of events"],
+                       [[p["product"], p["vendor"] or "-", f"{p['events']:,}", f"{p['events'] / total * 100:.1f}%"] for p in unused[:8]],
+                       [2.9, 1.5, 1.5, 1.2], mono_cols=(2, 3))
+        if any(e.get("step") == "cloud collectors" for e in surface.get("errors", [])):
+            para(doc, "Cloud collector health was not available - the API key does not have Cloud Collector access.", 8.5, MUTED, after=6)
+        elif unhealthy:
+            para(doc, "Cloud collectors needing attention: " + ", ".join(f"{c['name']} ({c['health'].lower()})" for c in unhealthy) + ".",
+                 9, TEXT, after=6)
+
+    # ============================================================ THREAT EXPOSURE
     if attack:
-        section_heading(doc, "04", "Threat exposure",
+        section_heading(doc, nxt(), "Threat exposure",
                         f"What attackers targeting {sector} use" if sector else "What attackers use most")
         intro = (f"{len(in_sector)} threat groups in MITRE ATT&CK v{attack['version']} have descriptions associating them with {sector}. "
                  if sector else f"MITRE ATT&CK v{attack['version']} documents technique use by {len(groups)} threat groups. ")
@@ -630,7 +697,7 @@ def build_executive_report(path: str, ctx: dict) -> None:
              7.5, MUTED, italic=True, after=6)
 
     # ============================================================ 05 ECHO VALIDATION PLAN
-    section_heading(doc, "05" if attack else "04", "Validation plan", "Prove it fires - with Echo")
+    section_heading(doc, nxt(), "Validation plan", "Prove it fires - with Echo")
     rich(doc, [
         ("A rule that has never fired is a hypothesis, not a detection. ", {"bold": True, "colour": WHITE}),
         ("Use ", {}), ("Echo", {"bold": True, "colour": WHITE}),
@@ -665,8 +732,13 @@ def build_executive_report(path: str, ctx: dict) -> None:
         para(doc, "Every enabled rule has fired at least once. Schedule Echo regression runs to keep it that way.", 9.5, after=6)
 
     # ============================================================ 06 ACTIONS
-    section_heading(doc, "06" if attack else "05", "Recommended actions", "Next 30 days")
+    section_heading(doc, nxt(), "Recommended actions", "Next 30 days")
     actions = []
+    if dark:
+        actions.append(("Restore data sources",
+                        f"{join_names([p['product'] for p in dark[:3]])} sent no events, so "
+                        f"{sum(p['ruleCount'] for p in dark)} rules cannot fire. Check the collector, agent or log forwarding for each, "
+                        "or retire the rules if the source is gone."))
     if quiet:
         actions.append(("Restore quiet detections",
                         f"Investigate the {k['rulesQuiet']} rules that have stopped firing, starting with "
@@ -685,6 +757,10 @@ def build_executive_report(path: str, ctx: dict) -> None:
         actions.append(("Re-map retired techniques",
                         f"Update the {ctx['retired_rule_count']} rules tagged with retired IDs ({', '.join(ctx['retired_ids'])}) "
                         "to their current ATT&CK equivalents so they count towards coverage."))
+    if unused:
+        actions.append(("Review unused data",
+                        f"{len(unused)} data sources, led by {join_names([p['product'] for p in unused[:2]])}, have no detection rules. "
+                        "Build detections for the ones that matter, or review whether the data is needed."))
     if k.get("noMitreTag"):
         actions.append(("Tag untagged rules", f"Add MITRE mappings to the {k['noMitreTag']} enabled rules that have none."))
     actions.append(("Track it", "Re-run this report on a schedule (for example weekly) so rules that stop firing are caught "
@@ -695,7 +771,7 @@ def build_executive_report(path: str, ctx: dict) -> None:
                    (text, {})], after=6)
 
     # ============================================================ METHODOLOGY
-    section_heading(doc, "07" if attack else "06", "Methodology", "How to read this briefing")
+    section_heading(doc, nxt(), "Methodology", "How to read this briefing")
     for text in [
         f"Technique score (0-100): Validated (a mapped rule fired in the last {stale} days) 75-100; Quiet (fired before, not "
         "recently) 50-74; Unvalidated (never fired) 20-49; Not covered 0. Each additional rule in the same state adds 5 points "
