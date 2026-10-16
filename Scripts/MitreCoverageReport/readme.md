@@ -1,257 +1,308 @@
 # Exabeam MITRE Coverage Report
 
-A Python script that measures how well your Exabeam correlation rules cover MITRE ATT&CK. Each run:
+This tool reads the correlation rules in your Exabeam tenant and shows how well they cover the **MITRE ATT&CK** framework, the industry-standard list of attacker techniques.
 
-1. Pulls the MITRE technique list from Exabeam.
-2. Pulls your correlation rules, their trigger history and their MITRE mappings.
-3. Writes a **self-contained HTML dashboard**, a **Word executive briefing**, CSVs and an ATT&CK Navigator layer.
+It goes further than checking whether a rule is mapped to a technique. It also checks **whether that rule has actually fired**. Detections that have never fired are shown separately from detections that are proven to work.
 
-The report goes beyond "is a rule mapped?" and asks **"has that rule actually fired?"** Coverage that has never been proven is reported separately from coverage that is working.
+Each run produces:
 
-## What the report shows
+- **An interactive HTML report** that opens in any web browser. It includes:
+  - an ATT&CK coverage matrix
+  - a **Focus** list of what to work on next
+  - threat groups that target your sector
+  - detection health
+  - coverage by data source *(beta)*
+- **A Word executive briefing**: a short summary for leadership.
+- **CSV files** and an **ATT&CK Navigator layer**, for further analysis.
 
-### HTML dashboard
+No programming knowledge is needed. Follow the steps below once to set up, then [run the report](#run-the-report) whenever you want an up-to-date view.
 
-| Tab | What it shows |
-|---|---|
-| **MITRE ATT&CK Coverage** | Technique matrix in the Outcomes Navigator layout (see below). |
-| **Focus** | What to work on next (see below). |
-| **Attack Surface** *(beta)* | Coverage by data source (see below). |
-| **Threat Groups** | Threat groups known to target a chosen sector, the techniques they use most, and your coverage of each group. |
-| **Detection Health** | Rules that have gone quiet, never fired, are noisiest or were auto-disabled. |
-| **Changes** | What changed since the previous run for the same region. |
-| **Data Tables** | Every technique, rule, mapping and gap, filterable. |
+---
 
-**MITRE ATT&CK Coverage** uses the Outcomes Navigator score bands for each technique:
+## One-time setup
 
-| Score | Status | Meaning |
-|---|---|---|
-| 75–100 | Validated | A mapped rule fired in the last 30 days. |
-| 50–74 | Quiet | Mapped rules fired before, but not recently. |
-| 20–49 | Unvalidated | Mapped rules have never fired. |
-| 0 | Not covered | No enabled rule is mapped. |
+### Step 1: Install Python
 
-Within a band, each extra rule in the same state adds 5 points. The overall **Coverage Score** is the average across all techniques, the same aggregation the Outcomes Navigator uses. Click a technique for its details, rules, sub-techniques and the threat groups that use it. The matrix can be exported as CSV.
+The tool needs **Python 3.10 or newer**. Check whether you already have it.
 
-**Focus** ranks techniques into three lanes by how many threat groups use them:
+**Windows:** open **PowerShell** (press the Start key, type `powershell`, press Enter) and run:
 
-- **Fix**: rules have gone quiet.
-- **Build**: no detection content.
-- **Prove**: rules have never fired.
+```powershell
+python --version
+```
 
-It also shows a top-10 list for the next cycle and exports to CSV.
+**Mac:** open **Terminal** (press `Cmd + Space`, type `terminal`, press Enter) and run:
 
-**Attack Surface** *(beta)* shows, for each data source (by vendor, product, product category and platform):
+```bash
+python3 --version
+```
 
-- event volume
-- which rules use the source and whether they fire
-- the techniques the source validates
-- **starved rules**: rules whose query matches no data, so they cannot fire
-- cloud collector health
+If you see `Python 3.10` or higher (for example `Python 3.12.4`), go to Step 2. Otherwise, install Python:
 
-Use **Tailor report** to choose your sector and the platforms in your environment. Techniques that cannot apply to your platforms are hidden and left out of the score, and threat-group context is ranked for your sector. Choices are saved in your browser.
+- **Windows:**
+  1. Download the installer from [python.org/downloads](https://www.python.org/downloads/) and run it.
+  2. **On the first screen, tick "Add python.exe to PATH"** before clicking *Install Now*.
+  3. Close PowerShell and open it again.
+  4. Run `python --version` to check.
+- **Mac:**
+  1. Download the macOS installer from [python.org/downloads](https://www.python.org/downloads/) and run it.
+  2. Close Terminal and open it again.
+  3. Run `python3 --version` to check.
 
-### Word executive briefing
+> "pip" (Python's package installer) comes with Python, so there is nothing else to install.
 
-A short, branded `.docx` for leadership. It covers:
+### Step 2: Download this tool
 
-- coverage score and posture
-- covered vs. validated techniques
-- detection health
-- coverage by tactic
-- threat exposure for a chosen sector
-- a validation plan for never-fired rules, for example by replaying sample logs with a log-replay tool such as Echo
-- recommended actions
+1. On the GitHub page for this repository, click the green **Code** button, then **Download ZIP**.
+2. Unzip the file.
+3. Open the folder `Scripts` → `MitreCoverageReport`. This is the tool's folder. It contains `build_mitre_coverage_report.py`.
 
-## Requirements
+You can move the `MitreCoverageReport` folder anywhere you like.
 
-- Python 3.10 or later.
-- An Exabeam New-Scale API key (client ID and secret) with **read** access to:
+**Windows tip:** put it somewhere with a short path, for example `C:\Tools\MitreCoverageReport`. Windows has a 260-character limit on file paths. A deep folder, such as one inside a long OneDrive or Downloads path, can make Step 4 fail.
 
-| API | Used for |
-|---|---|
-| Correlation rules (list and export) | Rules, trigger history, MITRE mappings |
-| MITRE ATT&CK techniques | Technique list |
-| Search *(optional)* | Attack Surface tab |
-| Cloud Collectors *(optional)* | Attack Surface tab |
+### Step 3: Open a terminal in the tool's folder
 
-  If Search or Cloud Collector access is missing, the run still completes and the Attack Surface tab explains what could not be collected.
-- Internet access to `raw.githubusercontent.com` *(optional)*. MITRE's public ATT&CK dataset provides platforms and threat groups. Without it, the report is built without platform and sector filters.
+**Windows:** open the `MitreCoverageReport` folder in File Explorer, click the address bar at the top, type `powershell` and press Enter. A PowerShell window opens, already in that folder.
 
-## Install
+**Mac:** open Terminal, type `cd ` (with a space after it), drag the `MitreCoverageReport` folder from Finder into the Terminal window, then press Enter.
 
-Windows (PowerShell):
+### Step 4: Install the tool's dependencies
+
+This creates a private copy of Python inside the tool's folder (in `.venv`) and installs the two libraries the tool needs into it. Nothing else on your computer is changed.
+
+**Windows (PowerShell):**
 
 ```powershell
 python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
+.venv\Scripts\python -m pip install -r requirements.txt
 ```
 
-macOS / Linux:
+**Mac (Terminal):**
 
 ```bash
 python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
+.venv/bin/python -m pip install -r requirements.txt
 ```
 
-## Run
+### Step 5: Get an Exabeam API key
 
-### 1. Provide credentials
+You need a **client ID** and **client secret** for the Exabeam API. An Exabeam administrator can create these in the platform's API key settings. The key needs **read** access to:
 
-Use environment variables so the secret never appears in your command history or in a file. If they are not set, the script asks for them when it starts.
+| API | Needed for |
+|---|---|
+| Correlation rules | Everything (required) |
+| MITRE ATT&CK techniques | Everything (required) |
+| Search | The Attack Surface tab (optional) |
+| Cloud Collectors | The Attack Surface tab (optional) |
 
-Windows (PowerShell):
+Treat the client secret like a password. Never paste it into a file or a shared chat.
+
+You also need to know your tenant's **region**, for example `us-west`, `us-east`, `eu`, `uk`, `ca`, `au`, `sg`, `jp`, `ch` or `sa`. Ask your Exabeam administrator if you aren't sure. See also [Troubleshooting](#troubleshooting).
+
+---
+
+## Run the report
+
+Each time you want a report, open a terminal in the tool's folder (Step 3), then run the command below. Replace `us-west` with your region and `Healthcare` with your sector (see the next section).
+
+**Windows (PowerShell):**
 
 ```powershell
-$env:EXABEAM_CLIENT_ID = "<your client id>"
-$env:EXABEAM_CLIENT_SECRET = "<your client secret>"
+.venv\Scripts\python build_mitre_coverage_report.py --region us-west --sector "Healthcare"
 ```
 
-macOS / Linux:
+**Mac (Terminal):**
 
 ```bash
-export EXABEAM_CLIENT_ID="<your client id>"
-read -s EXABEAM_CLIENT_SECRET && export EXABEAM_CLIENT_SECRET
+.venv/bin/python build_mitre_coverage_report.py --region us-west --sector "Healthcare"
 ```
 
-### 2. Run the report
+The tool asks for your **client ID** and **client secret**. The secret is not shown as you type or paste it. That is normal. Press Enter after each one.
 
-Set `--region` to the region of your Exabeam tenant, for example `us-west`, `us-east`, `eu`, `uk`, `ca`, `au`, `sg`, `jp`, `ch` or `sa`.
+A run usually takes a few minutes. When it finishes, it prints where the report was saved: a new date-stamped folder inside `output`. Open that folder and:
 
-```powershell
-python .\build_mitre_coverage_report.py --region us-west
-```
+- double-click **`mitre_coverage_report_….html`** to open the interactive report in your browser
+- open **`mitre_executive_briefing_….docx`** in Microsoft Word for the executive summary
 
-On macOS / Linux use `python3 ./build_mitre_coverage_report.py ...`. The examples below use the Windows form.
+### Choose your sector for the Word briefing
 
-The report is written to a new timestamped folder under `.\output\`. Open `mitre_coverage_report_<region>_<timestamp>.html` in a browser.
+The **HTML report** can be tailored at any time. Click **Tailor report** to pick a sector and the platforms in your environment.
 
-### Examples
+The **Word briefing is different**. It is written once, when the report runs, and cannot be filtered afterwards. Its threat section covers:
 
-Tailor the Word briefing's threat section to a sector:
+- **the sector you give with `--sector`**: for example, the techniques used by threat groups that target healthcare, and the groups themselves
+- **all sectors**, if you leave `--sector` out. That is much less specific.
 
-```powershell
-python .\build_mitre_coverage_report.py --region us-west --sector "Financial services"
-```
+The Word briefing always covers all platforms (Windows, macOS, Linux, cloud and so on). Platform filtering is only available in the HTML report.
 
-Available sectors:
+Use one of these sector names exactly, inside quotes:
 
-- Healthcare
-- Financial services
-- Government
-- Energy & utilities
-- Manufacturing & industrial
-- Technology & IT services
-- Telecommunications
-- Defense & aerospace
-- Education & research
-- Retail & hospitality
-- Media & entertainment
-- Legal & professional services
-- Transportation & logistics
-- Non-profit & NGOs
+| | | |
+|---|---|---|
+| `"Healthcare"` | `"Financial services"` | `"Government"` |
+| `"Energy & utilities"` | `"Manufacturing & industrial"` | `"Technology & IT services"` |
+| `"Telecommunications"` | `"Defense & aerospace"` | `"Education & research"` |
+| `"Retail & hospitality"` | `"Media & entertainment"` | `"Legal & professional services"` |
+| `"Transportation & logistics"` | `"Non-profit & NGOs"` | |
 
-Faster run that skips the per-rule Search queries:
+If you mistype a sector, the tool warns you, lists the valid names, and builds the briefing for all sectors.
 
-```powershell
-python .\build_mitre_coverage_report.py --region us-west --no-surface-deep
-```
+### Run it regularly
 
-Coverage report only, without Attack Surface or the Word briefing:
+Each run is compared with the previous one. The **Changes** tab shows rules that stopped firing, rules that were auto-disabled, and coverage gained or lost. Running the report weekly is a good way to catch a broken log source or rule early.
 
-```powershell
-python .\build_mitre_coverage_report.py --region us-west --no-surface --no-word
-```
+---
 
-Use a 14-day window for "quiet" rules and 14 days of events for the Attack Surface tab:
+## What's in the report
 
-```powershell
-python .\build_mitre_coverage_report.py --region us-west --stale-days 14 --surface-days 14
-```
+| HTML tab | What it shows |
+|---|---|
+| **MITRE ATT&CK Coverage** | Every technique as a tile, coloured by how well it is covered. Click a tile for its details, the rules mapped to it, and the threat groups that use it. **Export MITRE ATT&CK Coverage** downloads it as CSV. |
+| **Focus** | What to work on next, in three lanes: **Fix** (rules that have gone quiet), **Build** (no detection yet) and **Prove** (rules that have never fired). Ranked by how many threat groups use each technique. |
+| **Attack Surface** *(beta)* | Your data sources: what is sending data, which rules use each source, and whether those rules fire. Also shows cloud collector health and rules that receive no data at all. |
+| **Threat Groups** | Threat groups known to target your sector, the techniques they use most, and how much of each group's activity you cover. |
+| **Detection Health** | Rules that have gone quiet, never fired, are noisiest, or were switched off by the platform. |
+| **Changes** | What changed since the previous run. |
+| **Data Tables** | Every technique, rule and gap, with filters. |
 
-Keep the raw API responses for troubleshooting, then rebuild the report from them later without calling the API:
+Technique scores follow the Exabeam Outcomes Navigator colour bands:
 
-```powershell
-python .\build_mitre_coverage_report.py --region us-west --save-raw
-python .\build_mitre_coverage_report.py --region us-west --replay .\output\<run folder>
-```
+| Score | Colour | Meaning |
+|---|---|---|
+| 75–100 | Green | **Validated**: a mapped rule fired in the last 30 days |
+| 50–74 | Blue | **Quiet**: mapped rules fired before, but not recently |
+| 20–49 | Purple | **Unvalidated**: mapped rules have never fired |
+| 0 | Dashed tile | **Not covered**: no enabled rule is mapped |
 
-Track changes over time: run on a schedule, for example weekly with Windows Task Scheduler or cron. Each run is compared with the previous run for the same region and output folder automatically.
+The **MITRE ATT&CK Coverage Score** at the top is the average across all techniques. Click **How was this calculated?** in the report for the breakdown.
 
-```powershell
-python .\build_mitre_coverage_report.py --region us-west --out-dir D:\Reports\mitre
-```
+The **Word briefing** summarises:
+
+- the coverage score
+- covered vs. proven detections
+- detection health and coverage by tactic
+- threat exposure for your sector
+- a validation plan for rules that have never fired, for example by replaying sample logs with a log-replay tool such as Echo
+- recommended next steps
+
+---
+
+## Keep the output private
+
+The report describes your detections **and your gaps**, so handle it like any other sensitive security document:
+
+- **Share with care.** Share the report only with people who should see it, and don't upload it anywhere public.
+- **Keep it out of source control.** If you keep the tool in your own git repository, the included `.gitignore` already excludes the `output` folder.
+- **Only API calls leave your computer.** The tool talks only to your Exabeam tenant's API and downloads MITRE's public ATT&CK data from GitHub. The HTML report doesn't load anything from the internet when you open it.
+
+---
+
+## Troubleshooting
+
+**`python` is not recognised (Windows) or `command not found` (Mac)**
+- **Windows:** re-run the Python installer, choose *Modify*, and make sure *Add Python to environment variables* is ticked. Then close and reopen PowerShell. You can also try `py` instead of `python` in Step 4.
+- **Mac:** use `python3`, not `python`.
+
+**`No such file or directory` / `cannot find the path`**
+Your terminal is not in the tool's folder. Repeat Step 3.
+
+**Step 4 fails on Windows with `OSError: [Errno 2] No such file or directory` and a hint about "Long Path support"**
+The folder path is too long for Windows.
+1. Delete the `.venv` folder.
+2. Move `MitreCoverageReport` to a short path, for example `C:\Tools\MitreCoverageReport`.
+3. Repeat Steps 3 and 4.
+
+**`.venv\Scripts\python` (or `.venv/bin/python`) not found**
+Step 4 hasn't been run in this folder yet. Run it again.
+
+**Token request failed, 401 or 404 errors**
+Usually the wrong `--region`. It must match your tenant's region:
+
+<img width="241" height="321" alt="Exabeam API regions" src="https://github.com/user-attachments/assets/6d191120-7c68-406d-b9d4-acfe62fa5e69" />
+<img width="488" height="84" alt="Exabeam API base URL" src="https://github.com/user-attachments/assets/a68afd59-6719-4eb7-ace1-b4c7e0837a49" />
+
+It can also mean the client ID or secret was pasted incorrectly. Run the command again and re-enter them.
+
+**The Attack Surface tab is empty or shows errors**
+The API key probably lacks Search or Cloud Collector read access. The tab's *Collection notes* panel shows the reason. The rest of the report is unaffected.
+
+**"Word briefing skipped"**
+The dependencies weren't installed into `.venv`. Repeat Step 4.
+
+**The run takes a long time**
+Most of the time goes on the Attack Surface checks, which run one search per rule. Add `--no-surface-deep` for a faster run, or `--no-surface` to skip that tab entirely.
+
+---
+
+## Advanced options
+
+<details>
+<summary>Command-line options, scheduled runs and troubleshooting files</summary>
 
 ### Options
 
-| Option | Default | Description |
-|---|---|---|
-| `--region` | `eu` | API region (`api.<region>.exabeam.cloud`). Also read from `EXABEAM_REGION`. |
-| `--base-url` | | Override the API base URL entirely. |
-| `--client-id` / `--client-secret` | | Credentials. Prefer the `EXABEAM_CLIENT_ID` / `EXABEAM_CLIENT_SECRET` environment variables, because command-line arguments can be saved in shell history. |
-| `--stale-days` | `30` | A rule that fired before, but not within this many days, is "Quiet". |
-| `--out-dir` | `./output` | Root folder. Each run gets a timestamped subfolder. |
-| `--include-disabled` | off | Count disabled rules towards coverage. |
-| `--name-contains` | | Only include MITRE techniques whose name contains this text. |
-| `--priority-file` | | CSV with `techniqueId,priority[,source]` to rank gaps (lower number = higher priority). |
-| `--compare` | latest run | Snapshot file or run folder to compare against. |
-| `--no-compare` | off | Skip the comparison with a previous run. |
-| `--sector` | | Sector for the Word briefing's threat section. Each viewer picks their own in the HTML report. |
-| `--no-word` | off | Skip the Word executive briefing. |
-| `--no-surface` | off | Skip the Attack Surface queries. |
-| `--surface-days` | `7` | Days of events used for the Attack Surface tab. |
-| `--no-surface-deep` | off | Do not run each rule's query against Search. Faster, but only rules that name a product are linked to data sources. |
-| `--surface-max-seconds` | `900` | Time budget for the per-rule Search queries. |
-| `--attack-data` | `auto` | MITRE ATT&CK dataset: `auto` (cached, refreshed every 30 days), `refresh` (always download) or `off`. |
-| `--attack-cache` | `.cache/attack_context.json` | Where the MITRE ATT&CK dataset is cached. |
-| `--save-raw` | off | Save the raw API responses (`raw_*.json`) in the run folder. |
-| `--replay` | | Rebuild the report from a folder of `raw_*.json` files without calling the API. |
+Add any of these to the run command.
 
-## Output
+| Option | Default | What it does |
+|---|---|---|
+| `--region` | `eu` | Your tenant's API region (`api.<region>.exabeam.cloud`). |
+| `--sector` | all sectors | Sector for the Word briefing's threat section. See [Choose your sector](#choose-your-sector-for-the-word-briefing). |
+| `--stale-days` | `30` | A rule that fired before, but not within this many days, is "Quiet". |
+| `--out-dir` | `./output` | Where reports are saved. Each run gets its own date-stamped folder. |
+| `--no-word` | off | Don't create the Word briefing. |
+| `--no-surface` | off | Skip the Attack Surface tab. |
+| `--no-surface-deep` | off | Faster Attack Surface: don't run each rule's search to see which data sources feed it. |
+| `--surface-days` | `7` | Days of data used for the Attack Surface tab. |
+| `--surface-max-seconds` | `900` | Time limit for the per-rule searches. |
+| `--include-disabled` | off | Also count disabled rules as coverage. |
+| `--compare` | previous run | Compare against a specific earlier run folder. |
+| `--no-compare` | off | Don't compare with the previous run. |
+| `--priority-file` | | CSV with `techniqueId,priority[,source]` to rank gaps by your own priorities. |
+| `--attack-data` | `auto` | MITRE ATT&CK dataset (platforms and threat groups): `auto` (cached, refreshed every 30 days), `refresh` (always download) or `off`. |
+| `--attack-cache` | `.cache/attack_context.json` | Where the MITRE ATT&CK dataset is cached. |
+| `--name-contains` | | Only include MITRE techniques whose name contains this text. |
+| `--base-url` | | Use a custom API base URL instead of `--region`. |
+| `--save-raw` | off | Also save the raw API responses (`raw_*.json`). These are useful for troubleshooting, but they contain your full rule definitions, so share them with care. |
+| `--replay` | | Rebuild a report from a folder of `raw_*.json` files without connecting to Exabeam. |
+
+### Scheduled (unattended) runs
+
+To run on a schedule, for example weekly with Windows Task Scheduler or cron, the tool can't ask for credentials. Instead, provide them as environment variables, `EXABEAM_CLIENT_ID` and `EXABEAM_CLIENT_SECRET`, using your operating system's secure secret storage or your scheduler's credential features. **Never write the secret into a script or a file in this folder.** The region can also be set with `EXABEAM_REGION`.
+
+Use a fixed `--out-dir` so that each run can be compared with the last one.
+
+### Output files
 
 ```text
 output/
-└── <timestamp>/
-    ├── mitre_coverage_report_<region>_<ts>.html      # interactive dashboard
-    ├── mitre_executive_briefing_<region>_<ts>.docx   # executive summary
-    ├── attack_matrix_<region>_<ts>.csv               # matrix by tactic: score, status, rules, platforms, MITRE URL
+└── <date-stamp>/
+    ├── mitre_coverage_report_<region>_<ts>.html      # interactive report - open in a browser
+    ├── mitre_executive_briefing_<region>_<ts>.docx   # executive summary - open in Word
+    ├── attack_matrix_<region>_<ts>.csv               # every technique by tactic: score, status, rules, platforms, MITRE link
     ├── all_mitre_techniques_<region>_<ts>.csv        # every technique and its status
     ├── current_coverage_<region>_<ts>.csv            # one row per rule -> technique mapping
     ├── current_gaps_<region>_<ts>.csv                # uncovered techniques and rule hygiene issues
     ├── rule_health_<region>_<ts>.csv                 # every rule: status, last fired, trigger counts
     ├── navigator_layer_<region>_<ts>.json            # load into https://mitre-attack.github.io/attack-navigator/
-    ├── snapshot.json                                 # used to compare the next run with this one
-    └── logo.png
+    └── snapshot.json                                 # used to compare the next run with this one
 ```
 
-## Handling the output
+### How it works
 
-The output describes your detection content and its gaps. Treat it as sensitive:
+- **What counts as coverage:**
+  - Only enabled correlation rules count as coverage.
+  - A parent technique counts as covered if any of its sub-techniques is covered.
+  - "Never fired" doesn't necessarily mean broken (some behaviours are rare), but the detection hasn't been proven.
+- **Data sources:**
+  - Firing data comes from the `lastTriggeredAt` and `timesTriggered` fields of the correlation rules API.
+  - Platforms and threat groups come from MITRE's public ATT&CK dataset (about 55 MB, cached for 30 days).
+- **Sectors:** MITRE doesn't tag threat groups by sector, so sectors are matched from keywords in each group's description. The report lists the groups behind every number so they can be checked.
+- **Attack Surface:**
+  - It uses a grouped Search query on `vendor`, `product`, `product_category` and `platform`, plus the Cloud Collector API.
+  - Events generated by Exabeam itself (vendor `Exabeam`, such as `Correlation Rule`) aren't counted as data sources.
 
-- **Do not commit output to source control.** The included `.gitignore` excludes `output/`, `raw_*.json` and `.cache/`.
-- **Raw files are the most sensitive.** `raw_*.json` files (only written with `--save-raw`) contain your full rule definitions, and `raw_surface.json` includes samples of correlation-rule trigger events. Share them only with people who should see that information.
-- **Only API calls leave your machine.** The HTML report is self-contained and makes no external requests when opened, apart from links you choose to click. Nothing is sent anywhere other than your Exabeam tenant's API and, to download the public ATT&CK dataset, `raw.githubusercontent.com`.
-
-## Troubleshooting
-
-- **Authentication or 404 errors:** check `--region`. It must match the region of your tenant.
-
-  <img width="241" height="321" alt="Exabeam API regions" src="https://github.com/user-attachments/assets/6d191120-7c68-406d-b9d4-acfe62fa5e69" />
-  <img width="488" height="84" alt="Exabeam API base URL" src="https://github.com/user-attachments/assets/a68afd59-6719-4eb7-ace1-b4c7e0837a49" />
-- **Attack Surface tab is empty or shows errors:** the API key may lack Search or Cloud Collector read access. The tab's *Collection notes* panel shows the API response. Run with `--save-raw` to keep the full responses in `raw_surface.json`.
-- **"Word briefing skipped":** run `pip install -r requirements.txt` to install `python-docx`.
-- **Numbers look wrong:** run with `--save-raw` and check the `raw_*.json` files.
-
-## Notes
-
-- Coverage counts enabled correlation rules only (use `--include-disabled` to change this). Auto-disabled rules are reported separately.
-- A parent technique counts as covered if any of its sub-techniques is covered. The matrix has a toggle to show direct mappings only.
-- "Never fired" does not necessarily mean broken, because some behaviours are rare. It does mean the detection has not been proven to work.
-- Trigger data comes from the `lastTriggeredAt` and `timesTriggered` fields of `/correlation-rules/v2/rules`.
-- MITRE does not tag threat groups by sector. Sectors are matched from keywords in each group's MITRE description, and the report lists the groups behind every count so they can be checked.
-- Events generated by Exabeam itself (vendor `Exabeam`, for example `Correlation Rule` and `Audit Log`) are not counted as data sources.
+</details>
 
 ---
 
