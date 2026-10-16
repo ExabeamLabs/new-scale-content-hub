@@ -20,7 +20,7 @@ import os
 import re
 import shutil
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Any
 
 import requests
@@ -158,6 +158,12 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--sector", default="",
                    help="Sector for the Word briefing's threat section, e.g. \"Healthcare\" (the HTML report lets each viewer choose)")
     p.add_argument("--no-word", action="store_true", help="Do not generate the Word executive briefing")
+    p.add_argument("--no-surface", action="store_true", help="Skip the Attack Surface queries (data sources, collectors)")
+    p.add_argument("--surface-days", type=int, default=7, help="Days of events used for the Attack Surface tab (default: 7)")
+    p.add_argument("--no-surface-deep", action="store_true",
+                   help="Do not run each rule's query against Search to find the data sources that feed it")
+    p.add_argument("--surface-max-seconds", type=int, default=900,
+                   help="Time budget for the per-rule Attack Surface queries (default: 900)")
     p.add_argument("--attack-data", choices=["auto", "refresh", "off"], default="auto",
                    help="MITRE ATT&CK platform/threat-group data for the report filters: 'auto' downloads it when the cache "
                         "is older than 30 days, 'refresh' always downloads, 'off' skips it (default: auto)")
@@ -213,6 +219,33 @@ class ExabeamApi:
         if not resp.ok:
             fail("Correlation rules list request failed", resp)
         return resp.json()
+
+    def search_events(self, body: dict) -> tuple[bool, Any]:
+        """POST /search/v2/events. Returns (ok, json) or (False, error text) - never exits."""
+        try:
+            resp = requests.post(f"{self.base_url}/search/v2/events", timeout=API_TIMEOUT_SECONDS * 3,
+                                 headers={**self._headers(), "content-type": "application/json"}, json=body)
+        except requests.RequestException as e:
+            return False, f"{type(e).__name__}: {e}"
+        if not resp.ok:
+            return False, f"HTTP {resp.status_code}: {resp.text[:500]}"
+        try:
+            return True, resp.json()
+        except ValueError:
+            return False, f"Non-JSON response: {resp.text[:200]}"
+
+    def get_cloud_collectors(self) -> tuple[bool, Any]:
+        try:
+            resp = requests.get(f"{self.base_url}/cloud-collectors/v1/configs", headers=self._headers(),
+                                timeout=API_TIMEOUT_SECONDS)
+        except requests.RequestException as e:
+            return False, f"{type(e).__name__}: {e}"
+        if not resp.ok:
+            return False, f"HTTP {resp.status_code}: {resp.text[:500]}"
+        try:
+            return True, resp.json()
+        except ValueError:
+            return False, f"Non-JSON response: {resp.text[:200]}"
 
     def export_rule_definitions(self, rule_ids: list[str]) -> list[dict]:
         headers = {**self._headers(), "content-type": "application/json"}
@@ -917,6 +950,270 @@ def attack_lookups(attack: dict | None) -> tuple[dict[str, list[str]], dict[str,
     return attack["platforms"], groups_by_tech
 
 
+# =========================================================
+# 9b) ATTACK SURFACE: DATA SOURCES, CLOUD COLLECTORS, RULE DEPENDENCIES
+# =========================================================
+# Products Exabeam generates itself - kept out of the data-source list
+INTERNAL_PRODUCTS = {"correlation rule", "audit log", "exabeam", "null", ""}
+SURFACE_EVENTS_LIMIT = 5000
+SURFACE_RULE_QUERY_LIMIT = 500
+
+
+def _ci(row: dict, *names: str) -> Any:
+    """Case-insensitive lookup of the first matching key in a result row."""
+    lowered = {str(k).lower(): v for k, v in row.items()}
+    for n in names:
+        if n.lower() in lowered:
+            return lowered[n.lower()]
+    return None
+
+
+def _row_count(row: dict) -> int:
+    v = _ci(row, "events", "count", "event_count", "count(*)", "cnt")
+    if v is None:  # fall back to the only numeric value in the row
+        nums = [x for x in row.values() if isinstance(x, (int, float)) and not isinstance(x, bool)]
+        v = nums[0] if len(nums) == 1 else 0
+    try:
+        return int(v)
+    except (TypeError, ValueError):
+        return 0
+
+
+def _product_name(value: Any) -> str:
+    if value is None:
+        return ""
+    if isinstance(value, list):
+        value = value[0] if value else ""
+    return str(value).strip()
+
+
+def collect_attack_surface(api: "ExabeamApi", defs: list[dict], days: int, deep: bool, max_seconds: int) -> dict:
+    """Run the Attack Surface queries. Every response (or error) is kept so the run can be replayed."""
+    import time
+    now = datetime.now(timezone.utc)
+    window = {"startTime": (now - timedelta(days=days)).strftime("%Y-%m-%dT%H:%M:%SZ"),
+              "endTime": now.strftime("%Y-%m-%dT%H:%M:%SZ")}
+    trig_window = {"startTime": (now - timedelta(days=30)).strftime("%Y-%m-%dT%H:%M:%SZ"), "endTime": window["endTime"]}
+    out: dict = {"schema": 1, "collectedAt": now.strftime("%Y-%m-%d %H:%M:%SZ"), "windowDays": days,
+                 "events": None, "triggers": None, "cloudCollectors": None, "ruleQueries": {}, "errors": []}
+
+    # 1) Event volume per data source. Try the documented request styles until one works.
+    # product is the main key; vendor, product_category and platform are kept as context
+    grouped = {"fields": ["vendor", "product", "product_category", "platform", "count(*) as events"],
+               "groupBy": ["vendor", "product", "product_category", "platform"],
+               "orderBy": ["events DESC"], "limit": SURFACE_EVENTS_LIMIT, **window}
+    attempts = [
+        ("fields+groupBy, empty filter", {"filter": "", **grouped}),
+        ("SQL filter", {"filter": "SELECT vendor, product, product_category, platform, COUNT(*) AS events "
+                                  "GROUP-BY vendor, product, product_category, platform ORDER-BY events DESC",
+                        "fields": ["*"], "limit": SURFACE_EVENTS_LIMIT, **window}),
+        ("fields+groupBy, product:*", {"filter": "product:*", **grouped}),
+        ("fields+groupBy, NOT product:\"\"", {"filter": 'NOT product:""', **grouped}),
+    ]
+    for label, body in attempts:
+        ok, data = api.search_events(body)
+        if ok:
+            out["events"] = {"method": label, "body": body, "rows": data.get("rows", [])}
+            info(f"Attack surface: {len(out['events']['rows'])} data source rows over {days} days ({label})")
+            break
+        out["errors"].append({"step": f"events ({label})", "error": data})
+    else:
+        warn("Attack surface: could not query event volume per product - see raw_surface.json for the API errors")
+
+    # 2) Correlation rule trigger events (last 30 days): fields are learned from the data
+    ok, data = api.search_events({"filter": 'product:"Correlation Rule"', "fields": ["*"], "limit": 3000, **trig_window})
+    if ok:
+        out["triggers"] = {"rows": data.get("rows", [])}
+        info(f"Attack surface: {len(out['triggers']['rows'])} correlation rule trigger events (30 days)")
+    else:
+        out["errors"].append({"step": "rule triggers", "error": data})
+
+    # 3) Cloud collectors
+    ok, data = api.get_cloud_collectors()
+    if ok:
+        out["cloudCollectors"] = data
+    else:
+        out["errors"].append({"step": "cloud collectors", "error": data})
+
+    # 4) Each rule's own query, grouped by product: which sources feed it (even product-agnostic rules)
+    if deep and out["events"] is not None:
+        started, failures, done = time.monotonic(), 0, 0
+        for d in defs:
+            name = get_rule_name(d)
+            queries = [s.get("query", "") for s in ((d.get("sequencesConfig") or {}).get("sequences") or [])
+                       if isinstance(s, dict) and s.get("query")]
+            if not name or not queries:
+                continue
+            if time.monotonic() - started > max_seconds:
+                warn(f"Attack surface: stopped rule queries after {max_seconds}s ({done} rules checked) - raise --surface-max-seconds")
+                out["ruleQueriesTruncated"] = True
+                break
+            per_rule = {"products": {}, "errors": []}
+            for q in queries:
+                ok, data = api.search_events({"filter": q, "fields": ["product", "count(*) as events"], "groupBy": ["product"],
+                                              "orderBy": ["events DESC"], "limit": SURFACE_RULE_QUERY_LIMIT, **window})
+                if ok:
+                    failures = 0
+                    for row in data.get("rows", []):
+                        p = _product_name(_ci(row, "product"))
+                        per_rule["products"][p] = per_rule["products"].get(p, 0) + _row_count(row)
+                else:
+                    failures += 1
+                    per_rule["errors"].append(str(data)[:300])
+            out["ruleQueries"][name] = per_rule
+            done += 1
+            if done % 25 == 0:
+                info(f"Attack surface: checked {done} rule queries...")
+            if failures >= 5 and done <= 5:
+                warn("Attack surface: rule queries are failing - skipping the rest (see raw_surface.json)")
+                break
+        info(f"Attack surface: checked the queries of {done} rules against {days} days of data")
+    return out
+
+
+def _detect_key(rows: list[dict], candidates: set[str], exclude: set[str] = frozenset()) -> str:
+    """Find the field whose values most often match a known set of names (e.g. rule names)."""
+    scores: dict[str, int] = {}
+    lowered = {c.lower() for c in candidates}
+    for row in rows[:500]:
+        for k, v in row.items():
+            if k in exclude:
+                continue
+            vals = v if isinstance(v, list) else [v]
+            if any(isinstance(x, str) and x.strip().lower() in lowered for x in vals):
+                scores[k] = scores.get(k, 0) + 1
+    return max(scores, key=scores.get) if scores else ""
+
+
+def build_attack_surface(raw: dict | None, health_all: list[dict], rule_products: dict[str, list[str]],
+                         rule_techniques: dict[str, list[str]], tech_names: dict[str, str]) -> dict | None:
+    """Merge data-source volume, rule dependencies and rule health into one row per product."""
+    if not raw:
+        return None
+    health_by_name = {h["ruleName"]: h for h in health_all if h["enabled"]}
+
+    products: dict[str, dict] = {}
+
+    def product(name: str, vendor: str = "") -> dict:
+        key = name.lower()
+        if key not in products:
+            products[key] = {"product": name, "vendor": vendor, "events": 0, "namedBy": set(), "fedRules": set(),
+                             "triggers": 0, "collectors": [], "categories": set(), "platforms": set()}
+        if vendor and not products[key]["vendor"]:
+            products[key]["vendor"] = vendor
+        return products[key]
+
+    def present(value: Any) -> str:
+        v = _product_name(value)
+        return "" if v.lower() in ("", "null", "none") else v
+
+    # Events from Exabeam itself (correlation rules, audit log...) are not data sources
+    internal = set(INTERNAL_PRODUCTS)
+    for row in (raw.get("events") or {}).get("rows", []):
+        name = present(_ci(row, "product"))
+        vendor = present(_ci(row, "vendor"))
+        if not name or name.lower() in internal or vendor.lower() == "exabeam":
+            internal.add(name.lower())
+            continue
+        p = product(name, vendor)
+        p["events"] += _row_count(row)
+        for field, bucket in (("product_category", "categories"), ("platform", "platforms")):
+            v = present(_ci(row, field))
+            if v:
+                p[bucket].add(v)
+
+    for rule, names in rule_products.items():
+        if rule in health_by_name:
+            for n in names:
+                if n.lower() not in internal:
+                    product(n)["namedBy"].add(rule)
+
+    starved = []
+    for rule, res in (raw.get("ruleQueries") or {}).items():
+        if rule not in health_by_name:
+            continue
+        fed = {p: n for p, n in res.get("products", {}).items() if p.lower() not in internal and n > 0}
+        for p in fed:
+            product(p)["fedRules"].add(rule)
+        if not fed and not res.get("errors"):
+            starved.append(rule)
+
+    # Trigger events: work out which fields hold the rule name and the source product
+    trigger_rows = (raw.get("triggers") or {}).get("rows", [])
+    rule_key = _detect_key(trigger_rows, set(health_by_name))
+    source_key = _detect_key(trigger_rows, {p["product"] for p in products.values()}, exclude={"product", rule_key})
+    trigger_by_rule: dict[str, int] = {}
+    for row in trigger_rows:
+        if rule_key:
+            r = _product_name(row.get(rule_key))
+            trigger_by_rule[r] = trigger_by_rule.get(r, 0) + 1
+        if source_key:
+            src = _product_name(row.get(source_key))
+            if src.lower() in products:
+                products[src.lower()]["triggers"] += 1
+
+    cc = raw.get("cloudCollectors")
+    collectors = cc.get("items", cc.get("configs", [])) if isinstance(cc, dict) else (cc or [])
+    now = datetime.now(timezone.utc)
+    collector_rows = []
+    for c in collectors if isinstance(collectors, list) else []:
+        if not isinstance(c, dict):
+            continue
+        last = parse_ts(c.get("lastLogReceived"))
+        hours = round((now - last).total_seconds() / 3600, 1) if last else None
+        state = "Error" if str(c.get("status", "")).lower() == "error" else (
+            "Silent" if hours is None or hours > 24 else "Healthy")
+        row = {"name": c.get("name", ""), "vendor": c.get("vendor", ""), "type": c.get("type", ""),
+               "status": c.get("status", ""), "lastLogReceived": fmt_dt(last), "hoursSinceLastLog": hours,
+               "site": (c.get("siteDetails") or {}).get("sitename", ""), "health": state}
+        collector_rows.append(row)
+        vendor = (row["vendor"] or "").lower()
+        for p in products.values():   # link collectors to products of the same vendor
+            if vendor and (vendor in (p["vendor"] or "").lower() or vendor in p["product"].lower()):
+                p["collectors"].append(row["name"])
+
+    rows = []
+    for p in products.values():
+        rules = sorted(p["namedBy"] | p["fedRules"])
+        statuses = [health_by_name[r]["status"] for r in rules if r in health_by_name]
+        active = [r for r in rules if health_by_name.get(r, {}).get("status") == RS_ACTIVE]
+        techniques = sorted({t for r in rules for t in rule_techniques.get(r, [])})
+        validated = sorted({t for r in active for t in rule_techniques.get(r, [])})
+        if p["events"] == 0:
+            status = "No data"           # rules name this product but it sent nothing in the window
+        elif active or p["triggers"]:
+            status = "Detecting"
+        elif rules:
+            status = "Monitored, silent"
+        else:
+            status = "No detections"
+        rows.append({
+            "product": p["product"], "vendor": p["vendor"], "events": p["events"], "status": status,
+            "categories": sorted(p["categories"]), "platforms": sorted(p["platforms"], key=str.lower),
+            "rules": rules, "ruleCount": len(rules), "namedRules": len(p["namedBy"]), "fedRules": len(p["fedRules"]),
+            "active": len(active), "quiet": statuses.count(RS_QUIET), "never": statuses.count(RS_NEVER),
+            "triggers": p["triggers"], "techniques": techniques, "validatedTechniques": validated,
+            "collectors": sorted(set(p["collectors"])),
+        })
+    order = {"No data": 0, "No detections": 1, "Monitored, silent": 2, "Detecting": 3}
+    rows.sort(key=lambda r: (order[r["status"]], -r["events"], r["product"].lower()))
+
+    rule_info = {r: {"status": h["status"], "last": h["lastTriggeredAt"],
+                     "techniques": [{"id": t, "name": tech_names.get(t, "")} for t in rule_techniques.get(r, [])]}
+                 for r, h in health_by_name.items()}
+    return {
+        "collectedAt": raw.get("collectedAt", ""), "windowDays": raw.get("windowDays"),
+        "eventsMethod": (raw.get("events") or {}).get("method", ""),
+        "eventsAvailable": raw.get("events") is not None,
+        "deepChecked": len(raw.get("ruleQueries") or {}), "deepTruncated": bool(raw.get("ruleQueriesTruncated")),
+        "triggerEvents": len(trigger_rows), "triggerRuleField": rule_key, "triggerSourceField": source_key,
+        "products": rows, "collectors": collector_rows,
+        "starvedRules": sorted(starved),
+        "rules": rule_info,
+        "errors": raw.get("errors", []),
+    }
+
+
 # Score bands mirror the Exabeam Outcomes Navigator legend (<=0, 1-49, 50-74, 75-100)
 SCORE_BANDS = {TS_VALIDATED: (75, 100), TS_QUIET: (50, 74), TS_UNVALIDATED: (20, 49)}
 DESCRIPTION_MAX_CHARS = 1500
@@ -1344,7 +1641,18 @@ HTML_TEMPLATE = """<!doctype html>
   .grouplist a { font-size: 12px; padding: 3px 8px; border: 1px solid #30323e; border-radius: var(--radius); text-decoration: none; color: var(--text-2); }
   .grouplist a:hover { border-color: var(--link); }
   .grouplist a.hit { border-color: rgba(240,80,110,0.6); color: #ff8fa3; }
-  #sectorPanel tr[data-open], tr[data-tech], tr[data-group] { cursor: pointer; }
+  #sectorPanel tr[data-open], tr[data-tech], tr[data-group], tr[data-product] { cursor: pointer; }
+  .panel.third { grid-column: span 4; }
+  @media (max-width: 1100px) { .panel.third { grid-column: span 12; } }
+  .flist { display:flex; flex-direction: column; gap: 6px; max-height: 720px; overflow-y: auto; margin-bottom: 10px; }
+  .fitem { background: var(--tile); border: 1px solid var(--tile-border); border-radius: var(--radius); padding: 10px 12px; cursor: pointer; }
+  .fitem:hover { border-color: var(--link); }
+  .fhead { display:flex; justify-content: space-between; align-items: center; margin-bottom: 3px; }
+  .fname { font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .mono { font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+  td.rank { font: 600 15px var(--sans); color: var(--muted); width: 36px; }
+  .s-bad { background: rgba(240,80,110,0.18); color: #ff8fa3; }
+  ul.notes { margin: 0 0 10px; padding-left: 18px; color: var(--muted); font-size: 12px; line-height: 1.7; }
   .select { background: var(--panel-2); color: var(--text); border: 1px solid var(--line); border-radius: var(--radius);
             padding: 8px 10px; font: 500 12.5px var(--sans); min-width: 260px; }
   .select:focus { outline: none; border-color: var(--accent); }
@@ -1388,6 +1696,8 @@ HTML_TEMPLATE = """<!doctype html>
 
     <div class="tabs" role="tablist">
       <button class="tab" data-tab="coverage">MITRE ATT&amp;CK&reg; Coverage</button>
+      <button class="tab" data-tab="focus">Focus</button>
+      <button class="tab" data-tab="surface">Attack Surface</button>
       <button class="tab" data-tab="groups">Threat Groups</button>
       <button class="tab" data-tab="health">Detection Health</button>
       <button class="tab" data-tab="changes">Changes<span class="count">%%CHANGE_COUNT%%</span></button>
@@ -1436,6 +1746,10 @@ HTML_TEMPLATE = """<!doctype html>
       <div class="grid" style="margin-top:18px"><div class="panel" id="sectorPanel" style="display:none"></div></div>
     </section>
 
+    <section class="tabpane" id="tab-focus"><div id="focusView"></div></section>
+
+    <section class="tabpane" id="tab-surface"><div id="surfaceView"></div></section>
+
     <section class="tabpane" id="tab-groups"><div id="groupsView"></div></section>
 
     <section class="tabpane" id="tab-health">
@@ -1479,6 +1793,7 @@ HTML_TEMPLATE = """<!doctype html>
 <script id="matrixData" type="application/json">%%MATRIX_JSON%%</script>
 <script id="matrixCsv" type="application/json">%%MATRIX_CSV%%</script>
 <script id="attackData" type="application/json">%%ATTACK_JSON%%</script>
+<script id="surfaceData" type="application/json">%%SURFACE_JSON%%</script>
 <script>
 const MATRIX = JSON.parse(document.getElementById('matrixData').textContent);
 const ATTACK = JSON.parse(document.getElementById('attackData').textContent);   // null when ATT&CK data was unavailable
@@ -1497,6 +1812,7 @@ const ICON = {
   target: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>',
   filter: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18l-7 8v6l-4 2v-8z"/></svg>',
   platform: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="12" rx="1"/><path d="M8 20h8M12 16v4"/></svg>',
+  download: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>',
   eye: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>',
   eyeOff: '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.9 17.9A10.4 10.4 0 0 1 12 19c-7 0-11-7-11-7a19 19 0 0 1 5.1-5.9M9.9 5.2A9.7 9.7 0 0 1 12 5c7 0 11 7 11 7a19 19 0 0 1-2.2 3.2M14.1 14.1a3 3 0 1 1-4.2-4.2"/><path d="M1 1l22 22"/></svg>',
 };
@@ -1641,6 +1957,7 @@ function renderMatrix() {
   renderFilterBar();
   renderSectorPanel();
   renderGroups();
+  renderFocus();
 }
 
 function expandAll(on) {
@@ -1915,6 +2232,240 @@ function dimmed(t, isSub) {
   if (HIGHLIGHT === null) return false;
   return isSub ? !GROUP_IDS[HIGHLIGHT].has(t.id) : !GROUP_PARENTS[HIGHLIGHT].has(t.id);
 }
+
+/* ---------- Focus tab: what to work on next ---------- */
+const LANES = {
+  fix:   {title: 'Fix', sub: 'Covered only by rules that have gone quiet - most likely a broken log source or parser', tag: 's-quiet'},
+  build: {title: 'Build', sub: 'No enabled rule covers these - new detection content needed', tag: 's-none'},
+  prove: {title: 'Prove', sub: 'Covered only by rules that have never fired - validate with Echo', tag: 's-unvalidated'},
+};
+function focusWeight(t) { return FILTER.sector ? sectorGroups(t).length : (t.grp || []).length; }
+function techRules(t) { return t.rules.concat(...t.subs.map(s => s.rules)); }
+function focusLanes() {
+  const seen = new Set(), lanes = {fix: [], build: [], prove: []};
+  MATRIX.forEach(col => col.techs.forEach(t => {
+    if (seen.has(t.id) || !inScope(t)) return;
+    seen.add(t.id);
+    const st = view(t).status;
+    const lane = st === 'none' ? 'build' : st === 'unvalidated' ? 'prove' : st === 'quiet' ? 'fix' : '';
+    if (lane) lanes[lane].push({t, w: focusWeight(t), lane});
+  }));
+  Object.values(lanes).forEach(l => l.sort((a, b) => b.w - a.w || (b.t.grp || []).length - (a.t.grp || []).length || a.t.name.localeCompare(b.t.name)));
+  return lanes;
+}
+function tacticsOf(id) { return MATRIX.filter(c => c.techs.some(x => x.id === id)).map(c => c.name); }
+function focusReason(x) {
+  const rules = techRules(x.t);
+  if (x.lane === 'fix') {
+    const quiet = rules.filter(r => r.status === 'Quiet').sort((a, b) => (b.last || '').localeCompare(a.last || ''));
+    return quiet.length ? `${quiet.length} quiet rule${quiet.length === 1 ? '' : 's'} - last fired ${escHtml((quiet[0].last || '').slice(0, 10))}` : '';
+  }
+  if (x.lane === 'prove') {
+    const never = rules.filter(r => r.status === 'NeverFired' || r.status === 'Unknown');
+    return `${never.length} rule${never.length === 1 ? '' : 's'} never fired`;
+  }
+  return 'No detection content';
+}
+
+function renderFocus() {
+  const root = document.getElementById('focusView');
+  const lanes = focusLanes();
+  const who = FILTER.sector ? `groups targeting ${escHtml(FILTER.sector)}` : 'threat groups';
+  let validated = 0, total = 0;
+  const seen = new Set();
+  MATRIX.forEach(col => col.techs.forEach(t => {
+    if (seen.has(t.id) || !inScope(t)) return;
+    seen.add(t.id); total++;
+    if (view(t).status === 'validated') validated++;
+  }));
+  // Top 10: highest threat use first; quiet rules (likely broken) win ties, then gaps, then unproven
+  const laneRank = {fix: 0, build: 1, prove: 2};
+  const top = [].concat(lanes.fix, lanes.build, lanes.prove)
+    .sort((a, b) => b.w - a.w || laneRank[a.lane] - laneRank[b.lane] || a.t.name.localeCompare(b.t.name)).slice(0, 10);
+
+  const topRows = top.map((x, i) => `<tr data-tech="${escHtml(x.t.id)}"><td class="rank">${i + 1}</td>`
+    + `<td><span class="tag ${LANES[x.lane].tag}">${LANES[x.lane].title}</span></td>`
+    + `<td style="font-family:var(--mono)">${escHtml(x.t.id)}</td><td><strong>${escHtml(x.t.name)}</strong></td>`
+    + `<td>${escHtml(tacticsOf(x.t.id).join(', '))}</td>`
+    + `<td>${ATTACK ? `<span class="threat static">&#9679; ${x.w}</span>` : '-'}</td><td class="note">${focusReason(x)}</td></tr>`).join('');
+
+  const lane = key => {
+    const items = lanes[key].slice(0, 25);
+    return `<div class="panel third"><h2><span class="tag ${LANES[key].tag}">${LANES[key].title}</span> ${lanes[key].length} techniques</h2>`
+      + `<p class="sub">${LANES[key].sub}. Ranked by ${who} using them.</p>`
+      + `<div class="flist">${items.map(x => `<div class="fitem" data-tech="${escHtml(x.t.id)}">`
+        + `<div class="fhead"><span class="mono">${escHtml(x.t.id)}</span>${ATTACK ? `<span class="threat static" title="${x.w} ${who}">&#9679; ${x.w}</span>` : ''}</div>`
+        + `<div class="fname">${escHtml(x.t.name)}</div>`
+        + `<div class="note">${escHtml(tacticsOf(x.t.id).join(' · '))}</div>`
+        + `<div class="note">${focusReason(x)}</div></div>`).join('')
+        || '<div class="footer-note">Nothing here.</div>'}</div>`
+      + (lanes[key].length > 25 ? `<div class="footer-note">+${lanes[key].length - 25} more in the CSV export.</div>` : '')
+      + `</div>`;
+  };
+
+  root.innerHTML =
+      `<div class="filterbar"><span class="chip${FILTER.sector ? ' sector' : ' muted'}">${ICON.target}${FILTER.sector ? escHtml(FILTER.sector) : 'All sectors'}</span>`
+    + `<span class="note">The work list for the next cycle, built from your coverage, rule health and ${ATTACK ? 'threat-group data' : 'rule data'}. `
+    + `Follows the sector and platform choices from <a href="#" class="helplink" onclick="openSetup(false); return false;">Tailor report</a>.</span>`
+    + `<button class="btn btn-export" style="margin-left:auto" onclick="exportFocusCsv()">${ICON.download}Export focus list</button></div>`
+    + `<div class="grid">`
+    + card('Fix', lanes.fix.length, 'techniques whose only rules have gone quiet', 'blue')
+    + card('Build', lanes.build.length, 'techniques with no detection content', '')
+    + card('Prove', lanes.prove.length, 'techniques whose rules have never fired', 'purple')
+    + card('Validated', `${validated}/${total}`, `techniques with a rule that fired in the last ${STALE_DAYS} days`, 'good', '', pct(validated, total))
+    + `</div>`
+    + `<div class="grid"><div class="panel"><h2>Top 10 this cycle</h2>`
+    + `<p class="sub">The ten techniques where work will reduce the most risk: highest use by ${who} first, with gone-quiet detections ahead of gaps when tied. Click a row for details.</p>`
+    + `<div class="table-wrap"><table class="data-table"><thead><tr><th>#</th><th>Action</th><th>ID</th><th>Technique</th><th>Tactics</th><th>Groups</th><th>Why</th></tr></thead><tbody>${topRows}</tbody></table></div></div></div>`
+    + `<div class="grid">${lane('fix')}${lane('build')}${lane('prove')}</div>`;
+}
+
+function exportFocusCsv() {
+  const lanes = focusLanes();
+  const head = ['action', 'rank', 'techniqueId', 'technique', 'tactics', 'threatGroups', FILTER.sector ? 'sectorGroups' : null,
+                'status', 'score', 'rules', 'mitreUrl'].filter(Boolean);
+  const lines = [head.join(',')];
+  ['fix', 'build', 'prove'].forEach(key => lanes[key].forEach((x, i) => {
+    const v = view(x.t);
+    const row = [LANES[key].title, i + 1, x.t.id, x.t.name, tacticsOf(x.t.id).join('; '), (x.t.grp || []).length];
+    if (FILTER.sector) row.push(sectorGroups(x.t).length);
+    row.push(LABEL[v.status], v.score, techRules(x.t).map(r => `${r.name} (${RULE_LABEL[r.status] || r.status})`).join('; '), x.t.link);
+    lines.push(row.map(csvCell).join(','));
+  }));
+  downloadCsv(lines, CSV_NAME.replace('attack_matrix', 'focus_list'));
+}
+function downloadCsv(lines, name) {
+  const blob = new Blob(['\\ufeff' + lines.join('\\r\\n') + '\\r\\n'], {type: 'text/csv;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 0);
+}
+
+/* ---------- Attack Surface tab ---------- */
+const SURFACE = JSON.parse(document.getElementById('surfaceData').textContent);
+const SURFACE_TAG = {'Detecting': 's-validated', 'Monitored, silent': 's-quiet', 'No detections': 's-unvalidated', 'No data': 's-bad'};
+const SURFACE_HELP = {
+  'Detecting': 'Data is arriving and rules that use it have fired recently',
+  'Monitored, silent': 'Data is arriving and rules use it, but none of them has fired recently',
+  'No detections': 'Data is arriving but no enabled correlation rule uses it',
+  'No data': 'Rules name this source, but it sent no events in the window - those rules cannot fire',
+};
+
+function renderSurface() {
+  const root = document.getElementById('surfaceView');
+  if (!SURFACE) {
+    root.innerHTML = `<div class="panel"><h2>Attack surface</h2><p class="sub">Attack surface data was not collected for this report. It is gathered from the `
+      + `Search and Cloud Collector APIs on a live run (not when replaying older raw files without raw_surface.json), unless --no-surface is used.</p></div>`;
+    return;
+  }
+  const P = SURFACE.products;
+  const sending = P.filter(p => p.events > 0);
+  const count = s => P.filter(p => p.status === s).length;
+  const maxEv = Math.max(1, ...P.map(p => p.events));
+  const cc = SURFACE.collectors;
+  const ccOk = cc.filter(c => c.health === 'Healthy').length;
+  const days = SURFACE.windowDays;
+
+  const context = p => [p.vendor, (p.categories || []).join(', '), (p.platforms || []).length ? 'platform: ' + p.platforms.join(', ') : '']
+    .filter(Boolean).map(escHtml).join(' &bull; ');
+  const rows = P.map((p, i) => `<tr data-product="${i}"><td><strong>${escHtml(p.product)}</strong>`
+      + (context(p) ? `<div class="note">${context(p)}</div>` : '') + `</td>`
+      + `<td>${covBar(p.events, maxEv)}${p.events.toLocaleString()}</td>`
+      + `<td>${p.ruleCount}<div class="note">${p.namedRules} named &bull; ${p.fedRules} fed</div></td>`
+      + `<td>${p.active}${p.quiet || p.never ? `<div class="note">${p.quiet} quiet &bull; ${p.never} never</div>` : ''}</td>`
+      + `<td>${p.validatedTechniques.length}/${p.techniques.length}</td>`
+      + `<td>${p.collectors.length ? escHtml(p.collectors.join(', ')) : '<span class="note">-</span>'}</td>`
+      + `<td><span class="tag ${SURFACE_TAG[p.status]}" title="${escHtml(SURFACE_HELP[p.status])}">${escHtml(p.status)}</span></td></tr>`).join('');
+
+  const ccRows = cc.map(c => `<tr><td><strong>${escHtml(c.name)}</strong><div class="note">${escHtml(c.type)}</div></td><td>${escHtml(c.vendor)}</td>`
+      + `<td>${escHtml(c.site || '-')}</td><td>${escHtml(c.lastLogReceived || 'never')}`
+      + (c.hoursSinceLastLog !== null ? `<div class="note">${c.hoursSinceLastLog}h ago</div>` : '') + `</td>`
+      + `<td><span class="tag ${c.health === 'Healthy' ? 's-validated' : c.health === 'Silent' ? 's-quiet' : 's-bad'}">${escHtml(c.health)}</span></td></tr>`).join('');
+
+  const starved = SURFACE.starvedRules.map(r => {
+    const info = SURFACE.rules[r] || {techniques: []};
+    return `<tr><td>${escHtml(r)}</td><td style="font-family:var(--mono)">${info.techniques.map(t => escHtml(t.id)).join(', ') || '-'}</td>`
+      + `<td><span class="tag s-${RULE_CLASS[info.status] || 'none'}">${escHtml(RULE_LABEL[info.status] || info.status || '')}</span></td></tr>`;
+  }).join('');
+
+  const notes = [];
+  if (!SURFACE.eventsAvailable) notes.push('Event volume per product could not be queried - check that the API key has Search permission.');
+  if (SURFACE.eventsMethod) notes.push(`Data sources queried with: ${escHtml(SURFACE.eventsMethod)}.`);
+  notes.push(SURFACE.deepChecked ? `${SURFACE.deepChecked} rule queries were run against the last ${days} days to see which sources feed each rule`
+    + (SURFACE.deepTruncated ? ' (stopped early by the time limit).' : '.') : 'Rule queries were not run (--no-surface-deep), so only rules that name a product are linked to sources.');
+  notes.push(SURFACE.triggerEvents ? `${SURFACE.triggerEvents} correlation-rule trigger events read (30 days); rule field: ${escHtml(SURFACE.triggerRuleField || 'not found')}, `
+    + `source product field: ${escHtml(SURFACE.triggerSourceField || 'not found')}.` : 'No correlation-rule trigger events were returned.');
+  SURFACE.errors.forEach(e => notes.push(`<span style="color:var(--bad)">${escHtml(e.step)}: ${escHtml(String(e.error).slice(0, 240))}</span>`));
+
+  root.innerHTML =
+      `<div class="grid">`
+    + card('Data sources sending', sending.length, `products with events in the last ${days} days`, '')
+    + card('Detecting', count('Detecting'), 'sources whose data has rules firing on it', 'good', '', pct(count('Detecting'), sending.length))
+    + card('Blind spots', count('No detections') + count('Monitored, silent'),
+           `${count('No detections')} with no rules &bull; ${count('Monitored, silent')} with rules that are silent`, 'purple')
+    + card('Sources gone dark', count('No data'), 'named in rules but sending nothing - those rules cannot fire', count('No data') ? 'bad' : 'good')
+    + `</div>`
+    + `<div class="grid"><div class="panel"><h2>Data sources</h2>`
+    + `<p class="sub">Every product sending events in the last ${days} days, plus products your rules expect. <strong>Named</strong> = the rule query names the product; `
+    + `<strong>fed</strong> = the rule's query matches events from it. Click a source for its rules and techniques.</p>`
+    + `<div class="controls"><input type="text" placeholder="Filter (product, vendor, status)..." oninput="filterTable('tblSurface', this.value)"></div>`
+    + `<div class="table-wrap"><table class="data-table" id="tblSurface"><thead><tr><th>Source</th><th>Events (${days}d)</th><th>Rules</th><th>Firing</th>`
+    + `<th>Validated techniques</th><th>Collectors</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div></div></div>`
+    + `<div class="grid">`
+    + `<div class="panel half"><h2>Cloud collectors (${ccOk}/${cc.length} healthy)</h2>`
+    + `<p class="sub">Cloud-to-cloud collection. Silent = no logs received for 24 hours.</p>`
+    + (cc.length ? `<div class="table-wrap"><table class="data-table"><thead><tr><th>Collector</th><th>Vendor</th><th>Site</th><th>Last log</th><th>Health</th></tr></thead><tbody>${ccRows}</tbody></table></div>`
+                 : '<div class="footer-note">No cloud collectors returned.</div>') + `</div>`
+    + `<div class="panel half"><h2>Starved rules (${SURFACE.starvedRules.length})</h2>`
+    + `<p class="sub">Enabled rules whose own query matched no events in the last ${days} days - no data reaches them, so they cannot fire.</p>`
+    + (starved ? `<div class="table-wrap"><table class="data-table"><thead><tr><th>Rule</th><th>Techniques</th><th>Status</th></tr></thead><tbody>${starved}</tbody></table></div>`
+               : `<div class="footer-note">${SURFACE.deepChecked ? 'None - every checked rule has matching data.' : 'Not checked in this run.'}</div>`) + `</div>`
+    + `</div>`
+    + `<div class="grid"><div class="panel"><h2>Collection notes</h2><ul class="notes">${notes.map(n => `<li>${n}</li>`).join('')}</ul></div></div>`;
+}
+
+function openProduct(i) {
+  const p = SURFACE.products[i];
+  const ruleRows = p.rules.map(r => {
+    const info = SURFACE.rules[r] || {techniques: []};
+    return `<tr><td>${escHtml(r)}</td><td><span class="tag s-${RULE_CLASS[info.status] || 'none'}">${escHtml(RULE_LABEL[info.status] || info.status || '')}</span></td>`
+      + `<td>${info.last ? escHtml(info.last) : '<span class="note">never</span>'}</td>`
+      + `<td style="font-family:var(--mono)">${info.techniques.map(t => escHtml(t.id)).join(', ') || '-'}</td></tr>`;
+  }).join('');
+  const techs = p.techniques.map(id => {
+    const pid = id.split('.')[0], ok = p.validatedTechniques.includes(id);
+    return `<tr data-tech="${escHtml(pid)}"><td style="font-family:var(--mono)">${escHtml(id)}</td><td>${escHtml((PARENTS[pid] || {}).name || '')}</td>`
+      + `<td><span class="tag ${ok ? 's-validated' : 's-unvalidated'}">${ok ? 'Validated by this source' : 'Not proven'}</span></td></tr>`;
+  }).join('');
+  document.getElementById('modal').innerHTML =
+      `<button class="xbtn" onclick="closeModal()" aria-label="Close">&times;</button>`
+    + `<div class="ptitle">${escHtml(p.product)}</div>`
+    + `<div class="pid">${escHtml(p.vendor || '')}${p.vendor ? ' &bull; ' : ''}${p.events.toLocaleString()} events in ${SURFACE.windowDays} days`
+    + (p.collectors.length ? ' &bull; collectors: ' + escHtml(p.collectors.join(', ')) : '') + `</div>`
+    + ((p.categories || []).length ? `<div class="pid">Category: ${escHtml(p.categories.join(', '))}</div>` : '')
+    + ((p.platforms || []).length ? `<div class="pid">Platform: ${escHtml(p.platforms.join(', '))}</div>` : '')
+    + `<div class="row"><span class="tag ${SURFACE_TAG[p.status]}">${escHtml(p.status)}</span><span class="note">${escHtml(SURFACE_HELP[p.status])}</span></div>`
+    + `<h4>Correlation rules using this source (${p.rules.length})</h4>`
+    + (ruleRows ? `<div class="table-wrap" style="max-height:none"><table class="data-table"><thead><tr><th>Rule</th><th>Status</th><th>Last fired</th><th>Techniques</th></tr></thead><tbody>${ruleRows}</tbody></table></div>`
+                : '<div class="note">No enabled correlation rule uses this data. Consider content for it, or whether it is needed.</div>')
+    + `<h4>Techniques this source supports (${p.validatedTechniques.length}/${p.techniques.length} validated)</h4>`
+    + (techs ? `<div class="table-wrap" style="max-height:none"><table class="data-table"><tbody>${techs}</tbody></table></div>` : '<div class="note">None.</div>');
+  closePop();
+  document.getElementById('overlay').classList.add('open');
+}
+
+['focusView', 'surfaceView'].forEach(id => document.getElementById(id).addEventListener('click', e => {
+  const prod = e.target.closest('tr[data-product]');
+  if (prod) { openProduct(Number(prod.dataset.product)); return; }
+  const tech = e.target.closest('[data-tech]');
+  if (tech && POS[tech.dataset.tech]) {
+    current = {ci: POS[tech.dataset.tech].ci, ti: POS[tech.dataset.tech].ti, si: undefined};
+    openModal();
+  }
+}));
 
 /* ---------- Tailor dialog ---------- */
 function openSetup(first) {
@@ -2196,6 +2747,7 @@ function filterTable(tableId, query) {
 }
 
 renderMatrix();
+renderSurface();
 showTab((location.hash || '#coverage').slice(1));
 if (ATTACK && !FILTER.saved) openSetup(true);
 </script>
@@ -2329,6 +2881,7 @@ def build_html_report(path: str, ctx: dict) -> None:
         "%%MATRIX_CSV_NAME%%": embed(ctx["matrix_csv_name"]),
         "%%PREV_KPIS%%": embed(prev_kpis),
         "%%ATTACK_JSON%%": embed(attack_for_html(ctx["attack"])),
+        "%%SURFACE_JSON%%": embed(ctx.get("surface")),
         "%%MATRIX_CSV%%": embed(ctx["matrix_csv"]),
         "%%MATRIX_JSON%%": embed(ctx["matrix"]),
     }.items():
@@ -2422,6 +2975,18 @@ def main() -> None:
     exported_defs = [d for d in export_raw.get("ruleDefinitions", []) if isinstance(d, dict)]
     info(f"Rule definitions returned by export: {len(exported_defs)}")
 
+    surface_raw = None
+    if args.replay:
+        surface_path = os.path.join(args.replay, "raw_surface.json")
+        if os.path.exists(surface_path):
+            with open(surface_path, encoding="utf-8") as f:
+                surface_raw = json.load(f)
+    elif not args.no_surface:
+        surface_raw = collect_attack_surface(api, exported_defs, args.surface_days, not args.no_surface_deep,
+                                             args.surface_max_seconds)
+        if args.save_raw:
+            write_json(os.path.join(out_dir, "raw_surface.json"), surface_raw)
+
     if args.save_raw and not args.replay:
         write_json(os.path.join(out_dir, "raw_mitre.json"), mitre_raw)
         write_json(os.path.join(out_dir, "raw_rules.json"), rules_raw)
@@ -2456,6 +3021,14 @@ def main() -> None:
         rule_gaps.append({"issueType": "UnknownTechnique", "ruleId": "", "ruleName": "; ".join(rule_names),
                           "notes": f"Rules map to {tid}, which is not in the MITRE technique list "
                                    "(retired or renumbered in a newer ATT&CK release?) - remap these rules"})
+
+    rule_techniques: dict[str, list[str]] = {}
+    for c in coverage:
+        if c["techniqueKey"] and c["techniqueKey"] not in rule_techniques.setdefault(c["ruleName"], []):
+            rule_techniques[c["ruleName"]].append(c["techniqueKey"])
+    rule_products = rule_query_products(exported_defs)
+    surface = build_attack_surface(surface_raw, health_all, rule_products, rule_techniques,
+                                   {r["techniqueId"]: r["name"] for r in all_mitre})
 
     gaps = build_technique_gaps(all_mitre, tech_status, priorities)
     for g in rule_gaps:
@@ -2604,6 +3177,7 @@ def main() -> None:
         "matrix_csv": {"columns": MATRIX_CSV_COLUMNS,
                        "rows": [[str(r[c]) if isinstance(r[c], bool) else r[c] for c in MATRIX_CSV_COLUMNS] for r in matrix_rows]},
         "attack": attack,
+        "surface": surface,
         "matrix_csv_name": os.path.basename(paths["matrix"]),
     })
 
@@ -2618,10 +3192,6 @@ def main() -> None:
         if build_executive_report is None:
             warn(f"Word briefing skipped - install python-docx (pip install -r requirements.txt): {DOCX_IMPORT_ERROR}")
         else:
-            rule_techniques: dict[str, list[str]] = {}
-            for c in coverage:
-                if c["techniqueKey"] and c["techniqueKey"] not in rule_techniques.setdefault(c["ruleName"], []):
-                    rule_techniques[c["ruleName"]].append(c["techniqueKey"])
             retired_rules = {c["ruleName"] for c in coverage if c["techniqueKey"] in unknown_keys}
             # Transparent mark for light backgrounds (assets/logo.png has a black background for the HTML report)
             logo = os.path.join(SCRIPT_DIR, "assets", "logo_mark.png")
@@ -2629,7 +3199,7 @@ def main() -> None:
                 build_executive_report(paths["word"], {
                     "region": region, "generated": generated, "stale_days": args.stale_days, "kpis": kpis,
                     "prev": prev, "changes": changes, "matrix": matrix, "attack": attack, "sector": sector,
-                    "health_enabled": health_enabled, "rule_products": rule_query_products(exported_defs),
+                    "health_enabled": health_enabled, "rule_products": rule_products,
                     "rule_techniques": rule_techniques, "retired_ids": unknown_keys, "retired_rule_count": len(retired_rules),
                     "logo": logo if os.path.exists(logo) else None,
                 })

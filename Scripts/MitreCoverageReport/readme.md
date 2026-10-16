@@ -24,6 +24,18 @@ A single Python script that:
   Within a band, each extra rule in that state adds 5 points. The overall **MITRE ATT&CK Coverage Score** is the average across all techniques, the same formula the Outcomes Navigator uses (see "How was this calculated?" in the report).
 
   Click a technique for a summary popover, then **See Details** for its full description, mapped rules and sub-techniques. The handle on the right of a tile expands its sub-techniques. **Export MITRE ATT&CK Coverage** downloads the matrix as CSV, sorted by tactic, with platforms, threat groups and MITRE links. The export follows any filters you have applied.
+- **Focus** – the work list for the next cycle. Techniques are split into three lanes:
+  - **Fix**: the rules covering them have gone quiet.
+  - **Build**: no detection content.
+  - **Prove**: the rules covering them have never fired. Validate them with Echo.
+
+  Each lane is ranked by how many threat groups use the technique, filtered to your sector and platforms. The tab also shows a top-10 list for this cycle and can export the full list to CSV.
+- **Attack Surface** – coverage by data source. Products sending data come from a grouped Search query (`vendor`, `product`, `product_category`, `platform`, last 7 days), and cloud-to-cloud collectors from the Cloud Collector API. For each source you can see:
+  - which enabled rules use it, either because the rule names the product or because the rule's own query matches its events
+  - whether those rules fire
+  - which techniques it validates
+
+  Sources are flagged as **detecting**, **monitored but silent**, **no detections** or **no data**. "No data" means rules depend on the source but it sent nothing, so those rules can't fire. The tab also lists **starved rules** (enabled rules whose query matches no events) and collector health (error, or silent for more than 24 hours).
 - **Tailoring to your organisation** – on first open (or with **Tailor report**), choose:
   - **Your sector**: technique tiles show how many threat groups that target your sector use them. A **Priority gaps** panel ranks the uncovered or unvalidated techniques those groups use.
   - **Your platforms** (Windows, macOS, Linux, cloud and so on): techniques that can't apply to your environment are hidden and left out of the score, like hidden techniques in the Outcomes Navigator.
@@ -95,6 +107,10 @@ MAC / LINUX
 | `--replay` | | Rebuild the report from a folder of `raw_*.json` files without calling the API. |
 | `--sector` | | Sector for the Word briefing's threat section, e.g. `"Healthcare"`. Viewers choose their own in the HTML report. |
 | `--no-word` | off | Skip the Word executive briefing. |
+| `--no-surface` | off | Skip the Attack Surface queries. |
+| `--surface-days` | `7` | Days of events used for the Attack Surface tab. |
+| `--no-surface-deep` | off | Don't run each rule's query against Search. This is faster, but only rules that name a product are linked to data sources. |
+| `--surface-max-seconds` | `900` | Time budget for the per-rule queries. |
 | `--attack-data` | `auto` | MITRE ATT&CK platform/threat-group data: `auto` (cached, refreshed every 30 days), `refresh` (always download), `off`. |
 | `--attack-cache` | `.cache/attack_context.json` | Where the MITRE ATT&CK data is cached. |
 
@@ -105,7 +121,7 @@ MAC / LINUX
 <img width="241" height="321" alt="image" src="https://github.com/user-attachments/assets/6d191120-7c68-406d-b9d4-acfe62fa5e69" />
 <img width="488" height="84" alt="image" src="https://github.com/user-attachments/assets/a68afd59-6719-4eb7-ace1-b4c7e0837a49" />
 
-If the numbers look wrong, run with `--save-raw` and check the `raw_*.json` files. Note that they contain your rule definitions, so share them with care.
+If the numbers look wrong, run with `--save-raw` and check the `raw_*.json` files (`raw_surface.json` holds the Attack Surface responses and any API errors). Note that they contain your rule definitions, so share them with care.
 
 ## Output
 
@@ -129,6 +145,7 @@ output/
 - Coverage counts enabled rules only (use `--include-disabled` to change this). Auto-disabled rules are reported separately.
 - A parent technique counts as covered if any of its sub-techniques is covered. The matrix has a toggle to show direct mappings only.
 - "Never fired" doesn't necessarily mean broken: some behaviours are rare. It does mean that the detection hasn't been proven to work.
+- The Attack Surface tab needs an API key with Search and Cloud Collector read access. Events from Exabeam itself (vendor `Exabeam`, such as `Correlation Rule` and `Audit Log`) are not counted as data sources.
 - Trigger data comes from the `lastTriggeredAt` / `timesTriggered` fields on `/correlation-rules/v2/rules`.
 - MITRE ATT&CK data is downloaded from MITRE's GitHub (`mitre-attack/attack-stix-data`, about 55 MB). If it can't be reached, the report is still built, but without platform and sector filters.
 
