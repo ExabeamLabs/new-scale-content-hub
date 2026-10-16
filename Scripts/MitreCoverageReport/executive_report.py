@@ -6,15 +6,14 @@ detection health, threat exposure, an Echo validation plan and recommended actio
 Called from build_mitre_coverage_report.py; needs python-docx.
 """
 import os
-from datetime import datetime
 
 from docx import Document
 from docx.enum.section import WD_ORIENT
 from docx.enum.table import WD_TABLE_ALIGNMENT, WD_CELL_VERTICAL_ALIGNMENT, WD_ROW_HEIGHT_RULE
-from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_BREAK
+from docx.enum.text import WD_BREAK
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
-from docx.shared import Pt, Inches, RGBColor, Emu
+from docx.shared import Pt, Inches, RGBColor
 
 # ---------------------------------------------------------------- palette (light, restrained corporate theme)
 BG = "FFFFFF"
@@ -282,7 +281,7 @@ def setup_document(logo_path: str | None, region: str, generated: str):
     hp = hdr.paragraphs[0]
     hp.paragraph_format.space_after = Pt(0)
     if logo_path and os.path.exists(logo_path):
-        pic = hp.add_run().add_picture(logo_path, height=Inches(0.16))
+        hp.add_run().add_picture(logo_path, height=Inches(0.16))
         hp.add_run("  ")
     set_run(hp.add_run("EXABEAM"), 8.5, WHITE, True, SANS_BOLD, spacing=1.2)
     set_run(hp.add_run("   |   MITRE ATT&CK Coverage Briefing"), 8.5, MUTED, False, SANS)
@@ -564,7 +563,7 @@ def build_executive_report(path: str, ctx: dict) -> None:
                        f"proving the {k['rulesNeverFired']} never-fired rules with Echo and restoring the {k['rulesQuiet']} that have "
                        f"gone quiet. That alone could lift validated coverage towards {cov_pct}%.")
     else:
-        bottom_line = f"Every mapped detection is firing. The next gains come from new content for the uncovered techniques."
+        bottom_line = "Every mapped detection is firing. The next gains come from new content for the uncovered techniques."
     callout(doc, "Bottom line", bottom_line)
 
     # ============================================================ 02 TACTICS

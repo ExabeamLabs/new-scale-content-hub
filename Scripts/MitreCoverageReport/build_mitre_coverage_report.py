@@ -18,7 +18,6 @@ import getpass
 import json
 import os
 import re
-import shutil
 import sys
 from datetime import datetime, timedelta, timezone
 from typing import Any
@@ -1485,6 +1484,7 @@ HTML_TEMPLATE = """<!doctype html>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Exabeam MITRE Coverage Report</title>
+<script>try { if (localStorage.getItem('exabeamMitreReport.theme') === 'light') document.documentElement.setAttribute('data-theme', 'light'); } catch (e) {}</script>
 <style>
   :root {
     /* Palette sampled from the Exabeam New-Scale / Outcomes Navigator UI */
@@ -1495,10 +1495,34 @@ HTML_TEMPLATE = """<!doctype html>
     --grad-a: #2aa90f; --grad-b: #0573da;      /* green -> blue widget border */
     --brand-green: #2aa90f; --accent: #0371e0; --accent-hover: #1a82ec; --track: #013870; --link: #4fa3f7;
     --band-zero: #a3aab5; --band-low: #9b1fc0; --band-mid: #1f72d0; --band-high: #31a717;
-    --bad: #f0506e;
+    --bad: #f0506e; --warn: #f0b429;
+    --tab-hover: #12161f; --hair: #30323e; --knob: #2a2f3c; --hidico: #1b5ea5;
+    --tile-high-border: #636972; --tile-mid: #2f343f; --tile-mid-border: #575c66; --tile-low: #22232c; --tile-low-border: #4e4f56;
+    --hair-soft: rgba(255,255,255,0.08); --hover-soft: rgba(255,255,255,0.06);
+    --fg-validated: #6fd35a; --fg-quiet: #6fb0f5; --fg-unvalidated: #cf86ea; --hot: #ff8fa3;
+    --value-blue: #3d8fe8; --value-purple: #b45ad6;
+    --overlay: rgba(2,3,8,0.7); --shadow: rgba(0,0,0,0.55); --modal-table: rgba(0,0,0,0.15); --modal-head: #1a1b23;
+    --export-border: #043c77;
     --radius: 2px;
     --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     --sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  /* Light theme - chosen with the toggle in the header and remembered per viewer */
+  :root[data-theme="light"] {
+    --bg: #f3f4f6; --panel: #ffffff; --panel-2: #eceef2; --line: #d9dde3;
+    --tile: #f7f8fa; --tile-scored: #dce3ec; --tile-border: #c4cad3; --tile-selected: #bcd2ee; --tick: #9aa1ac;
+    --pop: #ffffff; --pop-border: #c4cad3; --pop-tick: #e1e4e9;
+    --text: #0f1216; --text-2: #2b2f36; --muted: #5b6472; --muted-2: #6b7280;
+    --brand-green: #1f8a0e; --accent: #0b6bcb; --accent-hover: #0959a8; --track: #dbe5f2; --link: #0b6bcb;
+    --band-zero: #9aa1ac; --band-low: #8a2fb0; --band-mid: #1f66c1; --band-high: #2e8b23;
+    --bad: #c0392b; --warn: #b45309;
+    --tab-hover: #e4e7ec; --hair: #dde1e6; --knob: #c4cad3; --hidico: #0b6bcb;
+    --tile-high-border: #a9b4c4; --tile-mid: #e6ebf2; --tile-mid-border: #b9c3d1; --tile-low: #eef0f4; --tile-low-border: #cbd1da;
+    --hair-soft: rgba(0,0,0,0.08); --hover-soft: rgba(0,0,0,0.05);
+    --fg-validated: #2a7a1f; --fg-quiet: #1f5fae; --fg-unvalidated: #7a2a9e; --hot: #c0392b;
+    --value-blue: #1f66c1; --value-purple: #8a2fb0;
+    --overlay: rgba(20,24,32,0.45); --shadow: rgba(20,24,32,0.18); --modal-table: transparent; --modal-head: #eceef2;
+    --export-border: #9cc0e8;
   }
   * { box-sizing: border-box; }
   body { margin:0; font-family: var(--sans); color: var(--text-2); background: var(--bg); font-size: 13px; }
@@ -1521,12 +1545,17 @@ HTML_TEMPLATE = """<!doctype html>
   .title h1 { margin:0; font-size: 18px; font-weight: 400; color: var(--brand-green); text-transform: uppercase; letter-spacing: 0.01em; }
   .title .sub { margin-top:4px; font-size: 12px; color: var(--muted); }
   .meta { text-align:right; color: var(--muted); font-size: 12px; }
+  .topright { display:flex; align-items:center; gap: 18px; }
+  .themebtn { display:inline-flex; align-items:center; gap: 7px; background: var(--panel-2); color: var(--text-2);
+              border: 1px solid var(--line); border-radius: var(--radius); padding: 7px 11px; font: 500 12px var(--sans); cursor: pointer; }
+  .themebtn:hover { border-color: var(--link); color: var(--text); }
+  .themebtn svg { width: 15px; height: 15px; }
 
   /* Tabs (Outcomes Navigator style) */
   .tabs { display:flex; gap: 2px; margin-bottom: 18px; flex-wrap: wrap; }
   .tab { background: var(--panel-2); color: var(--text-2); border: 0; border-top: 2px solid transparent;
          padding: 16px 22px; font: 500 13px var(--sans); cursor: pointer; }
-  .tab:hover { color: var(--text); background: #12161f; }
+  .tab:hover { color: var(--text); background: var(--tab-hover); }
   .tab.active { background: var(--bg); color: var(--text); border-top-color: var(--accent);
                 box-shadow: inset 1px 0 var(--line), inset -1px 0 var(--line); }
   .tab .count { margin-left: 6px; font-size: 11px; color: var(--muted); }
@@ -1551,18 +1580,18 @@ HTML_TEMPLATE = """<!doctype html>
   .card .delta { margin-top: 4px; font-size: 12px; color: var(--muted); }
   .card .hint { margin-top: 10px; font-size: 12px; color: var(--muted); line-height: 1.4; }
   .card .value.score { display:flex; align-items:center; gap: 10px; }
-  .card .value.score svg.shield { width: 30px; height: 30px; color: #9b1fc0; }
+  .card .value.score svg.shield { width: 30px; height: 30px; color: var(--band-low); }
   .helplink { color: var(--link); text-decoration: none; }
   .helplink:hover { text-decoration: underline; }
-  table.factors { width: 100%; border-collapse: collapse; margin-top: 14px; border: 1px solid #30323e; font-size: 13px; }
-  table.factors th, table.factors td { padding: 14px 16px; border-bottom: 1px solid #30323e; text-align: left; }
+  table.factors { width: 100%; border-collapse: collapse; margin-top: 14px; border: 1px solid var(--hair); font-size: 13px; }
+  table.factors th, table.factors td { padding: 14px 16px; border-bottom: 1px solid var(--hair); text-align: left; }
   table.factors th { color: var(--muted); font-weight: 500; }
   table.factors td:last-child, table.factors th:last-child { text-align: right; white-space: nowrap; }
-  table.factors tr.total td { font-weight: 600; color: var(--text); border-top: 1px solid #4e4f56; }
+  table.factors tr.total td { font-weight: 600; color: var(--text); border-top: 1px solid var(--pop-border); }
   .meter { margin-top: 10px; height: 3px; background: var(--track); }
   .meter > i { display:block; height: 100%; background: var(--accent); }
-  .value.good { color: var(--band-high); } .value.blue { color: #3d8fe8; }
-  .value.purple { color: #b45ad6; } .value.bad { color: var(--bad); } .value.warn { color: #f0b429; }
+  .value.good { color: var(--band-high); } .value.blue { color: var(--value-blue); }
+  .value.purple { color: var(--value-purple); } .value.bad { color: var(--bad); } .value.warn { color: var(--warn); }
 
   /* Panels */
   .panel { grid-column: span 12; padding: 16px 18px 8px; min-width: 0; }
@@ -1584,7 +1613,7 @@ HTML_TEMPLATE = """<!doctype html>
   table.data-table tbody td { padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
   table.data-table tbody tr:hover { background: rgba(3,113,224,0.08); }
   ::-webkit-scrollbar { width: 8px; height: 8px; }
-  ::-webkit-scrollbar-thumb { background: #2a2f3c; }
+  ::-webkit-scrollbar-thumb { background: var(--knob); }
   ::-webkit-scrollbar-track { background: transparent; }
 
   /* Coverage & score legend + toolbar */
@@ -1601,7 +1630,7 @@ HTML_TEMPLATE = """<!doctype html>
   .toolbar .group { display:flex; align-items:center; gap: 18px; flex-wrap: wrap; }
   .switch { display:flex; align-items:center; gap: 10px; color: var(--text-2); font-size: 12px; cursor: pointer; user-select: none; }
   .switch input { display:none; }
-  .switch .knob { width: 30px; height: 16px; border-radius: 999px; background: #2a2f3c; position: relative; transition: background .15s; }
+  .switch .knob { width: 30px; height: 16px; border-radius: 999px; background: var(--knob); position: relative; transition: background .15s; }
   .switch .knob::after { content:""; position:absolute; top: 2px; left: 2px; width: 12px; height: 12px; border-radius: 50%;
                          background: #fff; transition: left .15s; }
   .switch input:checked + .knob { background: var(--accent); }
@@ -1614,13 +1643,13 @@ HTML_TEMPLATE = """<!doctype html>
   .col h3 small { display:block; color: var(--muted); font-weight: 400; font-size: 12px; margin-top: 3px; }
   .tile { display:flex; margin-bottom: 6px; border-radius: var(--radius); cursor: pointer;
           background: var(--tile); border: 1px solid var(--tile-border); }
-  .tile.scored, .tile.band-high { background: var(--tile-scored); border-color: #636972; }
+  .tile.scored, .tile.band-high { background: var(--tile-scored); border-color: var(--tile-high-border); }
   /* Outcomes Navigator shades tiles by score band: lower bands sit closer to the page background */
-  .tile.band-mid { background: #2f343f; border-color: #575c66; }
-  .tile.band-low { background: #22232c; border-color: #4e4f56; }
+  .tile.band-mid { background: var(--tile-mid); border-color: var(--tile-mid-border); }
+  .tile.band-low { background: var(--tile-low); border-color: var(--tile-low-border); }
   .tile.hiddentile { opacity: 0.45; }
   .tile.hiddentile .body { padding-right: 34px; }
-  .tile .hidico { position: absolute; top: 9px; right: 9px; color: #1b5ea5; }
+  .tile .hidico { position: absolute; top: 9px; right: 9px; color: var(--hidico); }
   .tile .hidico svg { width: 18px; height: 18px; }
   .tile.dim { opacity: 0.18; }
   .tile.nocov { background: transparent; border: 1px dashed var(--tile-border); }
@@ -1632,9 +1661,9 @@ HTML_TEMPLATE = """<!doctype html>
   .tile.nocov .tname { font-weight: 400; color: var(--muted); }
   /* Sub-technique expander - the side handle used by the MITRE ATT&CK Navigator */
   .tile .expander { width: 18px; flex: none; display:flex; align-items:center; justify-content:center;
-                    border-left: 1px solid rgba(255,255,255,0.08); color: var(--muted); font-size: 10px;
+                    border-left: 1px solid var(--hair-soft); color: var(--muted); font-size: 10px;
                     writing-mode: vertical-rl; letter-spacing: 1px; }
-  .tile .expander:hover { color: var(--text); background: rgba(255,255,255,0.06); }
+  .tile .expander:hover { color: var(--text); background: var(--hover-soft); }
   .subs { margin: -2px 0 8px 10px; padding-left: 8px; border-left: 2px solid var(--tile-border); }
   .subs .tile { margin-bottom: 4px; }
   .subs .tile .body { padding: 8px 12px 6px 12px; }
@@ -1665,15 +1694,15 @@ HTML_TEMPLATE = """<!doctype html>
 
   /* Status tags */
   .tag { display:inline-block; font-size: 11px; padding: 2px 7px; border-radius: var(--radius); font-weight: 500; white-space: nowrap; }
-  .s-validated { background: rgba(49,167,23,0.18); color: #6fd35a; }
-  .s-quiet { background: rgba(31,114,208,0.22); color: #6fb0f5; }
-  .s-unvalidated { background: rgba(155,31,192,0.22); color: #cf86ea; }
+  .s-validated { background: rgba(49,167,23,0.18); color: var(--fg-validated); }
+  .s-quiet { background: rgba(31,114,208,0.22); color: var(--fg-quiet); }
+  .s-unvalidated { background: rgba(155,31,192,0.22); color: var(--fg-unvalidated); }
   .s-none { background: rgba(163,170,181,0.12); color: var(--muted); }
 
   /* Technique popover (Outcomes Navigator style) */
   .pop { position: absolute; z-index: 30; width: 380px; display: none; padding: 20px 22px 18px;
          background: var(--pop); border: 1px solid var(--pop-border); border-radius: var(--radius);
-         box-shadow: 0 16px 40px rgba(0,0,0,0.55); }
+         box-shadow: 0 16px 40px var(--shadow); }
   .pop.open { display: block; }
   .pop .ptitle { font-size: 15px; font-weight: 600; color: var(--text); padding-right: 24px; line-height: 1.35; }
   .pop .pid { margin-top: 4px; font-size: 12px; color: var(--muted-2); }
@@ -1689,11 +1718,11 @@ HTML_TEMPLATE = """<!doctype html>
   .xbtn:hover { color: var(--text); }
 
   /* Technique details modal */
-  .overlay { position: fixed; inset: 0; z-index: 40; background: rgba(2,3,8,0.7); display: none;
+  .overlay { position: fixed; inset: 0; z-index: 40; background: var(--overlay); display: none;
              align-items: flex-start; justify-content: center; padding: 6vh 16px; overflow-y: auto; }
   .overlay.open { display: flex; }
   .modal { position: relative; width: min(820px, 100%); background: var(--pop); border: 1px solid var(--pop-border);
-           border-radius: var(--radius); padding: 24px 26px; box-shadow: 0 24px 60px rgba(0,0,0,0.6); }
+           border-radius: var(--radius); padding: 24px 26px; box-shadow: 0 24px 60px var(--shadow); }
   .modal .ptitle { font-size: 19px; font-weight: 600; color: var(--text); padding-right: 30px; }
   .modal .pid { margin-top: 6px; font-size: 12px; color: var(--muted-2); }
   .modal .row { display:flex; align-items:center; gap: 14px; flex-wrap: wrap; margin-top: 14px; }
@@ -1701,9 +1730,9 @@ HTML_TEMPLATE = """<!doctype html>
   .modal .row .bar.big { flex: 1; min-width: 200px; margin: 0; }
   .modal p.desc { font-size: 13px; line-height: 1.6; color: var(--text-2); margin: 16px 0 6px; }
   .modal h4 { margin-top: 22px; }
-  .modal table.data-table { background: rgba(0,0,0,0.15); }
-  .modal table.data-table thead th { background: #1a1b23; }
-  .modal table.data-table tbody td { border-bottom-color: #30323e; }
+  .modal table.data-table { background: var(--modal-table); }
+  .modal table.data-table thead th { background: var(--modal-head); }
+  .modal table.data-table tbody td { border-bottom-color: var(--hair); }
   .modal .note { color: var(--muted); font-size: 12px; }
   .modal a { color: var(--link); }
 
@@ -1712,15 +1741,15 @@ HTML_TEMPLATE = """<!doctype html>
   .chip { display:inline-flex; align-items:center; gap: 6px; padding: 7px 10px; font-size: 12px; border: 1px solid var(--line);
           background: var(--panel-2); color: var(--text-2); border-radius: var(--radius); }
   .chip.muted { color: var(--muted); }
-  .chip.sector { border-color: rgba(240,80,110,0.5); color: #ff8fa3; }
+  .chip.sector { border-color: rgba(240,80,110,0.5); color: var(--hot); }
   .chip.right { margin-left: auto; }
   .tcode { font-family: var(--mono); font-size: 11px; color: var(--muted-2); margin-bottom: 3px; letter-spacing: 0.02em; }
   .tile .body { position: relative; }
   .tile.has-threat .tname { padding-right: 34px; }
-  .threat { position: absolute; top: 7px; right: 7px; font-size: 10.5px; font-weight: 600; color: #ff8fa3; white-space: nowrap;
+  .threat { position: absolute; top: 7px; right: 7px; font-size: 10.5px; font-weight: 600; color: var(--hot); white-space: nowrap;
             background: rgba(240,80,110,0.16); padding: 1px 5px; border-radius: var(--radius); }
   .threat.static { position: static; display: inline-block; }
-  .pstats span.hot { color: #ff8fa3; }
+  .pstats span.hot { color: var(--hot); }
   .pplat { display:flex; align-items:center; gap: 6px; font-size: 11.5px; color: var(--muted); margin: -4px 0 12px; }
   .choice-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px; }
   .choice { text-align: left; background: var(--tile); border: 1px solid var(--tile-border); color: var(--text-2); padding: 10px 12px;
@@ -1736,9 +1765,9 @@ HTML_TEMPLATE = """<!doctype html>
   .btn-secondary { background: transparent; color: var(--text-2); border-color: var(--pop-border); }
   .btn-secondary:hover { border-color: var(--text-2); }
   .grouplist { display:flex; flex-wrap: wrap; gap: 6px; }
-  .grouplist a { font-size: 12px; padding: 3px 8px; border: 1px solid #30323e; border-radius: var(--radius); text-decoration: none; color: var(--text-2); }
+  .grouplist a { font-size: 12px; padding: 3px 8px; border: 1px solid var(--hair); border-radius: var(--radius); text-decoration: none; color: var(--text-2); }
   .grouplist a:hover { border-color: var(--link); }
-  .grouplist a.hit { border-color: rgba(240,80,110,0.6); color: #ff8fa3; }
+  .grouplist a.hit { border-color: rgba(240,80,110,0.6); color: var(--hot); }
   #sectorPanel tr[data-open], tr[data-tech], tr[data-group], tr[data-product] { cursor: pointer; }
   .panel.third { grid-column: span 4; }
   @media (max-width: 1100px) { .panel.third { grid-column: span 12; } }
@@ -1749,7 +1778,7 @@ HTML_TEMPLATE = """<!doctype html>
   .fname { font-weight: 600; color: var(--text); margin-bottom: 3px; }
   .mono { font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
   td.rank { font: 600 15px var(--sans); color: var(--muted); width: 36px; }
-  .s-bad { background: rgba(240,80,110,0.18); color: #ff8fa3; }
+  .s-bad { background: rgba(240,80,110,0.18); color: var(--hot); }
   ul.notes { margin: 0 0 10px; padding-left: 18px; color: var(--muted); font-size: 12px; line-height: 1.7; }
   .select { background: var(--panel-2); color: var(--text); border: 1px solid var(--line); border-radius: var(--radius);
             padding: 8px 10px; font: 500 12.5px var(--sans); min-width: 260px; }
@@ -1757,12 +1786,12 @@ HTML_TEMPLATE = """<!doctype html>
   .covbar { display:inline-block; vertical-align: middle; width: 80px; height: 5px; background: var(--track); margin-right: 8px; }
   .covbar i { display:block; height: 100%; background: var(--accent); }
   .covbar i.validfill { background: var(--band-high); }
-  .covbar i.threatfill { background: #f0506e; }
-  .mini { display:inline-block; font-size: 10.5px; padding: 1px 6px; margin: 1px 0; border: 1px solid #30323e; border-radius: var(--radius);
+  .covbar i.threatfill { background: var(--bad); }
+  .mini { display:inline-block; font-size: 10.5px; padding: 1px 6px; margin: 1px 0; border: 1px solid var(--hair); border-radius: var(--radius);
           color: var(--muted); white-space: nowrap; }
-  .mini.hit { border-color: rgba(240,80,110,0.6); color: #ff8fa3; }
+  .mini.hit { border-color: rgba(240,80,110,0.6); color: var(--hot); }
   .note { color: var(--muted); font-size: 12px; }
-  .btn-export { background: transparent; color: var(--accent); border-color: #043c77; padding: 9px 16px; font-size: 13px; }
+  .btn-export { background: transparent; color: var(--accent); border-color: var(--export-border); padding: 9px 16px; font-size: 13px; }
   .btn-export:hover { border-color: var(--accent); background: rgba(3,113,224,0.08); }
   .attver { font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--muted); letter-spacing: 0.02em; }
   .attver b { text-transform: none; font-weight: 600; }
@@ -1781,7 +1810,7 @@ HTML_TEMPLATE = """<!doctype html>
     <div class="topbar">
       <div class="brand">
         <div class="logo">
-          <img src="logo.png" alt="Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+          <img src="%%LOGO_SRC%%" alt="Exabeam" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
           <span class="fallback" style="display:none;">LOGO</span>
         </div>
         <div class="title">
@@ -1789,7 +1818,10 @@ HTML_TEMPLATE = """<!doctype html>
           <div class="sub">Exabeam Correlation Rules • Region: %%REGION%% • Generated: %%GENERATED%%</div>
         </div>
       </div>
-      <div class="meta">%%COMPARE_META%%</div>
+      <div class="topright">
+        <div class="meta">%%COMPARE_META%%</div>
+        <button class="themebtn" id="themeBtn" onclick="toggleTheme()" aria-label="Switch between dark and light mode"></button>
+      </div>
     </div>
 
     <div class="tabs" role="tablist">
@@ -2850,6 +2882,23 @@ function filterTable(tableId, query) {
   }
 }
 
+/* ---------- Dark / light theme (dark by default; remembered per viewer) ---------- */
+const THEME_KEY = 'exabeamMitreReport.theme';
+function renderThemeButton() {
+  const light = document.documentElement.getAttribute('data-theme') === 'light';
+  document.getElementById('themeBtn').innerHTML = light
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>Dark mode'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>Light mode';
+}
+function toggleTheme() {
+  const light = document.documentElement.getAttribute('data-theme') !== 'light';
+  if (light) document.documentElement.setAttribute('data-theme', 'light');
+  else document.documentElement.removeAttribute('data-theme');
+  try { localStorage.setItem(THEME_KEY, light ? 'light' : 'dark'); } catch (e) {}
+  renderThemeButton();
+}
+renderThemeButton();
+
 renderMatrix();
 renderSurface();
 showTab((location.hash || '#coverage').slice(1));
@@ -2858,6 +2907,17 @@ if (ATTACK && !FILTER.saved) openSetup(true);
 </body>
 </html>
 """
+
+
+def logo_data_uri() -> str:
+    """The transparent Exabeam mark as a data URI, so the report needs no separate image file."""
+    import base64
+    for name in ("logo_mark.png", "logo.png"):
+        path = os.path.join(SCRIPT_DIR, "assets", name)
+        if os.path.exists(path):
+            with open(path, "rb") as f:
+                return "data:image/png;base64," + base64.b64encode(f.read()).decode("ascii")
+    return ""
 
 
 def build_html_report(path: str, ctx: dict) -> None:
@@ -2972,6 +3032,7 @@ def build_html_report(path: str, ctx: dict) -> None:
     for token, value in {
         "%%REGION%%": esc(ctx["region"]),
         "%%VERSION%%": __version__,
+        "%%LOGO_SRC%%": logo_data_uri(),
         "%%GENERATED%%": esc(ctx["generated"]),
         "%%STALE%%": str(stale),
         "%%COMPARE_META%%": compare_meta,
@@ -3042,12 +3103,6 @@ def main() -> None:
     }
     info(f"Exabeam MITRE Coverage Report v{__version__}")
     info(f"Output folder: {out_dir}")
-
-    # Optional logo: ./assets/logo.png, falling back to the one next to this script
-    for logo in (os.path.join(os.getcwd(), "assets", "logo.png"), os.path.join(SCRIPT_DIR, "assets", "logo.png")):
-        if os.path.exists(logo):
-            shutil.copyfile(logo, os.path.join(out_dir, "logo.png"))
-            break
 
     priorities = load_priorities(args.priority_file)
 

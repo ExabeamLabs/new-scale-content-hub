@@ -189,6 +189,8 @@ Technique scores follow the Exabeam Outcomes Navigator colour bands:
 
 The **MITRE ATT&CK Coverage Score** at the top is the average across all techniques. Click **How was this calculated?** in the report for the breakdown.
 
+The report opens in dark mode. Use the **Light mode** button at the top right to switch. Your browser remembers the choice, as it does your sector and platform choices. The HTML file is fully self-contained, so you can email or share it on its own.
+
 The **Word briefing** summarises:
 
 - the coverage score
