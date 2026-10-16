@@ -16,23 +16,23 @@ from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Pt, Inches, RGBColor, Emu
 
-# ---------------------------------------------------------------- palette (matches the HTML report)
-BG = "05060F"
-PANEL = "0B0E17"
-PANEL_2 = "13151D"
-LINE = "1D2130"
-TEXT = "E6EBF2"
-WHITE = "FFFFFF"
-MUTED = "8B97AB"
-GREEN = "2AA90F"
-BLUE = "0573DA"
-ACCENT = "0371E0"
-TRACK = "013870"
-BAND_HIGH = "31A717"
-BAND_MID = "1F72D0"
-BAND_LOW = "9B1FC0"
-RED = "F0506E"
-AMBER = "F0B429"
+# ---------------------------------------------------------------- palette (light, restrained corporate theme)
+BG = "FFFFFF"
+PANEL = "F6F7F9"
+PANEL_2 = "EDEFF2"
+LINE = "DDE1E6"
+TEXT = "2B2F36"
+WHITE = "111418"      # strongest text colour (headings, key figures)
+MUTED = "6B7280"
+GREEN = "1F8A0E"      # Exabeam green, darkened for legibility on white
+BLUE = "0B6BCB"
+ACCENT = "0B6BCB"
+TRACK = "E3E7ED"
+BAND_HIGH = "2E8B23"
+BAND_MID = "2F6FBF"
+BAND_LOW = "8A4FB0"
+RED = "B42318"
+AMBER = "B45309"
 
 SANS = "Segoe UI"
 SANS_BOLD = "Segoe UI Semibold"
@@ -220,7 +220,7 @@ def segmented_gauge(container, score, width_in=CONTENT_WIDTH_IN, segments=40, he
     row_height(t.rows[0], height_in)
     for i, cell in enumerate(t.rows[0].cells):
         shade(cell, colour if i < lit else PANEL_2)
-        cell_borders(cell, left=(BG, 12), right=(BG, 12))
+        cell_borders(cell, left=(PANEL, 16), right=(PANEL, 16))
         cell_margins(cell, 0, 0, 0, 0)
         p = cell.paragraphs[0]
         p.paragraph_format.space_after = Pt(0)
@@ -242,7 +242,7 @@ def bottom_rule(p, colour=LINE, size=6, space=4):
 
 def field(paragraph, instr, size=8, colour=MUTED):
     run = paragraph.add_run()
-    set_run(run, size, colour, font=MONO)
+    set_run(run, size, colour, font=SANS)
     begin = OxmlElement("w:fldChar")
     begin.set(qn("w:fldCharType"), "begin")
     text = OxmlElement("w:instrText")
@@ -263,18 +263,6 @@ def page_break(doc):
 def setup_document(logo_path: str | None, region: str, generated: str):
     doc = Document()
 
-    # Dark page colour (shown in Word's print layout / reading view)
-    background = OxmlElement("w:background")
-    background.set(qn("w:color"), BG)
-    doc.element.insert(0, background)
-    settings = doc.settings.element
-    show_bg = OxmlElement("w:displayBackgroundShape")
-    zoom = settings.find(qn("w:zoom"))
-    if zoom is not None:
-        zoom.addnext(show_bg)
-    else:
-        settings.insert(0, show_bg)
-
     normal = doc.styles["Normal"]
     normal.font.name = SANS
     normal.font.size = Pt(10)
@@ -294,16 +282,16 @@ def setup_document(logo_path: str | None, region: str, generated: str):
     hp = hdr.paragraphs[0]
     hp.paragraph_format.space_after = Pt(0)
     if logo_path and os.path.exists(logo_path):
-        hp.add_run().add_picture(logo_path, height=Inches(0.22))
+        pic = hp.add_run().add_picture(logo_path, height=Inches(0.16))
         hp.add_run("  ")
-    set_run(hp.add_run("EXABEAM"), 8.5, WHITE, True, SANS_BOLD, spacing=1.5)
-    set_run(hp.add_run("  //  MITRE ATT&CK COVERAGE BRIEFING"), 8.5, GREEN, False, MONO, spacing=0.5)
-    set_run(hp.add_run(f"     REGION {region.upper()}  ·  {generated}"), 7.5, MUTED, False, MONO)
-    bottom_rule(hp, LINE, 6, 6)
+    set_run(hp.add_run("EXABEAM"), 8.5, WHITE, True, SANS_BOLD, spacing=1.2)
+    set_run(hp.add_run("   |   MITRE ATT&CK Coverage Briefing"), 8.5, MUTED, False, SANS)
+    set_run(hp.add_run(f"   |   {region.upper()}  ·  {generated[:10]}"), 8, MUTED, False, SANS)
+    bottom_rule(hp, LINE, 4, 6)
 
     # Footer: classification + page number
     fp = section.footer.paragraphs[0]
-    set_run(fp.add_run("CONFIDENTIAL  ·  INTERNAL SECURITY USE  ·  PAGE "), 7.5, MUTED, font=MONO)
+    set_run(fp.add_run("Confidential  ·  Internal security use  ·  Page "), 7.5, MUTED)
     field(fp, "PAGE", 7.5, MUTED)
 
     doc.core_properties.title = "MITRE ATT&CK Coverage - Executive Briefing"
@@ -315,11 +303,11 @@ def setup_document(logo_path: str | None, region: str, generated: str):
 def section_heading(doc, number: str, title: str, kicker: str = ""):
     p = para(doc, before=16, after=2)
     p.paragraph_format.keep_with_next = True
-    set_run(p.add_run(f"{number} // "), 9, GREEN, True, MONO, spacing=1)
-    set_run(p.add_run(title.upper()), 9, GREEN, True, MONO, spacing=1)
-    h = para(doc, kicker or title, 17, WHITE, False, SANS_BOLD, after=8)
+    set_run(p.add_run(f"{number}   "), 8, GREEN, True, SANS_BOLD, spacing=0.5)
+    set_run(p.add_run(title.upper()), 8, MUTED, True, SANS_BOLD, spacing=1)
+    h = para(doc, kicker or title, 15, WHITE, False, SANS_BOLD, after=8)
     h.paragraph_format.keep_with_next = True
-    bottom_rule(h, BLUE, 8, 6)
+    bottom_rule(h, LINE, 4, 6)
     return h
 
 
@@ -337,12 +325,12 @@ def kpi_tiles(doc, tiles):
     cells = [c for i, c in enumerate(t.rows[0].cells) if i % 2 == 0]
     for cell, (label, value, sub, accent, pct) in zip(cells, tiles):
         shade(cell, PANEL)
-        cell_borders(cell, top=(accent, 18), left=(LINE, 4), right=(LINE, 4), bottom=(LINE, 4))
+        cell_borders(cell, top=(accent, 12))
         cell_margins(cell, 140, 120, 160, 140)
         cell.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.TOP
         clear_cell(cell)
-        para(cell, label.upper(), 7, MUTED, False, MONO, after=4, spacing=0.8)
-        para(cell, str(value), 22, WHITE, False, SANS_BOLD, after=2, line=1.0)
+        para(cell, label.upper(), 7, MUTED, True, SANS_BOLD, after=4, spacing=0.6)
+        para(cell, str(value), 20, WHITE, False, SANS_BOLD, after=2, line=1.0)
         if pct is not None:
             bar(cell, pct, w - 0.32, fill=accent if accent != LINE else ACCENT)
         para(cell, sub, 7.5, MUTED, after=0, before=4, line=1.15)
@@ -361,14 +349,14 @@ def data_table(doc, headers, rows, widths, mono_cols=(), colour_cols=None, zebra
     for i, h in enumerate(headers):
         c = t.rows[0].cells[i]
         shade(c, PANEL_2)
-        cell_borders(c, bottom=(BLUE, 8))
+        cell_borders(c, bottom=(LINE, 8))
         cell_margins(c, 70, 70, 100, 100)
         clear_cell(c)
-        para(c, h.upper(), 7, MUTED, True, MONO, after=0, spacing=0.6).paragraph_format.keep_with_next = True
+        para(c, h.upper(), 7, MUTED, True, SANS_BOLD, after=0, spacing=0.5).paragraph_format.keep_with_next = True
     for r, row in enumerate(rows, start=1):
         for i, val in enumerate(row):
             c = t.rows[r].cells[i]
-            shade(c, PANEL if (r % 2 or not zebra) else "0E121C")
+            shade(c, BG if (r % 2 or not zebra) else "F9FAFB")
             cell_borders(c, bottom=(LINE, 4))
             cell_margins(c, 60, 60, 100, 100)
             clear_cell(c)
@@ -380,13 +368,14 @@ def data_table(doc, headers, rows, widths, mono_cols=(), colour_cols=None, zebra
 
 def callout(doc, label, text, accent=GREEN):
     t = fixed_table(doc, 1, [CONTENT_WIDTH_IN])
+    t.rows[0]._tr.get_or_add_trPr().append(OxmlElement("w:cantSplit"))   # keep the box on one page
     c = t.rows[0].cells[0]
     shade(c, PANEL)
-    cell_borders(c, left=(accent, 24), top=(LINE, 4), bottom=(LINE, 4), right=(LINE, 4))
+    cell_borders(c, left=(accent, 18))
     cell_margins(c, 140, 140, 220, 180)
     clear_cell(c)
-    para(c, label.upper(), 7.5, accent, True, MONO, after=4, spacing=1)
-    para(c, text, 10.5, WHITE, False, SANS, after=0, line=1.3)
+    para(c, label.upper(), 7.5, accent, True, SANS_BOLD, after=4, spacing=0.8)
+    para(c, text, 10, WHITE, False, SANS, after=0, line=1.35)
     para(doc, after=6)
 
 
@@ -468,18 +457,17 @@ def build_executive_report(path: str, ctx: dict) -> None:
 
     # ============================================================ COVER BLOCK
     p = para(doc, before=6, after=0)
-    set_run(p.add_run("> EXECUTIVE BRIEFING"), 9, GREEN, True, MONO, spacing=2)
-    para(doc, "MITRE ATT&CK", 30, WHITE, False, SANS_BOLD, after=0, line=1.0)
-    para(doc, "Detection Coverage Report", 30, MUTED, False, SANS, after=8, line=1.0)
+    set_run(p.add_run("EXECUTIVE BRIEFING"), 8, GREEN, True, SANS_BOLD, spacing=1.2)
+    para(doc, "MITRE ATT&CK Detection Coverage", 24, WHITE, False, SANS_BOLD, after=2, line=1.05)
     meta = rich(doc, [
-        ("REGION ", {"font": MONO, "colour": MUTED, "size": 8}), (ctx["region"].upper(), {"font": MONO, "colour": WHITE, "size": 8, "bold": True}),
-        ("   //   GENERATED ", {"font": MONO, "colour": MUTED, "size": 8}), (ctx["generated"], {"font": MONO, "colour": WHITE, "size": 8, "bold": True}),
-        ("   //   ATT&CK ", {"font": MONO, "colour": MUTED, "size": 8}),
-        (f"v{attack['version']}" if attack else "n/a", {"font": MONO, "colour": WHITE, "size": 8, "bold": True}),
-        ("   //   SECTOR ", {"font": MONO, "colour": MUTED, "size": 8}),
-        ((sector or "ALL").upper(), {"font": MONO, "colour": WHITE, "size": 8, "bold": True}),
-    ], size=8, after=14)
-    bottom_rule(meta, GREEN, 12, 8)
+        ("Region ", {"colour": MUTED, "size": 9}), (ctx["region"].upper(), {"colour": TEXT, "size": 9, "bold": True}),
+        ("     Generated ", {"colour": MUTED, "size": 9}), (ctx["generated"], {"colour": TEXT, "size": 9, "bold": True}),
+        ("     ATT&CK ", {"colour": MUTED, "size": 9}),
+        (f"v{attack['version']}" if attack else "n/a", {"colour": TEXT, "size": 9, "bold": True}),
+        ("     Sector ", {"colour": MUTED, "size": 9}),
+        (sector or "All", {"colour": TEXT, "size": 9, "bold": True}),
+    ], size=9, after=14)
+    bottom_rule(meta, LINE, 4, 8)
 
     # Score block: number + rating + gauge
     t = fixed_table(doc, 1, [2.3, 4.8])
@@ -488,14 +476,13 @@ def build_executive_report(path: str, ctx: dict) -> None:
         shade(c, PANEL)
         cell_margins(c, 160, 160, 200, 200)
         clear_cell(c)
-    cell_borders(left, left=(GREEN, 24), top=(LINE, 4), bottom=(LINE, 4))
-    cell_borders(right, right=(LINE, 4), top=(LINE, 4), bottom=(LINE, 4))
-    para(left, "COVERAGE SCORE", 7.5, MUTED, False, MONO, after=0, spacing=1)
+    cell_borders(left, left=(GREEN, 18))
+    para(left, "COVERAGE SCORE", 7, MUTED, True, SANS_BOLD, after=0, spacing=0.6)
     sp = para(left, after=0, line=1.0)
-    set_run(sp.add_run(str(score)), 44, WHITE, False, SANS_BOLD)
-    set_run(sp.add_run(" /100"), 12, MUTED, False, MONO)
-    para(right, "POSTURE", 7.5, MUTED, False, MONO, after=2, spacing=1)
-    para(right, rating, 20, rating_colour, False, SANS_BOLD, after=6, spacing=2, line=1.0)
+    set_run(sp.add_run(str(score)), 38, WHITE, False, SANS_BOLD)
+    set_run(sp.add_run(" / 100"), 11, MUTED, False, SANS)
+    para(right, "POSTURE", 7, MUTED, True, SANS_BOLD, after=2, spacing=0.6)
+    para(right, rating.title(), 16, rating_colour, False, SANS_BOLD, after=6, line=1.0)
     segmented_gauge(right, score, width_in=4.35)
     para(right, "Average technique score across all ATT&CK techniques, the same method as the Exabeam Outcomes Navigator. "
                 "Scores reward detections that are proven to fire, not just mapped.", 7.5, MUTED, after=0, before=6)
@@ -513,23 +500,23 @@ def build_executive_report(path: str, ctx: dict) -> None:
     section_heading(doc, "01", "Situation report", "Where we stand")
     rich(doc, [
         ("Exabeam correlation content maps to ", {}), (f"{covered} of {n_parents}", {"bold": True, "colour": WHITE}),
-        (f" MITRE ATT&CK techniques ({cov_pct}%). Only ", {}), (f"{validated} ({val_pct}%)", {"bold": True, "colour": BAND_HIGH}),
+        (f" MITRE ATT&CK techniques ({cov_pct}%). Only ", {}), (f"{validated} ({val_pct}%)", {"bold": True, "colour": WHITE}),
         (f" are backed by a rule that has actually fired in the last {stale} days; the remaining ", {}),
-        (f"{unproven}", {"bold": True, "colour": BAND_LOW}),
+        (f"{unproven}", {"bold": True, "colour": WHITE}),
         (" covered techniques depend on detections that are unproven or have gone quiet. The overall MITRE ATT&CK Coverage "
          "Score is ", {}), (f"{score}/100", {"bold": True, "colour": WHITE}), (", a posture of ", {}),
-        (rating, {"bold": True, "colour": rating_colour}), (".", {}),
+        (rating.lower(), {"bold": True, "colour": rating_colour}), (".", {}),
     ])
     rich(doc, [
         (f"Of {k['enabledRules']} enabled correlation rules, ", {}),
-        (f"{k['rulesActive']} fired", {"bold": True, "colour": BAND_HIGH}), (f" in the last {stale} days, ", {}),
-        (f"{k['rulesQuiet']} have gone quiet", {"bold": True, "colour": BAND_MID}), (" and ", {}),
-        (f"{k['rulesNeverFired']} have never fired", {"bold": True, "colour": BAND_LOW}),
+        (f"{k['rulesActive']} fired", {"bold": True, "colour": WHITE}), (f" in the last {stale} days, ", {}),
+        (f"{k['rulesQuiet']} have gone quiet", {"bold": True, "colour": WHITE}), (" and ", {}),
+        (f"{k['rulesNeverFired']} have never fired", {"bold": True, "colour": WHITE}),
         (". Quiet rules are the priority signal for the SOC: a detection that used to fire and has stopped usually means a "
          "log source has dropped, a parser has changed, or the rule logic has drifted away from the environment.", {}),
     ])
     if k.get("rulesAutoDisabled"):
-        rich(doc, [(f"{plural(k['rulesAutoDisabled'], 'rule')} ", {"bold": True, "colour": RED}),
+        rich(doc, [(f"{plural(k['rulesAutoDisabled'], 'rule')} ", {"bold": True, "colour": WHITE}),
                    ("have been auto-disabled by the platform and provide no coverage until reviewed.", {})])
     if strongest and weakest:
         rich(doc, [
@@ -556,7 +543,7 @@ def build_executive_report(path: str, ctx: dict) -> None:
                        f"({', '.join(ctx['retired_ids'])})")
     if hygiene:
         sentence = join_names(hygiene)
-        rich(doc, [(sentence[:1].upper() + sentence[1:] + ". ", {"bold": True, "colour": AMBER}),
+        rich(doc, [(sentence[:1].upper() + sentence[1:] + ". ", {"bold": True, "colour": WHITE}),
                    ("These detections may work, but they do not count towards coverage until they are re-mapped.", {})])
     if ctx.get("prev"):
         ch = ctx.get("changes", [])
@@ -587,20 +574,20 @@ def build_executive_report(path: str, ctx: dict) -> None:
     for i, h in enumerate(["ID", "Tactic", "Covered", "Valid.", "Validated (green) + unproven (blue)"]):
         c = tt.rows[0].cells[i]
         shade(c, PANEL_2)
-        cell_borders(c, bottom=(BLUE, 8))
+        cell_borders(c, bottom=(LINE, 8))
         cell_margins(c, 70, 70, 100, 100)
         clear_cell(c)
-        para(c, h.upper(), 7, MUTED, True, MONO, after=0, spacing=0.6)
+        para(c, h.upper(), 7, MUTED, True, SANS_BOLD, after=0, spacing=0.5)
     for r, tac in enumerate(tactics, start=1):
         cells = tt.rows[r].cells
         for i, c in enumerate(cells):
-            shade(c, PANEL)
+            shade(c, BG)
             cell_borders(c, bottom=(LINE, 4))
             cell_margins(c, 60, 60, 100, 100)
             c.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
             clear_cell(c)
         para(cells[0], tac["id"], 8, MUTED, font=MONO, after=0)
-        para(cells[1], tac["name"], 8.5, WHITE, after=0)
+        para(cells[1], tac["name"], 8.5, TEXT, after=0)
         para(cells[2], f"{tac['covered']}/{tac['total']}", 8, TEXT, font=MONO, after=0)
         para(cells[3], f"{tac['validated']}", 8, BAND_HIGH, font=MONO, after=0)
         stacked_bar(cells[4], [(tac["validatedPct"], BAND_HIGH), (tac["coveredPct"] - tac["validatedPct"], ACCENT)],
@@ -647,7 +634,7 @@ def build_executive_report(path: str, ctx: dict) -> None:
     section_heading(doc, "05" if attack else "04", "Validation plan", "Prove it fires - with Echo")
     rich(doc, [
         ("A rule that has never fired is a hypothesis, not a detection. ", {"bold": True, "colour": WHITE}),
-        ("Use ", {}), ("Echo", {"bold": True, "colour": GREEN}),
+        ("Use ", {}), ("Echo", {"bold": True, "colour": WHITE}),
         (" to replay representative raw logs (or PCAPs) for each technique into the pipeline and confirm the full chain end to "
          "end: log source → collector → parser → correlation rule → alert. Every rule proven this way moves its "
          "techniques from unvalidated to validated, and re-running the same Echo use cases after changes gives the SOC a "
@@ -704,8 +691,8 @@ def build_executive_report(path: str, ctx: dict) -> None:
     actions.append(("Track it", "Re-run this report on a schedule (for example weekly) so rules that stop firing are caught "
                                 "within days, not discovered during an incident."))
     for i, (title, text) in enumerate(actions, start=1):
-        rich(doc, [(f"{i:02d}  ", {"font": MONO, "colour": GREEN, "bold": True}),
-                   (title.upper() + "  ", {"font": MONO, "colour": WHITE, "bold": True, "size": 8.5}),
+        rich(doc, [(f"{i}.  ", {"font": SANS_BOLD, "colour": GREEN, "bold": True}),
+                   (title + ".  ", {"font": SANS_BOLD, "colour": WHITE, "bold": True}),
                    (text, {})], after=6)
 
     # ============================================================ METHODOLOGY
@@ -722,6 +709,6 @@ def build_executive_report(path: str, ctx: dict) -> None:
         "lets each reader tailor the view to their sector and platforms.",
     ]:
         para(doc, text, 8.5, MUTED, after=5)
-    para(doc, MITRE_NOTICE, 6.5, "5A6375", after=0, before=10, line=1.2)
+    para(doc, MITRE_NOTICE, 6.5, "9AA1AC", after=0, before=10, line=1.2)
 
     doc.save(path)

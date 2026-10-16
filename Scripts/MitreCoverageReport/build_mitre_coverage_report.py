@@ -2623,7 +2623,8 @@ def main() -> None:
                 if c["techniqueKey"] and c["techniqueKey"] not in rule_techniques.setdefault(c["ruleName"], []):
                     rule_techniques[c["ruleName"]].append(c["techniqueKey"])
             retired_rules = {c["ruleName"] for c in coverage if c["techniqueKey"] in unknown_keys}
-            logo = os.path.join(out_dir, "logo.png")
+            # Transparent mark for light backgrounds (assets/logo.png has a black background for the HTML report)
+            logo = os.path.join(SCRIPT_DIR, "assets", "logo_mark.png")
             try:
                 build_executive_report(paths["word"], {
                     "region": region, "generated": generated, "stale_days": args.stale_days, "kpis": kpis,
