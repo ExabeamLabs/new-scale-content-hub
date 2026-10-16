@@ -37,24 +37,32 @@ python --version
 python3 --version
 ```
 
-If you see `Python 3.10` or higher (for example `Python 3.12.4`), go to Step 2. Otherwise, install Python:
+If you see `Python 3.10` or higher (for example `Python 3.12.4`), go to Step 2. Otherwise, install Python. You need to do this if:
+
+- you see an older version
+- Windows says *"Python was not found"* or opens the Microsoft Store
+- macOS offers to install "command line developer tools", which include an older Python 3.9
 
 - **Windows:**
   1. Download the installer from [python.org/downloads](https://www.python.org/downloads/) and run it.
   2. **On the first screen, tick "Add python.exe to PATH"** before clicking *Install Now*.
   3. Close PowerShell and open it again.
   4. Run `python --version` to check.
+
+  Python from the Microsoft Store also works, if your organisation prefers it.
 - **Mac:**
   1. Download the macOS installer from [python.org/downloads](https://www.python.org/downloads/) and run it.
   2. Close Terminal and open it again.
   3. Run `python3 --version` to check.
+
+  If it still shows `Python 3.9`, macOS is using its built-in copy. Use the full versioned name instead, for example `python3.12 --version`, and use that name in place of `python3` in Step 4.
 
 > "pip" (Python's package installer) comes with Python, so there is nothing else to install.
 
 ### Step 2: Download this tool
 
 1. On the GitHub page for this repository, click the green **Code** button, then **Download ZIP**.
-2. Unzip the file.
+2. Unzip the file. The download contains all of the Exabeam content in this repository, but you only need one folder.
 3. Open the folder `Scripts` → `MitreCoverageReport`. This is the tool's folder. It contains `build_mitre_coverage_report.py`.
 
 You can move the `MitreCoverageReport` folder anywhere you like.
@@ -87,14 +95,16 @@ python3 -m venv .venv
 
 ### Step 5: Get an Exabeam API key
 
-You need a **client ID** and **client secret** for the Exabeam API. An Exabeam administrator can create these in the platform's API key settings. The key needs **read** access to:
+You need a **client ID** and **client secret** for the Exabeam API. An Exabeam administrator can create these in the platform's API key settings. The tool only reads data and never changes anything in your tenant, but the key needs permission for these APIs:
 
-| API | Needed for |
-|---|---|
-| Correlation rules | Everything (required) |
-| MITRE ATT&CK techniques | Everything (required) |
-| Search | The Attack Surface tab (optional) |
-| Cloud Collectors | The Attack Surface tab (optional) |
+| API | Access needed | Needed for |
+|---|---|---|
+| Correlation rules | List rules and export rule definitions | Everything (required) |
+| MITRE ATT&CK techniques | Read | Everything (required) |
+| Search | Run searches | The Attack Surface tab (optional). Runs about one search per enabled rule. |
+| Cloud Collectors | Read | Cloud collector health on the Attack Surface tab (optional) |
+
+If the optional APIs aren't allowed, the report still runs. The Attack Surface tab explains what it couldn't collect.
 
 Treat the client secret like a password. Never paste it into a file or a shared chat.
 
@@ -182,7 +192,7 @@ Technique scores follow the Exabeam Outcomes Navigator colour bands:
 
 | Score | Colour | Meaning |
 |---|---|---|
-| 75–100 | Green | **Validated**: a mapped rule fired in the last 30 days |
+| 75–100 | Green | **Validated**: a mapped rule fired in the last 30 days (change with `--stale-days`) |
 | 50–74 | Blue | **Quiet**: mapped rules fired before, but not recently |
 | 20–49 | Purple | **Unvalidated**: mapped rules have never fired |
 | 0 | Dashed tile | **Not covered**: no enabled rule is mapped |
@@ -214,7 +224,7 @@ The report describes your detections **and your gaps**, so handle it like any ot
 
 ## Troubleshooting
 
-**`python` is not recognised (Windows) or `command not found` (Mac)**
+**`The term 'python' is not recognized` (Windows) or `command not found` (Mac)**
 - **Windows:** re-run the Python installer, choose *Modify*, and make sure *Add Python to environment variables* is ticked. Then close and reopen PowerShell. You can also try `py` instead of `python` in Step 4.
 - **Mac:** use `python3`, not `python`.
 
@@ -230,13 +240,17 @@ The folder path is too long for Windows.
 **`.venv\Scripts\python` (or `.venv/bin/python`) not found**
 Step 4 hasn't been run in this folder yet. Run it again.
 
-**Token request failed, 401 or 404 errors**
-Usually the wrong `--region`. It must match your tenant's region:
+**"Signing in to Exabeam failed" (HTTP 400, 401 or 404)**
+Usually either:
+
+- **wrong credentials:** the client ID or secret was pasted incorrectly, or the key has expired or been revoked. Run the command again and re-enter them.
+- **wrong `--region`:** it must match your tenant's region.
 
 <img width="241" height="321" alt="Exabeam API regions" src="https://github.com/user-attachments/assets/6d191120-7c68-406d-b9d4-acfe62fa5e69" />
 <img width="488" height="84" alt="Exabeam API base URL" src="https://github.com/user-attachments/assets/a68afd59-6719-4eb7-ace1-b4c7e0837a49" />
 
-It can also mean the client ID or secret was pasted incorrectly. Run the command again and re-enter them.
+**"… failed (HTTP 403): the API key does not have permission"**
+The key works, but it isn't allowed to use one of the APIs in [Step 5](#step-5-get-an-exabeam-api-key). The message names the API, for example *Reading the correlation rules* or *Exporting correlation rule definitions*. Ask your Exabeam administrator to grant that access, or to create a key that has it.
 
 **"Could not reach …" or a certificate error on a corporate network**
 Your network may need a proxy, or it may inspect HTTPS traffic. Ask your IT team for the proxy address and/or your organisation's CA certificate file, then set them before running.
@@ -318,7 +332,21 @@ Add any of these to the run command.
 
 To run on a schedule, for example weekly with Windows Task Scheduler or cron, the tool can't ask for credentials. Instead, provide them as environment variables, `EXABEAM_CLIENT_ID` and `EXABEAM_CLIENT_SECRET`, using your operating system's secure secret storage or your scheduler's credential features. **Never write the secret into a script or a file in this folder.** The region can also be set with `EXABEAM_REGION`.
 
-Use a fixed `--out-dir` so that each run can be compared with the last one.
+Point the scheduler at the tool's own Python, and run it from the tool's folder. Use a fixed `--out-dir` so that each run is compared with the last one.
+
+**Windows Task Scheduler** (action *Start a program*):
+
+| Field | Value |
+|---|---|
+| Program/script | `C:\Tools\MitreCoverageReport\.venv\Scripts\python.exe` |
+| Add arguments | `build_mitre_coverage_report.py --region us-west --sector "Healthcare" --out-dir C:\Tools\MitreCoverageReport\output` |
+| Start in | `C:\Tools\MitreCoverageReport` |
+
+**Mac / Linux cron** (weekly, Monday 06:00):
+
+```bash
+0 6 * * 1 cd /path/to/MitreCoverageReport && .venv/bin/python build_mitre_coverage_report.py --region us-west --sector "Healthcare" --out-dir /path/to/MitreCoverageReport/output
+```
 
 ### Output files
 
