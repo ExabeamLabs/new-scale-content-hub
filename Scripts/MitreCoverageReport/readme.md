@@ -137,7 +137,7 @@ A run usually takes a few minutes. The first run also downloads MITRE's public A
 
 ### Choose your sector for the Word briefing
 
-The **HTML report** can be tailored at any time. Click **Tailor report** to pick a sector and the platforms in your environment.
+The **HTML report** opens on the sector you give with `--sector`, and can be changed at any time. Click **Tailor report** to pick a different sector and the platforms in your environment. Each report remembers its own choices in your browser, so settings never carry over from one report or customer to another.
 
 The **Word briefing is different**. It is written once, when the report runs, and cannot be filtered afterwards. Its threat section covers:
 
@@ -310,7 +310,7 @@ Add any of these to the run command.
 | Option | Default | What it does |
 |---|---|---|
 | `--region` | `eu` | Your tenant's API region (`api.<region>.exabeam.cloud`). |
-| `--sector` | all sectors | Sector for the Word briefing's threat section. See [Choose your sector](#choose-your-sector-for-the-word-briefing). |
+| `--sector` | all sectors | Sector for the Word briefing's threat section, and the sector the HTML report opens on. See [Choose your sector](#choose-your-sector-for-the-word-briefing). |
 | `--stale-days` | `30` | A rule that fired before, but not within this many days, is "Quiet". |
 | `--out-dir` | `./output` | Where reports are saved. Each run gets its own date-stamped folder. |
 | `--no-word` | off | Don't create the Word briefing. |

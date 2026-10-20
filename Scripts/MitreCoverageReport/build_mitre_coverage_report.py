@@ -2048,6 +2048,8 @@ const ATTACK = JSON.parse(document.getElementById('attackData').textContent);   
 const CSV_NAME = %%MATRIX_CSV_NAME%%;
 const PREV_KPIS = %%PREV_KPIS%%;
 const STALE_DAYS = %%STALE%%;
+const DEFAULT_SECTOR = %%DEFAULT_SECTOR%%;
+const REPORT_ID = %%REPORT_ID%%;
 const LABEL = {validated: 'Validated', quiet: 'Quiet', unvalidated: 'Unvalidated', none: 'Not covered'};
 const RULE_CLASS = {Active: 'validated', Quiet: 'quiet', NeverFired: 'unvalidated', Unknown: 'unvalidated'};
 const RULE_LABEL = {Active: 'Active', Quiet: 'Quiet', NeverFired: 'Never fired', Unknown: 'Unknown'};
@@ -2074,12 +2076,16 @@ const PRESETS = [
   {name: 'Linux / servers', platforms: ['Linux', 'Containers', 'ESXi', 'IaaS', 'Network Devices', 'PRE']},
   {name: 'Cloud only', platforms: ['IaaS', 'SaaS', 'Office Suite', 'Identity Provider', 'Containers', 'PRE']},
 ];
-const FILTER_KEY = 'exabeamMitreReport.filters.v1';
+// Saved per report, so choices made in one report (or for one customer) never carry into another
+const FILTER_KEY = 'exabeamMitreReport.filters.v2.' + REPORT_ID;
+// --sector given when the report was built: open on that sector, without the first-run setup dialog
+const START_SECTOR = ATTACK && ATTACK.sectors.some(s => s.name === DEFAULT_SECTOR) ? DEFAULT_SECTOR : '';
 let FILTER = loadFilter();
 let DRAFT = null;
 
 function defaultFilter() {
-  return {sector: '', platforms: ALL_PLATFORMS.slice(), onlySector: false, hidden: [], showHidden: false, saved: false};
+  return {sector: START_SECTOR, platforms: ALL_PLATFORMS.slice(), onlySector: false, hidden: [], showHidden: false,
+          saved: !!START_SECTOR};
 }
 function loadFilter() {
   const f = defaultFilter();
@@ -3245,6 +3251,8 @@ def build_html_report(path: str, ctx: dict) -> None:
     for token, value in {
         "%%REGION%%": esc(ctx["region"]),
         "%%VERSION%%": __version__,
+        "%%DEFAULT_SECTOR%%": embed(ctx.get("sector", "")),
+        "%%REPORT_ID%%": embed(f"{ctx['region']}-{ctx['generated']}"),
         "%%LOGO_SRC%%": logo_data_uri(),
         "%%GENERATED%%": esc(ctx["generated"]),
         "%%STALE%%": str(stale),
@@ -3535,7 +3543,15 @@ def main() -> None:
         for tid, n in sorted(tech_counts.items(), key=lambda kv: kv[1], reverse=True)
     ]
 
+    # --sector: the starting sector for the HTML report and the threat section of the Word briefing
+    sector = ""
+    if args.sector:
+        sector = next((x for x in SECTOR_PATTERNS if x.lower() == args.sector.strip().lower()), "")
+        if not sector:
+            warn(f"Unknown --sector '{args.sector}'. Options: {', '.join(SECTOR_PATTERNS)}")
+
     build_html_report(paths["html"], {
+        "sector": sector,
         "region": region,
         "generated": generated,
         "stale_days": args.stale_days,
@@ -3562,11 +3578,6 @@ def main() -> None:
     # --- Word executive briefing ---
     word_written = False
     if not args.no_word:
-        sector = ""
-        if args.sector:
-            sector = next((x for x in SECTOR_PATTERNS if x.lower() == args.sector.strip().lower()), "")
-            if not sector:
-                warn(f"Unknown --sector '{args.sector}'. Options: {', '.join(SECTOR_PATTERNS)}")
         if build_executive_report is None:
             warn(f"Word briefing skipped - install python-docx (pip install -r requirements.txt): {DOCX_IMPORT_ERROR}")
         else:
