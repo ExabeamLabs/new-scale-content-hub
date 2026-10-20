@@ -2177,9 +2177,9 @@ function tileHtml(t, key, isSub) {
   const showNone = document.getElementById('showNone').checked;
   const subs = isSub ? [] : t.subs.filter(s => platformOk(s));
   const shownSubs = subs.filter(s => showNone || s.status !== 'none');
-  const open = !isSub && expanded.has(t.id) && shownSubs.length;
+  const open = !isSub && expanded.has(key) && shownSubs.length;   // per tile: a technique can sit under several tactics
   const handle = !isSub && subs.length
-    ? `<div class="expander" data-expand="${escHtml(t.id)}" title="${open ? 'Hide' : 'Show'} ${subs.length} sub-techniques">${open ? '&#9650;' : '&#9660;'} ${subs.length}</div>` : '';
+    ? `<div class="expander" data-expand="${key}" title="${open ? 'Hide' : 'Show'} ${subs.length} sub-techniques">${open ? '&#9650;' : '&#9660;'} ${subs.length}</div>` : '';
   const badge = hidden ? `<span class="hidico" title="${escHtml(hidden)}">${ICON.eyeOff}</span>` : threatBadge(t);
   let html = `<div class="tile ${cls}${badge && !hidden ? ' has-threat' : ''}" data-key="${key}">`
     + `<div class="body">${badge}${isSub ? `<div class="tid">${escHtml(t.id)}</div>` : ''}<div class="tname">${escHtml(t.name)}</div>`
@@ -2216,7 +2216,7 @@ function renderMatrix() {
 
 function expandAll(on) {
   expanded.clear();
-  if (on) MATRIX.forEach(col => col.techs.forEach(t => { if (t.subs.length) expanded.add(t.id); }));
+  if (on) MATRIX.forEach((col, ci) => col.techs.forEach((t, ti) => { if (t.subs.length) expanded.add(ci + ':' + ti); }));
   renderMatrix();
 }
 
