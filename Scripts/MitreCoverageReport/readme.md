@@ -371,6 +371,7 @@ output/
 - **What counts as coverage:**
   - Only enabled correlation rules count as coverage.
   - A parent technique counts as covered if any of its sub-techniques is covered.
+  - Exabeam correlation rules are tagged with a tactic and technique, not a sub-technique. The report therefore shows how many enabled rules have MITRE tags, rather than a sub-technique coverage figure that would always be 0%. If sub-technique tags are ever present, sub-technique coverage is shown instead.
   - "Never fired" doesn't necessarily mean broken (some behaviours are rare), but the detection hasn't been proven.
 - **Data sources:**
   - Firing data comes from the `lastTriggeredAt` and `timesTriggered` fields of the correlation rules API.

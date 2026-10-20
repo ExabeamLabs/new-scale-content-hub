@@ -2047,6 +2047,7 @@ const MATRIX = JSON.parse(document.getElementById('matrixData').textContent);
 const ATTACK = JSON.parse(document.getElementById('attackData').textContent);   // null when ATT&CK data was unavailable
 const CSV_NAME = %%MATRIX_CSV_NAME%%;
 const PREV_KPIS = %%PREV_KPIS%%;
+const KPIS = %%KPIS%%;
 const STALE_DAYS = %%STALE%%;
 const DEFAULT_SECTOR = %%DEFAULT_SECTOR%%;
 const REPORT_ID = %%REPORT_ID%%;
@@ -2260,8 +2261,14 @@ function renderCards() {
     + card('Validated coverage', pct(validated, n).toFixed(1) + '%',
         `${validated}/${n} ${scope}techniques have a rule that fired in the last ${STALE_DAYS} days`, 'good',
         deltaText(pct(validated, n), 'validatedPct', ' pts'), pct(validated, n))
-    + card('Sub-techniques covered', pct(subsCovered, subsTotal).toFixed(1) + '%', `${subsCovered}/${subsTotal}`, '',
-        deltaText(pct(subsCovered, subsTotal), 'subsCoveredPct', ' pts'), pct(subsCovered, subsTotal));
+    + (KPIS.subTechniqueTags
+      ? card('Sub-techniques covered', pct(subsCovered, subsTotal).toFixed(1) + '%', `${subsCovered}/${subsTotal}`, '',
+          deltaText(pct(subsCovered, subsTotal), 'subsCoveredPct', ' pts'), pct(subsCovered, subsTotal))
+      // Correlation rules can only be tagged with a tactic and technique, so show tagging coverage instead
+      : card('Rules with MITRE tags', `${KPIS.rulesTagged} of ${KPIS.enabledRules}`,
+          `${KPIS.enabledRules - KPIS.rulesTagged} enabled rules have no MITRE tag and don't count towards coverage. `
+          + 'Correlation rules are tagged by tactic and technique (not sub-technique).', '',
+          deltaText(KPIS.rulesTagged, 'rulesTagged'), pct(KPIS.rulesTagged, KPIS.enabledRules)));
 }
 
 /* ---------- Filter bar + sector priority panel ---------- */
@@ -3267,6 +3274,7 @@ def build_html_report(path: str, ctx: dict) -> None:
         "%%DATA_PANELS%%": data_html,
         "%%MATRIX_CSV_NAME%%": embed(ctx["matrix_csv_name"]),
         "%%PREV_KPIS%%": embed(prev_kpis),
+        "%%KPIS%%": embed(k),
         "%%ATTACK_JSON%%": embed(attack_for_html(ctx["attack"])),
         "%%SURFACE_JSON%%": embed(ctx.get("surface")),
         "%%MATRIX_CSV%%": embed(ctx["matrix_csv"]),
@@ -3460,6 +3468,9 @@ def main() -> None:
         "exportMissing": sum(1 for g in rule_gaps if g["issueType"] == "ExportMissing"),
         "unknownTechniques": len(unknown_keys),
         "coverageRows": len(coverage),
+        "rulesTagged": len({c["ruleId"] or c["ruleName"] for c in coverage}),
+        # Exabeam correlation rules are tagged with tactic + technique only, so sub-technique tags are normally absent
+        "subTechniqueTags": sum(1 for c in coverage if "." in (c["techniqueKey"] or "")),
         "coverageScore": round(score_sum / len(unique_scores)) if unique_scores else 0,
         "coverageScoreSum": score_sum,
         "coverageScoreTechniques": len(unique_scores),
