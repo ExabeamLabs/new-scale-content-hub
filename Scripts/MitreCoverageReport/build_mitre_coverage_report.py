@@ -1878,6 +1878,18 @@ HTML_TEMPLATE = """<!doctype html>
   .grouplist a.hit { border-color: rgba(240,80,110,0.6); color: var(--hot); }
   #sectorPanel tr[data-open], tr[data-tech], tr[data-group], tr[data-product] { cursor: pointer; }
   .panel.third { grid-column: span 4; }
+  .card.span2 { grid-column: span 2; }
+  @media (max-width: 1100px) { .card.span2 { grid-column: span 4; } }
+  @media (max-width: 560px) { .card.span2 { grid-column: span 12; } }
+  .card.clickable { cursor: pointer; }
+  .card.clickable:hover { box-shadow: inset 0 0 0 1px var(--link); }
+  .card.selected { box-shadow: inset 0 0 0 2px var(--accent); }
+  .fchip { background: var(--panel-2); color: var(--text-2); border: 1px solid var(--line); border-radius: var(--radius);
+           padding: 6px 10px; font: 500 12px var(--sans); cursor: pointer; }
+  .fchip:hover { border-color: var(--link); }
+  .fchip.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .fchip.on .note { color: rgba(255,255,255,0.8); }
+  tr[data-rule] { cursor: pointer; }
   @media (max-width: 1100px) { .panel.third { grid-column: span 12; } }
   .flist { display:flex; flex-direction: column; gap: 6px; max-height: 720px; overflow-y: auto; margin-bottom: 10px; }
   .fitem { background: var(--tile); border: 1px solid var(--tile-border); border-radius: var(--radius); padding: 10px 12px; cursor: pointer; }
@@ -1947,9 +1959,8 @@ HTML_TEMPLATE = """<!doctype html>
       <button class="tab" data-tab="focus">Focus</button>
       <button class="tab" data-tab="surface">Attack Surface</button>
       <button class="tab" data-tab="groups">Threat Groups</button>
-      <button class="tab" data-tab="health">Detection Health</button>
+      <button class="tab" data-tab="rules">Rules</button>
       <button class="tab" data-tab="changes">Changes<span class="count">%%CHANGE_COUNT%%</span></button>
-      <button class="tab" data-tab="data">Data Tables</button>
     </div>
 
     <section class="tabpane" id="tab-coverage">
@@ -1991,37 +2002,18 @@ HTML_TEMPLATE = """<!doctype html>
         Unvalidated (mapped rules have never fired) = 20-49, Not covered = 0. Each additional rule in the same state adds 5 points within its band.
         Click a technique for details; use the handle on the right of a tile to show its sub-techniques.
       </div>
-      <div class="grid" style="margin-top:18px"><div class="panel" id="sectorPanel" style="display:none"></div></div>
     </section>
 
-    <section class="tabpane" id="tab-focus"><div id="focusView"></div></section>
+    <section class="tabpane" id="tab-focus"><div id="focusView"></div><div class="grid">%%PRIORITY_PANEL%%</div></section>
 
     <section class="tabpane" id="tab-surface"><div id="surfaceView"></div></section>
 
     <section class="tabpane" id="tab-groups"><div id="groupsView"></div></section>
 
-    <section class="tabpane" id="tab-health">
-      <div class="grid">%%HEALTH_CARDS%%%%HEALTH_PANELS%%</div>
-    </section>
+    <section class="tabpane" id="tab-rules"><div id="rulesView"></div></section>
 
     <section class="tabpane" id="tab-changes">
       <div class="grid">%%CHANGES%%</div>
-    </section>
-
-    <section class="tabpane" id="tab-data">
-      <div class="grid">
-        <div class="panel half">
-          <h2>Rules per tactic</h2>
-          %%TACTIC_TABLE%%
-          <div class="footer-note">uniqueRules = distinct rules per tactic. mappingRows = total mappings per tactic.</div>
-        </div>
-        <div class="panel half">
-          <h2>Top techniques by mapping count</h2>
-          %%TECH_COUNTS_TABLE%%
-        </div>
-        %%PRIORITY_PANEL%%
-        %%DATA_PANELS%%
-      </div>
     </section>
 
     <footer class="disclaimer">
@@ -2043,6 +2035,7 @@ HTML_TEMPLATE = """<!doctype html>
 <script id="matrixCsv" type="application/json">%%MATRIX_CSV%%</script>
 <script id="attackData" type="application/json">%%ATTACK_JSON%%</script>
 <script id="surfaceData" type="application/json">%%SURFACE_JSON%%</script>
+<script id="rulesData" type="application/json">%%RULES_JSON%%</script>
 <script>
 const MATRIX = JSON.parse(document.getElementById('matrixData').textContent);
 const ATTACK = JSON.parse(document.getElementById('attackData').textContent);   // null when ATT&CK data was unavailable
@@ -2211,7 +2204,6 @@ function renderMatrix() {
   document.getElementById('showHidden').checked = FILTER.showHidden;
   renderCards();
   renderFilterBar();
-  renderSectorPanel();
   renderGroups();
   renderFocus();
 }
@@ -2305,7 +2297,7 @@ function resetFilters() {
 
 function renderSectorPanel() {
   const panel = document.getElementById('sectorPanel');
-  if (!ATTACK || !FILTER.sector) { panel.style.display = 'none'; return; }
+  if (!panel || !ATTACK || !FILTER.sector) return;
   const seen = new Set();
   const used = [];
   MATRIX.forEach(col => col.techs.forEach(t => {
@@ -2318,11 +2310,11 @@ function renderSectorPanel() {
   const gaps = used.filter(x => x.v.status !== 'validated')
     .sort((a, b) => b.g - a.g || a.v.score - b.v.score || a.t.name.localeCompare(b.t.name)).slice(0, 25);
   const tactics = id => MATRIX.filter(c => c.techs.some(x => x.id === id)).map(c => c.name).join(', ');
-  const rows = gaps.map(x => `<tr data-open="${escHtml(x.t.id)}"><td style="font-family:var(--mono)">${escHtml(x.t.id)}</td>`
+  const rows = gaps.map(x => `<tr data-tech="${escHtml(x.t.id)}"><td style="font-family:var(--mono)">${escHtml(x.t.id)}</td>`
     + `<td>${escHtml(x.t.name)}</td><td>${escHtml(tactics(x.t.id))}</td><td><span class="threat static">&#9679; ${x.g}</span></td>`
     + `<td><span class="tag s-${x.v.status}">${LABEL[x.v.status]}</span></td><td>${x.v.score}</td></tr>`).join('');
   panel.style.display = '';
-  panel.innerHTML = `<h2>Priority gaps for ${escHtml(FILTER.sector)}</h2>`
+  panel.innerHTML = `<h2>Priority gaps for ${escHtml(FILTER.sector)} <span class="note">(${gaps.length})</span></h2>`
     + `<p class="sub">${used.length} techniques in scope are used by threat groups known to target ${escHtml(FILTER.sector)}; `
     + `${validated} of them are validated. The techniques below are not covered, or only covered by rules that have never fired or gone quiet, `
     + `ranked by how many of those groups use them. Click a row for details.</p>`
@@ -2330,12 +2322,6 @@ function renderSectorPanel() {
       + `<th>Groups</th><th>Status</th><th>Score</th></tr></thead><tbody>${rows}</tbody></table></div>`
       : '<div class="footer-note">Every technique used against this sector is validated.</div>');
 }
-document.getElementById('sectorPanel').addEventListener('click', e => {
-  const row = e.target.closest('tr[data-open]');
-  if (!row || !POS[row.dataset.open]) return;
-  current = {ci: POS[row.dataset.open].ci, ti: POS[row.dataset.open].ti, si: undefined};
-  openModal();
-});
 
 /* ---------- Threat groups tab ---------- */
 const PARENTS = {};   // parent technique id -> matrix technique
@@ -2576,10 +2562,14 @@ function renderFocus() {
     + card('Prove', lanes.prove.length, 'techniques whose rules have never fired', 'purple')
     + card('Validated', `${validated}/${total}`, `techniques with a rule that fired in the last ${STALE_DAYS} days`, 'good', '', pct(validated, total))
     + `</div>`
-    + `<div class="grid"><div class="panel"><h2>Top 10 this cycle</h2>`
-    + `<p class="sub">The ten techniques where work will reduce the most risk: highest use by ${who} first, with gone-quiet detections ahead of gaps when tied. Click a row for details.</p>`
-    + `<div class="table-wrap"><table class="data-table"><thead><tr><th>#</th><th>Action</th><th>ID</th><th>Technique</th><th>Tactics</th><th>Groups</th><th>Why</th></tr></thead><tbody>${topRows}</tbody></table></div></div></div>`
+    + (FILTER.sector && ATTACK
+      ? `<div class="grid"><div class="panel" id="sectorPanel"></div></div>`
+      : `<div class="grid"><div class="panel"><h2>Top 10 this cycle</h2>`
+        + `<p class="sub">The ten techniques where work will reduce the most risk: highest use by ${who} first, with gone-quiet detections ahead of gaps when tied. `
+        + `Choose a sector in <a href="#" class="helplink" onclick="openSetup(false); return false;">Tailor report</a> for priority gaps specific to it. Click a row for details.</p>`
+        + `<div class="table-wrap"><table class="data-table"><thead><tr><th>#</th><th>Action</th><th>ID</th><th>Technique</th><th>Tactics</th><th>Groups</th><th>Why</th></tr></thead><tbody>${topRows}</tbody></table></div></div></div>`)
     + `<div class="grid">${lane('fix')}${lane('build')}${lane('prove')}</div>`;
+  renderSectorPanel();
 }
 
 function exportFocusCsv() {
@@ -2829,6 +2819,129 @@ function openProduct(i) {
     openModal();
   }
 }));
+
+/* ---------- Rules tab: every correlation rule, its health, MITRE tags and data sources ---------- */
+const RULES = JSON.parse(document.getElementById('rulesData').textContent);
+const RULE_TAG = {Active: 's-validated', Quiet: 's-quiet', NeverFired: 's-unvalidated', Unknown: 's-unvalidated',
+                  AutoDisabled: 's-bad', Disabled: 's-none'};
+const RULE_STATUS_LABEL = {Active: 'Active', Quiet: 'Gone quiet', NeverFired: 'Never fired', Unknown: 'Unknown',
+                           AutoDisabled: 'Auto-disabled', Disabled: 'Disabled'};
+const RULE_VIEWS = {
+  enabled:  {label: 'All enabled',   test: r => r.enabled},
+  active:   {label: 'Active',        test: r => r.status === 'Active'},
+  quiet:    {label: 'Gone quiet',    test: r => r.status === 'Quiet'},
+  never:    {label: 'Never fired',   test: r => r.status === 'NeverFired' || r.status === 'Unknown'},
+  untagged: {label: 'No MITRE tag',  test: r => r.enabled && !r.techniques.length},
+  issues:   {label: 'Has issues',    test: r => r.issues.length > 0},
+  auto:     {label: 'Auto-disabled', test: r => r.status === 'AutoDisabled'},
+  disabled: {label: 'Disabled',      test: r => !r.enabled && r.status !== 'AutoDisabled'},
+  all:      {label: 'All rules',     test: r => true},
+};
+let ruleView = 'enabled';
+// Problems first: quiet (most recently stopped first), never fired (oldest first), then active (busiest first)
+const RULE_ORDER = {AutoDisabled: 0, Quiet: 1, NeverFired: 2, Unknown: 3, Active: 4, Disabled: 5};
+function ruleSort(a, b) {
+  return (RULE_ORDER[a.status] ?? 9) - (RULE_ORDER[b.status] ?? 9)
+    || (a.status === 'Quiet' ? (a.days ?? 1e9) - (b.days ?? 1e9) : 0)
+    || (a.status === 'NeverFired' ? (b.age ?? 0) - (a.age ?? 0) : 0)
+    || (b.times ?? 0) - (a.times ?? 0)
+    || a.name.localeCompare(b.name);
+}
+function setRuleView(v) { ruleView = v; renderRules(); }
+
+function renderRules() {
+  const root = document.getElementById('rulesView');
+  const enabled = RULES.filter(r => r.enabled);
+  const n = v => RULES.filter(RULE_VIEWS[v].test).length;
+  const testMode = enabled.filter(r => r.testMode).length;
+  const ruleCard = (view, label, value, hint, tone) =>
+    `<div class="card span2 clickable${ruleView === view ? ' selected' : ''}" onclick="setRuleView('${view}')" title="Show these rules">`
+    + `<div class="label">${escHtml(label)}</div><div class="value ${tone}">${value}</div><div class="hint">${hint}</div></div>`;
+  const list = RULES.filter(RULE_VIEWS[ruleView].test).sort(ruleSort);
+  const chips = (items, max) => items.length
+    ? items.slice(0, max).map(x => `<span class="mini">${escHtml(x)}</span>`).join(' ') + (items.length > max ? ` <span class="note">+${items.length - max}</span>` : '')
+    : '<span class="note">-</span>';
+  const rows = list.map(r => {
+    const i = RULES.indexOf(r);
+    return `<tr data-rule="${i}"><td data-v="${escHtml(r.name.toLowerCase())}"><strong>${escHtml(r.name)}</strong>`
+      + `<div class="note">${escHtml(r.severity || '')}${r.testMode ? ' &bull; test mode' : ''}</div></td>`
+      + `<td data-v="${RULE_ORDER[r.status] ?? 9}"><span class="tag ${RULE_TAG[r.status] || 's-none'}">${escHtml(RULE_STATUS_LABEL[r.status] || r.status)}</span></td>`
+      + `<td data-v="${r.days ?? 1e9}">${r.last ? escHtml(r.last.slice(0, 10)) + `<div class="note">${r.days}d ago</div>` : '<span class="note">never</span>'}</td>`
+      + `<td data-v="${r.times ?? 0}">${r.times ? Number(r.times).toLocaleString() : '<span class="note">0</span>'}</td>`
+      + `<td data-v="${r.perDay ?? 0}">${r.perDay ? r.perDay : '<span class="note">-</span>'}</td>`
+      + `<td data-v="${r.techniques.length}" style="font-family:var(--mono)">${chips(r.techniques.map(t => t.id), 4)}</td>`
+      + `<td data-v="${r.sources.length}">${chips(r.sources, 2)}</td>`
+      + `<td data-v="${r.issues.length}">${r.issues.map(x => `<span class="mini hit">${escHtml(x)}</span>`).join(' ') || '<span class="note">-</span>'}</td></tr>`;
+  }).join('');
+
+  root.innerHTML =
+      `<div class="grid">`
+    + ruleCard('enabled', 'Enabled rules', enabled.length, `${RULES.length} rules in total &bull; ${testMode} in test mode`, '')
+    + ruleCard('active', 'Active', n('active'), `fired in the last ${STALE_DAYS} days`, 'good')
+    + ruleCard('quiet', 'Gone quiet', n('quiet'), `fired before, but not in ${STALE_DAYS} days - check the log source`, n('quiet') ? 'blue' : 'good')
+    + ruleCard('never', 'Never fired', n('never'), 'enabled but never proven - validate them', n('never') ? 'purple' : 'good')
+    + ruleCard('untagged', 'No MITRE tag', n('untagged'), "enabled, but don't count towards coverage", n('untagged') ? 'warn' : 'good')
+    + ruleCard('auto', 'Auto-disabled', n('auto'), 'switched off by the platform', n('auto') ? 'bad' : 'good')
+    + `</div>`
+    + `<div class="grid"><div class="panel"><h2>${escHtml(RULE_VIEWS[ruleView].label)} <span class="note">(${list.length})</span></h2>`
+    + `<p class="sub">Every correlation rule with its health, MITRE techniques and the data sources it uses. Click a card or a filter to narrow the list, `
+    + `a column heading to sort (sort by <em>Per day</em> to find the noisiest rules), or a rule for its details.</p>`
+    + `<div class="controls">${Object.keys(RULE_VIEWS).map(v => `<button class="fchip${ruleView === v ? ' on' : ''}" onclick="setRuleView('${v}')">${escHtml(RULE_VIEWS[v].label)} <span class="note">${n(v)}</span></button>`).join('')}</div>`
+    + `<div class="controls"><input type="text" placeholder="Find a rule, technique, data source or issue..." oninput="filterTable('tblRules', this.value)">`
+    + `<button class="btn btn-export" onclick="exportRulesCsv()">${ICON.download}Export rules</button></div>`
+    + (rows ? `<div class="table-wrap" style="max-height:720px"><table class="data-table" id="tblRules"><thead><tr><th>Rule</th><th>Status</th><th>Last fired</th>`
+        + `<th>Triggers</th><th>Per day</th><th>MITRE</th><th>Data sources</th><th>Issues</th></tr></thead><tbody>${rows}</tbody></table></div>`
+      : '<div class="footer-note">No rules in this view.</div>')
+    + `<div class="footer-note">Every table in this report is also saved as a CSV file in the report's run folder.</div></div></div>`;
+}
+
+function openRule(i) {
+  const r = RULES[i];
+  const fact = (label, value) => `<tr><td class="note" style="width:180px">${label}</td><td>${value}</td></tr>`;
+  const techRows = r.techniques.map(t => {
+    const pid = t.id.split('.')[0];
+    const known = !!POS[pid];
+    return `<tr${known ? ` data-tech="${escHtml(pid)}"` : ''}><td style="font-family:var(--mono);width:100px">${escHtml(t.id)}</td>`
+      + `<td>${escHtml(t.name || '')}${known ? '' : ' <span class="mini hit">not in the current ATT&amp;CK list</span>'}</td>`
+      + `<td style="width:130px">${known ? `<span class="tag s-${view(PARENTS[pid]).status}">${LABEL[view(PARENTS[pid]).status]}</span>` : ''}</td></tr>`;
+  }).join('');
+  document.getElementById('modal').innerHTML =
+      `<button class="xbtn" onclick="closeModal()" aria-label="Close">&times;</button>`
+    + `<div class="ptitle">${escHtml(r.name)}</div>`
+    + `<div class="row"><span class="tag ${RULE_TAG[r.status] || 's-none'}">${escHtml(RULE_STATUS_LABEL[r.status] || r.status)}</span>`
+    + (r.testMode ? '<span class="mini">test mode</span>' : '') + r.issues.map(x => `<span class="mini hit">${escHtml(x)}</span>`).join('') + `</div>`
+    + `<div class="table-wrap" style="max-height:none"><table class="data-table"><tbody>`
+    + fact('Last fired', r.last ? `${escHtml(r.last)} <span class="note">(${r.days} days ago)</span>` : 'never')
+    + fact('Triggers (lifetime)', r.times !== null ? Number(r.times).toLocaleString() : '-')
+    + fact('Suppressed', r.suppressed !== null ? `${Number(r.suppressed).toLocaleString()}${r.suppressedPct !== null ? ` (${r.suppressedPct}%)` : ''}` : '-')
+    + fact('Average per day', r.perDay ?? '-')
+    + fact('Severity', escHtml(r.severity || '-'))
+    + fact('Created', r.created ? `${escHtml(r.created.slice(0, 10))} <span class="note">(${r.age} days ago)</span>` : '-')
+    + fact('Author', escHtml(r.author || '-'))
+    + fact('Data sources', r.sources.length ? r.sources.map(escHtml).join(', ') : '<span class="note">not linked to a data source</span>')
+    + `</tbody></table></div>`
+    + `<h4>MITRE techniques (${r.techniques.length})</h4>`
+    + (techRows ? `<div class="table-wrap" style="max-height:none"><table class="data-table"><tbody>${techRows}</tbody></table></div>`
+       : '<div class="note">This rule has no MITRE tags, so it does not count towards coverage. Add the tactic and technique in the rule\\'s MITRE field.</div>');
+  closePop();
+  document.getElementById('overlay').classList.add('open');
+}
+
+document.getElementById('rulesView').addEventListener('click', e => {
+  const row = e.target.closest('tr[data-rule]');
+  if (row) openRule(Number(row.dataset.rule));
+});
+
+function exportRulesCsv() {
+  const list = RULES.filter(RULE_VIEWS[ruleView].test).sort(ruleSort);
+  const head = ['rule', 'status', 'enabled', 'testMode', 'severity', 'lastFired', 'daysSinceLastFired', 'triggers', 'suppressed',
+                'perDay', 'created', 'techniques', 'dataSources', 'issues', 'author'];
+  const lines = [head.join(',')];
+  list.forEach(r => lines.push([r.name, RULE_STATUS_LABEL[r.status] || r.status, r.enabled, r.testMode, r.severity, r.last, r.days ?? '',
+    r.times ?? '', r.suppressed ?? '', r.perDay ?? '', r.created, r.techniques.map(t => t.id).join('; '), r.sources.join('; '),
+    r.issues.join('; '), r.author].map(csvCell).join(',')));
+  downloadCsv(lines, CSV_NAME.replace('attack_matrix', 'rules' + (ruleView === 'enabled' ? '' : '_' + ruleView)));
+}
 
 /* ---------- Tailor dialog ---------- */
 function openSetup(first) {
@@ -3128,6 +3241,7 @@ renderThemeButton();
 
 renderMatrix();
 renderSurface();
+renderRules();
 showTab((location.hash || '#coverage').slice(1));
 if (ATTACK && !FILTER.saved) openSetup(true);
 </script>
@@ -3151,27 +3265,6 @@ def build_html_report(path: str, ctx: dict) -> None:
     k = ctx["kpis"]
     prev_kpis = ctx["prev"]["kpis"] if ctx["prev"] else None
     stale = ctx["stale_days"]
-
-    health_cards = "".join([
-        card("Enabled rules", k["enabledRules"],
-             f"{k['testModeRules']} in test mode • {k['rulesReturned']} rules returned by API • "
-             f"{k['rulesActive']} fired in the last {stale} days", "",
-             delta_text(k["enabledRules"], prev_kpis, "enabledRules")),
-        card("Rules gone quiet", k["rulesQuiet"],
-             f"Fired before, but not in the last {stale} days - check log sources and rule logic",
-             "blue" if k["rulesQuiet"] else "good", delta_text(k["rulesQuiet"], prev_kpis, "rulesQuiet")),
-        card("Rules never fired", k["rulesNeverFired"], "Enabled but never triggered - unvalidated detections",
-             "purple" if k["rulesNeverFired"] else "good", delta_text(k["rulesNeverFired"], prev_kpis, "rulesNeverFired")),
-        card("Rules auto-disabled", k["rulesAutoDisabled"], "Turned off by the platform - not counted as coverage",
-             "bad" if k["rulesAutoDisabled"] else "good", delta_text(k["rulesAutoDisabled"], prev_kpis, "rulesAutoDisabled")),
-        card("Rule hygiene issues", k["noMitreTag"] + k["exportMissing"] + k["unknownTechniques"],
-             f"{k['noMitreTag']} with no MITRE tags • {k['exportMissing']} missing from export"
-             f" • {k['unknownTechniques']} mapped to retired techniques",
-             "warn" if (k["noMitreTag"] + k["exportMissing"] + k["unknownTechniques"]) else "good"),
-    ])
-    if k["rulesUnknown"]:
-        health_cards += card("Trigger data unavailable", k["rulesUnknown"],
-                             "Enabled rules where the API returned no trigger history - treated as unvalidated", "warn")
 
     # Changes since last run
     if ctx["prev"]:
@@ -3202,39 +3295,6 @@ def build_html_report(path: str, ctx: dict) -> None:
         compare_meta = "<div>No previous run to compare with</div>"
         change_count = ""
 
-    # Detection health panels
-    health = ctx["health_enabled"]
-    quiet = sorted([h for h in health if h["status"] == RS_QUIET], key=lambda h: h["daysSinceLastTrigger"])
-    never = sorted([h for h in health if h["status"] == RS_NEVER],
-                   key=lambda h: (h["ruleAgeDays"] == "", -(h["ruleAgeDays"] or 0)))
-    auto = ctx["health_auto_disabled"]
-    noisy = sorted([h for h in health if h["avgTriggersPerDay"] != ""],
-                   key=lambda h: h["avgTriggersPerDay"], reverse=True)[:15]
-    hcols = ["ruleName", "severity", "lastTriggeredAt", "daysSinceLastTrigger", "timesTriggered", "mitreMappings", "testMode"]
-    ncols = ["ruleName", "severity", "createdAt", "ruleAgeDays", "mitreMappings", "testMode"]
-
-    health_html = f"""
-      <div class="panel half">
-        <h2>Gone quiet ({len(quiet)})</h2>
-        <p class="sub">Fired before but not in the last {stale} days. Most recently stopped first - these are the likeliest to be broken.</p>
-        {to_html_table(quiet, "tblQuiet", cols=hcols)}
-      </div>
-      <div class="panel half">
-        <h2>Never fired ({len(never)})</h2>
-        <p class="sub">Enabled rules with no recorded trigger. Oldest first - these are the best candidates for validation testing.</p>
-        {to_html_table(never, "tblNever", cols=ncols)}
-      </div>
-      <div class="panel half">
-        <h2>Noisiest rules</h2>
-        <p class="sub">Average triggers per day since the rule was created - candidates for tuning.</p>
-        {to_html_table(noisy, "tblNoisy", cols=["ruleName", "avgTriggersPerDay", "timesTriggered", "timesSuppressed", "suppressedPct", "lastTriggeredAt"])}
-      </div>
-      <div class="panel half">
-        <h2>Auto-disabled ({len(auto)})</h2>
-        <p class="sub">Rules the platform switched off. They are not counted as coverage.</p>
-        {to_html_table(auto, "tblAuto", cols=["ruleName", "severity", "lastTriggeredAt", "timesTriggered", "author"])}
-      </div>"""
-
     # Priority gaps
     priority_html = ""
     if ctx["priorities"]:
@@ -3246,17 +3306,6 @@ def build_html_report(path: str, ctx: dict) -> None:
         <p class="sub">Uncovered techniques from your priority list, highest priority first.</p>
         {to_html_table(pg, "tblPriority", cols=["priority", "techniqueId", "name", "tactics", "coveredViaSubtechnique", "externalLink"])}
       </div>"""
-
-    data_html = "".join([
-        filterable_panel("All MITRE techniques", "status = best status of any mapped rule.", ctx["all_mitre_view"],
-                         "tblAllMitre", "Filter (validated, T1110, TA0006, Brute Force)..."),
-        filterable_panel("Rule health", f"Every rule returned by the API. Quiet = no trigger for {stale}+ days.",
-                         ctx["health_all"], "tblHealth", "Filter (Quiet, NeverFired, rule name)..."),
-        filterable_panel("Current coverage", "Each row maps one rule to one technique.", ctx["coverage"],
-                         "tblCoverage", "Filter (rule name, TA0006, T1003)..."),
-        filterable_panel("Current gaps", "Uncovered techniques plus rule hygiene issues.", ctx["gaps"],
-                         "tblGaps", "Filter (NotCovered, NoMitreTag, UnknownTechnique, T1556)..."),
-    ])
 
     def embed(value: Any) -> str:
         return json.dumps(value, separators=(",", ":")).replace("</", "<\\/")
@@ -3272,13 +3321,9 @@ def build_html_report(path: str, ctx: dict) -> None:
         "%%STALE%%": str(stale),
         "%%COMPARE_META%%": compare_meta,
         "%%CHANGE_COUNT%%": change_count,
-        "%%HEALTH_CARDS%%": health_cards,
         "%%CHANGES%%": changes_html,
-        "%%HEALTH_PANELS%%": health_html,
-        "%%TACTIC_TABLE%%": to_html_table(ctx["tactic_summary"], "tblTacticSummary"),
-        "%%TECH_COUNTS_TABLE%%": to_html_table(ctx["tech_counts"], "tblTechCounts", max_rows=50),
         "%%PRIORITY_PANEL%%": priority_html,
-        "%%DATA_PANELS%%": data_html,
+        "%%RULES_JSON%%": embed(ctx["rules"]),
         "%%MATRIX_CSV_NAME%%": embed(ctx["matrix_csv_name"]),
         "%%PREV_KPIS%%": embed(prev_kpis),
         "%%KPIS%%": embed(k),
@@ -3561,6 +3606,40 @@ def main() -> None:
         for tid, n in sorted(tech_counts.items(), key=lambda kv: kv[1], reverse=True)
     ]
 
+    # --- One row per rule for the Rules tab ---
+    no_tag = {g["ruleName"] for g in rule_gaps if g["issueType"] == "NoMitreTag"}
+    not_exported = {g["ruleName"] for g in rule_gaps if g["issueType"] == "ExportMissing"}
+    tech_names = {r["techniqueId"]: r["name"] for r in all_mitre}
+    tech_names.update({c["techniqueKey"]: c["technique"] for c in coverage if c["techniqueKey"] not in tech_names})
+    rule_sources: dict[str, list[str]] = {}
+    if surface:
+        for p in surface["products"]:
+            for r in p["rules"]:
+                rule_sources.setdefault(r, []).append(p["product"])
+    starved_rules = set(surface["starvedRules"]) if surface else set()
+    rules_view = []
+    for h in health_all:
+        name = h["ruleName"]
+        techs = rule_techniques.get(name, [])
+        issues = []
+        if h["enabled"] and name in no_tag:
+            issues.append("No MITRE tag")
+        if h["enabled"] and name in not_exported:
+            issues.append("Missing from export")
+        issues += [f"Retired technique {t}" for t in techs if t in unknown_keys]
+        if name in starved_rules:
+            issues.append("No matching data")
+        num = lambda v: v if isinstance(v, (int, float)) else None  # noqa: E731
+        rules_view.append({
+            "name": name, "status": h["status"], "enabled": h["enabled"], "testMode": h["testMode"],
+            "severity": h["severity"], "last": h["lastTriggeredAt"], "days": num(h["daysSinceLastTrigger"]),
+            "times": num(h["timesTriggered"]), "suppressed": num(h["timesSuppressed"]), "suppressedPct": num(h["suppressedPct"]),
+            "perDay": num(h["avgTriggersPerDay"]), "created": h["createdAt"], "age": num(h["ruleAgeDays"]), "author": h["author"],
+            "techniques": [{"id": t, "name": tech_names.get(t, "")} for t in techs],
+            "sources": sorted(set(rule_sources.get(name, []) or rule_products.get(name, [])), key=str.lower),
+            "issues": issues,
+        })
+
     # --sector: the starting sector for the HTML report and the threat section of the Word briefing
     sector = ""
     if args.sector:
@@ -3570,6 +3649,7 @@ def main() -> None:
 
     build_html_report(paths["html"], {
         "sector": sector,
+        "rules": rules_view,
         "region": region,
         "generated": generated,
         "stale_days": args.stale_days,

@@ -181,12 +181,11 @@ Version 1 of this script asked you to edit the region, client ID and secret into
 | HTML tab | What it shows |
 |---|---|
 | **MITRE ATT&CK Coverage** | Every technique as a tile, coloured by how well it is covered. Click a tile for its details, the rules mapped to it, and the threat groups that use it. **Export MITRE ATT&CK Coverage** downloads it as CSV. |
-| **Focus** | What to work on next, in three lanes: **Fix** (rules that have gone quiet), **Build** (no detection yet) and **Prove** (rules that have never fired). Ranked by how many threat groups use each technique. |
+| **Focus** | What to work on next. With a sector chosen, it opens on the **priority gaps** for that sector: techniques its threat groups use that you don't yet detect, or detect only with rules that haven't fired. Below are three lanes: **Fix** (rules that have gone quiet), **Build** (no detection yet) and **Prove** (rules that have never fired), ranked by how many threat groups use each technique. |
 | **Attack Surface** *(beta)* | Compares the data Exabeam receives with the rules that use it, in priority order: **rules that can't fire** (their data source sent nothing), **unused data** (sources no rule uses, by volume), **silent** sources (rules exist but haven't fired) and **working** sources. Also shows cloud collector health and rules whose query matches no data at all. |
 | **Threat Groups** | Threat groups known to target your sector, the techniques they use most, and how much of each group's activity you cover. |
-| **Detection Health** | Rules that have gone quiet, never fired, are noisiest, or were switched off by the platform. |
+| **Rules** | Every correlation rule in one searchable, sortable table: status (active, gone quiet, never fired, auto-disabled), when it last fired, trigger counts, MITRE techniques, data sources and issues such as missing MITRE tags or retired technique IDs. Click a card or filter to narrow the list, sort by *Per day* to find noisy rules, or click a rule for its details. |
 | **Changes** | What changed since the previous run: rules that stopped firing or were auto-disabled, coverage gained or lost, and data sources that stopped sending, started sending or lost their detections. |
-| **Data Tables** | Every technique, rule and gap, with filters. |
 
 Technique scores follow the Exabeam Outcomes Navigator colour bands:
 
