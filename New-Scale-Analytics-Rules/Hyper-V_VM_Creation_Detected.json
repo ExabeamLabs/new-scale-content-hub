@@ -1,0 +1,43 @@
+{
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "templateId": "C_FF-PC-HyperV-VMCreate_6d47",
+            "name": "Hyper-V VM Creation Detected",
+            "description": "Detects the creation of a Hyper-V virtual machine via VMCreate.exe, which could indicate unauthorized virtualization activity or system changes.",
+            "applicableEvents": [
+                {
+                    "process_name": [
+                        "VMCreate.exe"
+                    ],
+                    "activity_type": [
+                        "process-create"
+                    ]
+                }
+            ],
+            "detectionReason": "Hyper-V VM creation detected by ${event.process_name} on ${event.src_host} by user ${entity.user.source}",
+            "type": "factFeature",
+            "mitre": [
+                {
+                    "techniqueKey": "T1562",
+                    "technique": "Impair Defenses",
+                    "tactic": "Defense Evasion",
+                    "tacticKey": "TA0005"
+                }
+            ],
+            "useCases": [
+                "Evasion"
+            ],
+            "value": "true",
+            "actOnCondition": "inList(toLower(process_name), 'vmcreate.exe') && containsAny(toLower(process_path),'hyper-v') && outcome = 'success'",
+            "suppressThreshold": "",
+            "trainOnCondition": "true",
+            "scoreUnless": [
+            ],
+            "familyId": "process-creation-activity",
+            "ruleGroupId": "pc-binary-execution-group",
+            "severity": "Medium",
+            "testMode": false
+        }
+    ]
+}
