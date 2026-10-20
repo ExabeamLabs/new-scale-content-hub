@@ -1,0 +1,44 @@
+{
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "templateId": "C_PF-PC-FirstCloudflared-U_d7fd",
+            "name": "First time Cloudflare tunnel execution for user",
+            "description": "Detects the first-time execution of the Cloudflare tunnel binary (cloudflared) by a user, which may indicate unauthorized VPN or tunnel installation.",
+            "applicableEvents": [
+                {
+                    "activity_type": [
+                        "process-create"
+                    ],
+                    "outcome": [
+                        "success"
+                    ]
+                }
+            ],
+            "detectionReason": "First-time execution of Cloudflare tunnel binary (${event.process_name}) observed on ${event.src_host} by ${entity.user.source}",
+            "type": "profiledFeature",
+            "mitre": [
+                {
+                    "techniqueKey": "T1572",
+                    "technique": "Protocol Tunneling",
+                    "tactic": "Command and Control",
+                    "tacticKey": "TA0011"
+                }
+            ],
+            "useCases": [
+                "Evasion"
+            ],
+            "actOnCondition": "toLower(process_name) = 'cloudflared'",
+            "featureValue": "toLower(process_name)",
+            "scopeValue": "EntityId('type: User && direction: Source')",
+            "trainOnCondition": "toLower(process_name) = 'cloudflared'",
+            "anomalyThreshold": "90 days",
+            "checkScopeMaturity": true,
+            "maturityThreshold": "14 days",
+            "familyId": "process-creation-activity",
+            "ruleGroupId": "pc-binary-execution-group",
+            "severity": "Medium",
+            "testMode": false
+        }
+    ]
+}
