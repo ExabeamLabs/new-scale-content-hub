@@ -192,7 +192,7 @@ Technique scores follow the Exabeam Outcomes Navigator colour bands:
 
 | Score | Colour | Meaning |
 |---|---|---|
-| 75–100 | Green | **Validated**: a mapped rule fired in the last 30 days (change with `--stale-days`) |
+| 75–100 | Green | **Validated**: a mapped rule fired in the last 90 days (change with `--stale-days`) |
 | 50–74 | Blue | **Quiet**: mapped rules fired before, but not recently |
 | 20–49 | Purple | **Unvalidated**: mapped rules have never fired |
 | 0 | Dashed tile | **Not covered**: no enabled rule is mapped |
@@ -311,7 +311,7 @@ Add any of these to the run command.
 |---|---|---|
 | `--region` | `eu` | Your tenant's API region (`api.<region>.exabeam.cloud`). |
 | `--sector` | all sectors | Sector for the Word briefing's threat section, and the sector the HTML report opens on. See [Choose your sector](#choose-your-sector-for-the-word-briefing). |
-| `--stale-days` | `30` | A rule that fired before, but not within this many days, is "Quiet". |
+| `--stale-days` | `90` | How recently a rule must have fired to count as active and validated. A rule that fired before, but not within this many days, is "Quiet". 90 days suits rare, niche detections; use 30 for a stricter view. |
 | `--out-dir` | `./output` | Where reports are saved. Each run gets its own date-stamped folder. |
 | `--no-word` | off | Don't create the Word briefing. |
 | `--no-surface` | off | Skip the Attack Surface tab. |

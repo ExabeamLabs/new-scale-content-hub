@@ -64,7 +64,7 @@ NAME_CONTAINS = ""
 EXPORT_CHUNK_SIZE = 50
 
 # A rule that has fired before but not within this many days is flagged as "Quiet"
-STALE_DAYS = 30
+STALE_DAYS = 90
 
 __version__ = "2.0.0"
 
@@ -1135,14 +1135,14 @@ def grouped_search(api: "ExabeamApi", select: list[str], group: list[str], where
 
 
 def collect_attack_surface(api: "ExabeamApi", defs: list[dict], days: int, deep: bool, max_seconds: int,
-                           workers: int = 4) -> dict:
+                           workers: int = 4, trigger_days: int = STALE_DAYS) -> dict:
     """Run the Attack Surface queries. Only aggregated counts are kept (no raw log content), plus any API errors."""
     import time
     now = datetime.now(timezone.utc)
     window = {"startTime": (now - timedelta(days=days)).strftime("%Y-%m-%dT%H:%M:%SZ"),
               "endTime": now.strftime("%Y-%m-%dT%H:%M:%SZ")}
-    trig_window = {"startTime": (now - timedelta(days=30)).strftime("%Y-%m-%dT%H:%M:%SZ"), "endTime": window["endTime"]}
-    out: dict = {"schema": 2, "collectedAt": now.strftime("%Y-%m-%d %H:%M:%SZ"), "windowDays": days,
+    trig_window = {"startTime": (now - timedelta(days=trigger_days)).strftime("%Y-%m-%dT%H:%M:%SZ"), "endTime": window["endTime"]}
+    out: dict = {"schema": 2, "collectedAt": now.strftime("%Y-%m-%d %H:%M:%SZ"), "windowDays": days, "triggerDays": trigger_days,
                  "events": None, "triggers": None, "cloudCollectors": None, "ruleQueries": {}, "errors": []}
     state: dict = {}
 
@@ -1162,7 +1162,7 @@ def collect_attack_surface(api: "ExabeamApi", defs: list[dict], days: int, deep:
                                       'product:"Correlation Rule"', trig_window, SURFACE_EVENTS_LIMIT, state)
     if ok:
         out["triggers"] = {"grouped": True, "rows": rows}
-        info(f"Attack surface: {sum(_row_count(r) for r in rows)} correlation rule triggers in 30 days")
+        info(f"Attack surface: {sum(_row_count(r) for r in rows)} correlation rule triggers in {trigger_days} days")
     else:
         out["errors"].extend({"step": "rule triggers", "error": e} for e in errors)
 
@@ -1398,11 +1398,12 @@ def build_attack_surface(raw: dict | None, health_all: list[dict], rule_products
     order = {"No data": 0, "No detections": 1, "Monitored, silent": 2, "Detecting": 3}
     rows.sort(key=lambda r: (order[r["status"]], -r["events"], r["product"].lower()))
 
-    rule_info = {r: {"status": h["status"], "last": h["lastTriggeredAt"], "triggers30d": trigger_by_rule.get(r, 0),
+    rule_info = {r: {"status": h["status"], "last": h["lastTriggeredAt"], "triggers": trigger_by_rule.get(r, 0),
                      "techniques": [{"id": t, "name": tech_names.get(t, "")} for t in rule_techniques.get(r, [])]}
                  for r, h in health_by_name.items()}
     return {
         "collectedAt": raw.get("collectedAt", ""), "windowDays": raw.get("windowDays"),
+        "triggerDays": raw.get("triggerDays", 30),
         "eventsMethod": (raw.get("events") or {}).get("method", ""),
         "eventsAvailable": raw.get("events") is not None,
         # only rule queries that actually ran count as checked
@@ -2646,7 +2647,7 @@ function renderSurface() {
     + (context(p) ? `<div class="note">${context(p)}</div>` : '') + `</td>`;
   const events = p => `<td data-v="${p.events}">${covBar(p.events, maxEv)}${fmt(p.events)}</td>`;
   const how = p => `${p.namedRules} name this source in their query; ${p.fedRules} match its events when their query is run`
-    + (p.triggers ? `; ${p.triggers} triggers in 30 days name it as the source` : '');
+    + (p.triggers ? `; ${p.triggers} triggers in ${SURFACE.triggerDays} days name it as the source` : '');
   const rulesCell = p => `<td data-v="${p.ruleCount}" title="${escHtml(how(p))}">${p.ruleCount}</td>`;
   const techCell = p => `<td data-v="${p.validatedTechniques.length}">${p.validatedTechniques.length} of ${p.techniques.length}</td>`;
 
@@ -2675,8 +2676,8 @@ function renderSurface() {
   notes.push(SURFACE.deepChecked ? `${SURFACE.deepChecked} rule queries were run against the last ${days} days to link rules to sources`
     + (SURFACE.deepTruncated ? ' (stopped early by the time limit).' : '.')
     : 'Rule queries were not run in this report (--no-surface-deep or not yet collected), so most rules are linked to sources only through their triggers. Run without --no-surface-deep for the full picture.');
-  notes.push(SURFACE.triggerEvents ? `${fmt(SURFACE.triggerEvents)} correlation rule triggers in the last 30 days, of which ${fmt(SURFACE.triggerAttributed)} name the source product.`
-    : 'No correlation rule triggers were returned for the last 30 days.');
+  notes.push(SURFACE.triggerEvents ? `${fmt(SURFACE.triggerEvents)} correlation rule triggers in the last ${SURFACE.triggerDays} days, of which ${fmt(SURFACE.triggerAttributed)} name the source product.`
+    : `No correlation rule triggers were returned for the last ${SURFACE.triggerDays} days.`);
   SURFACE.errors.forEach(e => notes.push(`<span style="color:var(--bad)">${escHtml(e.step)}: ${escHtml(String(e.error).slice(0, 240))}</span>`));
 
   const ccRows = cc.map(c => `<tr><td data-v="${escHtml(c.name.toLowerCase())}"><strong>${escHtml(c.name)}</strong><div class="note">${escHtml(c.type)}</div></td>`
@@ -2729,7 +2730,7 @@ function renderSurface() {
     + section(4, 'Working - rules firing on this data', working, 's-validated',
         `rules that use this data fired in the last ${STALE_DAYS} days.`,
         'keep these healthy - watch the Changes tab for rules that stop firing.',
-        `<th>Source</th><th>Events (${days}d)</th><th>Rules firing</th><th>Triggers (30d)</th><th>Techniques validated</th>`,
+        `<th>Source</th><th>Events (${days}d)</th><th>Rules firing</th><th>Triggers (${SURFACE.triggerDays}d)</th><th>Techniques validated</th>`,
         p => source(p) + events(p) + `<td data-v="${p.active}">${p.active} of ${p.ruleCount}</td>`
           + `<td data-v="${p.triggers}">${p.triggers ? fmt(p.triggers) : '<span class="note">-</span>'}</td>` + techCell(p),
         'None.')
@@ -2791,7 +2792,7 @@ function openProduct(i) {
     const info = SURFACE.rules[r] || {techniques: []};
     return `<tr><td>${escHtml(r)}</td><td><span class="tag s-${RULE_CLASS[info.status] || 'none'}">${escHtml(RULE_LABEL[info.status] || info.status || '')}</span></td>`
       + `<td>${info.last ? escHtml(info.last) : '<span class="note">never</span>'}</td>`
-      + `<td>${info.triggers30d ? info.triggers30d.toLocaleString() : '<span class="note">0</span>'}</td>`
+      + `<td>${info.triggers ? info.triggers.toLocaleString() : '<span class="note">0</span>'}</td>`
       + `<td style="font-family:var(--mono)">${info.techniques.map(t => escHtml(t.id)).join(', ') || '-'}</td></tr>`;
   }).join('');
   const techs = p.techniques.map(id => {
@@ -2808,7 +2809,7 @@ function openProduct(i) {
     + ((p.platforms || []).length ? `<div class="pid">Platform: ${escHtml(p.platforms.join(', '))}</div>` : '')
     + `<div class="row"><span class="tag ${SURFACE_TAG[p.status]}">${escHtml(p.status)}</span><span class="note">${escHtml(SURFACE_HELP[p.status])}</span></div>`
     + `<h4>Correlation rules using this source (${p.rules.length})</h4>`
-    + (ruleRows ? `<div class="table-wrap" style="max-height:none"><table class="data-table"><thead><tr><th>Rule</th><th>Status</th><th>Last fired</th><th>Triggers (30d)</th><th>Techniques</th></tr></thead><tbody>${ruleRows}</tbody></table></div>`
+    + (ruleRows ? `<div class="table-wrap" style="max-height:none"><table class="data-table"><thead><tr><th>Rule</th><th>Status</th><th>Last fired</th><th>Triggers (${SURFACE.triggerDays}d)</th><th>Techniques</th></tr></thead><tbody>${ruleRows}</tbody></table></div>`
                 : '<div class="note">No enabled correlation rule uses this data. Consider content for it, or whether it is needed.</div>')
     + ((p.vendorRules || []).length ? `<h4>Rules that filter on vendor ${escHtml(p.vendor)} - may apply (${p.vendorRules.length})</h4>`
        + `<div class="note">These rules match on the vendor rather than the product, so they may or may not use this source: `
@@ -3175,11 +3176,17 @@ def build_html_report(path: str, ctx: dict) -> None:
     # Changes since last run
     if ctx["prev"]:
         prev_when = esc(ctx["prev"].get("generatedAt", ""))
+        prev_stale = ctx["prev"].get("staleDays")
+        threshold_note = ""
+        if prev_stale and prev_stale != stale:
+            threshold_note = (f'<p class="sub" style="color:var(--warn)"><strong>Note:</strong> the previous run counted a rule as active if it '
+                              f'fired within {prev_stale} days; this run uses {stale} days. Some rules change status because of that, not '
+                              'because their behaviour changed.</p>')
         changes = ctx["changes"]
         body = to_html_table(changes, "tblChanges") if changes else '<div class="footer-note">Nothing changed.</div>'
         changes_html = f"""
       <div class="panel">
-        <h2>Changes since last run ({prev_when})</h2>
+        <h2>Changes since last run ({prev_when})</h2>{threshold_note}
         <p class="sub">Rules that were auto-disabled or stopped firing, and data sources that stopped sending, are listed first - these are the most likely signs that a log source or rule has broken.</p>
         {body}
       </div>"""
@@ -3375,7 +3382,7 @@ def main() -> None:
                 surface_raw = json.load(f)
     elif not args.no_surface:
         surface_raw = collect_attack_surface(api, exported_defs, args.surface_days, not args.no_surface_deep,
-                                             args.surface_max_seconds, args.surface_workers)
+                                             args.surface_max_seconds, args.surface_workers, args.stale_days)
         if args.save_raw:
             write_json(os.path.join(out_dir, "raw_surface.json"), surface_raw)
 
