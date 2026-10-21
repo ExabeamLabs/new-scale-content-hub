@@ -1,0 +1,39 @@
+{
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "name": "Windows PHP Web Server Spawning Command Shell",
+            "description": "Detects a web server process (PHP, IIS, Apache) spawning a command shell or utility, which is a common indicator of web shell execution (php2shell).",
+            "useCase": "malware",
+            "mitre": [
+                {
+                    "tacticKey": "TA0003",
+                    "tactic": "Persistence",
+                    "techniqueKey": "T1505",
+                    "technique": "Server Software Component"
+                }
+            ],
+            "sequencesExecution": "CREATION_ORDER",
+            "severity": "high",
+            "sequencesConfig": {
+                "sequences": [
+                    {
+                        "name": "Web Server Spawning Shell",
+                        "query": "activity_type:\"process-create\" AND parent_process_name:(\"php.exe\", \"php-cgi.exe\", \"w3wp.exe\", \"httpd.exe\", \"apache.exe\", \"apache2.exe\") AND process_name:(\"cmd.exe\", \"powershell.exe\", \"pwsh.exe\", \"cscript.exe\", \"wscript.exe\", \"mshta.exe\", \"rundll32.exe\", \"regsvr32.exe\", \"certutil.exe\", \"bitsadmin.exe\", \"curl.exe\", \"wget.exe\", \"whoami.exe\", \"nltest.exe\", \"ipconfig.exe\", \"nslookup.exe\") AND outcome:\"success\"",
+                        "condition": {
+                            "groupByOption": false,
+                            "groupBy": [
+                            ],
+                            "triggerOnAnyMatch": true
+                        },
+                        "id": "348a8c49-d716-4d35-bdb2-78b0b30022fe"
+                    }
+                ],
+                "commonProperties": null,
+                "restrictToSite": null,
+                "outcomes": null
+            },
+            "scheduleConfig": null
+        }
+    ]
+}
