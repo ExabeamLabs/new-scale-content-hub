@@ -1,7 +1,6 @@
 Key
 anydesk.exe
 ateraagent.exe
-cloudflared
 cloudflared.exe
 lmiguardiansvc.exe
 logmein.exe
@@ -52,6 +51,7 @@ teamviewer
 transmission-cli
 transmission-daemon
 wireguard-go
+wg
 wormhole
 x11vnc
 zerotier-one
