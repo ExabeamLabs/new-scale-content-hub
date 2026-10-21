@@ -1,0 +1,39 @@
+{
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "name": "PHP Process Spawning Shell or Network Tool",
+            "description": "Detects PHP or PHP-FPM spawning shell interpreters or network utilities, which is a common indicator of PHP-based Remote Code Execution (RCE) or web shell activity.",
+            "useCase": "malware",
+            "mitre": [
+                {
+                    "tacticKey": "TA0002",
+                    "tactic": "Execution",
+                    "techniqueKey": "T1059",
+                    "technique": "Command and Scripting Interpreter"
+                }
+            ],
+            "sequencesExecution": "CREATION_ORDER",
+            "severity": "high",
+            "sequencesConfig": {
+                "sequences": [
+                    {
+                        "name": "PHP spawning suspicious child process",
+                        "query": "activity_type:\"process-create\" AND parent_process_name:WLDi(\"*php*\") AND process_name:(\"bash\", \"sh\", \"dash\", \"zsh\", \"ksh\", \"nc\", \"ncat\", \"netcat\", \"socat\", \"curl\", \"wget\", \"python\", \"python3\", \"perl\") AND outcome:\"success\"",
+                        "condition": {
+                            "groupByOption": false,
+                            "groupBy": [
+                            ],
+                            "triggerOnAnyMatch": true
+                        },
+                        "id": "ef4192a2-e3ca-4c67-9c40-4bf0f0ab99a8"
+                    }
+                ],
+                "commonProperties": null,
+                "restrictToSite": null,
+                "outcomes": null
+            },
+            "scheduleConfig": null
+        }
+    ]
+}
