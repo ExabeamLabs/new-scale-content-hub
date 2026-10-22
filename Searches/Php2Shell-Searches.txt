@@ -9,3 +9,15 @@ Search:  activity_type:"process-create" AND parent_process_name:WLDi("*php*") AN
 Timeframe: 30 days
 Search Name: PHP Process Spawning Shell or Network Tool
 Search Description: Detects PHP or PHP-FPM spawning shell interpreters or network utilities, which is a common indicator of PHP-based Remote Code Execution (RCE) or web shell activity.
+
+#What systems and users are running PHP?
+Search:  activity_type:"process-create" AND (process_name:WLDi("*php*") OR parent_process_name:WLDi("*php*")) AND outcome:"success"
+Timeframe: 24 hours
+Search Name: PHP installed systems
+Search Description: Detects PHP processes
+
+#What PHP websites are being accessed?
+Search:  subject: "HTTP" AND url:WLDi("*/php*" AND outcome:"success"
+Timeframe: 24 hours
+Search Name: PHP websites
+Search Description: Detects communications to PHP websites
