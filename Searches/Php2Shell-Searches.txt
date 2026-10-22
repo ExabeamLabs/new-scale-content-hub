@@ -1,0 +1,11 @@
+#For Windows
+Search:  activity_type:"process-create" AND parent_process_name:("php.exe", "php-cgi.exe", "w3wp.exe", "httpd.exe", "apache.exe", "apache2.exe") AND process_name:("cmd.exe", "powershell.exe", "pwsh.exe", "cscript.exe", "wscript.exe", "mshta.exe", "rundll32.exe", "regsvr32.exe", "certutil.exe", "bitsadmin.exe", "curl.exe", "wget.exe", "whoami.exe", "nltest.exe", "ipconfig.exe", "nslookup.exe") AND outcome:"success"
+Timeframe: 30 days
+Search Name: Windows PHP Web Server Spawning Command Shell
+Search Description: Detects a web server process (PHP, IIS, Apache) spawning a command shell or utility, which is a common indicator of web shell execution (php2shell)
+
+#For Linux and Mac OSX
+Search:  activity_type:"process-create" AND parent_process_name:WLDi("*php*") AND process_name:("bash", "sh", "dash", "zsh", "ksh", "nc", "ncat", "netcat", "socat", "curl", "wget", "python", "python3", "perl") AND outcome:"success"
+Timeframe: 30 days
+Search Name: PHP Process Spawning Shell or Network Tool
+Search Description: Detects PHP or PHP-FPM spawning shell interpreters or network utilities, which is a common indicator of PHP-based Remote Code Execution (RCE) or web shell activity.
