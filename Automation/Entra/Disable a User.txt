@@ -1,0 +1,523 @@
+import base64
+import json
+import requests
+from typing import Dict, Any
+from urllib.parse import quote
+
+
+GRAPH_BASE_URL = "https://graph.microsoft.com/v1.0"
+
+
+def _get_access_token(
+    tenant_id: str,
+    client_id: str,
+    client_secret: str
+) -> str:
+    """
+    Get Microsoft Graph access token using
+    OAuth 2.0 Client Credentials flow.
+    """
+
+    token_url = (
+        f"https://login.microsoftonline.com/"
+        f"{tenant_id}/oauth2/v2.0/token"
+    )
+
+    payload = {
+        "client_id": client_id,
+        "client_secret": client_secret,
+        "scope": "https://graph.microsoft.com/.default",
+        "grant_type": "client_credentials"
+    }
+
+    headers = {
+        "Content-Type": "application/x-www-form-urlencoded"
+    }
+
+    try:
+        response = requests.post(
+            token_url,
+            data=payload,
+            headers=headers,
+            timeout=60
+        )
+
+        if response.status_code >= 400:
+            try:
+                error_body = response.json()
+            except ValueError:
+                error_body = response.text
+
+            raise Exception(
+                "Microsoft Entra token request failed.\n"
+                f"HTTP Status: {response.status_code}\n"
+                f"Response: {json.dumps(error_body, indent=2)}"
+            )
+
+        token_data = response.json()
+
+        access_token = token_data.get("access_token")
+
+        if not access_token:
+            raise Exception(
+                "Microsoft authentication response "
+                "did not contain an access token."
+            )
+
+        return access_token
+
+    except requests.exceptions.RequestException as e:
+
+        error_body = ""
+
+        if e.response is not None:
+            try:
+                error_body = e.response.json()
+            except ValueError:
+                error_body = e.response.text
+
+        raise Exception(
+            "Microsoft Entra authentication failed.\n"
+            f"HTTP Status: "
+            f"{e.response.status_code if e.response is not None else 'unknown'}\n"
+            f"Error: {e}\n"
+            f"Response: {json.dumps(error_body, indent=2) if isinstance(error_body, dict) else error_body}"
+        )
+
+
+def _normalize_user(user) -> str:
+    """
+    Normalize the user value received from Exabeam AAM.
+
+    Supports:
+
+        "user@company.com"
+
+    and:
+
+        ["user@company.com"]
+
+    Returns:
+
+        "user@company.com"
+    """
+
+    if isinstance(user, list):
+
+        if len(user) != 1:
+            raise ValueError(
+                f"Expected exactly one user, "
+                f"but received: {user}"
+            )
+
+        user = user[0]
+
+    if not isinstance(user, str):
+
+        raise ValueError(
+            f"Invalid user type: "
+            f"{type(user).__name__}. "
+            f"Expected string or single-element list."
+        )
+
+    user = user.strip()
+
+    if not user:
+        raise ValueError(
+            "User cannot be empty."
+        )
+
+    return user
+
+
+def _decode_jwt_payload(
+    access_token: str
+) -> Dict[str, Any]:
+    """
+    Decode the JWT payload locally.
+
+    This is ONLY for diagnostics.
+    It does not validate the token signature.
+
+    The token is not sent to any external service.
+    """
+
+    try:
+
+        parts = access_token.split(".")
+
+        if len(parts) != 3:
+            return {
+                "error": "Access token is not a JWT."
+            }
+
+        payload = parts[1]
+
+        # JWT uses base64url encoding.
+        padding = "=" * (-len(payload) % 4)
+
+        payload += padding
+
+        decoded = base64.urlsafe_b64decode(
+            payload.encode("utf-8")
+        )
+
+        return json.loads(
+            decoded.decode("utf-8")
+        )
+
+    except Exception as e:
+
+        return {
+            "error": (
+                f"Unable to decode JWT payload: {str(e)}"
+            )
+        }
+
+
+def _check_token_permissions(
+    access_token: str
+) -> Dict[str, Any]:
+    """
+    Inspect the Microsoft Graph application permissions
+    contained in the access token.
+
+    For client_credentials authentication,
+    application permissions are normally represented
+    in the 'roles' claim.
+    """
+
+    claims = _decode_jwt_payload(
+        access_token
+    )
+
+    if "error" in claims:
+        return claims
+
+    roles = claims.get("roles", [])
+
+    required_permissions = [
+        "User.EnableDisableAccount.All",
+        "User.Read.All"
+    ]
+
+    missing_permissions = [
+        permission
+        for permission in required_permissions
+        if permission not in roles
+    ]
+
+    return {
+        "token_type": claims.get("typ"),
+        "application_id": claims.get("appid"),
+        "tenant_id": claims.get("tid"),
+        "audience": claims.get("aud"),
+        "roles": roles,
+        "required_permissions": required_permissions,
+        "missing_permissions": missing_permissions,
+        "permissions_ok": (
+            len(missing_permissions) == 0
+        )
+    }
+
+
+def _get_user(
+    access_token: str,
+    user: str
+) -> Dict[str, Any]:
+    """
+    Read the target user from Microsoft Graph.
+
+    This helps distinguish:
+      - invalid user
+      - permission problems
+      - disabled/other user state
+      - Graph connectivity problems
+    """
+
+    user_encoded = quote(
+        user,
+        safe=""
+    )
+
+    graph_url = (
+        f"{GRAPH_BASE_URL}/users/"
+        f"{user_encoded}"
+        "?$select=id,userPrincipalName,"
+        "accountEnabled,displayName"
+    )
+
+    headers = {
+        "Authorization": f"Bearer {access_token}",
+        "Accept": "application/json"
+    }
+
+    try:
+
+        response = requests.get(
+            graph_url,
+            headers=headers,
+            timeout=60
+        )
+
+        if response.status_code >= 400:
+
+            try:
+                error_body = response.json()
+            except ValueError:
+                error_body = response.text
+
+            raise Exception(
+                "Microsoft Graph user lookup failed.\n"
+                f"HTTP Status: {response.status_code}\n"
+                f"URL: {graph_url}\n"
+                f"Response: "
+                f"{json.dumps(error_body, indent=2)}"
+            )
+
+        return response.json()
+
+    except requests.exceptions.RequestException as e:
+
+        error_body = ""
+
+        if e.response is not None:
+
+            try:
+                error_body = e.response.json()
+            except ValueError:
+                error_body = e.response.text
+
+        raise Exception(
+            "Microsoft Graph user lookup request failed.\n"
+            f"HTTP Status: "
+            f"{e.response.status_code if e.response is not None else 'unknown'}\n"
+            f"Error: {e}\n"
+            f"Response: "
+            f"{json.dumps(error_body, indent=2) if isinstance(error_body, dict) else error_body}"
+        )
+
+
+def _disable_user(
+    access_token: str,
+    user: str
+) -> Dict[str, Any]:
+    """
+    Disable a Microsoft Entra ID user by setting:
+
+        accountEnabled = false
+    """
+
+    user = _normalize_user(user)
+
+    user_encoded = quote(
+        user,
+        safe=""
+    )
+
+    graph_url = (
+        f"{GRAPH_BASE_URL}/users/"
+        f"{user_encoded}"
+    )
+
+    headers = {
+        "Authorization": f"Bearer {access_token}",
+        "Content-Type": "application/json"
+    }
+
+    payload = {
+        "accountEnabled": False
+    }
+
+    try:
+
+        response = requests.patch(
+            graph_url,
+            headers=headers,
+            json=payload,
+            timeout=60
+        )
+
+        # Microsoft Graph normally returns HTTP 204
+        # for a successful user update.
+        if 200 <= response.status_code < 300:
+
+            response_body = None
+
+            if response.text:
+
+                try:
+                    response_body = response.json()
+                except ValueError:
+                    response_body = response.text
+
+            return {
+                "status": "success",
+                "http_status": response.status_code,
+                "user": user,
+                "account_enabled": False,
+                "response": response_body,
+                "message": (
+                    f"Microsoft Entra ID user "
+                    f"'{user}' was successfully disabled."
+                )
+            }
+
+        # Microsoft Graph returned an error.
+        try:
+            error_body = response.json()
+        except ValueError:
+            error_body = response.text
+
+        raise Exception(
+            "Microsoft Graph returned an error while "
+            "disabling the user.\n"
+            f"HTTP Status: {response.status_code}\n"
+            f"URL: {graph_url}\n"
+            f"Response: "
+            f"{json.dumps(error_body, indent=2)}"
+        )
+
+    except requests.exceptions.RequestException as e:
+
+        error_body = ""
+
+        if e.response is not None:
+
+            try:
+                error_body = e.response.json()
+            except ValueError:
+                error_body = e.response.text
+
+        raise Exception(
+            "Microsoft Graph PATCH request failed.\n"
+            f"HTTP Status: "
+            f"{e.response.status_code if e.response is not None else 'unknown'}\n"
+            f"Error: {e}\n"
+            f"Response: "
+            f"{json.dumps(error_body, indent=2) if isinstance(error_body, dict) else error_body}"
+        )
+
+
+def main(
+    tenant_id: str,
+    client_id: str,
+    client_secret: str,
+    user
+) -> Dict[str, Any]:
+    """
+    Exabeam AAM entry point.
+
+    Parameters:
+
+        tenant_id
+            Microsoft Entra Tenant ID.
+
+        client_id
+            Microsoft Entra App Registration
+            Application / Client ID.
+
+        client_secret
+            Microsoft Entra App Registration
+            Client Secret.
+
+        user
+            User Principal Name or Entra Object ID.
+
+            Supported:
+
+                "user@company.com"
+
+            or:
+
+                ["user@company.com"]
+    """
+
+    # ---------------------------------------------------------
+    # Validate required parameters
+    # ---------------------------------------------------------
+
+    if not tenant_id:
+        raise ValueError(
+            "tenant_id is required."
+        )
+
+    if not client_id:
+        raise ValueError(
+            "client_id is required."
+        )
+
+    if not client_secret:
+        raise ValueError(
+            "client_secret is required."
+        )
+
+    if not user:
+        raise ValueError(
+            "user is required."
+        )
+
+    # ---------------------------------------------------------
+    # Normalize Exabeam user input
+    # ---------------------------------------------------------
+
+    normalized_user = _normalize_user(
+        user
+    )
+
+    # ---------------------------------------------------------
+    # Get Microsoft Graph access token
+    # ---------------------------------------------------------
+
+    access_token = _get_access_token(
+        tenant_id=tenant_id,
+        client_id=client_id,
+        client_secret=client_secret
+    )
+
+    # ---------------------------------------------------------
+    # Check permissions in the access token
+    # ---------------------------------------------------------
+
+    permission_check = _check_token_permissions(
+        access_token
+    )
+
+    # ---------------------------------------------------------
+    # Verify target user exists
+    # ---------------------------------------------------------
+
+    user_information = _get_user(
+        access_token=access_token,
+        user=normalized_user
+    )
+
+    # ---------------------------------------------------------
+    # Disable the user
+    # ---------------------------------------------------------
+
+    result = _disable_user(
+        access_token=access_token,
+        user=normalized_user
+    )
+
+    # ---------------------------------------------------------
+    # Return diagnostic information
+    # ---------------------------------------------------------
+
+    result["permission_check"] = permission_check
+
+    result["target_user"] = {
+        "id": user_information.get("id"),
+        "userPrincipalName": user_information.get(
+            "userPrincipalName"
+        ),
+        "displayName": user_information.get(
+            "displayName"
+        ),
+        "accountEnabled_before_change": user_information.get(
+            "accountEnabled"
+        )
+    }
+
+    return result
