@@ -288,6 +288,116 @@
         "x-graph-method": "PATCH",
         "x-graph-path": "/users/{id or userPrincipalName}"
       }
+    },
+    "/actions/users/{user_id}/details": {
+      "get": {
+        "operationId": "getUserDetails",
+        "summary": "Get user details",
+        "description": "Retrieves Microsoft Entra ID user profile details and the user's manager.",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "description": "The user object ID or userPrincipalName",
+            "schema": {
+              "type": "string",
+              "example": "user@contoso.com"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response containing user_details and manager",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "x-action-file": "EntraID_Action_GetUserDetails.py",
+        "x-graph-operations": [
+          {
+            "method": "GET",
+            "path": "/users/{id or userPrincipalName}"
+          },
+          {
+            "method": "GET",
+            "path": "/users/{id or userPrincipalName}/manager"
+          }
+        ]
+      }
+    },
+    "/actions/users/{user_id}/signIns": {
+      "get": {
+        "operationId": "getSignInInformation",
+        "summary": "Get sign-in information",
+        "description": "Retrieves the most recent Microsoft Entra ID sign-in events for a user with a summary of IPs, applications and countries.",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "description": "The user object ID or userPrincipalName",
+            "schema": {
+              "type": "string",
+              "example": "user@contoso.com"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response containing user, summary and sign_ins",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "x-action-file": "EntraID_Action_GetSignInInformation.py",
+        "x-graph-operations": [
+          {
+            "method": "GET",
+            "path": "/users/{id or userPrincipalName}"
+          },
+          {
+            "method": "GET",
+            "path": "/auditLogs/signIns"
+          }
+        ]
+      }
     }
   },
   "components": {

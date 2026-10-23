@@ -11,6 +11,8 @@ This small guide explains how to prepare Microsoft Entra ID and Microsoft Graph 
 | EntraID_Action_DisableUser.py    | Disable the user account                                                | PATCH /users/{id or userPrincipalName} with accountEnabled=false |
 | EntraID_Action_EnableUser.py     | Enable the user account                                                 | PATCH /users/{id or userPrincipalName} with accountEnabled=true  |
 | EntraID_Action_LockUser.py       | Disable the account and revoke sessions                                 | PATCH accountEnabled=false, then POST revokeSignInSessions       |
+| EntraID_Action_GetUserDetails.py | Retrieve user profile, account status, on-prem sync info, and manager   | GET /users/{id or userPrincipalName}, then GET .../manager       |
+| EntraID_Action_GetSignInInformation.py | Retrieve the 20 most recent sign-ins with a SOC summary (IPs, apps, countries, success/fail) | GET /users/{id or userPrincipalName}, then GET /auditLogs/signIns |
 
 Note: Microsoft Graph does not provide a separate generic lock user or unlock user endpoint for these action patterns. In this implementation, Lock User means block sign-in by setting accountEnabled to false and revoke sessions. 
 The user target is passed as an action input named user_id. The value can be the user's Microsoft Graph object ID or userPrincipalName.
@@ -58,6 +60,10 @@ In the app registration:
 | Disable User    | User.EnableDisableAccount.All and User.Read.All                           |
 | Enable User     | User.EnableDisableAccount.All and User.Read.All                           |
 | Lock User       | User.EnableDisableAccount.All, User.Read.All, and User.RevokeSessions.All |
+| Get User Details | User.Read.All                                                            |
+| Get Sign-In Information | User.Read.All and AuditLog.Read.All                               |
+
+Get Sign-In Information reads the Entra sign-in logs, which require a Microsoft Entra ID P1 or P2 licence in the tenant.
 
 Admin consent is required for Microsoft Graph application permissions.
 
@@ -87,6 +93,9 @@ Some user update operations require more than Graph API permissions.
 - Client credentials flow for Microsoft Graph: https://learn.microsoft.com/en-us/graph/auth-v2-service
 - Revoke sign-in sessions: https://learn.microsoft.com/en-us/graph/api/user-revokesigninsessions
 - Update user: https://learn.microsoft.com/en-us/graph/api/user-update
+- Get user: https://learn.microsoft.com/en-us/graph/api/user-get
+- Get manager: https://learn.microsoft.com/en-us/graph/api/user-list-manager
+- List sign-ins: https://learn.microsoft.com/en-us/graph/api/signin-list
 
 ## Appendix: Action Inputs
 
@@ -141,3 +150,23 @@ File: EntraID_Action_LockUser.py
 | user_id | User object ID or userPrincipalName |
 
 This sets accountEnabled to false and then revokes sign-in sessions.
+
+### Get User Details
+
+File: EntraID_Action_GetUserDetails.py
+
+| Input   | Description                         |
+|---------|-------------------------------------|
+| user_id | User object ID or userPrincipalName |
+
+Read-only. Returns identity, contact, organisational, account status, password change date and on-premises sync attributes, plus the user's manager (if one is set).
+
+### Get Sign-In Information
+
+File: EntraID_Action_GetSignInInformation.py
+
+| Input   | Description                         |
+|---------|-------------------------------------|
+| user_id | User object ID or userPrincipalName |
+
+Read-only. Returns the 20 most recent sign-in events (application, IP, location, device, conditional access, risk) with the full raw Graph event preserved, and a summary of successful/failed sign-ins and unique IPs, applications and countries.

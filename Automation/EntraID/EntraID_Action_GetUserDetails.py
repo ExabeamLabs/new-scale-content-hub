@@ -1,0 +1,442 @@
+import json
+import requests
+from typing import Dict, Any
+from urllib.parse import quote
+
+
+GRAPH_BASE_URL = "https://graph.microsoft.com/v1.0"
+
+
+def _get_access_token(
+    tenant_id: str,
+    client_id: str,
+    client_secret: str
+) -> str:
+    """
+    Get Microsoft Graph access token using
+    OAuth 2.0 Client Credentials flow.
+    """
+
+    token_url = (
+        f"https://login.microsoftonline.com/"
+        f"{tenant_id}/oauth2/v2.0/token"
+    )
+
+    payload = {
+        "client_id": client_id,
+        "client_secret": client_secret,
+        "scope": "https://graph.microsoft.com/.default",
+        "grant_type": "client_credentials"
+    }
+
+    headers = {
+        "Content-Type": "application/x-www-form-urlencoded"
+    }
+
+    try:
+
+        response = requests.post(
+            token_url,
+            data=payload,
+            headers=headers,
+            timeout=60
+        )
+
+        if response.status_code >= 400:
+
+            try:
+                error_body = response.json()
+            except ValueError:
+                error_body = response.text
+
+            raise Exception(
+                "Microsoft Entra token request failed.\n"
+                f"HTTP Status: {response.status_code}\n"
+                f"Response: "
+                f"{json.dumps(error_body, indent=2)}"
+            )
+
+        token_data = response.json()
+
+        access_token = token_data.get(
+            "access_token"
+        )
+
+        if not access_token:
+
+            raise Exception(
+                "Microsoft authentication response "
+                "did not contain an access token."
+            )
+
+        return access_token
+
+    except requests.exceptions.RequestException as e:
+
+        error_body = ""
+
+        if e.response is not None:
+
+            try:
+                error_body = e.response.json()
+            except ValueError:
+                error_body = e.response.text
+
+        raise Exception(
+            "Microsoft Entra authentication failed.\n"
+            f"HTTP Status: "
+            f"{e.response.status_code if e.response is not None else 'unknown'}\n"
+            f"Error: {e}\n"
+            f"Response: "
+            f"{json.dumps(error_body, indent=2) if isinstance(error_body, dict) else error_body}"
+        )
+
+
+def _normalize_user(user) -> str:
+    """
+    Normalize the user value received from Exabeam AAM.
+
+    Supports:
+
+        "user@company.com"
+
+    and:
+
+        ["user@company.com"]
+
+    Returns:
+
+        "user@company.com"
+    """
+
+    if isinstance(user, list):
+
+        if len(user) != 1:
+
+            raise ValueError(
+                f"Expected exactly one user, "
+                f"but received: {user}"
+            )
+
+        user = user[0]
+
+    if not isinstance(user, str):
+
+        raise ValueError(
+            f"Invalid user type: "
+            f"{type(user).__name__}. "
+            f"Expected string or single-element list."
+        )
+
+    user = user.strip()
+
+    if not user:
+
+        raise ValueError(
+            "User cannot be empty."
+        )
+
+    return user
+
+
+def _get_user_details(
+    access_token: str,
+    user: str
+) -> Dict[str, Any]:
+    """
+    Retrieve detailed Microsoft Entra ID user information.
+    """
+
+    user_encoded = quote(
+        user,
+        safe=""
+    )
+
+    select_fields = (
+        "id,"
+        "userPrincipalName,"
+        "mail,"
+        "displayName,"
+        "givenName,"
+        "surname,"
+        "jobTitle,"
+        "department,"
+        "companyName,"
+        "officeLocation,"
+        "mobilePhone,"
+        "businessPhones,"
+        "city,"
+        "state,"
+        "country,"
+        "postalCode,"
+        "streetAddress,"
+        "employeeId,"
+        "employeeType,"
+        "accountEnabled,"
+        "createdDateTime,"
+        "lastPasswordChangeDateTime,"
+        "userType,"
+        "preferredLanguage,"
+        "usageLocation,"
+        "proxyAddresses,"
+        "onPremisesSyncEnabled,"
+        "onPremisesSamAccountName,"
+        "onPremisesUserPrincipalName,"
+        "onPremisesDomainName,"
+        "onPremisesSecurityIdentifier"
+    )
+
+    graph_url = (
+        f"{GRAPH_BASE_URL}/users/"
+        f"{user_encoded}"
+        f"?$select={select_fields}"
+    )
+
+    headers = {
+        "Authorization": f"Bearer {access_token}",
+        "Accept": "application/json"
+    }
+
+    try:
+
+        response = requests.get(
+            graph_url,
+            headers=headers,
+            timeout=60
+        )
+
+        if response.status_code >= 400:
+
+            try:
+                error_body = response.json()
+            except ValueError:
+                error_body = response.text
+
+            raise Exception(
+                "Microsoft Graph user lookup failed.\n"
+                f"HTTP Status: {response.status_code}\n"
+                f"URL: {graph_url}\n"
+                f"Response: "
+                f"{json.dumps(error_body, indent=2)}"
+            )
+
+        return response.json()
+
+    except requests.exceptions.RequestException as e:
+
+        error_body = ""
+
+        if e.response is not None:
+
+            try:
+                error_body = e.response.json()
+            except ValueError:
+                error_body = e.response.text
+
+        raise Exception(
+            "Microsoft Graph user lookup request failed.\n"
+            f"HTTP Status: "
+            f"{e.response.status_code if e.response is not None else 'unknown'}\n"
+            f"Error: {e}\n"
+            f"Response: "
+            f"{json.dumps(error_body, indent=2) if isinstance(error_body, dict) else error_body}"
+        )
+
+
+def _get_manager(
+    access_token: str,
+    user_id: str
+) -> Dict[str, Any]:
+    """
+    Retrieve the user's manager.
+
+    This is a separate Graph request because manager
+    is a directory relationship rather than a standard
+    user property.
+    """
+
+    user_id_encoded = quote(
+        user_id,
+        safe=""
+    )
+
+    graph_url = (
+        f"{GRAPH_BASE_URL}/users/"
+        f"{user_id_encoded}/manager"
+        "?$select=id,userPrincipalName,"
+        "displayName,mail,jobTitle,department"
+    )
+
+    headers = {
+        "Authorization": f"Bearer {access_token}",
+        "Accept": "application/json"
+    }
+
+    try:
+
+        response = requests.get(
+            graph_url,
+            headers=headers,
+            timeout=60
+        )
+
+        # A user may not have a manager.
+        if response.status_code == 404:
+
+            return {
+                "available": False,
+                "reason": "No manager found."
+            }
+
+        if response.status_code >= 400:
+
+            try:
+                error_body = response.json()
+            except ValueError:
+                error_body = response.text
+
+            return {
+                "available": False,
+                "error": error_body
+            }
+
+        manager = response.json()
+
+        return {
+            "available": True,
+            "id": manager.get("id"),
+            "userPrincipalName": manager.get(
+                "userPrincipalName"
+            ),
+            "displayName": manager.get(
+                "displayName"
+            ),
+            "mail": manager.get(
+                "mail"
+            ),
+            "jobTitle": manager.get(
+                "jobTitle"
+            ),
+            "department": manager.get(
+                "department"
+            )
+        }
+
+    except requests.exceptions.RequestException as e:
+
+        return {
+            "available": False,
+            "error": str(e)
+        }
+
+
+def main(
+    user_id,
+    tenant_id: str,
+    client_id: str,
+    client_secret: str
+) -> Dict[str, Any]:
+    """
+    Exabeam AAM entry point.
+
+    Retrieve Microsoft Entra ID user details.
+
+    Parameters:
+
+        tenant_id
+            Microsoft Entra Tenant ID.
+
+        client_id
+            Microsoft Entra App Registration
+            Application / Client ID.
+
+        client_secret
+            Microsoft Entra App Registration
+            Client Secret.
+
+        user_id
+            User Principal Name or Entra Object ID.
+
+            Supported:
+
+                "user@company.com"
+
+            or:
+
+                ["user@company.com"]
+    """
+
+    # ---------------------------------------------------------
+    # Validate required parameters
+    # ---------------------------------------------------------
+
+    if not tenant_id:
+        raise ValueError(
+            "tenant_id is required."
+        )
+
+    if not client_id:
+        raise ValueError(
+            "client_id is required."
+        )
+
+    if not client_secret:
+        raise ValueError(
+            "client_secret is required."
+        )
+
+    if not user_id:
+        raise ValueError(
+            "user_id is required."
+        )
+
+    # ---------------------------------------------------------
+    # Normalize Exabeam input
+    # ---------------------------------------------------------
+
+    normalized_user = _normalize_user(
+        user_id
+    )
+
+    # ---------------------------------------------------------
+    # Get Microsoft Graph access token
+    # ---------------------------------------------------------
+
+    access_token = _get_access_token(
+        tenant_id=tenant_id,
+        client_id=client_id,
+        client_secret=client_secret
+    )
+
+    # ---------------------------------------------------------
+    # Get user details
+    # ---------------------------------------------------------
+
+    user_details = _get_user_details(
+        access_token=access_token,
+        user=normalized_user
+    )
+
+    # ---------------------------------------------------------
+    # Get manager
+    # ---------------------------------------------------------
+
+    manager = _get_manager(
+        access_token=access_token,
+        user_id=user_details.get("id")
+    )
+
+    # ---------------------------------------------------------
+    # Return SOC-friendly result
+    # ---------------------------------------------------------
+
+    return {
+        "status": "success",
+        "user": normalized_user,
+        "user_details": user_details,
+        "manager": manager,
+        "message": (
+            f"Successfully retrieved Microsoft Entra ID "
+            f"details for user '{normalized_user}'."
+        )
+    }
