@@ -17,7 +17,7 @@ Search Name: PHP installed systems
 Search Description: Detects PHP processes
 
 #What PHP websites are being accessed?
-Search:  subject: "HTTP" AND url:WLDi("*/php*" AND outcome:"success"
+Search:  subject: "HTTP" AND url:WLDi("*/php*") AND outcome:"success"
 Timeframe: 24 hours
 Search Name: PHP websites
 Search Description: Detects communications to PHP websites
