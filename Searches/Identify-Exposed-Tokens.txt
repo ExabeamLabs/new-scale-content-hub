@@ -1,0 +1,19 @@
+Search: RGX("github_pat_[A-Za-z0-9_]{82,}|gh[pousr]_[A-Za-z0-9]{36}")
+Timeframe: 24 hours
+Search Name: GitHub Personal Access Token - Possible Exposure
+Search Description: GitHub Personal Access Token - Possible Exposure
+ 
+Search: RGX("gitlab_token|glpat-[A-Za-z0-9\-_]{20,}")
+Timeframe: 24 hours
+Search Name: GitLab Personal Access Token - Possible Exposure
+Search Description: GitLab Personal Access Token - Possible Exposure
+ 
+Search: RGXi("bitbucket.*token|bitbucket.*pat|atlassian.*token")
+Timeframe: 24 hours
+Search Name: BitBucket Personal Access Token - Possible Exposure
+Search Description: BitBucket Personal Access Token - Possible Exposure
+ 
+Search: RGXi("\bBearer\s+([A-Za-z0-9\-._~+/]+=*)\b|\bBearer\s+eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\b")
+Timeframe: 24 hours
+Search Name: Bearer token and JWT-specific Bearer token - Possible Exposure
+Search Description: Bearer token and JWT-specific Bearer token - Possible Exposure
