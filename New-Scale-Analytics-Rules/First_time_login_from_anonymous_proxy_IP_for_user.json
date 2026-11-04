@@ -1,0 +1,54 @@
+{
+    "version": "1",
+    "ruleDefinitions": [
+        {
+            "templateId": "C_PF-Login-AnonProxyIP_be3a",
+            "name": "First time login from anonymous proxy IP for user",
+            "description": "Detects when a user performs a login activity from an anonymous proxy IP address not previously seen for that user. This rule will trigger for the first time an anonymous proxy IP is observed for a user, and for any subsequent new anonymous proxy IP addresses used by that user.",
+            "applicableEvents": [
+                {
+                    "activity_type": [
+                        "endpoint-login",
+                        "app-login",
+                        "vpn-login"
+                    ],
+                    "outcome": [
+                        "success"
+                    ]
+                }
+            ],
+            "detectionReason": "First login from anonymous proxy IP ${event.src_ip} for user ${entity.user.source}",
+            "type": "profiledFeature",
+            "mitre": [
+                {
+                    "techniqueKey": "T1078",
+                    "technique": "Valid Accounts",
+                    "tactic": "Initial Access",
+                    "tacticKey": "TA0001"
+                },
+                {
+                    "techniqueKey": "T1078",
+                    "technique": "Valid Accounts",
+                    "tactic": "Defense Evasion",
+                    "tacticKey": "TA0005"
+                }
+            ],
+            "useCases": [
+                "Abnormal Authentication & Access",
+                "Compromised Credentials"
+            ],
+            "actOnCondition": "isIP(src_ip) && HasGeoInfo('is_anon', src_ip) && GetGeoInfo('is_anon', src_ip) = 'true'",
+            "featureValue": "src_ip",
+            "scopeValue": "EntityId('type: User && direction: Source')",
+            "trainOnCondition": "isIP(src_ip) && HasGeoInfo('is_anon', src_ip) && GetGeoInfo('is_anon', src_ip) = 'true'",
+            "anomalyThreshold": "90 days",
+            "checkScopeMaturity": true,
+            "maturityThreshold": "14 days",
+            "familyId": "login-activity",
+            "ruleGroupId": "lgn-source-endpoint-access-group",
+            "severity": "None",
+            "startTrainTimestamp": "2026-09-15T12:48:58.365857102Z",
+            "testMode": false
+        }
+    ]
+}
