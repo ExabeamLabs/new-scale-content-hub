@@ -38,9 +38,7 @@
             ],
             "value": "true",
             "actOnCondition": "if(containsAny(toLower(device_id), 'usb'), 'true', 'false') && EntityHasAttributeValue('type: User && direction: Source', 'tags', 'Departing Employee', 'CASE_INSENSITIVE')",
-            "suppressThreshold": "10 minutes",
             "trainOnCondition": "true",
-            "suppressScope": "JoinIfExists(EntityId('type: User && direction: Source'), EntityId('type: Device && direction: Source'))",
             "familyId": "usb-activity",
             "ruleGroupId": "usb-device-id-group",
             "severity": "Medium"
