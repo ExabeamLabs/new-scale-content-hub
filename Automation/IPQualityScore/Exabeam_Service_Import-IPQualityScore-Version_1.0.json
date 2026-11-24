@@ -1,0 +1,228 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "IPQualityScore API - IP, URL, Email, and Phone Reputation",
+        "description": "A subset of the IPQualityScore (IPQS) JSON API for retrieving fraud and reputation scores for IP addresses, URLs/domains, email addresses, and phone numbers. IPQS passes the API key in the request path.",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "https://www.ipqualityscore.com/api/json",
+            "description": "IPQualityScore JSON API Server"
+        }
+    ],
+    "components": {
+        "parameters": {
+            "apiKey": {
+                "name": "api_key",
+                "in": "path",
+                "required": true,
+                "description": "Your IPQualityScore API key.",
+                "schema": {
+                    "type": "string"
+                }
+            }
+        },
+        "responses": {
+            "Reputation": {
+                "description": "Successful response. IPQS returns HTTP 200 for most errors as well; check the 'success' and 'message' fields.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "paths": {
+        "/ip/{api_key}/{ip}": {
+            "get": {
+                "summary": "IPQualityScore_Action_Get_IP_Reputation",
+                "description": "Retrieves a fraud score and proxy, VPN, TOR, bot, and recent-abuse indicators for a given IP address.",
+                "operationId": "getIpReputation",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/apiKey"
+                    },
+                    {
+                        "name": "ip",
+                        "in": "path",
+                        "required": true,
+                        "description": "The IPv4 or IPv6 address to check.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "strictness",
+                        "in": "query",
+                        "required": false,
+                        "description": "Detection depth from 0 to 3. Higher values may increase false positives.",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 3,
+                            "default": 0
+                        }
+                    },
+                    {
+                        "name": "allow_public_access_points",
+                        "in": "query",
+                        "required": false,
+                        "description": "Bypass certain checks for IPs from research institutions, schools, and some corporations.",
+                        "schema": {
+                            "type": "boolean",
+                            "default": true
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/Reputation"
+                    }
+                }
+            }
+        },
+        "/url/{api_key}/{url}": {
+            "get": {
+                "summary": "IPQualityScore_Action_Get_URL_Reputation",
+                "description": "Scans a URL or domain for phishing, malware, parking, and spam, and returns a risk score and domain details.",
+                "operationId": "getUrlReputation",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/apiKey"
+                    },
+                    {
+                        "name": "url",
+                        "in": "path",
+                        "required": true,
+                        "description": "The URL-encoded URL or domain to scan.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "strictness",
+                        "in": "query",
+                        "required": false,
+                        "description": "Scan strictness from 0 to 2. Higher values may increase false positives.",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 2,
+                            "default": 0
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/Reputation"
+                    }
+                }
+            }
+        },
+        "/email/{api_key}/{email}": {
+            "get": {
+                "summary": "IPQualityScore_Action_Get_Email_Reputation",
+                "description": "Validates an email address and returns a fraud score plus disposable, leaked, honeypot, and recent-abuse indicators.",
+                "operationId": "getEmailReputation",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/apiKey"
+                    },
+                    {
+                        "name": "email",
+                        "in": "path",
+                        "required": true,
+                        "description": "The URL-encoded email address to check.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "timeout",
+                        "in": "query",
+                        "required": false,
+                        "description": "Seconds to wait for the mail provider to respond (1-60).",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 60,
+                            "default": 7
+                        }
+                    },
+                    {
+                        "name": "abuse_strictness",
+                        "in": "query",
+                        "required": false,
+                        "description": "Abuse detection strictness from 0 to 2.",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 2,
+                            "default": 0
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/Reputation"
+                    }
+                }
+            }
+        },
+        "/phone/{api_key}/{phone}": {
+            "get": {
+                "summary": "IPQualityScore_Action_Get_Phone_Reputation",
+                "description": "Validates a phone number and returns a fraud score, line type, carrier, and VOIP, prepaid, spammer, and recent-abuse indicators.",
+                "operationId": "getPhoneReputation",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/apiKey"
+                    },
+                    {
+                        "name": "phone",
+                        "in": "path",
+                        "required": true,
+                        "description": "The phone number to check, including country dialing code where possible.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "country[]",
+                        "in": "query",
+                        "required": false,
+                        "description": "One or more expected country codes (e.g. US, UK, CA). Recommended for numbers under 10 digits.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "style": "form",
+                        "explode": true
+                    },
+                    {
+                        "name": "strictness",
+                        "in": "query",
+                        "required": false,
+                        "description": "Verification strictness.",
+                        "schema": {
+                            "type": "integer",
+                            "default": 0
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/Reputation"
+                    }
+                }
+            }
+        }
+    }
+}

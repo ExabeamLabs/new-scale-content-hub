@@ -1,0 +1,18 @@
+{
+	"order": [
+		"IPQS_API_KEY"
+	],
+	"required": [
+		"IPQS_API_KEY"
+	],
+	"properties": {
+		"IPQS_API_KEY": {
+			"type": "string",
+			"default": "",
+			"nullable": false,
+			"password": true,
+			"description": "Your IPQualityScore API Key (Account Settings > API Key)",
+			"placeholder": ""
+		}
+	}
+}
