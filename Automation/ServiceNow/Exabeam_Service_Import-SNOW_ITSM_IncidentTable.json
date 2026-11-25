@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "https://dev216206.service-now.com/"
+      "url": "https://your-instance.service-now.com/"
     }
   ],
   "paths": {
